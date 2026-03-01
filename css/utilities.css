@@ -1,0 +1,154 @@
+/* ============================================
+   DROPDOWN MENU
+   ============================================ */
+
+.dropdown-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 4px;
+  min-width: 180px;
+  background: var(--white);
+  border: 2px solid;
+  border-color: var(--taupe-2) var(--taupe-4) var(--taupe-4) var(--taupe-2);
+  z-index: 50;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--taupe-5);
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  border-bottom: 1px solid var(--taupe-1);
+}
+
+.dropdown-item:last-child { border-bottom: none; }
+
+.dropdown-item:hover {
+  background: var(--berry-1);
+  color: var(--berry-5);
+}
+
+.dropdown-item.violet:hover {
+  background: rgba(116,65,143,0.1);
+  color: var(--violet-3);
+}
+
+/* ============================================
+   OVERVIEW GRID
+   ============================================ */
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.overview-grid .detail-section {
+  margin-bottom: 0;
+}
+
+.overview-full {
+  grid-column: 1 / -1;
+}
+
+.kv-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--taupe-1);
+}
+
+.kv-row:last-child { border-bottom: none; }
+
+.kv-key {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--taupe-3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.kv-val {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--taupe-5);
+}
+
+/* ============================================
+   RESIZE GRIP & LABEL
+   ============================================ */
+
+.resize-grip {
+  position: fixed;
+  bottom: 6px;
+  right: 8px;
+  width: 12px;
+  height: 12px;
+  background:
+    linear-gradient(135deg,
+      transparent 30%,
+      var(--taupe-3) 30%, var(--taupe-3) 35%,
+      transparent 35%, transparent 60%,
+      var(--taupe-3) 60%, var(--taupe-3) 65%,
+      transparent 65%, transparent 85%,
+      var(--taupe-3) 85%, var(--taupe-3) 90%,
+      transparent 90%
+    );
+  opacity: 0.5;
+}
+
+.design-label {
+  position: fixed;
+  bottom: 6px;
+  left: 12px;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--taupe-3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--taupe-3);
+  border: 1px solid var(--taupe-2);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--taupe-4); }
+
+/* Overlay for panel */
+.panel-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.2);
+  z-index: 90;
+}
+
+.panel-overlay.show {
+  display: block;
+}

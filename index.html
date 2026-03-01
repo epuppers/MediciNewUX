@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cosimo — Applied Intelligence Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/chat.css">
+<link rel="stylesheet" href="css/workflows.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/utilities.css">
+</head>
+<body>
+
+<div class="app-frame">
+
+  <!-- ======== SIDEBAR ======== -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-row">
+        <div class="logo-mark"><div class="logo-mark-inner"></div></div>
+        <div>
+          <div class="logo-title">COSIMO</div>
+          <div class="logo-sub">Applied Intelligence</div>
+        </div>
+      </div>
+
+      <!-- Mode Switcher -->
+      <div class="mode-switcher">
+        <button class="mode-btn active" onclick="switchMode('chat', this)">Chat</button>
+        <button class="mode-btn" onclick="switchMode('workflows', this)">Workflows</button>
+      </div>
+
+      <button class="new-btn" id="newBtn" onclick="handleNew()">+ New Thread</button>
+    </div>
+
+    <!-- Chat sidebar items -->
+    <div id="chatSidebar">
+      <div class="side-label">Recent</div>
+      <div class="thread-list">
+        <div class="thread-item active">
+          Fund III — Allocation Drift
+          <div class="thread-meta">Today, 2:31 PM</div>
+        </div>
+        <div class="thread-item">
+          Q4 LP Distribution Waterfall
+          <div class="thread-meta">Yesterday, 11:20 AM</div>
+        </div>
+        <div class="thread-item">
+          Hilgard — Fee Analysis
+          <div class="thread-meta">Feb 22, 4:15 PM</div>
+        </div>
+        <div class="thread-item">
+          K-1 Document Extraction
+          <div class="thread-meta">Feb 20, 9:45 AM</div>
+        </div>
+        <div class="thread-item">
+          Erabor Partnership Terms
+          <div class="thread-meta">Feb 18, 3:30 PM</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Workflow sidebar items -->
+    <div id="workflowSidebar" style="display:none;">
+      <div class="side-label">Workflows</div>
+      <div class="workflow-sidebar-list">
+        <div class="wf-side-item active" onclick="showWorkflowDetail('rent-roll', this)">
+          Rent Roll Extraction
+          <div class="wf-side-meta">
+            <span class="wf-side-status active-status">Active</span>
+            Last run: 2h ago
+          </div>
+        </div>
+        <div class="wf-side-item" onclick="showWorkflowDetail('k1-extract', this)">
+          K-1 Document Processing
+          <div class="wf-side-meta">
+            <span class="wf-side-status active-status">Active</span>
+            Last run: 6h ago
+          </div>
+        </div>
+        <div class="wf-side-item" onclick="showWorkflowDetail('lp-waterfall', this)">
+          LP Distribution Waterfall
+          <div class="wf-side-meta">
+            <span class="wf-side-status draft-status">Draft</span>
+            Created Feb 20
+          </div>
+        </div>
+        <div class="wf-side-item" onclick="showWorkflowDetail('fee-calc', this)">
+          Management Fee Calculator
+          <div class="wf-side-meta">
+            <span class="wf-side-status active-status">Active</span>
+            Last run: 1d ago
+          </div>
+        </div>
+        <div class="wf-side-item" onclick="showWorkflowDetail('covenant', this)">
+          Loan Covenant Monitor
+          <div class="wf-side-meta">
+            <span class="wf-side-status paused-status">Paused</span>
+            Paused Feb 15
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-avatar">E</div>
+      <span class="user-name">Eliot Puplett</span>
+    </div>
+  </div>
+
+  <!-- ======== MAIN ======== -->
+  <main>
+
+    <!-- ======== CHAT VIEW ======== -->
+    <div class="view-container active" id="chatView">
+      <div class="main-header">
+        <span class="header-title">Fund III — Allocation Drift</span>
+        <div class="header-actions">
+          <button class="header-btn">Export</button>
+          <button class="header-btn">Share</button>
+        </div>
+      </div>
+
+      <div class="chat-scroll">
+        <!-- Message 1: User -->
+        <div class="msg-block">
+          <div class="user-card">
+            <div class="msg-header">
+              <div class="badge badge-human">E</div>
+              <span class="sender">Eliot Puplett</span>
+              <span class="timestamp">2:31 PM</span>
+            </div>
+            <div class="msg-body">
+              Pull the current allocation for Fund III and compare it against the IPS mandate. Flag anything drifting more than 200bps. Show me a table.
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 2: AI with artifact -->
+        <div class="msg-block">
+          <div class="ai-block">
+            <div class="msg-header">
+              <div class="badge badge-ai">◆</div>
+              <span class="sender">Cosimo</span>
+              <span class="timestamp">2:32 PM</span>
+              <span class="latency-chip">3.2s</span>
+            </div>
+
+            <div class="artifact">
+              <div class="art-bar">
+                <div class="art-close"></div>
+                <div class="art-stripe"></div>
+                <span class="art-title">Fund III — Allocation Drift Analysis</span>
+                <div class="art-stripe"></div>
+                <span class="art-live">LIVE</span>
+              </div>
+              <div class="art-body">
+                <table class="data-tbl">
+                  <thead>
+                    <tr>
+                      <th>Sector</th>
+                      <th>Mandate</th>
+                      <th>Current</th>
+                      <th>Drift</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>US Large Cap</td>
+                      <td>35.0%</td>
+                      <td>38.2%</td>
+                      <td><span class="drift-over">+3.2%</span></td>
+                      <td><span class="action-chip">Trim $2.4M</span></td>
+                    </tr>
+                    <tr>
+                      <td>Intl Developed</td>
+                      <td>20.0%</td>
+                      <td>17.1%</td>
+                      <td><span class="drift-under">−2.9%</span></td>
+                      <td><span class="action-chip">Add $2.1M</span></td>
+                    </tr>
+                    <tr>
+                      <td>EM Equity</td>
+                      <td>10.0%</td>
+                      <td>11.4%</td>
+                      <td><span class="drift-over">+1.4%</span></td>
+                      <td><span class="action-chip">Trim $1.0M</span></td>
+                    </tr>
+                    <tr>
+                      <td>Fixed Income</td>
+                      <td>25.0%</td>
+                      <td>23.8%</td>
+                      <td><span class="drift-under">−1.2%</span></td>
+                      <td><span class="action-chip">Add $0.9M</span></td>
+                    </tr>
+                    <tr>
+                      <td>Alternatives</td>
+                      <td>10.0%</td>
+                      <td>9.5%</td>
+                      <td><span class="drift-under">−0.5%</span></td>
+                      <td><span class="action-hold">Hold</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="msg-body">
+              <p><strong>Primary issue:</strong> US Large Cap is up 3.2 points since June, driven by the tech rally. International Developed is the mirror underweight.</p>
+              <p><strong>Recommendation:</strong> Paired trade — trim the S&P 500 position and rotate into the EAFE sleeve. I've drafted the rebalancing memo for the IC. Want me to pull it up, or look at tax implications first?</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 3: User -->
+        <div class="msg-block">
+          <div class="user-card">
+            <div class="msg-header">
+              <div class="badge badge-human">E</div>
+              <span class="sender">Eliot Puplett</span>
+              <span class="timestamp">2:35 PM</span>
+            </div>
+            <div class="msg-body">
+              Let's see the tax impact first. And flag anything that would trigger a wash sale.
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 4: AI with flags -->
+        <div class="msg-block">
+          <div class="ai-block">
+            <div class="msg-header">
+              <div class="badge badge-ai">◆</div>
+              <span class="sender">Cosimo</span>
+              <span class="timestamp">2:35 PM</span>
+              <span class="latency-chip">4.8s</span>
+            </div>
+
+            <div class="msg-body">
+              <p>Lot-level analysis against the 30-day wash sale window complete. Two positions flagged:</p>
+            </div>
+
+            <div class="flag-box safe">
+              <div class="flag-label">
+                <span class="ticker">MSFT</span>
+                <span class="status status-safe">SAFE</span>
+              </div>
+              <div class="flag-detail">
+                Loss harvested <strong>August 8</strong>. Repurchase window closes <strong>March 7</strong>. Safe to include in the rebalance.
+              </div>
+            </div>
+
+            <div class="flag-box warn">
+              <div class="flag-label">
+                <span class="ticker">AAPL</span>
+                <span class="status status-warn">CAUTION</span>
+              </div>
+              <div class="flag-detail">
+                Loss harvested <strong>September 14</strong>. Window open until <strong>October 14</strong>. Trim + index reconstitution risks wash sale on <strong>~$340K</strong> of harvested losses. Recommend excluding AAPL lots and trimming through other large-cap names.
+              </div>
+            </div>
+
+            <div class="summary-bar">
+              <div class="summary-item">
+                <span class="summary-label">ST Gains</span>
+                <span class="summary-value neg">$18.2K</span>
+              </div>
+              <div class="summary-divider"></div>
+              <div class="summary-item">
+                <span class="summary-label">LT Losses Avail</span>
+                <span class="summary-value pos">$42.6K</span>
+              </div>
+              <div class="summary-divider"></div>
+              <div class="summary-item">
+                <span class="summary-label">Net Tax Benefit</span>
+                <span class="summary-value net">~$24.4K</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <div class="input-row">
+          <input class="text-input" type="text" placeholder="Continue this thread..." />
+          <button class="cmd-btn">Attach</button>
+          <button class="cmd-btn cmd-primary">Send</button>
+        </div>
+        <div class="input-footer">
+          <span>Return to send · Shift+Return for new line</span>
+          <span>Cosimo v2.1</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======== WORKFLOWS VIEW ======== -->
+    <div class="view-container" id="workflowsView">
+
+      <!-- Workflow Listing -->
+      <div id="wfListing" style="display:flex; flex-direction:column; flex:1; overflow:hidden;">
+        <div class="main-header">
+          <span class="header-title">Workflows</span>
+          <div class="header-actions">
+            <button class="header-btn primary" onclick="handleNew()">+ New Workflow</button>
+          </div>
+        </div>
+
+        <div class="wf-listing">
+          <!-- Stats -->
+          <div class="wf-stats">
+            <div class="wf-stat-card">
+              <div class="wf-stat-label">Total Workflows</div>
+              <div class="wf-stat-value">5</div>
+            </div>
+            <div class="wf-stat-card">
+              <div class="wf-stat-label">Active</div>
+              <div class="wf-stat-value green">3</div>
+            </div>
+            <div class="wf-stat-card">
+              <div class="wf-stat-label">Runs Today</div>
+              <div class="wf-stat-value">12</div>
+            </div>
+            <div class="wf-stat-card">
+              <div class="wf-stat-label">Failed</div>
+              <div class="wf-stat-value red">1</div>
+            </div>
+          </div>
+
+          <!-- Cards -->
+          <div class="wf-card" onclick="showWorkflowDetail('rent-roll', this)">
+            <div class="wf-card-header">
+              <span class="wf-card-title">Rent Roll Extraction</span>
+              <span class="wf-card-status status-active">Active</span>
+            </div>
+            <div class="wf-card-body">
+              <span class="wf-card-desc">Extracts and standardizes rent roll data from uploaded PDFs. Outputs clean xlsx with unit-level detail, floor mapping, and lease terms.</span>
+              <div class="wf-card-meta">
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Steps</span>
+                  <span class="wf-meta-value">4</span>
+                </div>
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Runs</span>
+                  <span class="wf-meta-value">47</span>
+                </div>
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Last</span>
+                  <span class="wf-meta-value">2h</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-card" onclick="showWorkflowDetail('k1-extract', this)">
+            <div class="wf-card-header">
+              <span class="wf-card-title">K-1 Document Processing</span>
+              <span class="wf-card-status status-active">Active</span>
+            </div>
+            <div class="wf-card-body">
+              <span class="wf-card-desc">Parses K-1 tax documents, extracts allocations, and maps to fund accounting structure. Flags discrepancies against capital accounts.</span>
+              <div class="wf-card-meta">
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Steps</span>
+                  <span class="wf-meta-value">5</span>
+                </div>
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Runs</span>
+                  <span class="wf-meta-value">23</span>
+                </div>
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Last</span>
+                  <span class="wf-meta-value">6h</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-card" onclick="showWorkflowDetail('lp-waterfall', this)">
+            <div class="wf-card-header">
+              <span class="wf-card-title">LP Distribution Waterfall</span>
+              <span class="wf-card-status status-draft">Draft</span>
+            </div>
+            <div class="wf-card-body">
+              <span class="wf-card-desc">Calculates LP/GP distribution splits across preferred return, catch-up, and carried interest tiers. Generates allocation schedules.</span>
+              <div class="wf-card-meta">
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Steps</span>
+                  <span class="wf-meta-value">6</span>
+                </div>
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Runs</span>
+                  <span class="wf-meta-value">0</span>
+                </div>
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Last</span>
+                  <span class="wf-meta-value">—</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-card" onclick="showWorkflowDetail('fee-calc', this)">
+            <div class="wf-card-header">
+              <span class="wf-card-title">Management Fee Calculator</span>
+              <span class="wf-card-status status-active">Active</span>
+            </div>
+            <div class="wf-card-body">
+              <span class="wf-card-desc">Computes management fees across fund vehicles using committed/invested capital basis, step-downs, and offset provisions.</span>
+              <div class="wf-card-meta">
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Steps</span>
+                  <span class="wf-meta-value">3</span>
+                </div>
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Runs</span>
+                  <span class="wf-meta-value">31</span>
+                </div>
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Last</span>
+                  <span class="wf-meta-value">1d</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-card" onclick="showWorkflowDetail('covenant', this)">
+            <div class="wf-card-header">
+              <span class="wf-card-title">Loan Covenant Monitor</span>
+              <span class="wf-card-status status-paused">Paused</span>
+            </div>
+            <div class="wf-card-body">
+              <span class="wf-card-desc">Monitors DSCR, LTV, and debt yield covenants across the loan book. Alerts when metrics approach or breach thresholds.</span>
+              <div class="wf-card-meta">
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Steps</span>
+                  <span class="wf-meta-value">4</span>
+                </div>
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Runs</span>
+                  <span class="wf-meta-value">18</span>
+                </div>
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Last</span>
+                  <span class="wf-meta-value">10d</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Workflow Detail -->
+      <div id="wfDetail" style="display:none; flex:1; flex-direction:column; overflow:hidden;">
+        <div class="main-header">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <button class="back-btn" onclick="showWorkflowListing()">← Back</button>
+            <span class="header-title" id="wfDetailTitle">Rent Roll Extraction</span>
+          </div>
+          <div class="header-actions">
+            <div class="dropdown-wrapper">
+              <button class="header-btn" onclick="toggleDropdown(event)">Actions ▾</button>
+              <div class="dropdown-menu" id="actionDropdown">
+                <button class="dropdown-item" onclick="alert('Run triggered')">▶ Run Now</button>
+                <button class="dropdown-item" onclick="alert('Duplicated')">⧉ Duplicate</button>
+                <button class="dropdown-item violet" onclick="openCosimoPanel()">◆ Edit with Cosimo</button>
+                <button class="dropdown-item" style="color:var(--red)" onclick="alert('Deleted')">✕ Delete Workflow</button>
+              </div>
+            </div>
+            <button class="header-btn primary" onclick="alert('Running workflow...')">▶ Run</button>
+          </div>
+        </div>
+
+        <div class="wf-detail">
+          <div class="wf-detail-header">
+            <div class="wf-detail-desc" id="wfDetailDesc">Extracts and standardizes rent roll data from uploaded PDFs into clean xlsx format.</div>
+
+            <div class="tab-bar">
+              <button class="tab-btn active" onclick="switchTab('overview', this)">Overview</button>
+              <button class="tab-btn" onclick="switchTab('config', this)">Configuration</button>
+              <button class="tab-btn" onclick="switchTab('steps', this)">Steps</button>
+              <button class="tab-btn" onclick="switchTab('runs', this)">Runs</button>
+            </div>
+          </div>
+
+          <div class="tab-content">
+            <!-- OVERVIEW TAB -->
+            <div class="tab-panel active" id="tab-overview">
+              <div class="overview-grid">
+                <div class="detail-section">
+                  <div class="detail-section-bar">
+                    <div class="art-stripe"></div>
+                    <span class="detail-section-title">Status</span>
+                    <div class="art-stripe"></div>
+                  </div>
+                  <div class="detail-section-body">
+                    <div class="kv-row">
+                      <span class="kv-key">State</span>
+                      <span class="kv-val" style="color:var(--green)">● Active</span>
+                    </div>
+                    <div class="kv-row">
+                      <span class="kv-key">Last Run</span>
+                      <span class="kv-val">Feb 25, 12:15 PM</span>
+                    </div>
+                    <div class="kv-row">
+                      <span class="kv-key">Last Result</span>
+                      <span class="kv-val" style="color:var(--green)">Success</span>
+                    </div>
+                    <div class="kv-row">
+                      <span class="kv-key">Avg Duration</span>
+                      <span class="kv-val">12.4s</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="detail-section">
+                  <div class="detail-section-bar">
+                    <div class="art-stripe"></div>
+                    <span class="detail-section-title">Performance</span>
+                    <div class="art-stripe"></div>
+                  </div>
+                  <div class="detail-section-body">
+                    <div class="kv-row">
+                      <span class="kv-key">Total Runs</span>
+                      <span class="kv-val">47</span>
+                    </div>
+                    <div class="kv-row">
+                      <span class="kv-key">Success Rate</span>
+                      <span class="kv-val" style="color:var(--green)">95.7%</span>
+                    </div>
+                    <div class="kv-row">
+                      <span class="kv-key">Files Processed</span>
+                      <span class="kv-val">183</span>
+                    </div>
+                    <div class="kv-row">
+                      <span class="kv-key">Created</span>
+                      <span class="kv-val">Jan 14, 2026</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="detail-section overview-full">
+                  <div class="detail-section-bar">
+                    <div class="art-stripe"></div>
+                    <span class="detail-section-title">Recent Activity</span>
+                    <div class="art-stripe"></div>
+                  </div>
+                  <div class="detail-section-body">
+                    <div class="run-row" style="cursor:default">
+                      <div class="run-status-dot success"></div>
+                      <span class="run-id">#047</span>
+                      <span class="run-trigger">Manual — 3 files</span>
+                      <span class="run-time">Today, 12:15 PM</span>
+                      <span class="run-duration">11.2s</span>
+                    </div>
+                    <div class="run-row" style="cursor:default">
+                      <div class="run-status-dot success"></div>
+                      <span class="run-id">#046</span>
+                      <span class="run-trigger">Folder watch — 1 file</span>
+                      <span class="run-time">Today, 9:04 AM</span>
+                      <span class="run-duration">8.7s</span>
+                    </div>
+                    <div class="run-row" style="cursor:default">
+                      <div class="run-status-dot failed"></div>
+                      <span class="run-id">#045</span>
+                      <span class="run-trigger">Manual — 2 files</span>
+                      <span class="run-time">Yesterday, 4:30 PM</span>
+                      <span class="run-duration">3.1s</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CONFIGURATION TAB -->
+            <div class="tab-panel" id="tab-config">
+              <div class="detail-section">
+                <div class="detail-section-bar">
+                  <div class="art-stripe"></div>
+                  <span class="detail-section-title">Source Data Locations</span>
+                  <div class="art-stripe"></div>
+                </div>
+                <div class="detail-section-body">
+                  <div class="source-item">
+                    <div class="source-icon">📁</div>
+                    <div class="source-info">
+                      <div class="source-name">CRE Rent Rolls — Q4 2025</div>
+                      <div class="source-path">/Finance/CRE/Rent Rolls/Q4-2025/</div>
+                    </div>
+                    <span class="source-count">42 files</span>
+                  </div>
+                  <div class="source-item">
+                    <div class="source-icon">📁</div>
+                    <div class="source-info">
+                      <div class="source-name">Hilgard Property Uploads</div>
+                      <div class="source-path">/Clients/Hilgard/Property Documents/</div>
+                    </div>
+                    <span class="source-count">18 files</span>
+                  </div>
+                  <div class="source-item">
+                    <div class="source-icon">📄</div>
+                    <div class="source-info">
+                      <div class="source-name">Master Property List.xlsx</div>
+                      <div class="source-path">/Finance/CRE/master-property-list.xlsx</div>
+                    </div>
+                    <span class="source-count">1 file</span>
+                  </div>
+                  <button class="add-source-btn" onclick="alert('Add source dialog would open here')">+ Add File or Folder</button>
+                </div>
+              </div>
+
+              <div class="detail-section">
+                <div class="detail-section-bar">
+                  <div class="art-stripe"></div>
+                  <span class="detail-section-title">Input Configuration</span>
+                  <div class="art-stripe"></div>
+                </div>
+                <div class="detail-section-body">
+                  <div class="config-row">
+                    <span class="config-label">Accepted Types</span>
+                    <div class="config-value">
+                      <div class="file-type-chips">
+                        <span class="file-chip pdf">.pdf</span>
+                        <span class="file-chip xlsx">.xlsx</span>
+                        <span class="file-chip csv">.csv</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="config-row">
+                    <span class="config-label">Max File Size</span>
+                    <span class="config-value">50 MB</span>
+                  </div>
+                  <div class="config-row">
+                    <span class="config-label">Trigger</span>
+                    <span class="config-value">On file upload + Manual</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="detail-section">
+                <div class="detail-section-bar">
+                  <div class="art-stripe"></div>
+                  <span class="detail-section-title">Output Configuration</span>
+                  <div class="art-stripe"></div>
+                </div>
+                <div class="detail-section-body">
+                  <div class="config-row">
+                    <span class="config-label">Output Format</span>
+                    <div class="config-value">
+                      <div class="file-type-chips">
+                        <span class="file-chip xlsx">.xlsx</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="config-row">
+                    <span class="config-label">Destination</span>
+                    <span class="config-value">/Finance/CRE/Processed/Rent Rolls/</span>
+                  </div>
+                  <div class="config-row">
+                    <span class="config-label">Columns</span>
+                    <span class="config-value">Unit, Floor, Tenant, Lease Start, Lease End, Monthly Rent, Sq Ft, $/SF, Status, Notes</span>
+                  </div>
+                  <div class="config-row">
+                    <span class="config-label">Lesson Applied</span>
+                    <span class="config-value" style="color:var(--violet-3); font-weight:600;">rent-roll-extraction-standardized</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- STEPS TAB -->
+            <div class="tab-panel" id="tab-steps">
+              <div class="step-list">
+                <div class="step-connector"></div>
+
+                <div class="step-item">
+                  <div class="step-marker complete">1</div>
+                  <div class="step-card">
+                    <div class="step-card-title">Ingest & Validate</div>
+                    <div class="step-card-desc">Accept uploaded files, validate format and size constraints. Reject unsupported types with error message.</div>
+                    <div class="step-card-tags">
+                      <span class="step-tag">Input</span>
+                      <span class="step-tag">Validation</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="step-item">
+                  <div class="step-marker complete">2</div>
+                  <div class="step-card">
+                    <div class="step-card-title">Extract & Parse</div>
+                    <div class="step-card-desc">Run PDF extraction with OCR fallback. Identify table structures, header rows, and unit-level data. Handle multi-page spreads.</div>
+                    <div class="step-card-tags">
+                      <span class="step-tag">PDF</span>
+                      <span class="step-tag">OCR</span>
+                      <span class="step-tag">Tables</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="step-item">
+                  <div class="step-marker running">3</div>
+                  <div class="step-card">
+                    <div class="step-card-title">Standardize & Enrich</div>
+                    <div class="step-card-desc">Map extracted data to standard columns. Infer floor numbers from unit IDs. Normalize dates, currency, and square footage. Apply lesson rules.</div>
+                    <div class="step-card-tags">
+                      <span class="step-tag">Mapping</span>
+                      <span class="step-tag">Inference</span>
+                      <span class="step-tag">Lesson</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="step-item">
+                  <div class="step-marker">4</div>
+                  <div class="step-card">
+                    <div class="step-card-title">Generate Output</div>
+                    <div class="step-card-desc">Build formatted xlsx with property-level sheets. Add summary tab with vacancy rates and rent PSF metrics. Save to destination folder.</div>
+                    <div class="step-card-tags">
+                      <span class="step-tag">Output</span>
+                      <span class="step-tag">XLSX</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- RUNS TAB -->
+            <div class="tab-panel" id="tab-runs">
+              <div class="detail-section">
+                <div class="detail-section-bar">
+                  <div class="art-stripe"></div>
+                  <span class="detail-section-title">Execution History</span>
+                  <div class="art-stripe"></div>
+                </div>
+                <div class="detail-section-body">
+                  <div class="run-row">
+                    <div class="run-status-dot success"></div>
+                    <span class="run-id">#047</span>
+                    <span class="run-trigger">Manual trigger — 3 PDF files</span>
+                    <span class="run-time">Today, 12:15 PM</span>
+                    <span class="run-duration">11.2s</span>
+                  </div>
+                  <div class="run-row">
+                    <div class="run-status-dot success"></div>
+                    <span class="run-id">#046</span>
+                    <span class="run-trigger">Folder watch — 1 PDF file</span>
+                    <span class="run-time">Today, 9:04 AM</span>
+                    <span class="run-duration">8.7s</span>
+                  </div>
+                  <div class="run-row">
+                    <div class="run-status-dot failed"></div>
+                    <span class="run-id">#045</span>
+                    <span class="run-trigger">Manual trigger — 2 files (1 corrupt)</span>
+                    <span class="run-time">Yesterday, 4:30 PM</span>
+                    <span class="run-duration">3.1s</span>
+                  </div>
+                  <div class="run-row">
+                    <div class="run-status-dot success"></div>
+                    <span class="run-id">#044</span>
+                    <span class="run-trigger">Folder watch — 5 PDF files</span>
+                    <span class="run-time">Yesterday, 11:20 AM</span>
+                    <span class="run-duration">22.8s</span>
+                  </div>
+                  <div class="run-row">
+                    <div class="run-status-dot success"></div>
+                    <span class="run-id">#043</span>
+                    <span class="run-trigger">Manual trigger — 1 XLSX file</span>
+                    <span class="run-time">Feb 23, 3:45 PM</span>
+                    <span class="run-duration">6.3s</span>
+                  </div>
+                  <div class="run-row">
+                    <div class="run-status-dot success"></div>
+                    <span class="run-id">#042</span>
+                    <span class="run-trigger">Folder watch — 2 PDF files</span>
+                    <span class="run-time">Feb 23, 10:12 AM</span>
+                    <span class="run-duration">14.1s</span>
+                  </div>
+                  <div class="run-row">
+                    <div class="run-status-dot success"></div>
+                    <span class="run-id">#041</span>
+                    <span class="run-trigger">Manual trigger — 4 PDF files</span>
+                    <span class="run-time">Feb 22, 2:55 PM</span>
+                    <span class="run-duration">18.6s</span>
+                  </div>
+                  <div class="run-row">
+                    <div class="run-status-dot failed"></div>
+                    <span class="run-id">#040</span>
+                    <span class="run-trigger">Folder watch — 1 PDF (password protected)</span>
+                    <span class="run-time">Feb 22, 9:30 AM</span>
+                    <span class="run-duration">1.8s</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Cosimo Panel Overlay -->
+<div class="panel-overlay" id="panelOverlay" onclick="closeCosimoPanel()"></div>
+
+<!-- Cosimo Chat Panel -->
+<div class="cosimo-panel" id="cosimoPanel">
+  <div class="cosimo-panel-header">
+    <div class="cosimo-panel-title">
+      <div class="logo-mark"><div class="logo-mark-inner"></div></div>
+      <span class="cosimo-panel-name">Edit with Cosimo</span>
+    </div>
+    <button class="panel-close-btn" onclick="closeCosimoPanel()">✕ Close</button>
+  </div>
+
+  <div class="cosimo-panel-chat" id="panelChat">
+    <div class="panel-msg panel-msg-ai">
+      <div class="panel-msg-header">
+        <div class="badge badge-ai" style="width:16px;height:16px;font-size:9px;">◆</div>
+        <span class="panel-msg-sender">Cosimo</span>
+      </div>
+      I can help you modify this workflow. Try things like:
+      <br><br>
+      <strong>"Add a step to check for duplicate units"</strong><br>
+      <strong>"Change the output format to CSV"</strong><br>
+      <strong>"Add a new source folder for Q1 2026 files"</strong><br>
+      <strong>"Make step 3 also normalize tenant names"</strong>
+    </div>
+  </div>
+
+  <div class="cosimo-panel-input">
+    <div class="panel-input-row">
+      <input class="panel-text-input" id="panelInput" type="text" placeholder="Describe a change..." onkeydown="handlePanelKey(event)" />
+      <button class="panel-send-btn" onclick="sendPanelMessage()">Send</button>
+    </div>
+  </div>
+</div>
+
+<div class="resize-grip"></div>
+<div class="design-label">Cosimo — Combined Platform Demo</div>
+
+<script src="js/app.js"></script>
+
+</body>
+</html>

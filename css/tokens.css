@@ -1,0 +1,63 @@
+/* ============================================
+   DESIGN TOKENS & RESET
+   ============================================ */
+
+:root {
+  --taupe-1: #E8E6EC;
+  --taupe-2: #B4B2B9;
+  --taupe-3: #87868B;
+  --taupe-4: #5A595C;
+  --taupe-5: #2D2D2E;
+
+  --berry-1: #E0D0E1;
+  --berry-2: #C4A6C5;
+  --berry-3: #8B4F8D;
+  --berry-4: #5D355E;
+  --berry-5: #2E1A2F;
+
+  --blue-1: #CCE7F8;
+  --blue-2: #9BD0F2;
+  --blue-3: #749CB5;
+
+  --violet-1: #D8C8E2;
+  --violet-2: #A383B4;
+  --violet-3: #74418F;
+  --violet-4: #4D2B5F;
+  --violet-5: #271630;
+
+  --chinese-1: #D8CAD9;
+  --chinese-2: #A891AD;
+  --chinese-3: #7F6485;
+  --chinese-4: #4A2E50;
+  --chinese-5: #2A182E;
+
+  --white: #FFFFFF;
+  --off-white: #F8F6FA;
+  --green: #3D8B40;
+  --red: #C04848;
+  --amber: #B8862B;
+
+  --pixel: 'VT323', monospace;
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--sans);
+  background: var(--taupe-4);
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 3px,
+      rgba(0,0,0,0.04) 3px,
+      rgba(0,0,0,0.04) 5px
+    );
+  color: var(--taupe-5);
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+  -webkit-font-smoothing: auto;
+}
