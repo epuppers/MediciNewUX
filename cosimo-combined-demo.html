@@ -1,0 +1,2720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cosimo — Applied Intelligence Platform</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+  :root {
+    --taupe-1: #E8E6EC;
+    --taupe-2: #B4B2B9;
+    --taupe-3: #87868B;
+    --taupe-4: #5A595C;
+    --taupe-5: #2D2D2E;
+
+    --berry-1: #E0D0E1;
+    --berry-2: #C4A6C5;
+    --berry-3: #8B4F8D;
+    --berry-4: #5D355E;
+    --berry-5: #2E1A2F;
+
+    --blue-1: #CCE7F8;
+    --blue-2: #9BD0F2;
+    --blue-3: #749CB5;
+
+    --violet-1: #D8C8E2;
+    --violet-2: #A383B4;
+    --violet-3: #74418F;
+    --violet-4: #4D2B5F;
+    --violet-5: #271630;
+
+    --chinese-1: #D8CAD9;
+    --chinese-2: #A891AD;
+    --chinese-3: #7F6485;
+    --chinese-4: #4A2E50;
+    --chinese-5: #2A182E;
+
+    --white: #FFFFFF;
+    --off-white: #F8F6FA;
+    --green: #3D8B40;
+    --red: #C04848;
+    --amber: #B8862B;
+
+    --pixel: 'VT323', monospace;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--taupe-4);
+    background-image:
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 3px,
+        rgba(0,0,0,0.04) 3px,
+        rgba(0,0,0,0.04) 5px
+      );
+    color: var(--taupe-5);
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
+    -webkit-font-smoothing: auto;
+  }
+
+  .app-frame {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    padding: 4px;
+  }
+
+  /* ============================================
+     SIDEBAR
+     ============================================ */
+  .sidebar {
+    width: 264px;
+    background: var(--taupe-5);
+    border: 2px solid;
+    border-color: var(--taupe-3) #1a1a1c #1a1a1c var(--taupe-3);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    transition: width 0.3s ease, opacity 0.3s ease;
+    overflow: hidden;
+  }
+
+  .sidebar.collapsed {
+    width: 0;
+    border: none;
+    padding: 0;
+  }
+
+  .sidebar-header {
+    padding: 14px 12px 12px;
+    border-bottom: 1px solid var(--taupe-4);
+    background: var(--taupe-5);
+  }
+
+  .logo-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .logo-mark {
+    width: 28px;
+    height: 28px;
+    background: var(--violet-3);
+    border: 1px solid;
+    border-color: var(--violet-2) var(--violet-5) var(--violet-5) var(--violet-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .logo-mark-inner {
+    width: 10px;
+    height: 10px;
+    background: var(--berry-1);
+    border: 1px solid var(--violet-2);
+  }
+
+  .logo-title {
+    font-family: var(--pixel);
+    font-size: 22px;
+    color: var(--taupe-1);
+    line-height: 1;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.4);
+  }
+
+  .logo-sub {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--taupe-3);
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+  }
+
+  /* Mode Switcher */
+  .mode-switcher {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 10px;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(0,0,0,0.3);
+    padding: 2px;
+  }
+
+  .mode-btn {
+    flex: 1;
+    padding: 6px 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--taupe-3);
+    background: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-align: center;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: all 0.15s;
+  }
+
+  .mode-btn:hover {
+    color: var(--taupe-1);
+    background: rgba(255,255,255,0.04);
+  }
+
+  .mode-btn.active {
+    background: var(--chinese-4);
+    border: 1px solid;
+    border-color: var(--chinese-3) var(--chinese-5) var(--chinese-5) var(--chinese-3);
+    color: var(--taupe-1);
+  }
+
+  .new-btn {
+    width: 100%;
+    padding: 7px 10px;
+    background: var(--taupe-4);
+    border: 1px solid;
+    border-color: var(--taupe-3) #1a1a1c #1a1a1c var(--taupe-3);
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--taupe-1);
+    cursor: pointer;
+    text-align: center;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .new-btn:hover { background: var(--chinese-4); }
+  .new-btn:active { border-color: #1a1a1c var(--taupe-3) var(--taupe-3) #1a1a1c; }
+
+  .side-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--taupe-3);
+    padding: 16px 12px 6px;
+  }
+
+  .thread-list, .workflow-sidebar-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 6px 12px;
+  }
+
+  .thread-item, .wf-side-item {
+    padding: 8px 8px;
+    margin: 2px 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--taupe-2);
+    cursor: pointer;
+    border: 1px solid transparent;
+    line-height: 1.3;
+    transition: background 0.1s;
+  }
+
+  .thread-item:hover, .wf-side-item:hover {
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.06);
+  }
+
+  .thread-item.active, .wf-side-item.active {
+    background: var(--chinese-4);
+    border: 1px solid;
+    border-color: var(--chinese-3) var(--chinese-5) var(--chinese-5) var(--chinese-3);
+    color: var(--taupe-1);
+  }
+
+  .thread-meta, .wf-side-meta {
+    font-size: 10px;
+    color: var(--taupe-3);
+    margin-top: 2px;
+  }
+
+  .wf-side-status {
+    display: inline-block;
+    font-size: 9px;
+    font-family: var(--mono);
+    padding: 1px 5px;
+    margin-left: 4px;
+    border: 1px solid;
+  }
+
+  .wf-side-status.active-status {
+    color: var(--green);
+    border-color: var(--green);
+    background: rgba(61,139,64,0.1);
+  }
+
+  .wf-side-status.draft-status {
+    color: var(--amber);
+    border-color: var(--amber);
+    background: rgba(184,134,43,0.1);
+  }
+
+  .wf-side-status.paused-status {
+    color: var(--taupe-3);
+    border-color: var(--taupe-3);
+    background: rgba(135,134,139,0.1);
+  }
+
+  /* Sidebar user footer */
+  .sidebar-footer {
+    padding: 10px 12px;
+    border-top: 1px solid var(--taupe-4);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .user-avatar {
+    width: 24px;
+    height: 24px;
+    background: var(--berry-3);
+    border: 1px solid var(--berry-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--white);
+    flex-shrink: 0;
+  }
+
+  .user-name {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--taupe-2);
+  }
+
+  /* ============================================
+     MAIN CONTENT
+     ============================================ */
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--off-white);
+    border: 2px solid;
+    border-color: var(--taupe-2) var(--taupe-4) var(--taupe-4) var(--taupe-2);
+    margin-left: -1px;
+    overflow: hidden;
+  }
+
+  /* Main header bar */
+  .main-header {
+    padding: 10px 16px;
+    border-bottom: 2px solid;
+    border-image: linear-gradient(90deg, var(--taupe-2), var(--berry-2), var(--violet-2)) 1;
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 44px;
+  }
+
+  .header-title {
+    font-family: var(--pixel);
+    font-size: 18px;
+    color: var(--taupe-5);
+    letter-spacing: 0.5px;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .header-btn {
+    padding: 4px 10px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--taupe-4);
+    background: var(--off-white);
+    border: 1px solid;
+    border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .header-btn:hover { background: var(--berry-1); color: var(--berry-5); }
+  .header-btn:active { border-color: var(--taupe-3) var(--taupe-2) var(--taupe-2) var(--taupe-3); }
+
+  .header-btn.primary {
+    background: var(--violet-3);
+    color: var(--white);
+    border-color: var(--violet-2) var(--violet-5) var(--violet-5) var(--violet-2);
+  }
+
+  .header-btn.primary:hover { background: var(--violet-4); }
+
+  /* ============================================
+     VIEW CONTAINERS
+     ============================================ */
+  .view-container {
+    display: none;
+    flex: 1;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .view-container.active {
+    display: flex;
+  }
+
+  /* ============================================
+     CHAT VIEW (from direction7)
+     ============================================ */
+  .chat-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 24px 20px;
+  }
+
+  .msg-block { margin-bottom: 16px; }
+
+  .msg-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .badge {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .badge-ai {
+    background: var(--violet-3);
+    border: 1px solid;
+    border-color: var(--violet-2) var(--violet-5) var(--violet-5) var(--violet-2);
+    color: var(--white);
+  }
+
+  .badge-human {
+    background: var(--berry-3);
+    border: 1px solid;
+    border-color: var(--berry-2) var(--berry-5) var(--berry-5) var(--berry-2);
+    color: var(--white);
+  }
+
+  .sender {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--taupe-5);
+  }
+
+  .timestamp {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--taupe-3);
+  }
+
+  .latency-chip {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--blue-3);
+    border: 1px solid var(--blue-2);
+    padding: 1px 5px;
+    background: var(--blue-1);
+  }
+
+  .msg-body {
+    margin-left: 30px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--taupe-5);
+  }
+
+  .msg-body p { margin-bottom: 8px; }
+  .msg-body p:last-child { margin-bottom: 0; }
+
+  .user-card {
+    background: rgba(139,79,141,0.05);
+    border: 1px solid rgba(139,79,141,0.12);
+    padding: 10px 12px;
+  }
+
+  .ai-block {
+    padding: 10px 0;
+  }
+
+  /* Artifact */
+  .artifact {
+    margin: 10px 0 10px 30px;
+    border: 2px solid;
+    border-color: var(--taupe-2) var(--taupe-4) var(--taupe-4) var(--taupe-2);
+    background: var(--white);
+  }
+
+  .art-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    background: var(--taupe-5);
+    border-bottom: 1px solid var(--taupe-4);
+  }
+
+  .art-close {
+    width: 10px; height: 10px;
+    background: var(--red);
+    border: 1px solid;
+    border-color: #e06060 #802020 #802020 #e06060;
+    flex-shrink: 0;
+  }
+
+  .art-stripe {
+    flex: 1;
+    height: 2px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--taupe-4) 0px,
+      var(--taupe-4) 3px,
+      transparent 3px,
+      transparent 6px
+    );
+  }
+
+  .art-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--taupe-1);
+    white-space: nowrap;
+  }
+
+  .art-live {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--green);
+    border: 1px solid var(--green);
+    padding: 0 4px;
+    background: rgba(61,139,64,0.1);
+    flex-shrink: 0;
+  }
+
+  .art-body {
+    padding: 12px;
+    overflow-x: auto;
+  }
+
+  /* Data Table */
+  .data-tbl {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+
+  .data-tbl th {
+    text-align: left;
+    padding: 6px 10px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--taupe-3);
+    border-bottom: 2px solid var(--taupe-2);
+  }
+
+  .data-tbl td {
+    padding: 6px 10px;
+    color: var(--taupe-5);
+    border-bottom: 1px solid var(--taupe-1);
+  }
+
+  .drift-over { color: var(--red); font-weight: 600; }
+  .drift-under { color: var(--green); font-weight: 600; }
+  .action-chip {
+    font-size: 10px;
+    padding: 2px 6px;
+    background: var(--berry-1);
+    border: 1px solid var(--berry-2);
+    color: var(--berry-4);
+  }
+  .action-hold {
+    font-size: 10px;
+    padding: 2px 6px;
+    background: var(--taupe-1);
+    border: 1px solid var(--taupe-2);
+    color: var(--taupe-4);
+  }
+
+  /* Flag boxes */
+  .flag-box {
+    margin: 8px 0 8px 30px;
+    padding: 10px 12px;
+    border-left: 3px solid;
+  }
+
+  .flag-box.safe {
+    border-color: var(--green);
+    background: rgba(61,139,64,0.06);
+  }
+
+  .flag-box.warn {
+    border-color: var(--amber);
+    background: rgba(184,134,43,0.06);
+  }
+
+  .flag-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  .ticker {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--taupe-5);
+  }
+
+  .status {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    padding: 1px 6px;
+    border: 1px solid;
+    letter-spacing: 0.05em;
+  }
+
+  .status-safe { color: var(--green); border-color: var(--green); background: rgba(61,139,64,0.1); }
+  .status-warn { color: var(--amber); border-color: var(--amber); background: rgba(184,134,43,0.1); }
+
+  .flag-detail {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--taupe-4);
+  }
+
+  /* Summary bar */
+  .summary-bar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 10px 0 0 30px;
+    border: 2px solid;
+    border-color: var(--taupe-2) var(--taupe-4) var(--taupe-4) var(--taupe-2);
+    background: var(--white);
+  }
+
+  .summary-item {
+    flex: 1;
+    padding: 8px 12px;
+    text-align: center;
+  }
+
+  .summary-label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--taupe-3);
+    margin-bottom: 2px;
+  }
+
+  .summary-value {
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .summary-value.neg { color: var(--red); }
+  .summary-value.pos { color: var(--green); }
+  .summary-value.net { color: var(--violet-3); }
+
+  .summary-divider {
+    width: 1px;
+    height: 32px;
+    background: var(--taupe-2);
+  }
+
+  /* Input Area */
+  .input-area {
+    padding: 12px 16px;
+    border-top: 2px solid;
+    border-image: linear-gradient(90deg, var(--violet-2), var(--berry-2), var(--taupe-2)) 1;
+    background: var(--white);
+  }
+
+  .input-row {
+    display: flex;
+    gap: 6px;
+  }
+
+  .text-input {
+    flex: 1;
+    padding: 8px 10px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--taupe-5);
+    background: var(--off-white);
+    border: 1px solid;
+    border-color: var(--taupe-3) var(--taupe-1) var(--taupe-1) var(--taupe-3);
+    outline: none;
+  }
+
+  .text-input:focus {
+    border-color: var(--violet-3);
+    box-shadow: 0 0 0 1px var(--violet-3);
+  }
+
+  .text-input::placeholder {
+    color: var(--taupe-3);
+  }
+
+  .cmd-btn {
+    padding: 8px 12px;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--taupe-4);
+    background: var(--taupe-1);
+    border: 1px solid;
+    border-color: var(--white) var(--taupe-3) var(--taupe-3) var(--white);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .cmd-btn:hover { background: var(--berry-1); }
+  .cmd-btn:active { border-color: var(--taupe-3) var(--white) var(--white) var(--taupe-3); }
+
+  .cmd-primary {
+    background: var(--violet-3);
+    color: var(--white);
+    border-color: var(--violet-2) var(--violet-5) var(--violet-5) var(--violet-2);
+  }
+
+  .cmd-primary:hover { background: var(--violet-4); }
+
+  .input-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--taupe-3);
+  }
+
+  /* ============================================
+     WORKFLOWS VIEW
+     ============================================ */
+
+  /* Workflow Listing */
+  .wf-listing {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 24px;
+  }
+
+  .wf-listing-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .wf-listing-title {
+    font-family: var(--pixel);
+    font-size: 24px;
+    color: var(--taupe-5);
+    letter-spacing: 1px;
+  }
+
+  .wf-listing-subtitle {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--taupe-3);
+    margin-top: 2px;
+  }
+
+  /* Stats row */
+  .wf-stats {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 20px;
+  }
+
+  .wf-stat-card {
+    flex: 1;
+    background: var(--white);
+    border: 2px solid;
+    border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+    padding: 12px 14px;
+  }
+
+  .wf-stat-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--taupe-3);
+    margin-bottom: 4px;
+  }
+
+  .wf-stat-value {
+    font-family: var(--pixel);
+    font-size: 28px;
+    color: var(--taupe-5);
+  }
+
+  .wf-stat-value.green { color: var(--green); }
+  .wf-stat-value.amber { color: var(--amber); }
+  .wf-stat-value.red { color: var(--red); }
+
+  /* Workflow Cards */
+  .wf-card {
+    background: var(--white);
+    border: 2px solid;
+    border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+
+  .wf-card:hover {
+    border-color: var(--violet-2) var(--violet-4) var(--violet-4) var(--violet-2);
+  }
+
+  .wf-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--taupe-1);
+    background: rgba(0,0,0,0.01);
+  }
+
+  .wf-card-title {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--taupe-5);
+  }
+
+  .wf-card-status {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border: 1px solid;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .status-active {
+    color: var(--green);
+    border-color: var(--green);
+    background: rgba(61,139,64,0.08);
+  }
+
+  .status-draft {
+    color: var(--amber);
+    border-color: var(--amber);
+    background: rgba(184,134,43,0.08);
+  }
+
+  .status-paused {
+    color: var(--taupe-3);
+    border-color: var(--taupe-3);
+    background: rgba(135,134,139,0.08);
+  }
+
+  .wf-card-body {
+    padding: 10px 14px;
+    display: flex;
+    gap: 24px;
+  }
+
+  .wf-card-desc {
+    flex: 1;
+    font-size: 13px;
+    color: var(--taupe-4);
+    line-height: 1.5;
+  }
+
+  .wf-card-meta {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .wf-meta-item {
+    text-align: center;
+  }
+
+  .wf-meta-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--taupe-3);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .wf-meta-value {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--taupe-5);
+  }
+
+  /* ============================================
+     WORKFLOW DETAIL VIEW
+     ============================================ */
+  .wf-detail {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .wf-detail-header {
+    padding: 14px 20px 0;
+    background: var(--white);
+    border-bottom: 1px solid var(--taupe-1);
+  }
+
+  .wf-detail-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .back-btn {
+    padding: 3px 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--taupe-3);
+    background: transparent;
+    border: 1px solid var(--taupe-2);
+    cursor: pointer;
+    transition: all 0.1s;
+  }
+
+  .back-btn:hover {
+    color: var(--taupe-5);
+    border-color: var(--taupe-4);
+  }
+
+  .wf-detail-name {
+    font-family: var(--pixel);
+    font-size: 22px;
+    color: var(--taupe-5);
+    letter-spacing: 0.5px;
+  }
+
+  .wf-detail-desc {
+    font-size: 13px;
+    color: var(--taupe-3);
+    margin-bottom: 12px;
+    margin-left: 2px;
+  }
+
+  /* Tabs */
+  .tab-bar {
+    display: flex;
+    gap: 0;
+  }
+
+  .tab-btn {
+    padding: 8px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--taupe-3);
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: all 0.15s;
+  }
+
+  .tab-btn:hover {
+    color: var(--taupe-5);
+    background: rgba(0,0,0,0.02);
+  }
+
+  .tab-btn.active {
+    color: var(--violet-3);
+    border-bottom-color: var(--violet-3);
+  }
+
+  /* Tab content */
+  .tab-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+
+  .tab-panel {
+    display: none;
+  }
+
+  .tab-panel.active {
+    display: block;
+  }
+
+  /* Detail sections */
+  .detail-section {
+    background: var(--white);
+    border: 2px solid;
+    border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+    margin-bottom: 12px;
+  }
+
+  .detail-section-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: var(--taupe-5);
+    border-bottom: 1px solid var(--taupe-4);
+  }
+
+  .detail-section-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--taupe-1);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .detail-section-body {
+    padding: 14px;
+  }
+
+  /* Config items */
+  .config-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--taupe-1);
+  }
+
+  .config-row:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .config-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--taupe-3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    min-width: 140px;
+    padding-top: 2px;
+  }
+
+  .config-value {
+    font-size: 13px;
+    color: var(--taupe-5);
+    line-height: 1.5;
+  }
+
+  /* Source items */
+  .source-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    background: var(--off-white);
+    border: 1px solid var(--taupe-2);
+    margin-bottom: 6px;
+    transition: border-color 0.15s;
+  }
+
+  .source-item:hover {
+    border-color: var(--violet-2);
+  }
+
+  .source-icon {
+    width: 28px;
+    height: 28px;
+    background: var(--chinese-4);
+    border: 1px solid;
+    border-color: var(--chinese-3) var(--chinese-5) var(--chinese-5) var(--chinese-3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--pixel);
+    font-size: 16px;
+    color: var(--taupe-1);
+    flex-shrink: 0;
+  }
+
+  .source-info {
+    flex: 1;
+  }
+
+  .source-name {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--taupe-5);
+  }
+
+  .source-path {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--taupe-3);
+    margin-top: 1px;
+  }
+
+  .source-count {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--taupe-3);
+    border: 1px solid var(--taupe-2);
+    padding: 2px 6px;
+    background: var(--white);
+  }
+
+  .add-source-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 10px;
+    border: 1px dashed var(--taupe-3);
+    background: transparent;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--taupe-3);
+    cursor: pointer;
+    margin-top: 6px;
+    width: 100%;
+    transition: all 0.15s;
+  }
+
+  .add-source-btn:hover {
+    border-color: var(--violet-3);
+    color: var(--violet-3);
+    background: rgba(116,65,143,0.04);
+  }
+
+  /* File type chips */
+  .file-type-chips {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+  }
+
+  .file-chip {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border: 1px solid;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .file-chip.pdf { color: var(--red); border-color: var(--red); background: rgba(192,72,72,0.08); }
+  .file-chip.xlsx { color: var(--green); border-color: var(--green); background: rgba(61,139,64,0.08); }
+  .file-chip.csv { color: var(--blue-3); border-color: var(--blue-3); background: rgba(116,156,181,0.08); }
+  .file-chip.docx { color: var(--violet-3); border-color: var(--violet-3); background: rgba(116,65,143,0.08); }
+
+  /* ============================================
+     WORKFLOW STEPS
+     ============================================ */
+  .step-list {
+    position: relative;
+  }
+
+  .step-connector {
+    position: absolute;
+    left: 19px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: repeating-linear-gradient(
+      180deg,
+      var(--taupe-2) 0px,
+      var(--taupe-2) 4px,
+      transparent 4px,
+      transparent 8px
+    );
+  }
+
+  .step-item {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+
+  .step-marker {
+    width: 40px;
+    height: 40px;
+    background: var(--white);
+    border: 2px solid;
+    border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--pixel);
+    font-size: 18px;
+    color: var(--taupe-5);
+    flex-shrink: 0;
+    z-index: 1;
+  }
+
+  .step-marker.complete {
+    background: var(--green);
+    border-color: #5aad5c #2a6b2c #2a6b2c #5aad5c;
+    color: var(--white);
+  }
+
+  .step-marker.running {
+    background: var(--violet-3);
+    border-color: var(--violet-2) var(--violet-5) var(--violet-5) var(--violet-2);
+    color: var(--white);
+    animation: pulse-step 2s infinite;
+  }
+
+  @keyframes pulse-step {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(116,65,143,0.3); }
+    50% { box-shadow: 0 0 0 4px rgba(116,65,143,0.1); }
+  }
+
+  .step-card {
+    flex: 1;
+    background: var(--white);
+    border: 2px solid;
+    border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+    padding: 10px 14px;
+  }
+
+  .step-card-title {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--taupe-5);
+    margin-bottom: 4px;
+  }
+
+  .step-card-desc {
+    font-size: 12px;
+    color: var(--taupe-3);
+    line-height: 1.4;
+  }
+
+  .step-card-tags {
+    display: flex;
+    gap: 4px;
+    margin-top: 6px;
+  }
+
+  .step-tag {
+    font-family: var(--mono);
+    font-size: 9px;
+    padding: 2px 6px;
+    border: 1px solid var(--berry-2);
+    color: var(--berry-4);
+    background: var(--berry-1);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ============================================
+     WORKFLOW RUNS
+     ============================================ */
+  .run-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    background: var(--white);
+    border: 1px solid var(--taupe-2);
+    margin-bottom: 4px;
+    transition: border-color 0.15s;
+    cursor: pointer;
+  }
+
+  .run-row:hover {
+    border-color: var(--violet-2);
+  }
+
+  .run-status-dot {
+    width: 10px;
+    height: 10px;
+    border: 1px solid;
+    flex-shrink: 0;
+  }
+
+  .run-status-dot.success {
+    background: var(--green);
+    border-color: #5aad5c #2a6b2c #2a6b2c #5aad5c;
+  }
+
+  .run-status-dot.failed {
+    background: var(--red);
+    border-color: #e06060 #802020 #802020 #e06060;
+  }
+
+  .run-status-dot.running-dot {
+    background: var(--violet-3);
+    border-color: var(--violet-2);
+    animation: pulse-step 2s infinite;
+  }
+
+  .run-id {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--taupe-5);
+    min-width: 80px;
+  }
+
+  .run-trigger {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--taupe-3);
+    flex: 1;
+  }
+
+  .run-time {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--taupe-3);
+  }
+
+  .run-duration {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--taupe-4);
+    min-width: 60px;
+    text-align: right;
+  }
+
+  /* ============================================
+     COSIMO CHAT PANEL (slide-in)
+     ============================================ */
+  .cosimo-panel {
+    position: fixed;
+    top: 4px;
+    right: 4px;
+    bottom: 4px;
+    width: 420px;
+    background: var(--off-white);
+    border: 2px solid;
+    border-color: var(--taupe-2) var(--taupe-4) var(--taupe-4) var(--taupe-2);
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    transform: translateX(440px);
+    transition: transform 0.3s ease;
+    box-shadow: -4px 0 20px rgba(0,0,0,0.3);
+  }
+
+  .cosimo-panel.open {
+    transform: translateX(0);
+  }
+
+  .cosimo-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: var(--taupe-5);
+    border-bottom: 1px solid var(--taupe-4);
+  }
+
+  .cosimo-panel-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .cosimo-panel-title .logo-mark {
+    width: 22px;
+    height: 22px;
+  }
+
+  .cosimo-panel-title .logo-mark-inner {
+    width: 8px;
+    height: 8px;
+  }
+
+  .cosimo-panel-name {
+    font-family: var(--pixel);
+    font-size: 16px;
+    color: var(--taupe-1);
+    letter-spacing: 0.5px;
+  }
+
+  .panel-close-btn {
+    padding: 3px 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--taupe-3);
+    background: transparent;
+    border: 1px solid var(--taupe-4);
+    cursor: pointer;
+  }
+
+  .panel-close-btn:hover {
+    color: var(--taupe-1);
+    border-color: var(--taupe-3);
+  }
+
+  .cosimo-panel-chat {
+    flex: 1;
+    overflow-y: auto;
+    padding: 14px;
+  }
+
+  .panel-msg {
+    margin-bottom: 12px;
+  }
+
+  .panel-msg-ai {
+    background: rgba(116,65,143,0.06);
+    border: 1px solid rgba(116,65,143,0.12);
+    padding: 10px 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--taupe-5);
+  }
+
+  .panel-msg-user {
+    background: rgba(139,79,141,0.05);
+    border: 1px solid rgba(139,79,141,0.12);
+    padding: 10px 12px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--taupe-5);
+    text-align: right;
+  }
+
+  .panel-msg-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+
+  .panel-msg-user .panel-msg-header {
+    justify-content: flex-end;
+  }
+
+  .panel-msg-sender {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--taupe-3);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .cosimo-panel-input {
+    padding: 10px 14px;
+    border-top: 1px solid var(--taupe-2);
+    background: var(--white);
+  }
+
+  .panel-input-row {
+    display: flex;
+    gap: 6px;
+  }
+
+  .panel-text-input {
+    flex: 1;
+    padding: 7px 10px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--taupe-5);
+    background: var(--off-white);
+    border: 1px solid;
+    border-color: var(--taupe-3) var(--taupe-1) var(--taupe-1) var(--taupe-3);
+    outline: none;
+  }
+
+  .panel-text-input:focus {
+    border-color: var(--violet-3);
+  }
+
+  .panel-send-btn {
+    padding: 7px 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--white);
+    background: var(--violet-3);
+    border: 1px solid;
+    border-color: var(--violet-2) var(--violet-5) var(--violet-5) var(--violet-2);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .panel-send-btn:hover { background: var(--violet-4); }
+
+  /* Typing indicator */
+  .typing-indicator {
+    display: flex;
+    gap: 4px;
+    padding: 8px 12px;
+  }
+
+  .typing-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--violet-3);
+    border-radius: 0;
+    animation: typing-bounce 1.4s infinite;
+  }
+
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes typing-bounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.3; }
+    30% { transform: translateY(-4px); opacity: 1; }
+  }
+
+  /* ============================================
+     DROPDOWN MENU
+     ============================================ */
+  .dropdown-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    margin-top: 4px;
+    min-width: 180px;
+    background: var(--white);
+    border: 2px solid;
+    border-color: var(--taupe-2) var(--taupe-4) var(--taupe-4) var(--taupe-2);
+    z-index: 50;
+    box-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+  }
+
+  .dropdown-menu.show {
+    display: block;
+  }
+
+  .dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--taupe-5);
+    background: transparent;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    border-bottom: 1px solid var(--taupe-1);
+  }
+
+  .dropdown-item:last-child { border-bottom: none; }
+
+  .dropdown-item:hover {
+    background: var(--berry-1);
+    color: var(--berry-5);
+  }
+
+  .dropdown-item.violet:hover {
+    background: rgba(116,65,143,0.1);
+    color: var(--violet-3);
+  }
+
+  /* ============================================
+     OVERVIEW GRID
+     ============================================ */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .overview-grid .detail-section {
+    margin-bottom: 0;
+  }
+
+  .overview-full {
+    grid-column: 1 / -1;
+  }
+
+  .kv-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--taupe-1);
+  }
+
+  .kv-row:last-child { border-bottom: none; }
+
+  .kv-key {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--taupe-3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .kv-val {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--taupe-5);
+  }
+
+  /* ============================================
+     RESIZE GRIP & LABEL
+     ============================================ */
+  .resize-grip {
+    position: fixed;
+    bottom: 6px;
+    right: 8px;
+    width: 12px;
+    height: 12px;
+    background:
+      linear-gradient(135deg,
+        transparent 30%,
+        var(--taupe-3) 30%, var(--taupe-3) 35%,
+        transparent 35%, transparent 60%,
+        var(--taupe-3) 60%, var(--taupe-3) 65%,
+        transparent 65%, transparent 85%,
+        var(--taupe-3) 85%, var(--taupe-3) 90%,
+        transparent 90%
+      );
+    opacity: 0.5;
+  }
+
+  .design-label {
+    position: fixed;
+    bottom: 6px;
+    left: 12px;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--taupe-3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.6;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: var(--taupe-3);
+    border: 1px solid var(--taupe-2);
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--taupe-4); }
+
+  /* Overlay for panel */
+  .panel-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.2);
+    z-index: 90;
+  }
+
+  .panel-overlay.show {
+    display: block;
+  }
+</style>
+</head>
+<body>
+
+<div class="app-frame">
+
+  <!-- ======== SIDEBAR ======== -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-row">
+        <div class="logo-mark"><div class="logo-mark-inner"></div></div>
+        <div>
+          <div class="logo-title">COSIMO</div>
+          <div class="logo-sub">Applied Intelligence</div>
+        </div>
+      </div>
+
+      <!-- Mode Switcher -->
+      <div class="mode-switcher">
+        <button class="mode-btn active" onclick="switchMode('chat', this)">Chat</button>
+        <button class="mode-btn" onclick="switchMode('workflows', this)">Workflows</button>
+      </div>
+
+      <button class="new-btn" id="newBtn" onclick="handleNew()">+ New Thread</button>
+    </div>
+
+    <!-- Chat sidebar items -->
+    <div id="chatSidebar">
+      <div class="side-label">Recent</div>
+      <div class="thread-list">
+        <div class="thread-item active">
+          Fund III — Allocation Drift
+          <div class="thread-meta">Today, 2:31 PM</div>
+        </div>
+        <div class="thread-item">
+          Q4 LP Distribution Waterfall
+          <div class="thread-meta">Yesterday, 11:20 AM</div>
+        </div>
+        <div class="thread-item">
+          Hilgard — Fee Analysis
+          <div class="thread-meta">Feb 22, 4:15 PM</div>
+        </div>
+        <div class="thread-item">
+          K-1 Document Extraction
+          <div class="thread-meta">Feb 20, 9:45 AM</div>
+        </div>
+        <div class="thread-item">
+          Erabor Partnership Terms
+          <div class="thread-meta">Feb 18, 3:30 PM</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Workflow sidebar items -->
+    <div id="workflowSidebar" style="display:none;">
+      <div class="side-label">Workflows</div>
+      <div class="workflow-sidebar-list">
+        <div class="wf-side-item active" onclick="showWorkflowDetail('rent-roll', this)">
+          Rent Roll Extraction
+          <div class="wf-side-meta">
+            <span class="wf-side-status active-status">Active</span>
+            Last run: 2h ago
+          </div>
+        </div>
+        <div class="wf-side-item" onclick="showWorkflowDetail('k1-extract', this)">
+          K-1 Document Processing
+          <div class="wf-side-meta">
+            <span class="wf-side-status active-status">Active</span>
+            Last run: 6h ago
+          </div>
+        </div>
+        <div class="wf-side-item" onclick="showWorkflowDetail('lp-waterfall', this)">
+          LP Distribution Waterfall
+          <div class="wf-side-meta">
+            <span class="wf-side-status draft-status">Draft</span>
+            Created Feb 20
+          </div>
+        </div>
+        <div class="wf-side-item" onclick="showWorkflowDetail('fee-calc', this)">
+          Management Fee Calculator
+          <div class="wf-side-meta">
+            <span class="wf-side-status active-status">Active</span>
+            Last run: 1d ago
+          </div>
+        </div>
+        <div class="wf-side-item" onclick="showWorkflowDetail('covenant', this)">
+          Loan Covenant Monitor
+          <div class="wf-side-meta">
+            <span class="wf-side-status paused-status">Paused</span>
+            Paused Feb 15
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="user-avatar">E</div>
+      <span class="user-name">Eliot Puplett</span>
+    </div>
+  </div>
+
+  <!-- ======== MAIN ======== -->
+  <main>
+
+    <!-- ======== CHAT VIEW ======== -->
+    <div class="view-container active" id="chatView">
+      <div class="main-header">
+        <span class="header-title">Fund III — Allocation Drift</span>
+        <div class="header-actions">
+          <button class="header-btn">Export</button>
+          <button class="header-btn">Share</button>
+        </div>
+      </div>
+
+      <div class="chat-scroll">
+        <!-- Message 1: User -->
+        <div class="msg-block">
+          <div class="user-card">
+            <div class="msg-header">
+              <div class="badge badge-human">E</div>
+              <span class="sender">Eliot Puplett</span>
+              <span class="timestamp">2:31 PM</span>
+            </div>
+            <div class="msg-body">
+              Pull the current allocation for Fund III and compare it against the IPS mandate. Flag anything drifting more than 200bps. Show me a table.
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 2: AI with artifact -->
+        <div class="msg-block">
+          <div class="ai-block">
+            <div class="msg-header">
+              <div class="badge badge-ai">◆</div>
+              <span class="sender">Cosimo</span>
+              <span class="timestamp">2:32 PM</span>
+              <span class="latency-chip">3.2s</span>
+            </div>
+
+            <div class="artifact">
+              <div class="art-bar">
+                <div class="art-close"></div>
+                <div class="art-stripe"></div>
+                <span class="art-title">Fund III — Allocation Drift Analysis</span>
+                <div class="art-stripe"></div>
+                <span class="art-live">LIVE</span>
+              </div>
+              <div class="art-body">
+                <table class="data-tbl">
+                  <thead>
+                    <tr>
+                      <th>Sector</th>
+                      <th>Mandate</th>
+                      <th>Current</th>
+                      <th>Drift</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>US Large Cap</td>
+                      <td>35.0%</td>
+                      <td>38.2%</td>
+                      <td><span class="drift-over">+3.2%</span></td>
+                      <td><span class="action-chip">Trim $2.4M</span></td>
+                    </tr>
+                    <tr>
+                      <td>Intl Developed</td>
+                      <td>20.0%</td>
+                      <td>17.1%</td>
+                      <td><span class="drift-under">−2.9%</span></td>
+                      <td><span class="action-chip">Add $2.1M</span></td>
+                    </tr>
+                    <tr>
+                      <td>EM Equity</td>
+                      <td>10.0%</td>
+                      <td>11.4%</td>
+                      <td><span class="drift-over">+1.4%</span></td>
+                      <td><span class="action-chip">Trim $1.0M</span></td>
+                    </tr>
+                    <tr>
+                      <td>Fixed Income</td>
+                      <td>25.0%</td>
+                      <td>23.8%</td>
+                      <td><span class="drift-under">−1.2%</span></td>
+                      <td><span class="action-chip">Add $0.9M</span></td>
+                    </tr>
+                    <tr>
+                      <td>Alternatives</td>
+                      <td>10.0%</td>
+                      <td>9.5%</td>
+                      <td><span class="drift-under">−0.5%</span></td>
+                      <td><span class="action-hold">Hold</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="msg-body">
+              <p><strong>Primary issue:</strong> US Large Cap is up 3.2 points since June, driven by the tech rally. International Developed is the mirror underweight.</p>
+              <p><strong>Recommendation:</strong> Paired trade — trim the S&P 500 position and rotate into the EAFE sleeve. I've drafted the rebalancing memo for the IC. Want me to pull it up, or look at tax implications first?</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 3: User -->
+        <div class="msg-block">
+          <div class="user-card">
+            <div class="msg-header">
+              <div class="badge badge-human">E</div>
+              <span class="sender">Eliot Puplett</span>
+              <span class="timestamp">2:35 PM</span>
+            </div>
+            <div class="msg-body">
+              Let's see the tax impact first. And flag anything that would trigger a wash sale.
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 4: AI with flags -->
+        <div class="msg-block">
+          <div class="ai-block">
+            <div class="msg-header">
+              <div class="badge badge-ai">◆</div>
+              <span class="sender">Cosimo</span>
+              <span class="timestamp">2:35 PM</span>
+              <span class="latency-chip">4.8s</span>
+            </div>
+
+            <div class="msg-body">
+              <p>Lot-level analysis against the 30-day wash sale window complete. Two positions flagged:</p>
+            </div>
+
+            <div class="flag-box safe">
+              <div class="flag-label">
+                <span class="ticker">MSFT</span>
+                <span class="status status-safe">SAFE</span>
+              </div>
+              <div class="flag-detail">
+                Loss harvested <strong>August 8</strong>. Repurchase window closes <strong>March 7</strong>. Safe to include in the rebalance.
+              </div>
+            </div>
+
+            <div class="flag-box warn">
+              <div class="flag-label">
+                <span class="ticker">AAPL</span>
+                <span class="status status-warn">CAUTION</span>
+              </div>
+              <div class="flag-detail">
+                Loss harvested <strong>September 14</strong>. Window open until <strong>October 14</strong>. Trim + index reconstitution risks wash sale on <strong>~$340K</strong> of harvested losses. Recommend excluding AAPL lots and trimming through other large-cap names.
+              </div>
+            </div>
+
+            <div class="summary-bar">
+              <div class="summary-item">
+                <span class="summary-label">ST Gains</span>
+                <span class="summary-value neg">$18.2K</span>
+              </div>
+              <div class="summary-divider"></div>
+              <div class="summary-item">
+                <span class="summary-label">LT Losses Avail</span>
+                <span class="summary-value pos">$42.6K</span>
+              </div>
+              <div class="summary-divider"></div>
+              <div class="summary-item">
+                <span class="summary-label">Net Tax Benefit</span>
+                <span class="summary-value net">~$24.4K</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <div class="input-row">
+          <input class="text-input" type="text" placeholder="Continue this thread..." />
+          <button class="cmd-btn">Attach</button>
+          <button class="cmd-btn cmd-primary">Send</button>
+        </div>
+        <div class="input-footer">
+          <span>Return to send · Shift+Return for new line</span>
+          <span>Cosimo v2.1</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======== WORKFLOWS VIEW ======== -->
+    <div class="view-container" id="workflowsView">
+
+      <!-- Workflow Listing -->
+      <div id="wfListing" style="display:flex; flex-direction:column; flex:1; overflow:hidden;">
+        <div class="main-header">
+          <span class="header-title">Workflows</span>
+          <div class="header-actions">
+            <button class="header-btn primary" onclick="handleNew()">+ New Workflow</button>
+          </div>
+        </div>
+
+        <div class="wf-listing">
+          <!-- Stats -->
+          <div class="wf-stats">
+            <div class="wf-stat-card">
+              <div class="wf-stat-label">Total Workflows</div>
+              <div class="wf-stat-value">5</div>
+            </div>
+            <div class="wf-stat-card">
+              <div class="wf-stat-label">Active</div>
+              <div class="wf-stat-value green">3</div>
+            </div>
+            <div class="wf-stat-card">
+              <div class="wf-stat-label">Runs Today</div>
+              <div class="wf-stat-value">12</div>
+            </div>
+            <div class="wf-stat-card">
+              <div class="wf-stat-label">Failed</div>
+              <div class="wf-stat-value red">1</div>
+            </div>
+          </div>
+
+          <!-- Cards -->
+          <div class="wf-card" onclick="showWorkflowDetail('rent-roll', this)">
+            <div class="wf-card-header">
+              <span class="wf-card-title">Rent Roll Extraction</span>
+              <span class="wf-card-status status-active">Active</span>
+            </div>
+            <div class="wf-card-body">
+              <span class="wf-card-desc">Extracts and standardizes rent roll data from uploaded PDFs. Outputs clean xlsx with unit-level detail, floor mapping, and lease terms.</span>
+              <div class="wf-card-meta">
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Steps</span>
+                  <span class="wf-meta-value">4</span>
+                </div>
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Runs</span>
+                  <span class="wf-meta-value">47</span>
+                </div>
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Last</span>
+                  <span class="wf-meta-value">2h</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-card" onclick="showWorkflowDetail('k1-extract', this)">
+            <div class="wf-card-header">
+              <span class="wf-card-title">K-1 Document Processing</span>
+              <span class="wf-card-status status-active">Active</span>
+            </div>
+            <div class="wf-card-body">
+              <span class="wf-card-desc">Parses K-1 tax documents, extracts allocations, and maps to fund accounting structure. Flags discrepancies against capital accounts.</span>
+              <div class="wf-card-meta">
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Steps</span>
+                  <span class="wf-meta-value">5</span>
+                </div>
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Runs</span>
+                  <span class="wf-meta-value">23</span>
+                </div>
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Last</span>
+                  <span class="wf-meta-value">6h</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-card" onclick="showWorkflowDetail('lp-waterfall', this)">
+            <div class="wf-card-header">
+              <span class="wf-card-title">LP Distribution Waterfall</span>
+              <span class="wf-card-status status-draft">Draft</span>
+            </div>
+            <div class="wf-card-body">
+              <span class="wf-card-desc">Calculates LP/GP distribution splits across preferred return, catch-up, and carried interest tiers. Generates allocation schedules.</span>
+              <div class="wf-card-meta">
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Steps</span>
+                  <span class="wf-meta-value">6</span>
+                </div>
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Runs</span>
+                  <span class="wf-meta-value">0</span>
+                </div>
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Last</span>
+                  <span class="wf-meta-value">—</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-card" onclick="showWorkflowDetail('fee-calc', this)">
+            <div class="wf-card-header">
+              <span class="wf-card-title">Management Fee Calculator</span>
+              <span class="wf-card-status status-active">Active</span>
+            </div>
+            <div class="wf-card-body">
+              <span class="wf-card-desc">Computes management fees across fund vehicles using committed/invested capital basis, step-downs, and offset provisions.</span>
+              <div class="wf-card-meta">
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Steps</span>
+                  <span class="wf-meta-value">3</span>
+                </div>
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Runs</span>
+                  <span class="wf-meta-value">31</span>
+                </div>
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Last</span>
+                  <span class="wf-meta-value">1d</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wf-card" onclick="showWorkflowDetail('covenant', this)">
+            <div class="wf-card-header">
+              <span class="wf-card-title">Loan Covenant Monitor</span>
+              <span class="wf-card-status status-paused">Paused</span>
+            </div>
+            <div class="wf-card-body">
+              <span class="wf-card-desc">Monitors DSCR, LTV, and debt yield covenants across the loan book. Alerts when metrics approach or breach thresholds.</span>
+              <div class="wf-card-meta">
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Steps</span>
+                  <span class="wf-meta-value">4</span>
+                </div>
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Runs</span>
+                  <span class="wf-meta-value">18</span>
+                </div>
+                <div class="wf-meta-item">
+                  <span class="wf-meta-label">Last</span>
+                  <span class="wf-meta-value">10d</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Workflow Detail -->
+      <div id="wfDetail" style="display:none; flex:1; flex-direction:column; overflow:hidden;">
+        <div class="main-header">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <button class="back-btn" onclick="showWorkflowListing()">← Back</button>
+            <span class="header-title" id="wfDetailTitle">Rent Roll Extraction</span>
+          </div>
+          <div class="header-actions">
+            <div class="dropdown-wrapper">
+              <button class="header-btn" onclick="toggleDropdown(event)">Actions ▾</button>
+              <div class="dropdown-menu" id="actionDropdown">
+                <button class="dropdown-item" onclick="alert('Run triggered')">▶ Run Now</button>
+                <button class="dropdown-item" onclick="alert('Duplicated')">⧉ Duplicate</button>
+                <button class="dropdown-item violet" onclick="openCosimoPanel()">◆ Edit with Cosimo</button>
+                <button class="dropdown-item" style="color:var(--red)" onclick="alert('Deleted')">✕ Delete Workflow</button>
+              </div>
+            </div>
+            <button class="header-btn primary" onclick="alert('Running workflow...')">▶ Run</button>
+          </div>
+        </div>
+
+        <div class="wf-detail">
+          <div class="wf-detail-header">
+            <div class="wf-detail-desc" id="wfDetailDesc">Extracts and standardizes rent roll data from uploaded PDFs into clean xlsx format.</div>
+
+            <div class="tab-bar">
+              <button class="tab-btn active" onclick="switchTab('overview', this)">Overview</button>
+              <button class="tab-btn" onclick="switchTab('config', this)">Configuration</button>
+              <button class="tab-btn" onclick="switchTab('steps', this)">Steps</button>
+              <button class="tab-btn" onclick="switchTab('runs', this)">Runs</button>
+            </div>
+          </div>
+
+          <div class="tab-content">
+            <!-- OVERVIEW TAB -->
+            <div class="tab-panel active" id="tab-overview">
+              <div class="overview-grid">
+                <div class="detail-section">
+                  <div class="detail-section-bar">
+                    <div class="art-stripe"></div>
+                    <span class="detail-section-title">Status</span>
+                    <div class="art-stripe"></div>
+                  </div>
+                  <div class="detail-section-body">
+                    <div class="kv-row">
+                      <span class="kv-key">State</span>
+                      <span class="kv-val" style="color:var(--green)">● Active</span>
+                    </div>
+                    <div class="kv-row">
+                      <span class="kv-key">Last Run</span>
+                      <span class="kv-val">Feb 25, 12:15 PM</span>
+                    </div>
+                    <div class="kv-row">
+                      <span class="kv-key">Last Result</span>
+                      <span class="kv-val" style="color:var(--green)">Success</span>
+                    </div>
+                    <div class="kv-row">
+                      <span class="kv-key">Avg Duration</span>
+                      <span class="kv-val">12.4s</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="detail-section">
+                  <div class="detail-section-bar">
+                    <div class="art-stripe"></div>
+                    <span class="detail-section-title">Performance</span>
+                    <div class="art-stripe"></div>
+                  </div>
+                  <div class="detail-section-body">
+                    <div class="kv-row">
+                      <span class="kv-key">Total Runs</span>
+                      <span class="kv-val">47</span>
+                    </div>
+                    <div class="kv-row">
+                      <span class="kv-key">Success Rate</span>
+                      <span class="kv-val" style="color:var(--green)">95.7%</span>
+                    </div>
+                    <div class="kv-row">
+                      <span class="kv-key">Files Processed</span>
+                      <span class="kv-val">183</span>
+                    </div>
+                    <div class="kv-row">
+                      <span class="kv-key">Created</span>
+                      <span class="kv-val">Jan 14, 2026</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="detail-section overview-full">
+                  <div class="detail-section-bar">
+                    <div class="art-stripe"></div>
+                    <span class="detail-section-title">Recent Activity</span>
+                    <div class="art-stripe"></div>
+                  </div>
+                  <div class="detail-section-body">
+                    <div class="run-row" style="cursor:default">
+                      <div class="run-status-dot success"></div>
+                      <span class="run-id">#047</span>
+                      <span class="run-trigger">Manual — 3 files</span>
+                      <span class="run-time">Today, 12:15 PM</span>
+                      <span class="run-duration">11.2s</span>
+                    </div>
+                    <div class="run-row" style="cursor:default">
+                      <div class="run-status-dot success"></div>
+                      <span class="run-id">#046</span>
+                      <span class="run-trigger">Folder watch — 1 file</span>
+                      <span class="run-time">Today, 9:04 AM</span>
+                      <span class="run-duration">8.7s</span>
+                    </div>
+                    <div class="run-row" style="cursor:default">
+                      <div class="run-status-dot failed"></div>
+                      <span class="run-id">#045</span>
+                      <span class="run-trigger">Manual — 2 files</span>
+                      <span class="run-time">Yesterday, 4:30 PM</span>
+                      <span class="run-duration">3.1s</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CONFIGURATION TAB -->
+            <div class="tab-panel" id="tab-config">
+              <div class="detail-section">
+                <div class="detail-section-bar">
+                  <div class="art-stripe"></div>
+                  <span class="detail-section-title">Source Data Locations</span>
+                  <div class="art-stripe"></div>
+                </div>
+                <div class="detail-section-body">
+                  <div class="source-item">
+                    <div class="source-icon">📁</div>
+                    <div class="source-info">
+                      <div class="source-name">CRE Rent Rolls — Q4 2025</div>
+                      <div class="source-path">/Finance/CRE/Rent Rolls/Q4-2025/</div>
+                    </div>
+                    <span class="source-count">42 files</span>
+                  </div>
+                  <div class="source-item">
+                    <div class="source-icon">📁</div>
+                    <div class="source-info">
+                      <div class="source-name">Hilgard Property Uploads</div>
+                      <div class="source-path">/Clients/Hilgard/Property Documents/</div>
+                    </div>
+                    <span class="source-count">18 files</span>
+                  </div>
+                  <div class="source-item">
+                    <div class="source-icon">📄</div>
+                    <div class="source-info">
+                      <div class="source-name">Master Property List.xlsx</div>
+                      <div class="source-path">/Finance/CRE/master-property-list.xlsx</div>
+                    </div>
+                    <span class="source-count">1 file</span>
+                  </div>
+                  <button class="add-source-btn" onclick="alert('Add source dialog would open here')">+ Add File or Folder</button>
+                </div>
+              </div>
+
+              <div class="detail-section">
+                <div class="detail-section-bar">
+                  <div class="art-stripe"></div>
+                  <span class="detail-section-title">Input Configuration</span>
+                  <div class="art-stripe"></div>
+                </div>
+                <div class="detail-section-body">
+                  <div class="config-row">
+                    <span class="config-label">Accepted Types</span>
+                    <div class="config-value">
+                      <div class="file-type-chips">
+                        <span class="file-chip pdf">.pdf</span>
+                        <span class="file-chip xlsx">.xlsx</span>
+                        <span class="file-chip csv">.csv</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="config-row">
+                    <span class="config-label">Max File Size</span>
+                    <span class="config-value">50 MB</span>
+                  </div>
+                  <div class="config-row">
+                    <span class="config-label">Trigger</span>
+                    <span class="config-value">On file upload + Manual</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="detail-section">
+                <div class="detail-section-bar">
+                  <div class="art-stripe"></div>
+                  <span class="detail-section-title">Output Configuration</span>
+                  <div class="art-stripe"></div>
+                </div>
+                <div class="detail-section-body">
+                  <div class="config-row">
+                    <span class="config-label">Output Format</span>
+                    <div class="config-value">
+                      <div class="file-type-chips">
+                        <span class="file-chip xlsx">.xlsx</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="config-row">
+                    <span class="config-label">Destination</span>
+                    <span class="config-value">/Finance/CRE/Processed/Rent Rolls/</span>
+                  </div>
+                  <div class="config-row">
+                    <span class="config-label">Columns</span>
+                    <span class="config-value">Unit, Floor, Tenant, Lease Start, Lease End, Monthly Rent, Sq Ft, $/SF, Status, Notes</span>
+                  </div>
+                  <div class="config-row">
+                    <span class="config-label">Lesson Applied</span>
+                    <span class="config-value" style="color:var(--violet-3); font-weight:600;">rent-roll-extraction-standardized</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- STEPS TAB -->
+            <div class="tab-panel" id="tab-steps">
+              <div class="step-list">
+                <div class="step-connector"></div>
+
+                <div class="step-item">
+                  <div class="step-marker complete">1</div>
+                  <div class="step-card">
+                    <div class="step-card-title">Ingest & Validate</div>
+                    <div class="step-card-desc">Accept uploaded files, validate format and size constraints. Reject unsupported types with error message.</div>
+                    <div class="step-card-tags">
+                      <span class="step-tag">Input</span>
+                      <span class="step-tag">Validation</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="step-item">
+                  <div class="step-marker complete">2</div>
+                  <div class="step-card">
+                    <div class="step-card-title">Extract & Parse</div>
+                    <div class="step-card-desc">Run PDF extraction with OCR fallback. Identify table structures, header rows, and unit-level data. Handle multi-page spreads.</div>
+                    <div class="step-card-tags">
+                      <span class="step-tag">PDF</span>
+                      <span class="step-tag">OCR</span>
+                      <span class="step-tag">Tables</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="step-item">
+                  <div class="step-marker running">3</div>
+                  <div class="step-card">
+                    <div class="step-card-title">Standardize & Enrich</div>
+                    <div class="step-card-desc">Map extracted data to standard columns. Infer floor numbers from unit IDs. Normalize dates, currency, and square footage. Apply lesson rules.</div>
+                    <div class="step-card-tags">
+                      <span class="step-tag">Mapping</span>
+                      <span class="step-tag">Inference</span>
+                      <span class="step-tag">Lesson</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="step-item">
+                  <div class="step-marker">4</div>
+                  <div class="step-card">
+                    <div class="step-card-title">Generate Output</div>
+                    <div class="step-card-desc">Build formatted xlsx with property-level sheets. Add summary tab with vacancy rates and rent PSF metrics. Save to destination folder.</div>
+                    <div class="step-card-tags">
+                      <span class="step-tag">Output</span>
+                      <span class="step-tag">XLSX</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- RUNS TAB -->
+            <div class="tab-panel" id="tab-runs">
+              <div class="detail-section">
+                <div class="detail-section-bar">
+                  <div class="art-stripe"></div>
+                  <span class="detail-section-title">Execution History</span>
+                  <div class="art-stripe"></div>
+                </div>
+                <div class="detail-section-body">
+                  <div class="run-row">
+                    <div class="run-status-dot success"></div>
+                    <span class="run-id">#047</span>
+                    <span class="run-trigger">Manual trigger — 3 PDF files</span>
+                    <span class="run-time">Today, 12:15 PM</span>
+                    <span class="run-duration">11.2s</span>
+                  </div>
+                  <div class="run-row">
+                    <div class="run-status-dot success"></div>
+                    <span class="run-id">#046</span>
+                    <span class="run-trigger">Folder watch — 1 PDF file</span>
+                    <span class="run-time">Today, 9:04 AM</span>
+                    <span class="run-duration">8.7s</span>
+                  </div>
+                  <div class="run-row">
+                    <div class="run-status-dot failed"></div>
+                    <span class="run-id">#045</span>
+                    <span class="run-trigger">Manual trigger — 2 files (1 corrupt)</span>
+                    <span class="run-time">Yesterday, 4:30 PM</span>
+                    <span class="run-duration">3.1s</span>
+                  </div>
+                  <div class="run-row">
+                    <div class="run-status-dot success"></div>
+                    <span class="run-id">#044</span>
+                    <span class="run-trigger">Folder watch — 5 PDF files</span>
+                    <span class="run-time">Yesterday, 11:20 AM</span>
+                    <span class="run-duration">22.8s</span>
+                  </div>
+                  <div class="run-row">
+                    <div class="run-status-dot success"></div>
+                    <span class="run-id">#043</span>
+                    <span class="run-trigger">Manual trigger — 1 XLSX file</span>
+                    <span class="run-time">Feb 23, 3:45 PM</span>
+                    <span class="run-duration">6.3s</span>
+                  </div>
+                  <div class="run-row">
+                    <div class="run-status-dot success"></div>
+                    <span class="run-id">#042</span>
+                    <span class="run-trigger">Folder watch — 2 PDF files</span>
+                    <span class="run-time">Feb 23, 10:12 AM</span>
+                    <span class="run-duration">14.1s</span>
+                  </div>
+                  <div class="run-row">
+                    <div class="run-status-dot success"></div>
+                    <span class="run-id">#041</span>
+                    <span class="run-trigger">Manual trigger — 4 PDF files</span>
+                    <span class="run-time">Feb 22, 2:55 PM</span>
+                    <span class="run-duration">18.6s</span>
+                  </div>
+                  <div class="run-row">
+                    <div class="run-status-dot failed"></div>
+                    <span class="run-id">#040</span>
+                    <span class="run-trigger">Folder watch — 1 PDF (password protected)</span>
+                    <span class="run-time">Feb 22, 9:30 AM</span>
+                    <span class="run-duration">1.8s</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Cosimo Panel Overlay -->
+<div class="panel-overlay" id="panelOverlay" onclick="closeCosimoPanel()"></div>
+
+<!-- Cosimo Chat Panel -->
+<div class="cosimo-panel" id="cosimoPanel">
+  <div class="cosimo-panel-header">
+    <div class="cosimo-panel-title">
+      <div class="logo-mark"><div class="logo-mark-inner"></div></div>
+      <span class="cosimo-panel-name">Edit with Cosimo</span>
+    </div>
+    <button class="panel-close-btn" onclick="closeCosimoPanel()">✕ Close</button>
+  </div>
+
+  <div class="cosimo-panel-chat" id="panelChat">
+    <div class="panel-msg panel-msg-ai">
+      <div class="panel-msg-header">
+        <div class="badge badge-ai" style="width:16px;height:16px;font-size:9px;">◆</div>
+        <span class="panel-msg-sender">Cosimo</span>
+      </div>
+      I can help you modify this workflow. Try things like:
+      <br><br>
+      <strong>"Add a step to check for duplicate units"</strong><br>
+      <strong>"Change the output format to CSV"</strong><br>
+      <strong>"Add a new source folder for Q1 2026 files"</strong><br>
+      <strong>"Make step 3 also normalize tenant names"</strong>
+    </div>
+  </div>
+
+  <div class="cosimo-panel-input">
+    <div class="panel-input-row">
+      <input class="panel-text-input" id="panelInput" type="text" placeholder="Describe a change..." onkeydown="handlePanelKey(event)" />
+      <button class="panel-send-btn" onclick="sendPanelMessage()">Send</button>
+    </div>
+  </div>
+</div>
+
+<div class="resize-grip"></div>
+<div class="design-label">Cosimo — Combined Platform Demo</div>
+
+<script>
+  // ============================================
+  // MODE SWITCHING
+  // ============================================
+  let currentMode = 'chat';
+
+  function switchMode(mode, btn) {
+    currentMode = mode;
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const chatView = document.getElementById('chatView');
+    const workflowsView = document.getElementById('workflowsView');
+    const chatSidebar = document.getElementById('chatSidebar');
+    const workflowSidebar = document.getElementById('workflowSidebar');
+    const newBtn = document.getElementById('newBtn');
+
+    if (mode === 'chat') {
+      chatView.classList.add('active');
+      workflowsView.classList.remove('active');
+      chatSidebar.style.display = 'block';
+      workflowSidebar.style.display = 'none';
+      newBtn.textContent = '+ New Thread';
+    } else {
+      chatView.classList.remove('active');
+      workflowsView.classList.add('active');
+      chatSidebar.style.display = 'none';
+      workflowSidebar.style.display = 'block';
+      newBtn.textContent = '+ New Workflow';
+      // Reset to listing view
+      showWorkflowListing();
+    }
+  }
+
+  function handleNew() {
+    if (currentMode === 'chat') {
+      alert('New thread would start here');
+    } else {
+      alert('New workflow creation dialog would open here');
+    }
+  }
+
+  // ============================================
+  // WORKFLOW DETAIL
+  // ============================================
+  const workflowData = {
+    'rent-roll': {
+      title: 'Rent Roll Extraction',
+      desc: 'Extracts and standardizes rent roll data from uploaded PDFs into clean xlsx format.'
+    },
+    'k1-extract': {
+      title: 'K-1 Document Processing',
+      desc: 'Parses K-1 tax documents, extracts allocations, and maps to fund accounting structure.'
+    },
+    'lp-waterfall': {
+      title: 'LP Distribution Waterfall',
+      desc: 'Calculates LP/GP distribution splits across preferred return, catch-up, and carried interest tiers.'
+    },
+    'fee-calc': {
+      title: 'Management Fee Calculator',
+      desc: 'Computes management fees across fund vehicles using committed/invested capital basis.'
+    },
+    'covenant': {
+      title: 'Loan Covenant Monitor',
+      desc: 'Monitors DSCR, LTV, and debt yield covenants across the loan book.'
+    }
+  };
+
+  function showWorkflowDetail(id, el) {
+    const data = workflowData[id];
+    if (!data) return;
+
+    document.getElementById('wfDetailTitle').textContent = data.title;
+    document.getElementById('wfDetailDesc').textContent = data.desc;
+
+    document.getElementById('wfListing').style.display = 'none';
+    const detail = document.getElementById('wfDetail');
+    detail.style.display = 'flex';
+
+    // Reset to overview tab
+    switchTab('overview', document.querySelector('.tab-btn'));
+
+    // Update sidebar active
+    document.querySelectorAll('.wf-side-item').forEach(item => item.classList.remove('active'));
+    if (el) {
+      const sideItem = el.closest('.wf-side-item');
+      if (sideItem) sideItem.classList.add('active');
+    }
+    // Also sync sidebar when clicked from card (match by id)
+    const sidebarMap = {
+      'rent-roll': 0, 'k1-extract': 1, 'lp-waterfall': 2, 'fee-calc': 3, 'covenant': 4
+    };
+    const sideItems = document.querySelectorAll('.wf-side-item');
+    if (sidebarMap[id] !== undefined && sideItems[sidebarMap[id]]) {
+      document.querySelectorAll('.wf-side-item').forEach(item => item.classList.remove('active'));
+      sideItems[sidebarMap[id]].classList.add('active');
+    }
+  }
+
+  function showWorkflowListing() {
+    document.getElementById('wfListing').style.display = 'flex';
+    document.getElementById('wfDetail').style.display = 'none';
+    closeCosimoPanel();
+  }
+
+  // ============================================
+  // TABS
+  // ============================================
+  function switchTab(tabId, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+
+    btn.classList.add('active');
+    document.getElementById('tab-' + tabId).classList.add('active');
+  }
+
+  // ============================================
+  // DROPDOWN
+  // ============================================
+  function toggleDropdown(e) {
+    e.stopPropagation();
+    const menu = document.getElementById('actionDropdown');
+    menu.classList.toggle('show');
+  }
+
+  document.addEventListener('click', () => {
+    document.getElementById('actionDropdown')?.classList.remove('show');
+  });
+
+  // ============================================
+  // COSIMO PANEL
+  // ============================================
+  function openCosimoPanel() {
+    document.getElementById('actionDropdown').classList.remove('show');
+    document.getElementById('cosimoPanel').classList.add('open');
+    document.getElementById('panelOverlay').classList.add('show');
+    document.getElementById('sidebar').classList.add('collapsed');
+    document.getElementById('panelInput').focus();
+  }
+
+  function closeCosimoPanel() {
+    document.getElementById('cosimoPanel').classList.remove('open');
+    document.getElementById('panelOverlay').classList.remove('show');
+    document.getElementById('sidebar').classList.remove('collapsed');
+  }
+
+  function handlePanelKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendPanelMessage();
+    }
+  }
+
+  function sendPanelMessage() {
+    const input = document.getElementById('panelInput');
+    const text = input.value.trim();
+    if (!text) return;
+
+    const chat = document.getElementById('panelChat');
+
+    // Add user message
+    const userMsg = document.createElement('div');
+    userMsg.className = 'panel-msg panel-msg-user';
+    userMsg.innerHTML = `
+      <div class="panel-msg-header">
+        <span class="panel-msg-sender">You</span>
+        <div class="badge badge-human" style="width:16px;height:16px;font-size:9px;">E</div>
+      </div>
+      ${escapeHtml(text)}
+    `;
+    chat.appendChild(userMsg);
+    input.value = '';
+
+    // Add typing indicator
+    const typing = document.createElement('div');
+    typing.className = 'panel-msg panel-msg-ai';
+    typing.innerHTML = `
+      <div class="panel-msg-header">
+        <div class="badge badge-ai" style="width:16px;height:16px;font-size:9px;">◆</div>
+        <span class="panel-msg-sender">Cosimo</span>
+      </div>
+      <div class="typing-indicator">
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      </div>
+    `;
+    chat.appendChild(typing);
+    chat.scrollTop = chat.scrollHeight;
+
+    // Simulate response
+    setTimeout(() => {
+      typing.innerHTML = `
+        <div class="panel-msg-header">
+          <div class="badge badge-ai" style="width:16px;height:16px;font-size:9px;">◆</div>
+          <span class="panel-msg-sender">Cosimo</span>
+        </div>
+        I've understood your request. In a live environment, I would update the workflow configuration and show you a diff of the changes. For this demo, the modification has been noted.
+      `;
+      chat.scrollTop = chat.scrollHeight;
+    }, 1800);
+  }
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+</script>
+
+</body>
+</html>
