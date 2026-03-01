@@ -1,4 +1,15 @@
 /* ============================================
+   FONTS
+   ============================================ */
+
+@font-face {
+  font-family: 'Dream Orphanage';
+  src: url('../fonts/dream-orphanage-rg.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* ============================================
    DESIGN TOKENS & RESET
    ============================================ */
 
@@ -37,9 +48,10 @@
   --red: #C04848;
   --amber: #B8862B;
 
-  --pixel: 'VT323', monospace;
+  --pixel: 'Dream Orphanage', sans-serif;
   --mono: 'IBM Plex Mono', monospace;
   --sans: 'DM Sans', sans-serif;
+  --display: 'Dream Orphanage', sans-serif;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }

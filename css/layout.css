@@ -63,7 +63,7 @@
 }
 
 .logo-title {
-  font-family: var(--pixel);
+  font-family: var(--display);
   font-size: 22px;
   color: var(--taupe-1);
   line-height: 1;
