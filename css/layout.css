@@ -33,6 +33,7 @@
 .sidebar.collapsed .thread-list,
 .sidebar.collapsed .workflow-sidebar-list,
 .sidebar.collapsed .sidebar-footer .user-name,
+.sidebar.collapsed .sidebar-footer .theme-toggle,
 .sidebar.collapsed .sidebar-search {
   display: none;
 }
@@ -332,6 +333,24 @@
   font-family: var(--mono);
   font-size: 11px;
   color: var(--taupe-2);
+  flex: 1;
+}
+
+.theme-toggle {
+  padding: 3px 8px;
+  font-size: 14px;
+  color: var(--taupe-3);
+  background: transparent;
+  border: 1px solid var(--taupe-4);
+  cursor: pointer;
+  line-height: 1;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+  color: var(--taupe-1);
+  border-color: var(--taupe-3);
 }
 
 /* ============================================
@@ -410,4 +429,128 @@ main {
 
 .view-container.active {
   display: flex;
+}
+
+/* ============================================
+   DARK MODE OVERRIDES
+   ============================================ */
+
+/* Sidebar surfaces — must stay dark despite taupe scale flip */
+[data-theme="dark"] .sidebar {
+  background: #1a1a1d;
+  border-color: #0e0e10;
+}
+
+[data-theme="dark"] .sidebar-header {
+  background: #1a1a1d;
+  border-bottom-color: #2a2a2f;
+}
+
+[data-theme="dark"] .sidebar-footer {
+  border-top-color: #2a2a2f;
+}
+
+/* Sidebar text — uses light tones in light mode, must stay readable */
+[data-theme="dark"] .logo-title {
+  color: var(--taupe-5);
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.6);
+}
+
+[data-theme="dark"] .thread-item,
+[data-theme="dark"] .wf-side-item {
+  color: var(--taupe-4);
+}
+
+[data-theme="dark"] .thread-item.active,
+[data-theme="dark"] .wf-side-item.active {
+  color: var(--taupe-5);
+}
+
+[data-theme="dark"] .user-name {
+  color: var(--taupe-4);
+}
+
+[data-theme="dark"] .mode-btn.active {
+  color: var(--taupe-5);
+}
+
+/* Sidebar inputs & buttons */
+[data-theme="dark"] .new-btn {
+  background: #2a2a2f;
+  border-color: var(--taupe-3) #0e0e10 #0e0e10 var(--taupe-3);
+}
+
+[data-theme="dark"] .new-btn:hover {
+  background: var(--chinese-4);
+}
+
+[data-theme="dark"] .new-btn:active {
+  border-color: #0e0e10 var(--taupe-3) var(--taupe-3) #0e0e10;
+}
+
+[data-theme="dark"] .sidebar-search-input {
+  background: rgba(0,0,0,0.4);
+  border-color: #0e0e10 #2a2a2f #2a2a2f #0e0e10;
+}
+
+[data-theme="dark"] .sidebar-search-input:focus {
+  background: rgba(0,0,0,0.5);
+}
+
+[data-theme="dark"] .mode-switcher {
+  background: rgba(0,0,0,0.3);
+  border-color: rgba(0,0,0,0.4);
+}
+
+[data-theme="dark"] .mode-btn:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+/* Hover states */
+[data-theme="dark"] .thread-item:hover,
+[data-theme="dark"] .wf-side-item:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.08);
+}
+
+/* Main content — flat border on dark */
+[data-theme="dark"] main {
+  border-color: #0e0e10;
+}
+
+/* Header button hover — berry-5 flips dark, use berry-3 */
+[data-theme="dark"] .header-btn:hover {
+  color: var(--berry-3);
+  background: var(--berry-1);
+}
+
+[data-theme="dark"] .header-btn.primary {
+  color: #f0eef4;
+}
+
+/* User avatar text on colored bg */
+[data-theme="dark"] .user-avatar {
+  color: #f0eef4;
+}
+
+/* Theme toggle */
+[data-theme="dark"] .theme-toggle {
+  border-color: #2a2a2f;
+}
+
+/* Thread indicators */
+[data-theme="dark"] .thread-indicator.ready {
+  background: rgba(76,175,80,0.2);
+}
+
+[data-theme="dark"] .thread-indicator.needs-input {
+  background: rgba(212,160,48,0.2);
+}
+
+[data-theme="dark"] .thread-indicator.error {
+  background: rgba(224,85,85,0.2);
+}
+
+[data-theme="dark"] .wf-notif-dot {
+  border-color: #e06868 #901818 #901818 #e06868;
 }

@@ -347,3 +347,75 @@
   font-size: 12px;
   color: var(--taupe-3);
 }
+
+/* ============================================
+   DARK MODE OVERRIDES
+   ============================================ */
+
+/* Section bar surfaces — taupe-5 flips to light text, bars must stay dark */
+[data-theme="dark"] .art-bar {
+  background: #28282d;
+}
+
+[data-theme="dark"] .art-title {
+  color: var(--taupe-4);
+}
+
+[data-theme="dark"] .art-stripe {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--taupe-3) 0px,
+    var(--taupe-3) 3px,
+    transparent 3px,
+    transparent 6px
+  );
+}
+
+[data-theme="dark"] .art-close {
+  border-color: #e06868 #901818 #901818 #e06868;
+}
+
+/* Flat borders for 3D elements on dark */
+[data-theme="dark"] .artifact,
+[data-theme="dark"] .summary-bar {
+  border-color: var(--taupe-2);
+}
+
+/* Text on colored backgrounds — --white flips dark */
+[data-theme="dark"] .badge-ai,
+[data-theme="dark"] .badge-human,
+[data-theme="dark"] .cmd-primary {
+  color: #f0eef4;
+}
+
+/* Cards */
+[data-theme="dark"] .user-card {
+  background: rgba(136,85,168,0.08);
+  border-color: rgba(136,85,168,0.15);
+}
+
+/* Flag boxes */
+[data-theme="dark"] .flag-box.safe {
+  background: rgba(76,175,80,0.08);
+}
+
+[data-theme="dark"] .flag-box.warn {
+  background: rgba(212,160,48,0.08);
+}
+
+[data-theme="dark"] .status-safe {
+  background: rgba(76,175,80,0.12);
+}
+
+[data-theme="dark"] .status-warn {
+  background: rgba(212,160,48,0.12);
+}
+
+/* Chips — berry-4 stays dark for bevels, override text color */
+[data-theme="dark"] .action-chip {
+  color: var(--berry-3);
+}
+
+[data-theme="dark"] .art-live {
+  background: rgba(76,175,80,0.12);
+}

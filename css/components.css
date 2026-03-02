@@ -359,3 +359,78 @@
   0%, 60%, 100% { transform: translateY(0); opacity: 0.3; }
   30% { transform: translateY(-4px); opacity: 1; }
 }
+
+/* ============================================
+   DARK MODE OVERRIDES
+   ============================================ */
+
+/* Cosimo panel header — must stay dark */
+[data-theme="dark"] .cosimo-panel-header {
+  background: #28282d;
+}
+
+[data-theme="dark"] .cosimo-panel-name {
+  color: var(--taupe-4);
+}
+
+[data-theme="dark"] .cosimo-panel {
+  border-color: var(--taupe-1);
+  box-shadow: -4px 0 20px rgba(0,0,0,0.5);
+}
+
+/* Step markers — text on colored backgrounds */
+[data-theme="dark"] .step-marker.complete {
+  color: #f0eef4;
+  border-color: #5cb85e #2d7a2f #2d7a2f #5cb85e;
+}
+
+[data-theme="dark"] .step-marker.running {
+  color: #f0eef4;
+  border-color: var(--violet-2) var(--violet-4) var(--violet-4) var(--violet-2);
+}
+
+/* Step tags — berry-4 stays dark for bevels, brighten text */
+[data-theme="dark"] .step-tag {
+  color: var(--berry-3);
+}
+
+/* Flat borders for cards */
+[data-theme="dark"] .step-card {
+  border-color: var(--taupe-2);
+}
+
+/* Run status dots */
+[data-theme="dark"] .run-status-dot.success {
+  border-color: #5cb85e #2d7a2f #2d7a2f #5cb85e;
+}
+
+[data-theme="dark"] .run-status-dot.failed {
+  border-color: #e06868 #901818 #901818 #e06868;
+}
+
+/* Panel messages */
+[data-theme="dark"] .panel-msg-ai {
+  background: rgba(136,85,168,0.1);
+  border-color: rgba(136,85,168,0.18);
+}
+
+[data-theme="dark"] .panel-msg-user {
+  background: rgba(136,85,168,0.06);
+  border-color: rgba(136,85,168,0.12);
+}
+
+/* Panel send button — text on violet bg */
+[data-theme="dark"] .panel-send-btn {
+  color: #f0eef4;
+}
+
+/* Pulse animation for dark mode */
+@keyframes pulse-step-dark {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(136,85,168,0.3); }
+  50% { box-shadow: 0 0 0 4px rgba(136,85,168,0.1); }
+}
+
+[data-theme="dark"] .step-marker.running,
+[data-theme="dark"] .run-status-dot.running-dot {
+  animation: pulse-step-dark 2s infinite;
+}

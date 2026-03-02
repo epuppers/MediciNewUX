@@ -152,3 +152,34 @@
 .panel-overlay.show {
   display: block;
 }
+
+/* ============================================
+   DARK MODE OVERRIDES
+   ============================================ */
+
+[data-theme="dark"] .dropdown-menu {
+  border-color: var(--taupe-2);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+}
+
+/* berry-5 stays dark for bevels — use berry-3 for hover text */
+[data-theme="dark"] .dropdown-item:hover {
+  color: var(--berry-3);
+}
+
+[data-theme="dark"] .dropdown-item.violet:hover {
+  background: rgba(136,85,168,0.15);
+}
+
+[data-theme="dark"] .panel-overlay {
+  background: rgba(0,0,0,0.4);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: var(--taupe-2);
+  border-color: var(--taupe-1);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: var(--taupe-3);
+}

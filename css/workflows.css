@@ -509,3 +509,82 @@
   font-size: 11px;
   color: var(--taupe-3);
 }
+
+/* ============================================
+   DARK MODE OVERRIDES
+   ============================================ */
+
+/* Section bar surfaces — must stay dark */
+[data-theme="dark"] .detail-section-bar {
+  background: #28282d;
+  border-bottom-color: #36363c;
+}
+
+[data-theme="dark"] .detail-section-title {
+  color: var(--taupe-4);
+}
+
+[data-theme="dark"] .wf-stats-section-bar {
+  background: #28282d;
+  border-bottom-color: #36363c;
+}
+
+/* Flat borders for 3D elements */
+[data-theme="dark"] .wf-card {
+  border-color: var(--taupe-2);
+}
+
+[data-theme="dark"] .wf-card:hover {
+  border-color: var(--violet-2);
+}
+
+[data-theme="dark"] .detail-section,
+[data-theme="dark"] .wf-stats-section {
+  border-color: var(--taupe-2);
+}
+
+[data-theme="dark"] .wf-card-header {
+  background: rgba(255,255,255,0.02);
+}
+
+/* Status badges */
+[data-theme="dark"] .status-active {
+  background: rgba(76,175,80,0.12);
+}
+
+[data-theme="dark"] .status-draft {
+  background: rgba(212,160,48,0.12);
+}
+
+[data-theme="dark"] .status-paused {
+  background: rgba(138,137,144,0.12);
+}
+
+/* File chips */
+[data-theme="dark"] .file-chip.pdf { background: rgba(224,85,85,0.12); }
+[data-theme="dark"] .file-chip.xlsx { background: rgba(76,175,80,0.12); }
+[data-theme="dark"] .file-chip.csv { background: rgba(140,184,212,0.12); }
+[data-theme="dark"] .file-chip.docx { background: rgba(136,85,168,0.12); }
+
+/* Source items */
+[data-theme="dark"] .source-item {
+  background: var(--taupe-1);
+}
+
+[data-theme="dark"] .source-icon {
+  color: var(--taupe-4);
+}
+
+[data-theme="dark"] .add-source-btn:hover {
+  background: rgba(136,85,168,0.08);
+}
+
+/* Tab bar */
+[data-theme="dark"] .tab-btn:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+/* Lesson applied — text on colored bar */
+[data-theme="dark"] .lesson-applied-label {
+  color: #f0eef4;
+}

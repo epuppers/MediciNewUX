@@ -53,6 +53,59 @@
   --sans: 'DM Sans', sans-serif;
 }
 
+/* ============================================
+   DARK MODE OVERRIDES
+   ============================================ */
+
+[data-theme="dark"] {
+  /* Gray scale — flipped for dark surfaces & light text */
+  --taupe-1: #28282d;
+  --taupe-2: #36363c;
+  --taupe-3: #76757c;
+  --taupe-4: #adacb2;
+  --taupe-5: #e0dee5;
+
+  /* Surfaces */
+  --white: #1f1f23;
+  --off-white: #18181b;
+
+  /* Berry — dark tints, vibrant accent, dark ends preserved for bevels */
+  --berry-1: #2e1f2f;
+  --berry-2: #5a3a5c;
+  --berry-3: #a860aa;
+  --berry-4: #5D355E;
+  --berry-5: #2E1A2F;
+
+  /* Blue */
+  --blue-1: #1a2d3c;
+  --blue-2: #406e8c;
+  --blue-3: #8cb8d4;
+
+  /* Violet — dark tints, brighter accent, dark ends preserved */
+  --violet-1: #241a2f;
+  --violet-2: #6a4a80;
+  --violet-3: #8855a8;
+  --violet-4: #4D2B5F;
+  --violet-5: #271630;
+
+  /* Chinese — dark tints, preserved for bevel integrity */
+  --chinese-1: #261a28;
+  --chinese-2: #4e3854;
+  --chinese-3: #8a6c92;
+  --chinese-4: #4A2E50;
+  --chinese-5: #2A182E;
+
+  /* Semantic — brightened for dark-bg legibility */
+  --green: #4caf50;
+  --red: #e05555;
+  --amber: #d4a030;
+}
+
+/* Body background override (taupe-4 flips to light, body must stay dark) */
+[data-theme="dark"] body {
+  background-color: #111113;
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
