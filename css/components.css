@@ -92,8 +92,8 @@
 
 .step-tag {
   font-family: var(--mono);
-  font-size: 9px;
-  padding: 2px 6px;
+  font-size: 11px;
+  padding: 3px 7px;
   border: 1px solid var(--berry-2);
   color: var(--berry-4);
   background: var(--berry-1);
@@ -287,7 +287,7 @@
 
 .panel-msg-sender {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--taupe-3);
   text-transform: uppercase;

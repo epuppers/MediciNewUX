@@ -6,7 +6,7 @@
 <title>Cosimo — Applied Intelligence Platform</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/layout.css">
 <link rel="stylesheet" href="css/chat.css">
@@ -36,6 +36,10 @@
       </div>
 
       <button class="new-btn" id="newBtn" onclick="handleNew()">+ New Thread</button>
+
+      <div class="sidebar-search">
+        <input type="text" class="sidebar-search-input" placeholder="Search..." />
+      </div>
     </div>
 
     <!-- Chat sidebar items -->
@@ -53,10 +57,12 @@
         <div class="thread-item">
           Hilgard — Fee Analysis
           <div class="thread-meta">Feb 22, 4:15 PM</div>
+          <span class="thread-indicator ready">Ready</span>
         </div>
         <div class="thread-item">
           K-1 Document Extraction
           <div class="thread-meta">Feb 20, 9:45 AM</div>
+          <span class="thread-indicator needs-input">Input needed</span>
         </div>
         <div class="thread-item">
           Erabor Partnership Terms
@@ -99,6 +105,7 @@
         </div>
         <div class="wf-side-item" onclick="showWorkflowDetail('covenant', this)">
           Loan Covenant Monitor
+          <span class="wf-notif-dot"></span>
           <div class="wf-side-meta">
             <span class="wf-side-status paused-status">Paused</span>
             Paused Feb 15
@@ -313,22 +320,20 @@
 
         <div class="wf-listing">
           <!-- Stats -->
-          <div class="wf-stats">
-            <div class="wf-stat-card">
-              <div class="wf-stat-label">Total Workflows</div>
-              <div class="wf-stat-value">5</div>
+          <div class="wf-stats-section">
+            <div class="wf-stats-section-bar">
+              <div class="art-stripe"></div>
+              <span class="detail-section-title">Overview</span>
+              <div class="art-stripe"></div>
             </div>
-            <div class="wf-stat-card">
-              <div class="wf-stat-label">Active</div>
-              <div class="wf-stat-value green">3</div>
-            </div>
-            <div class="wf-stat-card">
-              <div class="wf-stat-label">Runs Today</div>
-              <div class="wf-stat-value">12</div>
-            </div>
-            <div class="wf-stat-card">
-              <div class="wf-stat-label">Failed</div>
-              <div class="wf-stat-value red">1</div>
+            <div class="wf-stats-body">
+              <span class="wf-stat-inline"><span class="wf-stat-inline-label">Total</span> <span class="wf-stat-inline-val">5</span></span>
+              <span class="wf-stats-sep"></span>
+              <span class="wf-stat-inline"><span class="wf-stat-inline-label">Active</span> <span class="wf-stat-inline-val green">3</span></span>
+              <span class="wf-stats-sep"></span>
+              <span class="wf-stat-inline"><span class="wf-stat-inline-label">Runs Today</span> <span class="wf-stat-inline-val">12</span></span>
+              <span class="wf-stats-sep"></span>
+              <span class="wf-stat-inline"><span class="wf-stat-inline-label">Failed</span> <span class="wf-stat-inline-val red">1</span></span>
             </div>
           </div>
 
@@ -665,10 +670,17 @@
                     <span class="config-label">Columns</span>
                     <span class="config-value">Unit, Floor, Tenant, Lease Start, Lease End, Monthly Rent, Sq Ft, $/SF, Status, Notes</span>
                   </div>
-                  <div class="config-row">
-                    <span class="config-label">Lesson Applied</span>
-                    <span class="config-value" style="color:var(--violet-3); font-weight:600;">rent-roll-extraction-standardized</span>
-                  </div>
+                </div>
+              </div>
+
+              <div class="lesson-applied">
+                <div class="lesson-applied-bar">
+                  <span class="lesson-applied-icon">◆</span>
+                  <span class="lesson-applied-label">Lesson Applied</span>
+                </div>
+                <div class="lesson-applied-body">
+                  <div class="lesson-applied-name">rent-roll-extraction-standardized</div>
+                  <div class="lesson-applied-meta">Created by E. Puckett · Last updated 6 days ago · Used in 3 workflows</div>
                 </div>
               </div>
             </div>

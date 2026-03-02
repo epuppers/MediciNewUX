@@ -25,9 +25,34 @@
 }
 
 .sidebar.collapsed {
-  width: 0;
-  border: none;
-  padding: 0;
+  width: 48px;
+}
+
+.sidebar.collapsed .sidebar-header,
+.sidebar.collapsed .side-label,
+.sidebar.collapsed .thread-list,
+.sidebar.collapsed .workflow-sidebar-list,
+.sidebar.collapsed .sidebar-footer .user-name,
+.sidebar.collapsed .sidebar-search {
+  display: none;
+}
+
+.sidebar.collapsed .sidebar-footer {
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.sidebar.collapsed .logo-row {
+  justify-content: center;
+  margin-bottom: 0;
+  padding: 12px 0;
+}
+
+.sidebar.collapsed .logo-title,
+.sidebar.collapsed .logo-sub,
+.sidebar.collapsed .mode-switcher,
+.sidebar.collapsed .new-btn {
+  display: none;
 }
 
 .sidebar-header {
@@ -63,7 +88,7 @@
 }
 
 .logo-title {
-  font-family: var(--display);
+  font-family: var(--pixel);
   font-size: 22px;
   color: var(--taupe-1);
   line-height: 1;
@@ -73,7 +98,7 @@
 
 .logo-sub {
   font-family: var(--mono);
-  font-size: 9px;
+  font-size: 11px;
   color: var(--taupe-3);
   letter-spacing: 0.08em;
   margin-top: 2px;
@@ -136,9 +161,35 @@
 .new-btn:hover { background: var(--chinese-4); }
 .new-btn:active { border-color: #1a1a1c var(--taupe-3) var(--taupe-3) #1a1a1c; }
 
+.sidebar-search {
+  margin-top: 10px;
+}
+
+.sidebar-search-input {
+  width: 100%;
+  padding: 7px 10px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--taupe-1);
+  background: rgba(0,0,0,0.25);
+  border: 1px solid;
+  border-color: #1a1a1c var(--taupe-4) var(--taupe-4) #1a1a1c;
+  outline: none;
+}
+
+.sidebar-search-input::placeholder {
+  color: var(--taupe-3);
+}
+
+.sidebar-search-input:focus {
+  border-color: var(--violet-3);
+  box-shadow: 0 0 0 1px var(--violet-3);
+  background: rgba(0,0,0,0.35);
+}
+
 .side-label {
   font-family: var(--mono);
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -177,16 +228,16 @@
 }
 
 .thread-meta, .wf-side-meta {
-  font-size: 10px;
+  font-size: 12px;
   color: var(--taupe-3);
   margin-top: 2px;
 }
 
 .wf-side-status {
   display: inline-block;
-  font-size: 9px;
+  font-size: 11px;
   font-family: var(--mono);
-  padding: 1px 5px;
+  padding: 2px 6px;
   margin-left: 4px;
   border: 1px solid;
 }
@@ -207,6 +258,50 @@
   color: var(--taupe-3);
   border-color: var(--taupe-3);
   background: rgba(135,134,139,0.1);
+}
+
+/* Thread indicators */
+.thread-indicator {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 600;
+  padding: 1px 5px;
+  margin-top: 4px;
+  border: 1px solid;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.thread-indicator.ready {
+  color: var(--green);
+  border-color: var(--green);
+  background: rgba(61,139,64,0.15);
+}
+
+.thread-indicator.needs-input {
+  color: var(--amber);
+  border-color: var(--amber);
+  background: rgba(184,134,43,0.15);
+}
+
+.thread-indicator.error {
+  color: var(--red);
+  border-color: var(--red);
+  background: rgba(192,72,72,0.15);
+}
+
+/* Workflow notification dot */
+.wf-notif-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background: var(--red);
+  border: 1px solid;
+  border-color: #e06060 #802020 #802020 #e06060;
+  margin-left: 6px;
+  vertical-align: middle;
+  flex-shrink: 0;
 }
 
 /* Sidebar user footer */
