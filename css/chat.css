@@ -8,7 +8,319 @@
   padding: 20px 24px 20px;
 }
 
-.msg-block { margin-bottom: 16px; }
+.msg-block {
+  margin-bottom: 16px;
+  position: relative;
+}
+
+/* ============================================
+   MESSAGE HOVER ACTIONS (#1)
+   ============================================ */
+.msg-actions {
+  display: none;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  gap: 2px;
+  z-index: 5;
+  background: var(--white);
+  border: 1px solid;
+  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+  padding: 2px;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.08);
+}
+
+.msg-block:hover .msg-actions {
+  display: flex;
+}
+
+.msg-action-btn {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  color: var(--taupe-3);
+  transition: all 0.1s;
+  padding: 0;
+}
+
+.msg-action-btn:hover {
+  color: var(--taupe-5);
+  background: var(--berry-1);
+  border-color: var(--taupe-2);
+}
+
+.msg-action-btn svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* Regenerate is AI-only, Edit is user-only — handled by JS */
+
+/* ============================================
+   TOAST NOTIFICATIONS (#8)
+   ============================================ */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.toast {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 6px 16px;
+  background: var(--taupe-5);
+  color: var(--taupe-1);
+  border: 1px solid;
+  border-color: var(--taupe-4) #0e0e10 #0e0e10 var(--taupe-4);
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: auto;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================
+   RESPONSE FEEDBACK (#9)
+   ============================================ */
+.msg-feedback {
+  display: flex;
+  gap: 4px;
+  margin: 6px 0 0 30px;
+}
+
+.feedback-btn {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  color: var(--taupe-3);
+  transition: all 0.1s;
+  padding: 0;
+}
+
+.feedback-btn:hover {
+  border-color: var(--taupe-2);
+}
+
+.feedback-btn.up:hover,
+.feedback-btn.up.active {
+  color: var(--green);
+  background: rgba(61,139,64,0.08);
+  border-color: var(--green);
+}
+
+.feedback-btn.down:hover,
+.feedback-btn.down.active {
+  color: var(--red);
+  background: rgba(192,72,72,0.08);
+  border-color: var(--red);
+}
+
+.feedback-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* ============================================
+   DATE SEPARATOR (#11)
+   ============================================ */
+.date-separator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.date-separator-line {
+  flex: 1;
+  height: 1px;
+  background: var(--taupe-2);
+}
+
+.date-separator-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--taupe-3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   EMPTY THREAD (#4)
+   ============================================ */
+.empty-thread {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.empty-thread-icon {
+  font-size: 28px;
+  color: var(--violet-2);
+  margin-bottom: 12px;
+}
+
+.empty-thread-title {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--taupe-5);
+  margin-bottom: 6px;
+}
+
+.empty-thread-sub {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--taupe-3);
+  max-width: 320px;
+  line-height: 1.6;
+}
+
+.empty-thread-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 16px;
+  justify-content: center;
+}
+
+.empty-thread-chip {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 5px 12px;
+  color: var(--taupe-4);
+  background: var(--off-white);
+  border: 1px solid;
+  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+  cursor: pointer;
+  transition: all 0.12s;
+}
+
+.empty-thread-chip:hover {
+  background: var(--berry-1);
+  color: var(--berry-5);
+  border-color: var(--berry-2) var(--berry-4) var(--berry-4) var(--berry-2);
+}
+
+/* ============================================
+   CODE BLOCK WITH COPY (#12)
+   ============================================ */
+.code-block {
+  margin: 8px 0 8px 30px;
+  border: 2px solid;
+  border-color: var(--taupe-2) var(--taupe-4) var(--taupe-4) var(--taupe-2);
+  background: var(--taupe-5);
+}
+
+.code-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 10px;
+  background: #1a1a1c;
+  border-bottom: 1px solid var(--taupe-4);
+}
+
+.code-block-lang {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--taupe-3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.code-block-copy {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--taupe-3);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  padding: 2px 8px;
+  letter-spacing: 0.05em;
+  transition: all 0.1s;
+}
+
+.code-block-copy:hover {
+  color: var(--taupe-1);
+  border-color: var(--taupe-3);
+}
+
+.code-block pre {
+  margin: 0;
+  padding: 10px 12px;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--taupe-1);
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* ============================================
+   INPUT DISABLED DURING GENERATION (#6)
+   ============================================ */
+.text-input.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  background: var(--taupe-1);
+}
+
+/* ============================================
+   DROP ZONE (#7)
+   ============================================ */
+.input-area.drop-active {
+  position: relative;
+}
+
+.input-area.drop-active::after {
+  content: 'Drop files here';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--violet-3);
+  background: rgba(116,65,143,0.08);
+  border: 2px dashed var(--violet-3);
+  z-index: 5;
+  letter-spacing: 0.05em;
+}
 
 .msg-header {
   display: flex;
@@ -713,6 +1025,303 @@
   }
 }
 
+/* ============================================
+   COSIMO REASONING (Train of Thought)
+   ============================================ */
+.cosimo-reasoning {
+  margin: 4px 0 4px 30px;
+  border: 2px solid;
+  border-color: var(--taupe-2) var(--taupe-4) var(--taupe-4) var(--taupe-2);
+  background: var(--off-white);
+  overflow: hidden;
+}
+
+.reasoning-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--taupe-5);
+  border-bottom: 1px solid var(--taupe-4);
+}
+
+.reasoning-header-icon {
+  font-size: 10px;
+  color: var(--violet-2);
+}
+
+.reasoning-header-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--taupe-1);
+  letter-spacing: 0.05em;
+}
+
+.reasoning-pulse {
+  width: 6px;
+  height: 6px;
+  background: var(--violet-2);
+  border: 1px solid var(--violet-3);
+  animation: reason-pulse 1.5s ease-in-out infinite;
+  margin-left: auto;
+}
+
+@keyframes reason-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+.reasoning-steps {
+  padding: 8px 12px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.reasoning-step-item {
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--taupe-4);
+  padding: 3px 0;
+  border-bottom: 1px solid var(--taupe-1);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.reasoning-step-item:last-child { border-bottom: none; }
+
+.reasoning-step-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reasoning-flag {
+  color: var(--amber);
+  font-weight: 600;
+}
+
+/* Reasoning collapse transition */
+.cosimo-reasoning.collapsing {
+  max-height: 300px;
+  transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
+}
+
+.cosimo-reasoning.collapsed {
+  max-height: 38px;
+  overflow: hidden;
+}
+
+.cosimo-reasoning.collapsed .reasoning-steps {
+  display: none;
+}
+
+.cosimo-reasoning.collapsed .reasoning-header-label {
+  color: var(--taupe-3);
+}
+
+.cosimo-reasoning.collapsed .reasoning-pulse {
+  animation: none;
+  opacity: 0.3;
+}
+
+/* ============================================
+   ERABOR RESPONSE SECTIONS
+   ============================================ */
+.erabor-section {
+  margin: 12px 0 12px 30px;
+  border: 2px solid;
+  border-color: var(--taupe-2) var(--taupe-4) var(--taupe-4) var(--taupe-2);
+  background: var(--white);
+}
+
+.erabor-section-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--taupe-1);
+  padding: 6px 12px;
+  background: var(--taupe-5);
+  border-bottom: 1px solid var(--taupe-4);
+}
+
+.erabor-section-body {
+  padding: 4px 0;
+}
+
+.erabor-kv {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 5px 12px;
+  border-bottom: 1px solid var(--taupe-1);
+}
+
+.erabor-kv:last-child { border-bottom: none; }
+
+.erabor-k {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--taupe-3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+}
+
+.erabor-v {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--taupe-5);
+  text-align: right;
+}
+
+.erabor-v.erabor-flag {
+  color: var(--amber);
+}
+
+/* ============================================
+   STREAMING TEXT EFFECT
+   ============================================ */
+.erabor-stream-block {
+  /* hidden until JS reveals */
+}
+
+.erabor-stream-block.streamed {
+  /* visible */
+}
+
+/* Blinking cursor element */
+.stream-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 14px;
+  background: var(--violet-3);
+  margin-left: 1px;
+  vertical-align: text-bottom;
+  animation: blink-cursor 0.6s step-end infinite;
+}
+
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ============================================
+   COSIMO ERROR STATE
+   ============================================ */
+.cosimo-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  margin: 4px 0;
+  background: rgba(192,72,72,0.05);
+  border: 2px solid;
+  border-color: var(--taupe-2) var(--taupe-4) var(--taupe-4) var(--taupe-2);
+  border-left: 3px solid var(--red);
+}
+
+.cosimo-error-icon {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--white);
+  background: var(--red);
+  border: 1px solid;
+  border-color: #e06060 #802020 #802020 #e06060;
+  flex-shrink: 0;
+}
+
+.cosimo-error-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.cosimo-error-title {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--red);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+
+.cosimo-error-detail {
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--taupe-4);
+  margin-bottom: 8px;
+}
+
+.cosimo-error-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--taupe-3);
+  letter-spacing: 0.05em;
+}
+
+.cosimo-error-retry {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--taupe-5);
+  background: var(--taupe-1);
+  border: 1px solid;
+  border-color: var(--white) var(--taupe-3) var(--taupe-3) var(--white);
+  cursor: pointer;
+  flex-shrink: 0;
+  align-self: center;
+  transition: all 0.15s;
+}
+
+.cosimo-error-retry:hover {
+  background: var(--berry-1);
+  color: var(--berry-5);
+  border-color: var(--berry-2) var(--berry-4) var(--berry-4) var(--berry-2);
+}
+
+.cosimo-error-retry:active {
+  border-color: var(--taupe-3) var(--white) var(--white) var(--taupe-3);
+}
+
+.retry-icon {
+  width: 12px;
+  height: 12px;
+}
+
+.cosimo-error-retry.retrying .retry-icon {
+  animation: spin-retry 0.8s linear infinite;
+}
+
+@keyframes spin-retry {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Thinking cubes fade-out */
+.cosimo-thinking.fading {
+  transition: opacity 0.5s ease;
+  opacity: 0;
+}
+
 /* Input Area */
 .input-area {
   padding: 12px 16px;
@@ -724,6 +1333,7 @@
 .input-row {
   display: flex;
   gap: 6px;
+  align-items: flex-end;
 }
 
 .text-input {
@@ -731,11 +1341,18 @@
   padding: 8px 10px;
   font-family: var(--mono);
   font-size: 13px;
+  line-height: 1.5;
   color: var(--taupe-5);
   background: var(--off-white);
   border: 1px solid;
   border-color: var(--taupe-3) var(--taupe-1) var(--taupe-1) var(--taupe-3);
   outline: none;
+  overflow-y: auto;
+  min-height: 36px;
+  max-height: 160px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 .text-input:focus {
@@ -743,8 +1360,30 @@
   box-shadow: 0 0 0 1px var(--violet-3);
 }
 
-.text-input::placeholder {
+/* Placeholder via data attribute */
+.text-input:empty::before {
+  content: attr(data-placeholder);
   color: var(--taupe-3);
+  pointer-events: none;
+}
+
+/* Rich text styles inside contenteditable */
+.text-input ul,
+.text-input ol {
+  margin: 2px 0;
+  padding-left: 20px;
+}
+
+.text-input li {
+  margin-bottom: 1px;
+}
+
+.text-input b, .text-input strong {
+  font-weight: 700;
+}
+
+.text-input i, .text-input em {
+  font-style: italic;
 }
 
 .cmd-btn {
@@ -772,6 +1411,27 @@
 
 .cmd-primary:hover { background: var(--violet-4); }
 
+.cmd-btn svg {
+  display: block;
+}
+
+.cmd-stop {
+  display: flex;
+  align-items: center;
+  background: var(--red);
+  color: var(--white);
+  border-color: #e06060 #802020 #802020 #e06060;
+}
+
+.cmd-stop:hover {
+  background: #b84040;
+}
+
+.stop-icon {
+  width: 10px;
+  height: 10px;
+}
+
 .input-footer {
   display: flex;
   justify-content: space-between;
@@ -779,6 +1439,70 @@
   font-family: var(--mono);
   font-size: 12px;
   color: var(--taupe-3);
+}
+
+/* ============================================
+   ATTACH FILE DROPDOWN
+   ============================================ */
+.attach-wrapper {
+  position: relative;
+}
+
+.attach-menu {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--white);
+  border: 2px solid;
+  border-color: var(--taupe-2) var(--taupe-4) var(--taupe-4) var(--taupe-2);
+  padding: 3px;
+  gap: 2px;
+  flex-direction: row;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.08);
+  z-index: 10;
+  padding-bottom: 5px;
+}
+
+/* Invisible bridge between button and menu so hover doesn't break */
+.attach-menu::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 8px;
+}
+
+.attach-wrapper:hover .attach-menu {
+  display: flex;
+}
+
+.attach-option {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  color: var(--taupe-4);
+  padding: 0;
+  transition: all 0.1s;
+}
+
+.attach-option:hover {
+  background: var(--berry-1);
+  border-color: var(--berry-2);
+  color: var(--violet-3);
+}
+
+.attach-option svg {
+  width: 18px;
+  height: 18px;
+  display: block;
 }
 
 /* ============================================
@@ -894,4 +1618,105 @@
 
 [data-theme="dark"] .fp-file-item-icon {
   color: #f0eef4;
+}
+
+/* Reasoning panel */
+[data-theme="dark"] .cosimo-reasoning {
+  border-color: var(--taupe-2);
+}
+
+[data-theme="dark"] .reasoning-header {
+  background: #28282d;
+}
+
+[data-theme="dark"] .reasoning-header-label {
+  color: var(--taupe-4);
+}
+
+[data-theme="dark"] .reasoning-step-item {
+  border-bottom-color: #2a2a2f;
+}
+
+[data-theme="dark"] .cosimo-reasoning.collapsed .reasoning-header-label {
+  color: var(--taupe-2);
+}
+
+/* Erabor sections */
+[data-theme="dark"] .erabor-section {
+  border-color: var(--taupe-2);
+}
+
+[data-theme="dark"] .erabor-section-title {
+  background: #28282d;
+  color: var(--taupe-4);
+}
+
+[data-theme="dark"] .erabor-kv {
+  border-bottom-color: #2a2a2f;
+}
+
+[data-theme="dark"] .erabor-v.erabor-flag {
+  color: var(--amber);
+}
+
+/* Error state */
+[data-theme="dark"] .cosimo-error {
+  background: rgba(192,72,72,0.08);
+  border-color: var(--taupe-2);
+  border-left-color: var(--red);
+}
+
+[data-theme="dark"] .cosimo-error-icon {
+  color: #f0eef4;
+}
+
+[data-theme="dark"] .cosimo-error-retry {
+  color: var(--taupe-4);
+}
+
+[data-theme="dark"] .cosimo-error-retry:hover {
+  color: var(--berry-3);
+}
+
+/* Stop button */
+[data-theme="dark"] .cmd-stop {
+  color: #f0eef4;
+}
+
+/* Message actions */
+[data-theme="dark"] .msg-actions {
+  border-color: var(--taupe-2);
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+}
+
+/* Toast */
+[data-theme="dark"] .toast {
+  background: var(--taupe-1);
+  color: var(--taupe-5);
+  border-color: var(--taupe-2);
+}
+
+/* Code block */
+[data-theme="dark"] .code-block {
+  border-color: var(--taupe-2);
+}
+
+/* Empty thread */
+[data-theme="dark"] .empty-thread-chip {
+  border-color: var(--taupe-2);
+}
+
+[data-theme="dark"] .empty-thread-chip:hover {
+  color: var(--berry-3);
+}
+
+/* Attach menu */
+[data-theme="dark"] .attach-menu {
+  border-color: var(--taupe-2);
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+}
+
+[data-theme="dark"] .attach-option:hover {
+  background: rgba(136,85,168,0.12);
+  border-color: var(--violet-3);
 }

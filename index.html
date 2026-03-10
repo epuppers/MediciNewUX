@@ -32,7 +32,8 @@
       <button class="new-btn" id="newBtn" onclick="handleNew()">+ New Thread</button>
 
       <div class="sidebar-search">
-        <input type="text" class="sidebar-search-input" placeholder="Search..." onkeydown="if(event.key==='Enter')runGlobalSearch(this.value)" />
+        <input type="text" class="sidebar-search-input" placeholder="Search..." oninput="runGlobalSearch(this.value)" />
+        <div class="search-results" id="searchResults" style="display:none;"></div>
       </div>
     </div>
 
@@ -56,7 +57,7 @@
         <div class="thread-item" onclick="selectThread('k1', this)">
           K-1 Document Extraction
           <div class="thread-meta">Feb 20, 9:45 AM</div>
-          <span class="thread-indicator needs-input">Input needed</span>
+          <span class="thread-indicator error">Error</span>
         </div>
         <div class="thread-item" onclick="selectThread('erabor', this)">
           Erabor Partnership Terms
@@ -192,15 +193,20 @@
       <div class="main-header" id="chatHeader">
         <span class="header-title" id="chatHeaderTitle">Fund III — Allocation Drift</span>
         <div class="header-actions">
-          <button class="header-btn disabled" id="filesBtn" disabled onclick="openFilePanel('folder')">Files</button>
-          <button class="header-btn">Export</button>
-          <button class="header-btn">Share</button>
+          <button class="header-btn icon-btn disabled" id="filesBtn" disabled onclick="openFilePanel('folder')" title="Files"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M1.5 3.5v9h13v-7h-7l-2-2z"/></svg></button>
+          <button class="header-btn icon-btn" onclick="exportThread()" title="Export"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M8 1.5v9M4.5 7L8 10.5 11.5 7"/><path d="M2.5 11.5v3h11v-3"/></svg></button>
+          <button class="header-btn icon-btn" onclick="shareThread()" title="Share"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><circle cx="12" cy="3" r="2"/><circle cx="4" cy="8" r="2"/><circle cx="12" cy="13" r="2"/><line x1="5.8" y1="7" x2="10.2" y2="4"/><line x1="5.8" y1="9" x2="10.2" y2="12"/></svg></button>
         </div>
       </div>
 
       <!-- Fund III thread -->
       <div class="chat-thread active" id="thread-fund3">
       <div class="chat-scroll">
+        <div class="date-separator">
+          <div class="date-separator-line"></div>
+          <span class="date-separator-label">Today</span>
+          <div class="date-separator-line"></div>
+        </div>
         <!-- Message 1: User -->
         <div class="msg-block">
           <div class="user-card">
@@ -289,6 +295,10 @@
               <p><strong>Primary issue:</strong> US Large Cap is up 3.2 points since June, driven by the tech rally. International Developed is the mirror underweight.</p>
               <p><strong>Recommendation:</strong> Paired trade — trim the S&P 500 position and rotate into the EAFE sleeve. I've drafted the rebalancing memo for the IC. Want me to pull it up, or look at tax implications first?</p>
             </div>
+            <div class="msg-feedback">
+              <button class="feedback-btn up" onclick="giveFeedback(this,'up')" title="Good response"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 22V11l3-8 2 1-1 5h7a2 2 0 0 1 2 2.2l-1.2 7A2 2 0 0 1 16.8 20H7z"/><rect x="1" y="11" width="5" height="11"/></svg></button>
+              <button class="feedback-btn down" onclick="giveFeedback(this,'down')" title="Poor response"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2v11l-3 8-2-1 1-5H6a2 2 0 0 1-2-2.2l1.2-7A2 2 0 0 1 7.2 4H17z"/><rect x="18" y="2" width="5" height="11"/></svg></button>
+            </div>
           </div>
         </div>
 
@@ -356,18 +366,32 @@
                 <span class="summary-value net">~$24.4K</span>
               </div>
             </div>
+            <div class="msg-feedback">
+              <button class="feedback-btn up" onclick="giveFeedback(this,'up')" title="Good response"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 22V11l3-8 2 1-1 5h7a2 2 0 0 1 2 2.2l-1.2 7A2 2 0 0 1 16.8 20H7z"/><rect x="1" y="11" width="5" height="11"/></svg></button>
+              <button class="feedback-btn down" onclick="giveFeedback(this,'down')" title="Poor response"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2v11l-3 8-2-1 1-5H6a2 2 0 0 1-2-2.2l1.2-7A2 2 0 0 1 7.2 4H17z"/><rect x="18" y="2" width="5" height="11"/></svg></button>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="input-area">
         <div class="input-row">
-          <input class="text-input" type="text" placeholder="Continue this thread..." />
-          <button class="cmd-btn">Attach</button>
-          <button class="cmd-btn cmd-primary">Send</button>
+          <div class="text-input" contenteditable="true" data-placeholder="Continue this thread..."></div>
+          <div class="attach-wrapper">
+            <button class="cmd-btn" title="Attach file"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M8.5 3.5v7a2 2 0 0 1-4 0v-7a3 3 0 0 1 6 0v7.5a4 4 0 0 1-8 0V5"/></svg></button>
+            <div class="attach-menu">
+              <button class="attach-option" onclick="attachFromComputer(this)" title="From computer">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><rect x="1.5" y="1.5" width="13" height="9"/><line x1="6" y1="10.5" x2="6" y2="13"/><line x1="10" y1="10.5" x2="10" y2="13"/><line x1="4" y1="13" x2="12" y2="13"/></svg>
+              </button>
+              <button class="attach-option" onclick="attachFromDrive(this)" title="From cloud drive">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M4 13.5H3.5a3 3 0 0 1-.4-5.97 4 4 0 0 1 7.8-1.53A3.5 3.5 0 0 1 13 12.5H4z"/></svg>
+              </button>
+            </div>
+          </div>
+          <button class="cmd-btn cmd-primary" title="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M1.5 8h11M8.5 4L12.5 8 8.5 12"/></svg></button>
         </div>
         <div class="input-footer">
-          <span>Return to send · Shift+Return for new line</span>
+          <span>⌘B bold · ⌘I italic · ⌘U underline · **markdown**</span>
           <span>Cosimo v2.1</span>
         </div>
       </div>
@@ -450,12 +474,22 @@
 
       <div class="input-area">
         <div class="input-row">
-          <input class="text-input" type="text" placeholder="Continue this thread..." />
-          <button class="cmd-btn">Attach</button>
-          <button class="cmd-btn cmd-primary">Send</button>
+          <div class="text-input" contenteditable="true" data-placeholder="Continue this thread..."></div>
+          <div class="attach-wrapper">
+            <button class="cmd-btn" title="Attach file"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M8.5 3.5v7a2 2 0 0 1-4 0v-7a3 3 0 0 1 6 0v7.5a4 4 0 0 1-8 0V5"/></svg></button>
+            <div class="attach-menu">
+              <button class="attach-option" onclick="attachFromComputer(this)" title="From computer">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><rect x="1.5" y="1.5" width="13" height="9"/><line x1="6" y1="10.5" x2="6" y2="13"/><line x1="10" y1="10.5" x2="10" y2="13"/><line x1="4" y1="13" x2="12" y2="13"/></svg>
+              </button>
+              <button class="attach-option" onclick="attachFromDrive(this)" title="From cloud drive">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M4 13.5H3.5a3 3 0 0 1-.4-5.97 4 4 0 0 1 7.8-1.53A3.5 3.5 0 0 1 13 12.5H4z"/></svg>
+              </button>
+            </div>
+          </div>
+          <button class="cmd-btn cmd-primary" title="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M1.5 8h11M8.5 4L12.5 8 8.5 12"/></svg></button>
         </div>
         <div class="input-footer">
-          <span>Return to send · Shift+Return for new line</span>
+          <span>⌘B bold · ⌘I italic · ⌘U underline · **markdown**</span>
           <span>Cosimo v2.1</span>
         </div>
       </div>
@@ -499,16 +533,323 @@
 
       <div class="input-area">
         <div class="input-row">
-          <input class="text-input" type="text" placeholder="Continue this thread..." />
-          <button class="cmd-btn">Attach</button>
-          <button class="cmd-btn cmd-primary">Send</button>
+          <div class="text-input" contenteditable="true" data-placeholder="Continue this thread..."></div>
+          <div class="attach-wrapper">
+            <button class="cmd-btn" title="Attach file"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M8.5 3.5v7a2 2 0 0 1-4 0v-7a3 3 0 0 1 6 0v7.5a4 4 0 0 1-8 0V5"/></svg></button>
+            <div class="attach-menu">
+              <button class="attach-option" onclick="attachFromComputer(this)" title="From computer">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><rect x="1.5" y="1.5" width="13" height="9"/><line x1="6" y1="10.5" x2="6" y2="13"/><line x1="10" y1="10.5" x2="10" y2="13"/><line x1="4" y1="13" x2="12" y2="13"/></svg>
+              </button>
+              <button class="attach-option" onclick="attachFromDrive(this)" title="From cloud drive">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M4 13.5H3.5a3 3 0 0 1-.4-5.97 4 4 0 0 1 7.8-1.53A3.5 3.5 0 0 1 13 12.5H4z"/></svg>
+              </button>
+            </div>
+          </div>
+          <button class="cmd-btn cmd-primary" title="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M1.5 8h11M8.5 4L12.5 8 8.5 12"/></svg></button>
         </div>
         <div class="input-footer">
-          <span>Return to send · Shift+Return for new line</span>
+          <span>⌘B bold · ⌘I italic · ⌘U underline · **markdown**</span>
           <span>Cosimo v2.1</span>
         </div>
       </div>
       </div><!-- /thread-q4lp -->
+
+      <!-- Erabor Partnership Terms thread -->
+      <div class="chat-thread" id="thread-new">
+      <div class="chat-scroll" style="display:flex; flex:1;">
+        <div class="empty-thread">
+          <div class="empty-thread-icon">◆</div>
+          <div class="empty-thread-title">What can Cosimo help with?</div>
+          <div class="empty-thread-sub">Ask about fund performance, document analysis, compliance checks, or anything across your portfolio.</div>
+          <div class="empty-thread-suggestions">
+            <button class="empty-thread-chip" onclick="fillSuggestion('Compare Q3 and Q4 distributions across all active funds')">Distribution comparison</button>
+            <button class="empty-thread-chip" onclick="fillSuggestion('Pull the latest NAV report for Fund IV and flag any valuation changes above 10%')">NAV review</button>
+            <button class="empty-thread-chip" onclick="fillSuggestion('Summarize all outstanding covenant violations across the loan book')">Covenant check</button>
+            <button class="empty-thread-chip" onclick="fillSuggestion('Generate a capital call notice for the next tranche')">Capital call</button>
+          </div>
+        </div>
+      </div>
+      <div class="input-area">
+        <div class="input-row">
+          <div class="text-input" id="new-thread-input" contenteditable="true" data-placeholder="Ask Cosimo anything..."></div>
+          <div class="attach-wrapper">
+            <button class="cmd-btn" title="Attach file"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M8.5 3.5v7a2 2 0 0 1-4 0v-7a3 3 0 0 1 6 0v7.5a4 4 0 0 1-8 0V5"/></svg></button>
+            <div class="attach-menu">
+              <button class="attach-option" onclick="attachFromComputer(this)" title="From computer">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><rect x="1.5" y="1.5" width="13" height="9"/><line x1="6" y1="10.5" x2="6" y2="13"/><line x1="10" y1="10.5" x2="10" y2="13"/><line x1="4" y1="13" x2="12" y2="13"/></svg>
+              </button>
+              <button class="attach-option" onclick="attachFromDrive(this)" title="From cloud drive">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M4 13.5H3.5a3 3 0 0 1-.4-5.97 4 4 0 0 1 7.8-1.53A3.5 3.5 0 0 1 13 12.5H4z"/></svg>
+              </button>
+            </div>
+          </div>
+          <button class="cmd-btn cmd-primary" title="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M1.5 8h11M8.5 4L12.5 8 8.5 12"/></svg></button>
+        </div>
+        <div class="input-footer">
+          <span>⌘B bold · ⌘I italic · ⌘U underline · **markdown**</span>
+          <span>Cosimo v2.1</span>
+        </div>
+      </div>
+      </div><!-- /thread-new -->
+
+      <div class="chat-thread" id="thread-k1">
+      <div class="chat-scroll">
+        <!-- User message -->
+        <div class="msg-block">
+          <div class="user-card">
+            <div class="msg-header">
+              <div class="badge badge-human">E</div>
+              <span class="sender">Eliot Puplett</span>
+              <span class="timestamp">9:45 AM</span>
+            </div>
+            <div class="msg-body">
+              Pull the 2024 K-1s for the Ridgeline Capital fund and extract all partner allocations — ordinary income, capital gains, Section 199A, and any guaranteed payments. Map each against our internal capital account balances and flag any discrepancies above $5,000.
+            </div>
+          </div>
+        </div>
+
+        <!-- Cosimo error state -->
+        <div class="msg-block">
+          <div class="ai-block">
+            <div class="msg-header">
+              <div class="badge badge-ai">◆</div>
+              <span class="sender">Cosimo</span>
+              <span class="timestamp">9:45 AM</span>
+            </div>
+            <div class="msg-body">
+              <div class="cosimo-error">
+                <div class="cosimo-error-icon">!</div>
+                <div class="cosimo-error-content">
+                  <div class="cosimo-error-title">Unable to complete request</div>
+                  <div class="cosimo-error-detail">Connection to Ridgeline Capital document vault timed out after 30s. The K-1 extraction pipeline could not retrieve the source documents. This may be due to an expired API token or a temporary outage on the custodian's end.</div>
+                  <div class="cosimo-error-meta">Error 504 · Gateway Timeout · Vault Integration · Feb 20, 9:46 AM</div>
+                </div>
+                <button class="cosimo-error-retry" onclick="retryK1()">
+                  <svg class="retry-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.65 2.35A7.96 7.96 0 0 0 8 0C3.58 0 0 3.58 0 8s3.58 8 8 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 8 14 6 6 0 1 1 8 2c1.66 0 3.14.69 4.22 1.78L9 7h7V0l-2.35 2.35z" fill="currentColor"/>
+                  </svg>
+                  Retry
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <div class="input-row">
+          <div class="text-input" contenteditable="true" data-placeholder="Continue this thread..."></div>
+          <div class="attach-wrapper">
+            <button class="cmd-btn" title="Attach file"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M8.5 3.5v7a2 2 0 0 1-4 0v-7a3 3 0 0 1 6 0v7.5a4 4 0 0 1-8 0V5"/></svg></button>
+            <div class="attach-menu">
+              <button class="attach-option" onclick="attachFromComputer(this)" title="From computer">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><rect x="1.5" y="1.5" width="13" height="9"/><line x1="6" y1="10.5" x2="6" y2="13"/><line x1="10" y1="10.5" x2="10" y2="13"/><line x1="4" y1="13" x2="12" y2="13"/></svg>
+              </button>
+              <button class="attach-option" onclick="attachFromDrive(this)" title="From cloud drive">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M4 13.5H3.5a3 3 0 0 1-.4-5.97 4 4 0 0 1 7.8-1.53A3.5 3.5 0 0 1 13 12.5H4z"/></svg>
+              </button>
+            </div>
+          </div>
+          <button class="cmd-btn cmd-primary" title="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M1.5 8h11M8.5 4L12.5 8 8.5 12"/></svg></button>
+        </div>
+        <div class="input-footer">
+          <span>⌘B bold · ⌘I italic · ⌘U underline · **markdown**</span>
+          <span>Cosimo v2.1</span>
+        </div>
+      </div>
+      </div><!-- /thread-k1 -->
+
+      <div class="chat-thread" id="thread-erabor">
+      <div class="chat-scroll" id="erabor-scroll">
+        <!-- Message 1: User -->
+        <div class="msg-block">
+          <div class="user-card">
+            <div class="msg-header">
+              <div class="badge badge-human">E</div>
+              <span class="sender">Eliot Puplett</span>
+              <span class="timestamp">3:30 PM</span>
+            </div>
+            <div class="msg-body">
+              Pull the Erabor partnership agreement and summarize the key economic terms. I need to understand the GP commit, fee structure, clawback provisions, and any side letter concessions before the Thursday call with Marcus. Cross-reference against our standard Fund III terms and flag anything non-standard.
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 2: Cosimo response (animated sequence) -->
+        <div class="msg-block" id="erabor-response">
+          <div class="ai-block">
+            <div class="msg-header">
+              <div class="badge badge-ai">◆</div>
+              <span class="sender">Cosimo</span>
+              <span class="timestamp">3:30 PM</span>
+              <span class="latency-chip" id="erabor-latency" style="display:none;">4.2s</span>
+            </div>
+
+            <!-- State 1: Thinking cubes -->
+            <div class="msg-body" id="erabor-thinking">
+              <div class="cosimo-thinking">
+                <div class="thinking-cube"></div>
+                <div class="thinking-cube"></div>
+                <div class="thinking-cube"></div>
+              </div>
+            </div>
+
+            <!-- State 2: Train of thought -->
+            <div class="cosimo-reasoning" id="erabor-reasoning" style="display:none;">
+              <div class="reasoning-header">
+                <div class="reasoning-header-icon">◆</div>
+                <span class="reasoning-header-label">Cosimo is thinking...</span>
+                <div class="reasoning-pulse"></div>
+              </div>
+              <div class="reasoning-steps" id="erabor-steps">
+                <div class="reasoning-step-item" data-step="0">Locating Erabor Partners LP Agreement (executed Dec 2024)...</div>
+                <div class="reasoning-step-item" data-step="1">Extracting Section 4 — Management Fee &amp; Carry provisions</div>
+                <div class="reasoning-step-item" data-step="2">GP commitment: 3.5% of total commitments ($7.0M on $200M fund) — <span class="reasoning-flag">above our standard 2.5%</span></div>
+                <div class="reasoning-step-item" data-step="3">Fee structure: 2.0% on committed during investment period, step-down to 1.5% on invested capital post-Year 5</div>
+                <div class="reasoning-step-item" data-step="4">Scanning for side letter provisions...</div>
+                <div class="reasoning-step-item" data-step="5">Found 3 side letters — Northgate Capital, Westbridge RE, and one redacted entity</div>
+                <div class="reasoning-step-item" data-step="6">Northgate side letter grants MFN on fees + co-invest priority — <span class="reasoning-flag">non-standard</span></div>
+                <div class="reasoning-step-item" data-step="7">Cross-referencing clawback language against Fund III template...</div>
+                <div class="reasoning-step-item" data-step="8">Clawback: interim clawback with annual true-up, 100% GP obligation — matches standard</div>
+                <div class="reasoning-step-item" data-step="9">Key person clause names Marcus Tilden + one other — <span class="reasoning-flag">single-trigger suspension</span>, not our standard dual-trigger</div>
+                <div class="reasoning-step-item" data-step="10">Compiling summary with flagged deviations...</div>
+              </div>
+            </div>
+
+            <!-- State 3: Full response (streamed in) -->
+            <div class="msg-body" id="erabor-reply" style="display:none;">
+              <div class="erabor-stream-block" data-stream="0">
+                <p>I've pulled the executed Erabor Partners LP Agreement dated December 14, 2024 and cross-referenced all economic terms against our Fund III standard template. The agreement covers a $200M closed-end vehicle with a 7-year investment period and two 1-year extensions at GP discretion, subject to advisory committee consent.</p>
+              </div>
+
+              <div class="erabor-stream-block" data-stream="1">
+                <p>Overall, the structure is largely in line with institutional norms for a fund of this size and strategy. However, I've identified three provisions that deviate from our standard terms in ways that could create friction or optionality issues down the road. I've detailed each section below with flagged items highlighted.</p>
+              </div>
+
+              <div class="erabor-stream-block" data-stream="2">
+                <div class="erabor-section">
+                  <div class="erabor-section-title">GP Commitment</div>
+                  <div class="erabor-section-body">
+                    <div class="erabor-kv"><span class="erabor-k">Amount</span><span class="erabor-v">$7.0M (3.5% of $200M)</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Fund III Standard</span><span class="erabor-v">2.5% ($5.0M equivalent)</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Funding Schedule</span><span class="erabor-v">Pro rata with LP capital calls</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Source</span><span class="erabor-v">Cash only — no management fee waiver notes permitted</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Status</span><span class="erabor-v erabor-flag">Above standard — favorable to LPs, signals strong GP alignment</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="erabor-stream-block" data-stream="3">
+                <div class="erabor-section">
+                  <div class="erabor-section-title">Fee Structure</div>
+                  <div class="erabor-section-body">
+                    <div class="erabor-kv"><span class="erabor-k">Investment Period</span><span class="erabor-v">2.0% on committed capital</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Post-Year 5</span><span class="erabor-v">1.5% on invested capital (step-down)</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Organizational Exp</span><span class="erabor-v">Capped at $1.5M, borne by fund</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Offset Provisions</span><span class="erabor-v">100% of transaction, monitoring, and break-up fees offset against management fee</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Fee Commencement</span><span class="erabor-v">First close date (not final close)</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Status</span><span class="erabor-v">Standard — matches Fund III template</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="erabor-stream-block" data-stream="4">
+                <div class="erabor-section">
+                  <div class="erabor-section-title">Carried Interest &amp; Waterfall</div>
+                  <div class="erabor-section-body">
+                    <div class="erabor-kv"><span class="erabor-k">Carry Rate</span><span class="erabor-v">20% above 8% preferred return</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Preferred Return</span><span class="erabor-v">8% compounded annually, net of fees and expenses</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Catch-up</span><span class="erabor-v">50/50 GP/LP split until 20% GP share achieved</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Waterfall Type</span><span class="erabor-v">European (whole-fund) — carry calculated on aggregate, not deal-by-deal</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Crystallization</span><span class="erabor-v">Upon each distribution event, subject to clawback</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Status</span><span class="erabor-v">Standard</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="erabor-stream-block" data-stream="5">
+                <div class="erabor-section">
+                  <div class="erabor-section-title">Clawback Provisions</div>
+                  <div class="erabor-section-body">
+                    <div class="erabor-kv"><span class="erabor-k">Type</span><span class="erabor-v">Interim clawback with annual true-up</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">GP Obligation</span><span class="erabor-v">100% of excess carry distributions</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Escrow</span><span class="erabor-v">30% of carried interest held for 24 months post-final distribution</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">GP Guarantee</span><span class="erabor-v">Joint and several personal guarantee from named GPs</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Tax Adjustment</span><span class="erabor-v">Net of taxes actually paid — GP provides annual tax cert</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Status</span><span class="erabor-v">Standard — matches Fund III</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="erabor-stream-block" data-stream="6">
+                <div class="erabor-section">
+                  <div class="erabor-section-title">Side Letter Concessions</div>
+                  <div class="erabor-section-body">
+                    <div class="erabor-kv"><span class="erabor-k">Northgate Capital</span><span class="erabor-v erabor-flag">MFN on fees + co-invest priority on deals &gt;$50M</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Westbridge RE</span><span class="erabor-v">Enhanced quarterly reporting + advisory committee seat</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Redacted Entity</span><span class="erabor-v erabor-flag">Fee waiver on first $10M committed — unusual, requires follow-up with counsel</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">MFN Sunset</span><span class="erabor-v">Northgate MFN applies only to LPs committing &gt;$25M at first close</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Disclosure</span><span class="erabor-v erabor-flag">Redacted entity side letter not disclosed to advisory committee — potential compliance issue</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="erabor-stream-block" data-stream="7">
+                <div class="erabor-section">
+                  <div class="erabor-section-title">Key Person Clause</div>
+                  <div class="erabor-section-body">
+                    <div class="erabor-kv"><span class="erabor-k">Named Persons</span><span class="erabor-v">Marcus Tilden (Managing Partner), David Chen (CIO)</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Trigger</span><span class="erabor-v erabor-flag">Single-trigger suspension — if either departs, investment period suspends automatically</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Fund III Standard</span><span class="erabor-v">Dual-trigger (both must depart)</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Cure Period</span><span class="erabor-v">90 days to appoint replacement approved by advisory committee</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Devotion Clause</span><span class="erabor-v">Each key person must devote "substantially all" business time — no defined threshold</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">LP Vote to Resume</span><span class="erabor-v">66.7% in interest required to lift suspension</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="erabor-stream-block" data-stream="8">
+                <div class="erabor-section">
+                  <div class="erabor-section-title">Reporting &amp; Governance</div>
+                  <div class="erabor-section-body">
+                    <div class="erabor-kv"><span class="erabor-k">Auditor</span><span class="erabor-v">Ernst &amp; Young LLP</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Reporting Frequency</span><span class="erabor-v">Quarterly NAV + annual audited financials within 120 days of fiscal year-end</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">Advisory Committee</span><span class="erabor-v">5 members, LP-appointed, conflict approval + valuation oversight</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">LP Transfer Rights</span><span class="erabor-v">Subject to GP consent (not to be unreasonably withheld), minimum $5M transfer</span></div>
+                    <div class="erabor-kv"><span class="erabor-k">LPAC Meeting Freq</span><span class="erabor-v">Semi-annual in-person, quarterly written updates</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="erabor-stream-block" data-stream="9">
+                <p><strong>Summary for Thursday's call:</strong> Three items to raise with Marcus.</p>
+                <p>First, the single-trigger key person clause is materially more aggressive than our standard dual-trigger structure. This gives LPs significant optionality — if David Chen were to leave, LPs could effectively put the fund into suspension regardless of Marcus's continued involvement. This is worth discussing whether it was an intentional concession to anchor LPs or an oversight from prior fund documents that carried forward.</p>
+                <p>Second, the Northgate MFN plus co-invest priority side letter could create allocation tension on larger deals. If Northgate has priority on anything above $50M and their MFN triggers fee parity with smaller commitments, it narrows the GP's flexibility on deal allocation and economics. Worth understanding if this was a condition of their anchor commitment.</p>
+                <p>Third, the redacted entity fee waiver needs immediate disclosure and counsel review. An undisclosed side letter with a fee waiver is a compliance risk under the fund's own governance framework — the advisory committee should have been notified. I'd recommend raising this directly with Marcus and getting confirmation that outside counsel has signed off.</p>
+                <p>Everything else — carry structure, clawback, fee step-down, reporting cadence — is clean and within Fund III norms. The GP commitment at 3.5% is actually above standard, which is a positive signal for LP alignment.</p>
+                <p>Want me to draft talking points for the call, or generate a redline comparison against the Fund III template?</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="input-area" id="erabor-input-area">
+        <div class="input-row">
+          <div class="text-input" id="erabor-input" contenteditable="true" data-placeholder="Continue this thread..."></div>
+          <button class="cmd-btn">Attach</button>
+          <button class="cmd-btn cmd-primary" id="erabor-send-btn" title="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M1.5 8h11M8.5 4L12.5 8 8.5 12"/></svg></button>
+          <button class="cmd-btn cmd-stop" id="erabor-stop-btn" style="display:none;" onclick="cancelErabor()" title="Stop">
+            <svg class="stop-icon" viewBox="0 0 12 12" fill="currentColor"><rect x="1" y="1" width="10" height="10" rx="0"/></svg>
+          </button>
+        </div>
+        <div class="input-footer">
+          <span>⌘B bold · ⌘I italic · ⌘U underline · **markdown**</span>
+          <span>Cosimo v2.1</span>
+        </div>
+      </div>
+      </div><!-- /thread-erabor -->
 
       </div><!-- /chat-main -->
 
@@ -1110,12 +1451,13 @@
 
   <div class="cosimo-panel-input">
     <div class="panel-input-row">
-      <input class="panel-text-input" id="panelInput" type="text" placeholder="Describe a change..." onkeydown="handlePanelKey(event)" />
-      <button class="panel-send-btn" onclick="sendPanelMessage()">Send</button>
+      <div class="panel-text-input" id="panelInput" contenteditable="true" data-placeholder="Describe a change..." onkeydown="handlePanelKey(event)"></div>
+      <button class="panel-send-btn" onclick="sendPanelMessage()" title="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="12" height="12"><path d="M1.5 8h11M8.5 4L12.5 8 8.5 12"/></svg></button>
     </div>
   </div>
 </div>
 
+<div class="toast-container" id="toastContainer"></div>
 <div class="resize-grip"></div>
 <div class="design-label">Cosimo — Combined Platform Demo</div>
 
