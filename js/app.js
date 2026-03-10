@@ -1266,3 +1266,66 @@ function attachFromComputer(btn) {
 function attachFromDrive(btn) {
   showToast('Cloud drive picker opening\u2026');
 }
+
+// ============================================
+// MODEL SELECTOR
+// ============================================
+function toggleModelDropdown(btn) {
+  const selector = btn.closest('.model-selector');
+  const wasOpen = selector.classList.contains('open');
+  // Close all open dropdowns first
+  document.querySelectorAll('.model-selector.open').forEach(s => s.classList.remove('open'));
+  if (!wasOpen) {
+    selector.classList.add('open');
+    const dropdown = selector.querySelector('.model-dropdown');
+    // Temporarily show off-screen to measure
+    dropdown.style.visibility = 'hidden';
+    dropdown.style.display = 'block';
+    const ddRect = dropdown.getBoundingClientRect();
+    dropdown.style.display = '';
+    dropdown.style.visibility = '';
+
+    const btnRect = btn.getBoundingClientRect();
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    // Try above the button first
+    let top = btnRect.top - ddRect.height - 4;
+    if (top < 4) top = btnRect.bottom + 4; // flip below if no room above
+    if (top + ddRect.height > vh - 4) top = vh - ddRect.height - 4; // clamp bottom
+
+    let left = btnRect.left;
+    if (left + ddRect.width > vw - 4) left = vw - ddRect.width - 4; // clamp right
+    if (left < 4) left = 4; // clamp left
+
+    dropdown.style.top = top + 'px';
+    dropdown.style.left = left + 'px';
+    dropdown.style.bottom = 'auto';
+  }
+}
+
+function selectModel(option) {
+  const selector = option.closest('.model-selector');
+  const label = selector.querySelector('.model-selector-label');
+  const model = option.dataset.model;
+  const name = option.querySelector('.model-option-name').textContent;
+
+  // Update selected state within this dropdown
+  selector.querySelectorAll('.model-option').forEach(o => o.classList.remove('selected'));
+  option.classList.add('selected');
+
+  // Update button label
+  label.textContent = name;
+
+  // Close dropdown
+  selector.classList.remove('open');
+
+  showToast('Switched to ' + name);
+}
+
+// Close model dropdown when clicking outside
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.model-selector')) {
+    document.querySelectorAll('.model-selector.open').forEach(s => s.classList.remove('open'));
+  }
+});

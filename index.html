@@ -229,6 +229,7 @@
               <span class="sender">Cosimo</span>
               <span class="timestamp">2:32 PM</span>
               <span class="latency-chip">3.2s</span>
+              <span class="model-badge">Analyst</span>
             </div>
 
             <div class="artifact">
@@ -324,6 +325,7 @@
               <span class="sender">Cosimo</span>
               <span class="timestamp">2:35 PM</span>
               <span class="latency-chip">4.8s</span>
+              <span class="model-badge">Expert</span>
             </div>
 
             <div class="msg-body">
@@ -391,8 +393,27 @@
           <button class="cmd-btn cmd-primary" title="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M1.5 8h11M8.5 4L12.5 8 8.5 12"/></svg></button>
         </div>
         <div class="input-footer">
+          <div class="model-selector">
+            <button class="model-selector-btn" onclick="toggleModelDropdown(this)">
+              <span class="model-selector-label">Analyst</span>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>
+            </button>
+            <div class="model-dropdown">
+              <button class="model-option" data-model="assistant" onclick="selectModel(this)">
+                <span class="model-option-name">Assistant</span>
+                <span class="model-option-desc">Quick questions and lookups</span>
+              </button>
+              <button class="model-option selected" data-model="analyst" onclick="selectModel(this)">
+                <span class="model-option-name">Analyst</span>
+                <span class="model-option-desc">Drafts, summaries, and document review</span>
+              </button>
+              <button class="model-option" data-model="expert" onclick="selectModel(this)">
+                <span class="model-option-name">Expert</span>
+                <span class="model-option-desc">Complex analysis and long-form deliverables</span>
+              </button>
+            </div>
+          </div>
           <span>⌘B bold · ⌘I italic · ⌘U underline · **markdown**</span>
-          <span>Cosimo v2.1</span>
         </div>
       </div>
       </div><!-- /thread-fund3 -->
@@ -422,6 +443,7 @@
               <span class="sender">Cosimo</span>
               <span class="timestamp">4:16 PM</span>
               <span class="latency-chip">4.1s</span>
+              <span class="model-badge">Analyst</span>
             </div>
 
             <div class="msg-body">
@@ -464,6 +486,7 @@
               <span class="sender">Cosimo</span>
               <span class="timestamp">4:19 PM</span>
               <span class="latency-chip">2.8s</span>
+              <span class="model-badge">Analyst</span>
             </div>
             <div class="msg-body">
               <p>Cross-referenced against <strong>Hilgard_Monitoring_Fees_2025.pdf</strong> from your Feb 15 upload. Both offset amounts match — $42,000 (Q2, Brightfield advisory) and $18,500 (Q3, Crestline consulting). The xlsx is accurate. No discrepancies found.</p>
@@ -489,8 +512,27 @@
           <button class="cmd-btn cmd-primary" title="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M1.5 8h11M8.5 4L12.5 8 8.5 12"/></svg></button>
         </div>
         <div class="input-footer">
+          <div class="model-selector">
+            <button class="model-selector-btn" onclick="toggleModelDropdown(this)">
+              <span class="model-selector-label">Analyst</span>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>
+            </button>
+            <div class="model-dropdown">
+              <button class="model-option" data-model="assistant" onclick="selectModel(this)">
+                <span class="model-option-name">Assistant</span>
+                <span class="model-option-desc">Quick questions and lookups</span>
+              </button>
+              <button class="model-option selected" data-model="analyst" onclick="selectModel(this)">
+                <span class="model-option-name">Analyst</span>
+                <span class="model-option-desc">Drafts, summaries, and document review</span>
+              </button>
+              <button class="model-option" data-model="expert" onclick="selectModel(this)">
+                <span class="model-option-name">Expert</span>
+                <span class="model-option-desc">Complex analysis and long-form deliverables</span>
+              </button>
+            </div>
+          </div>
           <span>⌘B bold · ⌘I italic · ⌘U underline · **markdown**</span>
-          <span>Cosimo v2.1</span>
         </div>
       </div>
       </div><!-- /thread-hilgard -->
@@ -519,6 +561,7 @@
               <div class="badge badge-ai">◆</div>
               <span class="sender">Cosimo</span>
               <span class="timestamp">11:20 AM</span>
+              <span class="model-badge">Assistant</span>
             </div>
             <div class="msg-body">
               <div class="cosimo-thinking">
@@ -548,8 +591,27 @@
           <button class="cmd-btn cmd-primary" title="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M1.5 8h11M8.5 4L12.5 8 8.5 12"/></svg></button>
         </div>
         <div class="input-footer">
+          <div class="model-selector">
+            <button class="model-selector-btn" onclick="toggleModelDropdown(this)">
+              <span class="model-selector-label">Analyst</span>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>
+            </button>
+            <div class="model-dropdown">
+              <button class="model-option" data-model="assistant" onclick="selectModel(this)">
+                <span class="model-option-name">Assistant</span>
+                <span class="model-option-desc">Quick questions and lookups</span>
+              </button>
+              <button class="model-option selected" data-model="analyst" onclick="selectModel(this)">
+                <span class="model-option-name">Analyst</span>
+                <span class="model-option-desc">Drafts, summaries, and document review</span>
+              </button>
+              <button class="model-option" data-model="expert" onclick="selectModel(this)">
+                <span class="model-option-name">Expert</span>
+                <span class="model-option-desc">Complex analysis and long-form deliverables</span>
+              </button>
+            </div>
+          </div>
           <span>⌘B bold · ⌘I italic · ⌘U underline · **markdown**</span>
-          <span>Cosimo v2.1</span>
         </div>
       </div>
       </div><!-- /thread-q4lp -->
@@ -586,8 +648,27 @@
           <button class="cmd-btn cmd-primary" title="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M1.5 8h11M8.5 4L12.5 8 8.5 12"/></svg></button>
         </div>
         <div class="input-footer">
+          <div class="model-selector">
+            <button class="model-selector-btn" onclick="toggleModelDropdown(this)">
+              <span class="model-selector-label">Analyst</span>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>
+            </button>
+            <div class="model-dropdown">
+              <button class="model-option" data-model="assistant" onclick="selectModel(this)">
+                <span class="model-option-name">Assistant</span>
+                <span class="model-option-desc">Quick questions and lookups</span>
+              </button>
+              <button class="model-option selected" data-model="analyst" onclick="selectModel(this)">
+                <span class="model-option-name">Analyst</span>
+                <span class="model-option-desc">Drafts, summaries, and document review</span>
+              </button>
+              <button class="model-option" data-model="expert" onclick="selectModel(this)">
+                <span class="model-option-name">Expert</span>
+                <span class="model-option-desc">Complex analysis and long-form deliverables</span>
+              </button>
+            </div>
+          </div>
           <span>⌘B bold · ⌘I italic · ⌘U underline · **markdown**</span>
-          <span>Cosimo v2.1</span>
         </div>
       </div>
       </div><!-- /thread-new -->
@@ -615,6 +696,7 @@
               <div class="badge badge-ai">◆</div>
               <span class="sender">Cosimo</span>
               <span class="timestamp">9:45 AM</span>
+              <span class="model-badge">Expert</span>
             </div>
             <div class="msg-body">
               <div class="cosimo-error">
@@ -653,8 +735,27 @@
           <button class="cmd-btn cmd-primary" title="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M1.5 8h11M8.5 4L12.5 8 8.5 12"/></svg></button>
         </div>
         <div class="input-footer">
+          <div class="model-selector">
+            <button class="model-selector-btn" onclick="toggleModelDropdown(this)">
+              <span class="model-selector-label">Analyst</span>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>
+            </button>
+            <div class="model-dropdown">
+              <button class="model-option" data-model="assistant" onclick="selectModel(this)">
+                <span class="model-option-name">Assistant</span>
+                <span class="model-option-desc">Quick questions and lookups</span>
+              </button>
+              <button class="model-option selected" data-model="analyst" onclick="selectModel(this)">
+                <span class="model-option-name">Analyst</span>
+                <span class="model-option-desc">Drafts, summaries, and document review</span>
+              </button>
+              <button class="model-option" data-model="expert" onclick="selectModel(this)">
+                <span class="model-option-name">Expert</span>
+                <span class="model-option-desc">Complex analysis and long-form deliverables</span>
+              </button>
+            </div>
+          </div>
           <span>⌘B bold · ⌘I italic · ⌘U underline · **markdown**</span>
-          <span>Cosimo v2.1</span>
         </div>
       </div>
       </div><!-- /thread-k1 -->
@@ -683,6 +784,7 @@
               <span class="sender">Cosimo</span>
               <span class="timestamp">3:30 PM</span>
               <span class="latency-chip" id="erabor-latency" style="display:none;">4.2s</span>
+              <span class="model-badge">Expert</span>
             </div>
 
             <!-- State 1: Thinking cubes -->
@@ -846,7 +948,26 @@
         </div>
         <div class="input-footer">
           <span>⌘B bold · ⌘I italic · ⌘U underline · **markdown**</span>
-          <span>Cosimo v2.1</span>
+          <div class="model-selector">
+            <button class="model-selector-btn" onclick="toggleModelDropdown(this)">
+              <span class="model-selector-label">Analyst</span>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>
+            </button>
+            <div class="model-dropdown">
+              <button class="model-option" data-model="assistant" onclick="selectModel(this)">
+                <span class="model-option-name">Assistant</span>
+                <span class="model-option-desc">Quick questions and lookups</span>
+              </button>
+              <button class="model-option selected" data-model="analyst" onclick="selectModel(this)">
+                <span class="model-option-name">Analyst</span>
+                <span class="model-option-desc">Drafts, summaries, and document review</span>
+              </button>
+              <button class="model-option" data-model="expert" onclick="selectModel(this)">
+                <span class="model-option-name">Expert</span>
+                <span class="model-option-desc">Complex analysis and long-form deliverables</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       </div><!-- /thread-erabor -->
