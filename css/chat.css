@@ -280,6 +280,439 @@
   background: var(--taupe-2);
 }
 
+/* ============================================
+   THREAD SWITCHING
+   ============================================ */
+.chat-with-panel {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.chat-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.chat-thread {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.chat-thread.active {
+  display: flex;
+}
+
+/* ============================================
+   FILE ATTACHMENT (inline in messages)
+   ============================================ */
+.file-attachment {
+  margin: 10px 0 4px 30px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--off-white);
+  border: 2px solid;
+  border-color: var(--taupe-2) var(--taupe-4) var(--taupe-4) var(--taupe-2);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.file-attachment:hover {
+  background: var(--berry-1);
+  border-color: var(--berry-2) var(--berry-4) var(--berry-4) var(--berry-2);
+}
+
+.file-attachment-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--green);
+  border: 1px solid;
+  border-color: #5aad5d #2a6a2c #2a6a2c #5aad5d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--white);
+  flex-shrink: 0;
+}
+
+.file-attachment-info { flex: 1; }
+
+.file-attachment-name {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--taupe-5);
+}
+
+.file-attachment-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--taupe-3);
+  margin-top: 2px;
+}
+
+.file-attachment-action {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--violet-3);
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+/* ============================================
+   RIGHT FILE PANEL
+   ============================================ */
+.file-panel {
+  width: 0;
+  overflow: hidden;
+  border-left: 2px solid transparent;
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  transition: width 0.2s ease, border-color 0.2s ease;
+}
+
+.file-panel.no-transition {
+  transition: none;
+}
+
+.file-panel.open {
+  width: 480px;
+  max-width: 700px;
+  border-left-color: var(--taupe-2);
+}
+
+.file-panel.dragging {
+  min-width: 300px;
+}
+
+.file-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px 0 6px;
+  min-height: 38px;
+  background: var(--white);
+  border-bottom: 2px solid;
+  border-image: linear-gradient(90deg, var(--taupe-2), var(--berry-2), var(--violet-2)) 1;
+  flex-shrink: 0;
+}
+
+.file-panel-tabs {
+  display: flex;
+  gap: 2px;
+}
+
+.file-panel-tab {
+  padding: 0 12px;
+  height: 36px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--taupe-4);
+  background: transparent;
+  border: 1px solid transparent;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  margin-bottom: -2px;
+  transition: all 0.15s;
+}
+
+.file-panel-tab:hover {
+  color: var(--taupe-5);
+  background: var(--berry-1);
+}
+
+.file-panel-tab.active {
+  color: var(--berry-5);
+  background: var(--off-white);
+  border-color: var(--taupe-2) var(--taupe-3) transparent var(--taupe-2);
+  border-bottom: 2px solid var(--violet-3);
+}
+
+.file-panel-close {
+  padding: 4px 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--taupe-4);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.file-panel-close:hover {
+  color: var(--red);
+  background: rgba(192,72,72,0.08);
+  border-color: var(--red);
+}
+
+.file-panel-view {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.file-panel-view.active {
+  display: flex;
+}
+
+/* File bar */
+.fp-file-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--taupe-5);
+  border-bottom: 1px solid var(--taupe-4);
+}
+
+.fp-file-icon {
+  font-size: 12px;
+  color: var(--green);
+}
+
+.fp-file-name {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--taupe-1);
+}
+
+/* Formula bar */
+.fp-formula-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  background: var(--off-white);
+  border-bottom: 1px solid var(--taupe-2);
+  min-height: 28px;
+}
+
+.fp-cell-ref {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--taupe-5);
+  background: var(--white);
+  border: 1px solid;
+  border-color: var(--taupe-3) var(--taupe-1) var(--taupe-1) var(--taupe-3);
+  padding: 2px 8px;
+  min-width: 36px;
+  text-align: center;
+}
+
+.fp-formula {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--taupe-4);
+  flex: 1;
+}
+
+/* Spreadsheet */
+.fp-sheet-wrap {
+  flex: 1;
+  overflow: auto;
+}
+
+.fp-sheet {
+  min-width: 600px;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 11px;
+}
+
+.fp-sheet th {
+  padding: 4px 6px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--taupe-3);
+  background: var(--off-white);
+  border: 1px solid var(--taupe-2);
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.fp-row-header {
+  width: 32px;
+  min-width: 32px;
+}
+
+.fp-sheet td {
+  padding: 4px 8px;
+  color: var(--taupe-5);
+  border: 1px solid var(--taupe-2);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.08s;
+}
+
+.fp-sheet td:first-child {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--taupe-3);
+  background: var(--off-white);
+  text-align: center;
+  width: 32px;
+  cursor: default;
+}
+
+.fp-sheet td:hover {
+  background: rgba(116,65,143,0.06);
+}
+
+.fp-sheet td.fp-cell-selected {
+  outline: 2px solid var(--violet-3);
+  outline-offset: -1px;
+  background: rgba(116,65,143,0.08);
+}
+
+.fp-sheet td.fp-cell-number {
+  text-align: right;
+}
+
+.fp-sheet td.fp-cell-formula {
+  color: var(--violet-3);
+}
+
+/* ============================================
+   FOLDER VIEW
+   ============================================ */
+.fp-folder-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: var(--off-white);
+  border-bottom: 1px solid var(--taupe-2);
+}
+
+.fp-folder-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--taupe-3);
+}
+
+.fp-folder-count {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--taupe-3);
+}
+
+.fp-file-list {
+  padding: 6px;
+}
+
+.fp-file-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.12s;
+}
+
+.fp-file-item:hover {
+  background: var(--berry-1);
+  border-color: var(--taupe-2);
+}
+
+.fp-file-item.active {
+  background: var(--off-white);
+  border: 1px solid;
+  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+}
+
+.fp-file-item-icon {
+  width: 28px;
+  height: 28px;
+  background: var(--green);
+  border: 1px solid;
+  border-color: #5aad5d #2a6a2c #2a6a2c #5aad5d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--white);
+  flex-shrink: 0;
+}
+
+.fp-file-item-info { flex: 1; }
+
+.fp-file-item-name {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--taupe-5);
+}
+
+.fp-file-item-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--taupe-3);
+  margin-top: 2px;
+}
+
+/* ============================================
+   COSIMO THINKING ANIMATION
+   ============================================ */
+.cosimo-thinking {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+}
+
+.thinking-cube {
+  width: 8px;
+  height: 8px;
+  background: var(--violet-2);
+  border: 1px solid;
+  border-color: var(--violet-1) var(--violet-4) var(--violet-4) var(--violet-1);
+  animation: cube-wave 1.8s ease-in-out infinite;
+}
+
+.thinking-cube:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.thinking-cube:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes cube-wave {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  20% {
+    transform: translateY(-10px) rotate(0deg);
+  }
+  40%, 100% {
+    transform: translateY(0) rotate(360deg);
+  }
+}
+
 /* Input Area */
 .input-area {
   padding: 12px 16px;
@@ -418,4 +851,47 @@
 
 [data-theme="dark"] .art-live {
   background: rgba(76,175,80,0.12);
+}
+
+/* File attachment */
+[data-theme="dark"] .file-attachment {
+  border-color: var(--taupe-2);
+}
+
+[data-theme="dark"] .file-attachment:hover {
+  background: var(--berry-1);
+  border-color: var(--berry-2);
+}
+
+[data-theme="dark"] .file-attachment-icon {
+  color: #f0eef4;
+}
+
+/* Right panel */
+[data-theme="dark"] .file-panel.open {
+  border-left-color: #0e0e10;
+}
+
+[data-theme="dark"] .file-panel-header {
+  border-image: linear-gradient(90deg, #2a2a2f, var(--chinese-3), #2a2a2f) 1;
+}
+
+[data-theme="dark"] .fp-file-bar {
+  background: #28282d;
+}
+
+[data-theme="dark"] .fp-file-name {
+  color: var(--taupe-4);
+}
+
+[data-theme="dark"] .fp-sheet th {
+  border-color: #2a2a2f;
+}
+
+[data-theme="dark"] .fp-sheet td {
+  border-color: #2a2a2f;
+}
+
+[data-theme="dark"] .fp-file-item-icon {
+  color: #f0eef4;
 }

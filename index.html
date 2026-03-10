@@ -29,16 +29,10 @@
         </div>
       </div>
 
-      <!-- Mode Switcher -->
-      <div class="mode-switcher">
-        <button class="mode-btn active" onclick="switchMode('chat', this)">Chat</button>
-        <button class="mode-btn" onclick="switchMode('workflows', this)">Workflows</button>
-      </div>
-
       <button class="new-btn" id="newBtn" onclick="handleNew()">+ New Thread</button>
 
       <div class="sidebar-search">
-        <input type="text" class="sidebar-search-input" placeholder="Search..." />
+        <input type="text" class="sidebar-search-input" placeholder="Search..." onkeydown="if(event.key==='Enter')runGlobalSearch(this.value)" />
       </div>
     </div>
 
@@ -46,25 +40,25 @@
     <div id="chatSidebar">
       <div class="side-label">Recent</div>
       <div class="thread-list">
-        <div class="thread-item active">
+        <div class="thread-item active" onclick="selectThread('fund3', this)">
           Fund III — Allocation Drift
           <div class="thread-meta">Today, 2:31 PM</div>
         </div>
-        <div class="thread-item">
-          Q4 LP Distribution Waterfall
-          <div class="thread-meta">Yesterday, 11:20 AM</div>
-        </div>
-        <div class="thread-item">
+        <div class="thread-item" onclick="selectThread('hilgard', this)">
           Hilgard — Fee Analysis
           <div class="thread-meta">Feb 22, 4:15 PM</div>
           <span class="thread-indicator ready">Ready</span>
         </div>
-        <div class="thread-item">
+        <div class="thread-item" onclick="selectThread('q4lp', this)">
+          Q4 LP Distribution Waterfall
+          <div class="thread-meta">Yesterday, 11:20 AM</div>
+        </div>
+        <div class="thread-item" onclick="selectThread('k1', this)">
           K-1 Document Extraction
           <div class="thread-meta">Feb 20, 9:45 AM</div>
           <span class="thread-indicator needs-input">Input needed</span>
         </div>
-        <div class="thread-item">
+        <div class="thread-item" onclick="selectThread('erabor', this)">
           Erabor Partnership Terms
           <div class="thread-meta">Feb 18, 3:30 PM</div>
         </div>
@@ -115,25 +109,97 @@
     </div>
 
     <div class="sidebar-footer">
-      <div class="user-avatar">E</div>
-      <span class="user-name">Eliot Puplett</span>
-      <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">◐</button>
+      <span class="sidebar-version">Cosimo v2.1</span>
     </div>
   </div>
+
+  <div class="resize-handle resize-handle-sidebar" id="sidebarResizeHandle"></div>
 
   <!-- ======== MAIN ======== -->
   <main>
 
+    <!-- ======== TOP TAB BAR ======== -->
+    <div class="top-tab-bar">
+      <button class="top-tab active" id="tabChat" onclick="switchMode('chat', this)">
+        <span class="top-tab-icon">◆</span> Chat
+      </button>
+      <button class="top-tab" id="tabWorkflows" onclick="switchMode('workflows', this)">
+        <span class="top-tab-icon">⚙</span> Workflows
+      </button>
+      <div class="top-tab-spacer"></div>
+      <div class="top-header-right">
+        <div class="top-icon-btn" id="taskAlertBtn" onclick="toggleTaskPanel()" title="Assigned Tasks">
+          <span class="th-icon">◈</span>
+          <div class="th-badge" id="taskBadge">3</div>
+        </div>
+        <div class="top-icon-btn" id="calendarBtn" onclick="toggleCalendarPanel()" title="Calendar">
+          <span class="th-icon">▦</span>
+        </div>
+        <div class="th-divider"></div>
+        <div class="top-profile" onclick="toggleProfileMenu()">
+          <div class="top-profile-avatar">E</div>
+          <span class="top-profile-name">Eliot Puplett</span>
+          <button class="theme-toggle" onclick="event.stopPropagation(); toggleTheme()" title="Toggle dark mode">◐</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Task Panel Dropdown -->
+    <div class="th-dropdown" id="taskPanel" style="display:none;">
+      <div class="th-dropdown-header">Assigned Tasks <span class="th-dropdown-count">3</span></div>
+      <div class="task-item urgent">
+        <div class="task-dot"></div>
+        <div class="task-body">
+          <div class="task-title">Review Halcyon Towers IC memo</div>
+          <div class="task-meta">Due today · Assigned by Sarah K.</div>
+        </div>
+        <div class="task-priority urgent-label">URGENT</div>
+      </div>
+      <div class="task-item">
+        <div class="task-dot"></div>
+        <div class="task-body">
+          <div class="task-title">Approve row 14 rent roll change</div>
+          <div class="task-meta">Due Mar 10 · Spreadsheets</div>
+        </div>
+      </div>
+      <div class="task-item">
+        <div class="task-dot"></div>
+        <div class="task-body">
+          <div class="task-title">Follow up — James Leland LP commitment</div>
+          <div class="task-meta">Due Mar 12 · CRM</div>
+        </div>
+      </div>
+      <div class="th-dropdown-footer">View all tasks</div>
+    </div>
+
+    <!-- Calendar Panel Dropdown -->
+    <div class="th-dropdown th-dropdown-calendar" id="calendarPanel" style="display:none;">
+      <div class="th-dropdown-header">March 2026</div>
+      <div class="mini-cal">
+        <div class="mini-cal-days">Su Mo Tu We Th Fr Sa</div>
+        <div class="mini-cal-grid" id="miniCalGrid"></div>
+      </div>
+      <div class="th-dropdown-header" style="border-top:1px solid var(--taupe-2);">Upcoming</div>
+      <div class="cal-event"><div class="cal-event-dot" style="background:var(--violet-3)"></div><div><div class="cal-event-title">IC Vote — Halcyon Towers</div><div class="cal-event-meta">Mar 12, 10:00 AM</div></div></div>
+      <div class="cal-event"><div class="cal-event-dot" style="background:var(--blue-3)"></div><div><div class="cal-event-title">LP Call — James Leland</div><div class="cal-event-meta">Mar 14, 2:00 PM</div></div></div>
+      <div class="cal-event"><div class="cal-event-dot" style="background:var(--green)"></div><div><div class="cal-event-title">Fund III Quarterly Review</div><div class="cal-event-meta">Mar 18, 9:00 AM</div></div></div>
+    </div>
+
     <!-- ======== CHAT VIEW ======== -->
     <div class="view-container active" id="chatView">
-      <div class="main-header">
-        <span class="header-title">Fund III — Allocation Drift</span>
+      <div class="chat-with-panel">
+        <div class="chat-main">
+      <div class="main-header" id="chatHeader">
+        <span class="header-title" id="chatHeaderTitle">Fund III — Allocation Drift</span>
         <div class="header-actions">
+          <button class="header-btn disabled" id="filesBtn" disabled onclick="openFilePanel('folder')">Files</button>
           <button class="header-btn">Export</button>
           <button class="header-btn">Share</button>
         </div>
       </div>
 
+      <!-- Fund III thread -->
+      <div class="chat-thread active" id="thread-fund3">
       <div class="chat-scroll">
         <!-- Message 1: User -->
         <div class="msg-block">
@@ -305,6 +371,201 @@
           <span>Cosimo v2.1</span>
         </div>
       </div>
+      </div><!-- /thread-fund3 -->
+
+      <!-- Hilgard thread -->
+      <div class="chat-thread" id="thread-hilgard">
+      <div class="chat-scroll">
+        <!-- Message 1: User -->
+        <div class="msg-block">
+          <div class="user-card">
+            <div class="msg-header">
+              <div class="badge badge-human">E</div>
+              <span class="sender">Eliot Puplett</span>
+              <span class="timestamp">4:15 PM</span>
+            </div>
+            <div class="msg-body">
+              Build me a management fee analysis for Hilgard Properties — Fund II. Use the committed capital basis of $86M at 1.75% annual, with a step-down to 1.25% after Year 4. Include quarterly breakdowns for 2025 and 2026, and flag where the offset provisions from portfolio company fees should apply. Output as xlsx.
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 2: Cosimo response with file -->
+        <div class="msg-block">
+          <div class="ai-block">
+            <div class="msg-header">
+              <div class="badge badge-ai">◆</div>
+              <span class="sender">Cosimo</span>
+              <span class="timestamp">4:16 PM</span>
+              <span class="latency-chip">4.1s</span>
+            </div>
+
+            <div class="msg-body">
+              <p>Fee analysis complete. Key findings:</p>
+              <p><strong>Pre-step-down (Q1 2025 – Q4 2025):</strong> Quarterly fee of $376,250 on $86M committed at 1.75%. Annual total: $1,505,000.</p>
+              <p><strong>Post-step-down (Q1 2026 onward):</strong> Rate drops to 1.25%, reducing quarterly fee to $268,750. Annual total: $1,075,000 — a $430K annual saving for LPs.</p>
+              <p><strong>Offset provisions:</strong> Q2 and Q3 2025 have portfolio company monitoring fees of $42,000 and $18,500 respectively that should offset against the management fee per the LPA. Net fees adjusted in the output.</p>
+            </div>
+
+            <div class="file-attachment" onclick="openFilePanel('viewer')">
+              <div class="file-attachment-icon">▦</div>
+              <div class="file-attachment-info">
+                <div class="file-attachment-name">Hilgard_Fund_II_Fee_Analysis.xlsx</div>
+                <div class="file-attachment-meta">8 columns · 12 rows · Generated Feb 22</div>
+              </div>
+              <div class="file-attachment-action">Open ↗</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 3: User follow-up -->
+        <div class="msg-block">
+          <div class="user-card">
+            <div class="msg-header">
+              <div class="badge badge-human">E</div>
+              <span class="sender">Eliot Puplett</span>
+              <span class="timestamp">4:18 PM</span>
+            </div>
+            <div class="msg-body">
+              Looks good. Can you double-check the offset amounts against the monitoring fee schedule we uploaded last week?
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 4: Cosimo confirmation -->
+        <div class="msg-block">
+          <div class="ai-block">
+            <div class="msg-header">
+              <div class="badge badge-ai">◆</div>
+              <span class="sender">Cosimo</span>
+              <span class="timestamp">4:19 PM</span>
+              <span class="latency-chip">2.8s</span>
+            </div>
+            <div class="msg-body">
+              <p>Cross-referenced against <strong>Hilgard_Monitoring_Fees_2025.pdf</strong> from your Feb 15 upload. Both offset amounts match — $42,000 (Q2, Brightfield advisory) and $18,500 (Q3, Crestline consulting). The xlsx is accurate. No discrepancies found.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <div class="input-row">
+          <input class="text-input" type="text" placeholder="Continue this thread..." />
+          <button class="cmd-btn">Attach</button>
+          <button class="cmd-btn cmd-primary">Send</button>
+        </div>
+        <div class="input-footer">
+          <span>Return to send · Shift+Return for new line</span>
+          <span>Cosimo v2.1</span>
+        </div>
+      </div>
+      </div><!-- /thread-hilgard -->
+
+      <!-- Q4 LP Distribution Waterfall thread -->
+      <div class="chat-thread" id="thread-q4lp">
+      <div class="chat-scroll">
+        <!-- Message 1: User -->
+        <div class="msg-block">
+          <div class="user-card">
+            <div class="msg-header">
+              <div class="badge badge-human">E</div>
+              <span class="sender">Eliot Puplett</span>
+              <span class="timestamp">11:20 AM</span>
+            </div>
+            <div class="msg-body">
+              Run the Q4 distribution waterfall for Fund III. Use the standard 8% pref, 50/50 catch-up, and 20% carried interest structure. I need the LP-level breakdown across all three tiers — show me who gets what.
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 2: Cosimo thinking -->
+        <div class="msg-block">
+          <div class="ai-block">
+            <div class="msg-header">
+              <div class="badge badge-ai">◆</div>
+              <span class="sender">Cosimo</span>
+              <span class="timestamp">11:20 AM</span>
+            </div>
+            <div class="msg-body">
+              <div class="cosimo-thinking">
+                <div class="thinking-cube"></div>
+                <div class="thinking-cube"></div>
+                <div class="thinking-cube"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-area">
+        <div class="input-row">
+          <input class="text-input" type="text" placeholder="Continue this thread..." />
+          <button class="cmd-btn">Attach</button>
+          <button class="cmd-btn cmd-primary">Send</button>
+        </div>
+        <div class="input-footer">
+          <span>Return to send · Shift+Return for new line</span>
+          <span>Cosimo v2.1</span>
+        </div>
+      </div>
+      </div><!-- /thread-q4lp -->
+
+      </div><!-- /chat-main -->
+
+      <!-- ======== RIGHT PANEL (file viewer / folder) ======== -->
+      <div class="resize-handle resize-handle-filepanel" id="filePanelResizeHandle"></div>
+      <div class="file-panel" id="filePanel">
+        <div class="file-panel-header">
+          <div class="file-panel-tabs">
+            <button class="file-panel-tab active" id="fpTabViewer" onclick="switchFilePanelTab('viewer')">Viewer</button>
+            <button class="file-panel-tab" id="fpTabFolder" onclick="switchFilePanelTab('folder')">Files</button>
+          </div>
+          <button class="file-panel-close" onclick="closeFilePanel()">✕</button>
+        </div>
+
+        <!-- File Viewer -->
+        <div class="file-panel-view active" id="fpViewer">
+          <div class="fp-file-bar">
+            <span class="fp-file-icon">▦</span>
+            <span class="fp-file-name">Hilgard_Fund_II_Fee_Analysis.xlsx</span>
+          </div>
+          <div class="fp-formula-bar">
+            <span class="fp-cell-ref" id="fpCellRef">A1</span>
+            <span class="fp-formula" id="fpFormula">Period</span>
+          </div>
+          <div class="fp-sheet-wrap">
+            <table class="fp-sheet" id="fpSheet">
+              <thead>
+                <tr>
+                  <th class="fp-row-header"></th>
+                  <th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th>
+                </tr>
+              </thead>
+              <tbody id="fpSheetBody">
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Folder View -->
+        <div class="file-panel-view" id="fpFolder">
+          <div class="fp-folder-header">
+            <span class="fp-folder-title">Thread Files</span>
+            <span class="fp-folder-count">1 file</span>
+          </div>
+          <div class="fp-file-list">
+            <div class="fp-file-item active" onclick="switchFilePanelTab('viewer')">
+              <div class="fp-file-item-icon">▦</div>
+              <div class="fp-file-item-info">
+                <div class="fp-file-item-name">Hilgard_Fund_II_Fee_Analysis.xlsx</div>
+                <div class="fp-file-item-meta">Generated by Cosimo · Feb 22, 4:16 PM · 12 rows</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- /file-panel -->
+
+      </div><!-- /chat-with-panel -->
     </div>
 
     <!-- ======== WORKFLOWS VIEW ======== -->

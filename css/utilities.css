@@ -139,7 +139,6 @@
 
 /* Overlay for panel */
 .panel-overlay {
-  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -147,10 +146,14 @@
   bottom: 0;
   background: rgba(0,0,0,0.2);
   z-index: 90;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
 }
 
 .panel-overlay.show {
-  display: block;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* ============================================
