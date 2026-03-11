@@ -399,23 +399,50 @@ function switchMode(mode, btn) {
 
   const chatView = document.getElementById('chatView');
   const workflowsView = document.getElementById('workflowsView');
+  const brainView = document.getElementById('brainView');
   const chatSidebar = document.getElementById('chatSidebar');
   const workflowSidebar = document.getElementById('workflowSidebar');
+  const brainSidebar = document.getElementById('brainSidebar');
   const newBtn = document.getElementById('newBtn');
+
+  // Hide all views
+  chatView.classList.remove('active');
+  workflowsView.classList.remove('active');
+  brainView.classList.remove('active');
+
+  // Hide all sidebars
+  chatSidebar.style.display = 'none';
+  workflowSidebar.style.display = 'none';
+  brainSidebar.style.display = 'none';
+
   if (mode === 'chat') {
     chatView.classList.add('active');
-    workflowsView.classList.remove('active');
     chatSidebar.style.display = 'block';
-    workflowSidebar.style.display = 'none';
     newBtn.textContent = '+ New Thread';
-  } else {
-    chatView.classList.remove('active');
+    newBtn.style.display = '';
+  } else if (mode === 'workflows') {
     workflowsView.classList.add('active');
-    chatSidebar.style.display = 'none';
     workflowSidebar.style.display = 'block';
     newBtn.textContent = '+ New Workflow';
+    newBtn.style.display = '';
     showWorkflowListing();
+  } else if (mode === 'brain') {
+    brainView.classList.add('active');
+    brainSidebar.style.display = 'block';
+    newBtn.style.display = 'none';
   }
+}
+
+function switchBrainSection(section, el) {
+  // Update sidebar active state
+  var brainSidebar = document.getElementById('brainSidebar');
+  brainSidebar.querySelectorAll('.thread-item').forEach(function(item) { item.classList.remove('active'); });
+  el.classList.add('active');
+
+  // Switch content section
+  document.querySelectorAll('.brain-section').forEach(function(s) { s.classList.remove('active'); });
+  var target = document.getElementById('brain-' + section);
+  if (target) target.classList.add('active');
 }
 
 function runGlobalSearch(q) {
@@ -649,29 +676,54 @@ function buildSpreadsheet() {
 // ============================================
 // TASK & CALENDAR PANELS
 // ============================================
+function closeAllPanels() {
+  var tp = document.getElementById('taskPanel');
+  var cp = document.getElementById('calendarPanel');
+  var up = document.getElementById('usagePanel');
+  if (tp) tp.style.display = 'none';
+  if (cp) cp.style.display = 'none';
+  if (up) up.style.display = 'none';
+}
+
 function toggleTaskPanel() {
   const tp = document.getElementById('taskPanel');
-  const cp = document.getElementById('calendarPanel');
-  if (cp) cp.style.display = 'none';
-  if (tp) tp.style.display = tp.style.display === 'none' ? 'block' : 'none';
+  const wasOpen = tp && tp.style.display !== 'none';
+  closeAllPanels();
+  if (!wasOpen && tp) tp.style.display = 'block';
 }
 
 function toggleCalendarPanel() {
   const cp = document.getElementById('calendarPanel');
-  const tp = document.getElementById('taskPanel');
-  if (tp) tp.style.display = 'none';
-  if (cp) {
-    if (cp.style.display === 'none') {
-      buildMiniCalendar();
-      cp.style.display = 'block';
-    } else {
-      cp.style.display = 'none';
-    }
+  const wasOpen = cp && cp.style.display !== 'none';
+  closeAllPanels();
+  if (!wasOpen && cp) {
+    buildMiniCalendar();
+    cp.style.display = 'block';
   }
 }
 
+function toggleUsagePanel() {
+  const up = document.getElementById('usagePanel');
+  const wasOpen = up && up.style.display !== 'none';
+  closeAllPanels();
+  if (!wasOpen && up) up.style.display = 'block';
+}
+
+// Close top-bar dropdowns when clicking outside
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.top-icon-btn') && !e.target.closest('.th-dropdown') && !e.target.closest('.top-profile')) {
+    closeAllPanels();
+    var pp = document.getElementById('profilePanel');
+    if (pp) pp.style.display = 'none';
+  }
+});
+
 function toggleProfileMenu() {
-  alert('Profile menu:\n• Edit Profile\n• Notification Settings\n• Integrations\n• Sign Out');
+  const pp = document.getElementById('profilePanel');
+  const wasOpen = pp && pp.style.display !== 'none';
+  closeAllPanels();
+  if (pp) pp.style.display = 'none';
+  if (!wasOpen && pp) pp.style.display = 'block';
 }
 
 function buildMiniCalendar() {

@@ -25,7 +25,7 @@
         <div class="logo-mark"><div class="logo-mark-inner"></div></div>
         <div>
           <div class="logo-title">COSIMO</div>
-          <div class="logo-sub">Applied Intelligence</div>
+          <div class="logo-sub">MEDICI & COMPANY</div>
         </div>
       </div>
 
@@ -109,8 +109,30 @@
       </div>
     </div>
 
+    <!-- Brain sidebar items -->
+    <div id="brainSidebar" style="display:none;">
+      <div class="side-label">Brain</div>
+      <div class="thread-list">
+        <div class="thread-item active" onclick="switchBrainSection('memory', this)">
+          Memory
+          <div class="thread-meta">Facts, preferences, context</div>
+        </div>
+        <div class="thread-item" onclick="switchBrainSection('lessons', this)">
+          Lessons
+          <div class="thread-meta">Patterns &amp; domain knowledge</div>
+        </div>
+        <div class="thread-item" onclick="switchBrainSection('graphs', this)">
+          Data Graphs
+          <div class="thread-meta">Entity relationships</div>
+        </div>
+        <div class="thread-item" onclick="switchBrainSection('prefs', this)">
+          Agent Preferences
+          <div class="thread-meta">Tone, models, formatting</div>
+        </div>
+      </div>
+    </div>
+
     <div class="sidebar-footer">
-      <span class="sidebar-version">Cosimo v2.1</span>
     </div>
   </div>
 
@@ -122,10 +144,13 @@
     <!-- ======== TOP TAB BAR ======== -->
     <div class="top-tab-bar">
       <button class="top-tab active" id="tabChat" onclick="switchMode('chat', this)">
-        <span class="top-tab-icon">◆</span> Chat
+        <span class="top-tab-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="12" height="12"><path d="M1 3h14v9H5l-4 3v-3H1z"/></svg></span> Chat
       </button>
       <button class="top-tab" id="tabWorkflows" onclick="switchMode('workflows', this)">
-        <span class="top-tab-icon">⚙</span> Workflows
+        <span class="top-tab-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="12" height="12"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41"/></svg></span> Workflows
+      </button>
+      <button class="top-tab" id="tabBrain" onclick="switchMode('brain', this)">
+        <span class="top-tab-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="12" height="12"><path d="M8 14.5V8"/><path d="M4.5 3.5C3 3.5 1.5 4.8 1.5 6.5c0 1.2.6 2 1.2 2.5-.3.7-.2 1.8.5 2.5s1.8 1 2.8.8c.5.8 1.2 1.2 2 1.2"/><path d="M11.5 3.5c1.5 0 3 1.3 3 3 0 1.2-.6 2-1.2 2.5.3.7.2 1.8-.5 2.5s-1.8 1-2.8.8c-.5.8-1.2 1.2-2 1.2"/><path d="M5.5 2.5C5.5 1.5 6.5 1 8 1s2.5.5 2.5 1.5S9.5 4 8 4 5.5 3.5 5.5 2.5z"/><path d="M3 7c1.2.3 2.5.8 3.5 1.5"/><path d="M13 7c-1.2.3-2.5.8-3.5 1.5"/></svg></span> Brain
       </button>
       <div class="top-tab-spacer"></div>
       <div class="top-header-right">
@@ -136,11 +161,21 @@
         <div class="top-icon-btn" id="calendarBtn" onclick="toggleCalendarPanel()" title="Calendar">
           <span class="th-icon">▦</span>
         </div>
+        <div class="top-icon-btn" id="usageBtn" onclick="toggleUsagePanel()" title="Usage">
+          <svg viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="11"><path d="M1 11 A7 7 0 0 1 15 11"/><line x1="8" y1="11" x2="10.5" y2="4" stroke-width="2" stroke-linecap="square"/><rect x="6.5" y="9.5" width="3" height="3" fill="currentColor" stroke="none"/></svg>
+        </div>
         <div class="th-divider"></div>
         <div class="top-profile" onclick="toggleProfileMenu()">
           <div class="top-profile-avatar">E</div>
           <span class="top-profile-name">Eliot Puplett</span>
           <button class="theme-toggle" onclick="event.stopPropagation(); toggleTheme()" title="Toggle dark mode">◐</button>
+        </div>
+        <div class="th-dropdown th-dropdown-profile" id="profilePanel" style="display:none;">
+          <div class="profile-menu-item" onclick="alert('Edit Profile')">Edit Profile</div>
+          <div class="profile-menu-item" onclick="alert('Notification Settings')">Notification Settings</div>
+          <div class="profile-menu-item" onclick="alert('Integrations')">Integrations</div>
+          <div class="profile-menu-divider"></div>
+          <div class="profile-menu-item profile-menu-signout" onclick="window.location.href='login.html'">Sign Out</div>
         </div>
       </div>
     </div>
@@ -184,6 +219,65 @@
       <div class="cal-event"><div class="cal-event-dot" style="background:var(--violet-3)"></div><div><div class="cal-event-title">IC Vote — Halcyon Towers</div><div class="cal-event-meta">Mar 12, 10:00 AM</div></div></div>
       <div class="cal-event"><div class="cal-event-dot" style="background:var(--blue-3)"></div><div><div class="cal-event-title">LP Call — James Leland</div><div class="cal-event-meta">Mar 14, 2:00 PM</div></div></div>
       <div class="cal-event"><div class="cal-event-dot" style="background:var(--green)"></div><div><div class="cal-event-title">Fund III Quarterly Review</div><div class="cal-event-meta">Mar 18, 9:00 AM</div></div></div>
+    </div>
+
+    <!-- Usage Panel Dropdown -->
+    <div class="th-dropdown th-dropdown-usage" id="usagePanel" style="display:none;">
+      <div class="th-dropdown-header">Credit Usage — March 2026</div>
+      <div class="usage-meter-wrap">
+        <div class="usage-gauge">
+          <svg viewBox="0 0 200 130" class="usage-gauge-svg">
+            <defs>
+              <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="var(--violet-3)"/>
+                <stop offset="60%" stop-color="var(--berry-3)"/>
+                <stop offset="100%" stop-color="var(--red)"/>
+              </linearGradient>
+            </defs>
+            <!-- Background arc -->
+            <path d="M20 105 A80 80 0 0 1 180 105" fill="none" stroke="var(--taupe-1)" stroke-width="14" stroke-linecap="square"/>
+            <!-- Filled arc (60.3%) -->
+            <path d="M20 105 A80 80 0 0 1 124.5 29" fill="none" stroke="url(#gaugeGrad)" stroke-width="14" stroke-linecap="square"/>
+            <!-- Tick marks -->
+            <line x1="20" y1="105" x2="20" y2="95" stroke="var(--taupe-3)" stroke-width="1.5"/>
+            <line x1="100" y1="25" x2="100" y2="35" stroke="var(--taupe-3)" stroke-width="1.5"/>
+            <line x1="180" y1="105" x2="180" y2="95" stroke="var(--taupe-3)" stroke-width="1.5"/>
+            <!-- Needle -->
+            <line x1="100" y1="105" x2="120" y2="42" stroke="var(--taupe-5)" stroke-width="2.5" stroke-linecap="square"/>
+            <rect x="95" y="100" width="10" height="10" fill="var(--taupe-5)"/>
+            <!-- Scale labels -->
+            <text x="20" y="122" font-family="'IBM Plex Mono', monospace" font-size="9" font-weight="600" fill="var(--taupe-3)" text-anchor="middle">0</text>
+            <text x="180" y="122" font-family="'IBM Plex Mono', monospace" font-size="9" font-weight="600" fill="var(--taupe-3)" text-anchor="middle">34.0M</text>
+          </svg>
+          <div class="usage-gauge-readout">
+            <span class="usage-gauge-value">60.3%</span>
+            <span class="usage-gauge-unit">used this period</span>
+          </div>
+        </div>
+        <div class="usage-stats">
+          <div class="usage-stat-row">
+            <span class="usage-stat-label">Plan Limit</span>
+            <span class="usage-stat-value">34.0M credits</span>
+          </div>
+          <div class="usage-stat-row">
+            <span class="usage-stat-label">Used</span>
+            <span class="usage-stat-value">20.5M credits</span>
+          </div>
+          <div class="usage-stat-row">
+            <span class="usage-stat-label">Remaining</span>
+            <span class="usage-stat-value usage-stat-highlight">13.5M credits</span>
+          </div>
+          <div class="usage-stat-divider"></div>
+          <div class="usage-stat-row">
+            <span class="usage-stat-label">Overage</span>
+            <span class="usage-stat-value">$0.00</span>
+          </div>
+          <div class="usage-stat-row">
+            <span class="usage-stat-label">Renews</span>
+            <span class="usage-stat-value">Apr 1, 2026</span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- ======== CHAT VIEW ======== -->
@@ -1539,6 +1633,97 @@
       </div>
     </div>
 
+    <!-- ======== BRAIN VIEW ======== -->
+    <div class="view-container" id="brainView">
+
+          <!-- TODO: Remove this notes banner before building -->
+          <div class="brain-notes-banner" id="brainNotes">
+            <div class="brain-notes-header">
+              <span class="brain-notes-title">IMPLEMENTATION NOTES</span>
+              <button class="brain-notes-dismiss" onclick="document.getElementById('brainNotes').style.display='none'">✕</button>
+            </div>
+            <ol class="brain-notes-list">
+              <li><strong>Editing:</strong> All Brain items (Memory, Lessons, Graphs, Preferences) must be editable two ways — direct inline editing in this UI, and via conversation with Cosimo (right-panel drop-in).</li>
+              <li><strong>Data Graphs:</strong> Should render as an interactive node graph (not a chart). Force-directed or hierarchical layout. Needs visual navigation — zoom, pan, click-to-explore.</li>
+              <li><strong>Lessons Scope:</strong> Lessons have two levels — <em>User-level</em> (personal) and <em>Company-level</em> (shared across org). Cosimo auto-assigns the level, but the UX must let the user promote/demote between levels.</li>
+            </ol>
+          </div>
+
+          <!-- Memory Section -->
+          <div class="brain-section active" id="brain-memory">
+            <div class="main-header">
+              <span class="header-title">Memory</span>
+              <div class="header-actions">
+                <button class="header-btn primary">+ Add Memory</button>
+              </div>
+            </div>
+            <div class="brain-scroll">
+              <div class="brain-empty">
+                <div class="brain-empty-icon">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><rect x="2" y="2" width="12" height="12"/><line x1="2" y1="6" x2="14" y2="6"/><line x1="2" y1="10" x2="14" y2="10"/><line x1="6" y1="6" x2="6" y2="14"/></svg>
+                </div>
+                <div class="brain-empty-title">Memory Store</div>
+                <div class="brain-empty-desc">Cosimo remembers facts, preferences, and context from your conversations. Memories help personalize responses and maintain continuity across sessions.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lessons Section -->
+          <div class="brain-section" id="brain-lessons">
+            <div class="main-header">
+              <span class="header-title">Lessons</span>
+              <div class="header-actions">
+                <button class="header-btn primary">+ New Lesson</button>
+              </div>
+            </div>
+            <div class="brain-scroll">
+              <div class="brain-empty">
+                <div class="brain-empty-icon">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><path d="M2 12.5l6-3 6 3"/><path d="M2 9l6-3 6 3"/><path d="M2 5.5l6-3 6 3"/></svg>
+                </div>
+                <div class="brain-empty-title">Lessons &amp; Skills</div>
+                <div class="brain-empty-desc">Teach Cosimo reusable patterns, workflows, and domain-specific knowledge. Lessons let the agent learn how your firm operates and apply that understanding to future tasks.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Data Graphs Section -->
+          <div class="brain-section" id="brain-graphs">
+            <div class="main-header">
+              <span class="header-title">Data Graphs</span>
+              <div class="header-actions">
+                <button class="header-btn primary">+ New Graph</button>
+              </div>
+            </div>
+            <div class="brain-scroll">
+              <div class="brain-empty">
+                <div class="brain-empty-icon">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><polyline points="1.5,12.5 5,6 9,9 14.5,2.5"/><line x1="1.5" y1="14.5" x2="1.5" y2="1.5"/><line x1="1.5" y1="14.5" x2="14.5" y2="14.5"/></svg>
+                </div>
+                <div class="brain-empty-title">Data Graphs</div>
+                <div class="brain-empty-desc">Visualize relationships between entities, funds, documents, and data sources. Graphs help Cosimo understand how your data connects and surface insights across silos.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Agent Preferences Section -->
+          <div class="brain-section" id="brain-prefs">
+            <div class="main-header">
+              <span class="header-title">Agent Preferences</span>
+            </div>
+            <div class="brain-scroll">
+              <div class="brain-empty">
+                <div class="brain-empty-icon">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><line x1="2" y1="4" x2="14" y2="4"/><line x1="2" y1="8" x2="14" y2="8"/><line x1="2" y1="12" x2="14" y2="12"/><circle cx="5" cy="4" r="1.5" fill="var(--white)"/><circle cx="10" cy="8" r="1.5" fill="var(--white)"/><circle cx="7" cy="12" r="1.5" fill="var(--white)"/></svg>
+                </div>
+                <div class="brain-empty-title">Agent Preferences</div>
+                <div class="brain-empty-desc">Configure how Cosimo behaves — tone, verbosity, default models, citation style, and output formatting. Preferences apply across all conversations and workflows.</div>
+              </div>
+            </div>
+          </div>
+
+    </div>
+
   </main>
 </div>
 
@@ -1580,7 +1765,7 @@
 
 <div class="toast-container" id="toastContainer"></div>
 <div class="resize-grip"></div>
-<div class="design-label">Cosimo — Combined Platform Demo</div>
+<div class="design-label">Cosimo v2.1</div>
 
 <script src="js/app.js"></script>
 

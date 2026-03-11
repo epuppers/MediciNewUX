@@ -394,7 +394,8 @@
 }
 
 .ai-block {
-  padding: 10px 0;
+  padding: 10px 12px;
+  border: 1px solid transparent;
 }
 
 /* Artifact */
