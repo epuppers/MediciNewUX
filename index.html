@@ -125,10 +125,6 @@
           Data Graphs
           <div class="thread-meta">Entity relationships</div>
         </div>
-        <div class="thread-item" onclick="switchBrainSection('prefs', this)">
-          Agent Preferences
-          <div class="thread-meta">Tone, models, formatting</div>
-        </div>
       </div>
     </div>
 
@@ -1636,55 +1632,525 @@
     <!-- ======== BRAIN VIEW ======== -->
     <div class="view-container" id="brainView">
 
-          <!-- TODO: Remove this notes banner before building -->
-          <div class="brain-notes-banner" id="brainNotes">
-            <div class="brain-notes-header">
-              <span class="brain-notes-title">IMPLEMENTATION NOTES</span>
-              <button class="brain-notes-dismiss" onclick="document.getElementById('brainNotes').style.display='none'">✕</button>
-            </div>
-            <ol class="brain-notes-list">
-              <li><strong>Editing:</strong> All Brain items (Memory, Lessons, Graphs, Preferences) must be editable two ways — direct inline editing in this UI, and via conversation with Cosimo (right-panel drop-in).</li>
-              <li><strong>Data Graphs:</strong> Should render as an interactive node graph (not a chart). Force-directed or hierarchical layout. Needs visual navigation — zoom, pan, click-to-explore.</li>
-              <li><strong>Lessons Scope:</strong> Lessons have two levels — <em>User-level</em> (personal) and <em>Company-level</em> (shared across org). Cosimo auto-assigns the level, but the UX must let the user promote/demote between levels.</li>
-            </ol>
-          </div>
 
           <!-- Memory Section -->
           <div class="brain-section active" id="brain-memory">
             <div class="main-header">
               <span class="header-title">Memory</span>
               <div class="header-actions">
-                <button class="header-btn primary">+ Add Memory</button>
+                <button class="header-btn primary" onclick="toggleAddMemory()">+ Add Memory</button>
               </div>
             </div>
-            <div class="brain-scroll">
-              <div class="brain-empty">
-                <div class="brain-empty-icon">
-                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><rect x="2" y="2" width="12" height="12"/><line x1="2" y1="6" x2="14" y2="6"/><line x1="2" y1="10" x2="14" y2="10"/><line x1="6" y1="6" x2="6" y2="14"/></svg>
+            <div class="brain-scroll" id="memoryScroll">
+
+              <!-- Section 1: Role Profile -->
+              <div class="mem-section">
+                <div class="mem-section-label">What Describes Your Work</div>
+                <div class="mem-role-card">
+                  <div class="mem-role-text" contenteditable="true" id="roleField" data-placeholder="Describe what you do, your role, your firm...">VP of Fund Accounting at a mid-market PE firm. I manage 12 funds across 3 vintages, primarily focused on real estate and infrastructure. I report to the CFO and work closely with investor relations.</div>
                 </div>
-                <div class="brain-empty-title">Memory Store</div>
-                <div class="brain-empty-desc">Cosimo remembers facts, preferences, and context from your conversations. Memories help personalize responses and maintain continuity across sessions.</div>
               </div>
+
+              <!-- Section 2: Personality Traits -->
+              <div class="mem-section">
+                <div class="mem-section-label">What Traits Should Cosimo Have?</div>
+                <div class="mem-personality">
+                  <div class="mem-trait-selected" id="traitSelected">
+                    <span class="mem-trait-tag active" onclick="removeTrait(this)">Direct <span class="trait-x">&times;</span></span>
+                    <span class="mem-trait-tag active" onclick="removeTrait(this)">Detail-oriented <span class="trait-x">&times;</span></span>
+                    <span class="mem-trait-tag active" onclick="removeTrait(this)">Professional <span class="trait-x">&times;</span></span>
+                  </div>
+                  <div class="mem-trait-presets" id="traitPresets">
+                    <span class="mem-trait-tag" onclick="toggleTrait(this)">Witty</span>
+                    <span class="mem-trait-tag" onclick="toggleTrait(this)">Friendly</span>
+                    <span class="mem-trait-tag" onclick="toggleTrait(this)">Formal</span>
+                    <span class="mem-trait-tag disabled" onclick="toggleTrait(this)">Direct</span>
+                    <span class="mem-trait-tag" onclick="toggleTrait(this)">Cautious</span>
+                    <span class="mem-trait-tag disabled" onclick="toggleTrait(this)">Detail-oriented</span>
+                    <span class="mem-trait-tag" onclick="toggleTrait(this)">Big-picture</span>
+                    <span class="mem-trait-tag" onclick="toggleTrait(this)">Encouraging</span>
+                    <span class="mem-trait-tag disabled" onclick="toggleTrait(this)">Professional</span>
+                    <span class="mem-trait-tag" onclick="toggleTrait(this)">Concise</span>
+                    <span class="mem-trait-tag" onclick="toggleTrait(this)">Thorough</span>
+                  </div>
+                  <div class="mem-trait-custom">
+                    <input type="text" class="mem-trait-input" id="traitInput" placeholder="Add a custom trait..." onkeydown="if(event.key==='Enter'){addCustomTrait(); event.preventDefault();}" />
+                    <button class="mem-trait-add-btn" onclick="addCustomTrait()">Add</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Section 3: Core Memories -->
+              <div class="mem-section">
+                <div class="mem-section-label">Core Memories</div>
+                <div class="mem-facts-toolbar">
+                  <div class="mem-search-wrap">
+                    <svg class="mem-search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/></svg>
+                    <input type="text" class="mem-search-input" id="memSearchInput" placeholder="Search memories..." oninput="filterMemories()" />
+                  </div>
+                  <div class="mem-category-filters" id="memCategoryFilters">
+                    <button class="mem-cat-pill active" onclick="filterByCategory('all', this)">All</button>
+                    <button class="mem-cat-pill" onclick="filterByCategory('preference', this)">Preferences</button>
+                    <button class="mem-cat-pill" onclick="filterByCategory('workflow', this)">Workflows</button>
+                    <button class="mem-cat-pill" onclick="filterByCategory('contact', this)">Contacts</button>
+                    <button class="mem-cat-pill" onclick="filterByCategory('fund', this)">Funds</button>
+                    <button class="mem-cat-pill" onclick="filterByCategory('style', this)">Style</button>
+                  </div>
+                </div>
+
+                <!-- Add Memory Inline Form (hidden by default) -->
+                <div class="mem-add-form" id="memAddForm" style="display:none;">
+                  <div class="mem-add-form-inner">
+                    <input type="text" class="mem-add-input" id="memAddInput" placeholder="Type a fact Cosimo should remember..." onkeydown="if(event.key==='Enter'){submitNewMemory(); event.preventDefault();}" />
+                    <div class="mem-add-form-row">
+                      <select class="mem-add-category" id="memAddCategory">
+                        <option value="preference">Preference</option>
+                        <option value="workflow">Workflow</option>
+                        <option value="contact">Contact</option>
+                        <option value="fund">Fund</option>
+                        <option value="style">Style</option>
+                        <option value="context">Context</option>
+                      </select>
+                      <div class="mem-add-actions">
+                        <button class="header-btn" onclick="cancelAddMemory()">Cancel</button>
+                        <button class="header-btn primary" onclick="submitNewMemory()">Save</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Fact Cards -->
+                <div class="mem-fact-list" id="memFactList">
+
+                  <div class="mem-fact-card" data-category="preference">
+                    <div class="mem-fact-top">
+                      <span class="mem-fact-cat cat-preference">Preference</span>
+                      <button class="mem-fact-menu-btn" onclick="toggleFactMenu(this)">
+                        <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/></svg>
+                      </button>
+                      <div class="mem-fact-menu">
+                        <button onclick="editFact(this)">Edit</button>
+                        <button onclick="deleteFact(this)">Delete</button>
+                      </div>
+                    </div>
+                    <div class="mem-fact-text">Prefers IRR over MOIC when comparing fund performance across vintages.</div>
+                    <div class="mem-fact-meta">
+                      <span class="mem-fact-source">Learned from conversation</span>
+                      <span class="mem-fact-date">Feb 14, 2026</span>
+                    </div>
+                  </div>
+
+                  <div class="mem-fact-card" data-category="contact">
+                    <div class="mem-fact-top">
+                      <span class="mem-fact-cat cat-contact">Contact</span>
+                      <button class="mem-fact-menu-btn" onclick="toggleFactMenu(this)">
+                        <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/></svg>
+                      </button>
+                      <div class="mem-fact-menu">
+                        <button onclick="editFact(this)">Edit</button>
+                        <button onclick="deleteFact(this)">Delete</button>
+                      </div>
+                    </div>
+                    <div class="mem-fact-text">Reports go to Sarah Chen (CFO) and Marcus Webb (COO). Sarah prefers executive summaries; Marcus wants full detail.</div>
+                    <div class="mem-fact-meta">
+                      <span class="mem-fact-source">Learned from conversation</span>
+                      <span class="mem-fact-date">Feb 12, 2026</span>
+                    </div>
+                  </div>
+
+                  <div class="mem-fact-card" data-category="fund">
+                    <div class="mem-fact-top">
+                      <span class="mem-fact-cat cat-fund">Fund</span>
+                      <button class="mem-fact-menu-btn" onclick="toggleFactMenu(this)">
+                        <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/></svg>
+                      </button>
+                      <div class="mem-fact-menu">
+                        <button onclick="editFact(this)">Edit</button>
+                        <button onclick="deleteFact(this)">Delete</button>
+                      </div>
+                    </div>
+                    <div class="mem-fact-text">Fund III has a 2/20 fee structure with European waterfall. GP commit is 5%. Preferred return is 8%.</div>
+                    <div class="mem-fact-meta">
+                      <span class="mem-fact-source">Added by you</span>
+                      <span class="mem-fact-date">Feb 10, 2026</span>
+                    </div>
+                  </div>
+
+                  <div class="mem-fact-card" data-category="style">
+                    <div class="mem-fact-top">
+                      <span class="mem-fact-cat cat-style">Style</span>
+                      <button class="mem-fact-menu-btn" onclick="toggleFactMenu(this)">
+                        <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/></svg>
+                      </button>
+                      <div class="mem-fact-menu">
+                        <button onclick="editFact(this)">Edit</button>
+                        <button onclick="deleteFact(this)">Delete</button>
+                      </div>
+                    </div>
+                    <div class="mem-fact-text">Always include vintage year when referencing funds. Never abbreviate fund names in reports.</div>
+                    <div class="mem-fact-meta">
+                      <span class="mem-fact-source">Learned from conversation</span>
+                      <span class="mem-fact-date">Feb 8, 2026</span>
+                    </div>
+                  </div>
+
+                  <div class="mem-fact-card" data-category="workflow">
+                    <div class="mem-fact-top">
+                      <span class="mem-fact-cat cat-workflow">Workflow</span>
+                      <button class="mem-fact-menu-btn" onclick="toggleFactMenu(this)">
+                        <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/></svg>
+                      </button>
+                      <div class="mem-fact-menu">
+                        <button onclick="editFact(this)">Edit</button>
+                        <button onclick="deleteFact(this)">Delete</button>
+                      </div>
+                    </div>
+                    <div class="mem-fact-text">Uses Yardi Voyager for property management data exports. Prefers CSV format over Excel for data imports.</div>
+                    <div class="mem-fact-meta">
+                      <span class="mem-fact-source">Learned from conversation</span>
+                      <span class="mem-fact-date">Feb 6, 2026</span>
+                    </div>
+                  </div>
+
+                  <div class="mem-fact-card" data-category="preference">
+                    <div class="mem-fact-top">
+                      <span class="mem-fact-cat cat-preference">Preference</span>
+                      <button class="mem-fact-menu-btn" onclick="toggleFactMenu(this)">
+                        <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/></svg>
+                      </button>
+                      <div class="mem-fact-menu">
+                        <button onclick="editFact(this)">Edit</button>
+                        <button onclick="deleteFact(this)">Delete</button>
+                      </div>
+                    </div>
+                    <div class="mem-fact-text">When building financial models, always start with assumptions tab, then build out to projections.</div>
+                    <div class="mem-fact-meta">
+                      <span class="mem-fact-source">Learned from conversation</span>
+                      <span class="mem-fact-date">Feb 3, 2026</span>
+                    </div>
+                  </div>
+
+                  <div class="mem-fact-card" data-category="contact">
+                    <div class="mem-fact-top">
+                      <span class="mem-fact-cat cat-contact">Contact</span>
+                      <button class="mem-fact-menu-btn" onclick="toggleFactMenu(this)">
+                        <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/></svg>
+                      </button>
+                      <div class="mem-fact-menu">
+                        <button onclick="editFact(this)">Edit</button>
+                        <button onclick="deleteFact(this)">Delete</button>
+                      </div>
+                    </div>
+                    <div class="mem-fact-text">Primary auditor is Deloitte. Audit partner is James Whitfield. Fiscal year ends March 31.</div>
+                    <div class="mem-fact-meta">
+                      <span class="mem-fact-source">Added by you</span>
+                      <span class="mem-fact-date">Jan 28, 2026</span>
+                    </div>
+                  </div>
+
+                  <div class="mem-fact-card" data-category="fund">
+                    <div class="mem-fact-top">
+                      <span class="mem-fact-cat cat-fund">Fund</span>
+                      <button class="mem-fact-menu-btn" onclick="toggleFactMenu(this)">
+                        <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/></svg>
+                      </button>
+                      <div class="mem-fact-menu">
+                        <button onclick="editFact(this)">Edit</button>
+                        <button onclick="deleteFact(this)">Delete</button>
+                      </div>
+                    </div>
+                    <div class="mem-fact-text">Hilgard Fund is a 2021 vintage focused on multifamily residential. 14 LP investors. Currently in harvest period.</div>
+                    <div class="mem-fact-meta">
+                      <span class="mem-fact-source">Learned from conversation</span>
+                      <span class="mem-fact-date">Jan 22, 2026</span>
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- No results state -->
+                <div class="mem-no-results" id="memNoResults" style="display:none;">
+                  <div class="brain-empty-icon">
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/></svg>
+                  </div>
+                  <div class="brain-empty-title" style="font-size:16px;">No memories found</div>
+                  <div class="brain-empty-desc">Try a different search or category filter.</div>
+                </div>
+
+              </div>
+
             </div>
           </div>
 
           <!-- Lessons Section -->
           <div class="brain-section" id="brain-lessons">
-            <div class="main-header">
-              <span class="header-title">Lessons</span>
-              <div class="header-actions">
-                <button class="header-btn primary">+ New Lesson</button>
-              </div>
-            </div>
-            <div class="brain-scroll">
-              <div class="brain-empty">
-                <div class="brain-empty-icon">
-                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><path d="M2 12.5l6-3 6 3"/><path d="M2 9l6-3 6 3"/><path d="M2 5.5l6-3 6 3"/></svg>
+
+            <!-- Lessons List View -->
+            <div id="lessonsListView" class="brain-subview">
+              <div class="main-header">
+                <span class="header-title">Lessons</span>
+                <div class="header-actions">
+                  <button class="header-btn primary" onclick="createNewLesson()">+ New Lesson</button>
                 </div>
-                <div class="brain-empty-title">Lessons &amp; Skills</div>
-                <div class="brain-empty-desc">Teach Cosimo reusable patterns, workflows, and domain-specific knowledge. Lessons let the agent learn how your firm operates and apply that understanding to future tasks.</div>
+              </div>
+              <div class="brain-scroll">
+
+                <!-- Search -->
+                <div class="mem-search-wrap" style="margin-bottom:12px;">
+                  <svg class="mem-search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/></svg>
+                  <input type="text" class="mem-search-input" id="lessonSearchInput" placeholder="Search lessons..." oninput="filterLessons()" />
+                </div>
+
+                <!-- Scope Filter -->
+                <div class="mem-category-filters" style="margin-bottom:14px;" id="lessonScopeFilters">
+                  <button class="mem-cat-pill active" onclick="filterLessonScope('all', this)">All</button>
+                  <button class="mem-cat-pill" onclick="filterLessonScope('user', this)">
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" width="11" height="11" style="vertical-align:-1px;margin-right:3px;"><circle cx="8" cy="5" r="3"/><path d="M2.5 14c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/></svg>Personal
+                  </button>
+                  <button class="mem-cat-pill" onclick="filterLessonScope('company', this)">
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" width="11" height="11" style="vertical-align:-1px;margin-right:3px;"><rect x="2" y="4" width="12" height="10"/><rect x="5" y="1" width="6" height="5"/><line x1="8" y1="8" x2="8" y2="10"/></svg>Company
+                  </button>
+                </div>
+
+                <!-- Lesson Cards -->
+                <div class="lesson-list" id="lessonList">
+
+                  <div class="lesson-card" data-scope="company" data-lesson="rent-roll-format" onclick="openLesson('rent-roll-format')">
+                    <div class="lesson-card-top">
+                      <span class="lesson-scope-badge scope-company">Company</span>
+                      <div class="lesson-card-top-right">
+                        <span class="lesson-usage">Referenced 23 times</span>
+                        <button class="lesson-card-scope-btn" onclick="toggleCardScope(this, event)" title="Change scope">
+                          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="11" height="11"><path d="M1 8h14M11 4l4 4-4 4"/></svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="lesson-card-title">Rent Roll Formatting Standards</div>
+                    <div class="lesson-card-preview">All rent rolls must follow the standardized column layout: Unit, Tenant, Lease Start, Lease End, Monthly Rent, Status. Column headers use title case...</div>
+                    <div class="lesson-card-meta">
+                      <span class="lesson-card-date">Updated Feb 28</span>
+                      <span class="lesson-card-author">by Sarah Chen</span>
+                    </div>
+                  </div>
+
+                  <div class="lesson-card" data-scope="user" data-lesson="k1-extraction" onclick="openLesson('k1-extraction')">
+                    <div class="lesson-card-top">
+                      <span class="lesson-scope-badge scope-user">Personal</span>
+                      <div class="lesson-card-top-right">
+                        <span class="lesson-usage">Referenced 18 times</span>
+                        <button class="lesson-card-scope-btn" onclick="toggleCardScope(this, event)" title="Change scope">
+                          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="11" height="11"><path d="M1 8h14M11 4l4 4-4 4"/></svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="lesson-card-title">K-1 Document Extraction Rules</div>
+                    <div class="lesson-card-preview">When extracting K-1 data, always pull: Partner name, TIN (last 4 only), ordinary income (Box 1), rental income (Box 2), guaranteed payments (Box 4c)...</div>
+                    <div class="lesson-card-meta">
+                      <span class="lesson-card-date">Updated Feb 22</span>
+                      <span class="lesson-card-author">by you</span>
+                    </div>
+                  </div>
+
+                  <div class="lesson-card" data-scope="company" data-lesson="waterfall-calc" onclick="openLesson('waterfall-calc')">
+                    <div class="lesson-card-top">
+                      <span class="lesson-scope-badge scope-company">Company</span>
+                      <div class="lesson-card-top-right">
+                        <span class="lesson-usage">Referenced 14 times</span>
+                        <button class="lesson-card-scope-btn" onclick="toggleCardScope(this, event)" title="Change scope">
+                          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="11" height="11"><path d="M1 8h14M11 4l4 4-4 4"/></svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="lesson-card-title">LP Distribution Waterfall Logic</div>
+                    <div class="lesson-card-preview">Distribution follows European waterfall: (1) Return of capital, (2) Preferred return at 8%, (3) GP catch-up to 20%, (4) 80/20 split above hurdle...</div>
+                    <div class="lesson-card-meta">
+                      <span class="lesson-card-date">Updated Feb 15</span>
+                      <span class="lesson-card-author">by Marcus Webb</span>
+                    </div>
+                  </div>
+
+                  <div class="lesson-card" data-scope="user" data-lesson="report-formatting" onclick="openLesson('report-formatting')">
+                    <div class="lesson-card-top">
+                      <span class="lesson-scope-badge scope-user">Personal</span>
+                      <div class="lesson-card-top-right">
+                        <span class="lesson-usage">Referenced 9 times</span>
+                        <button class="lesson-card-scope-btn" onclick="toggleCardScope(this, event)" title="Change scope">
+                          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="11" height="11"><path d="M1 8h14M11 4l4 4-4 4"/></svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="lesson-card-title">Quarterly Report Formatting Guide</div>
+                    <div class="lesson-card-preview">Reports use DM Sans for body text, IBM Plex Mono for data tables. Primary color is #2D2D2E, accent is #74418F. Section headers are 16pt bold...</div>
+                    <div class="lesson-card-meta">
+                      <span class="lesson-card-date">Updated Feb 10</span>
+                      <span class="lesson-card-author">by you</span>
+                    </div>
+                  </div>
+
+                  <div class="lesson-card" data-scope="company" data-lesson="fee-calc-rules" onclick="openLesson('fee-calc-rules')">
+                    <div class="lesson-card-top">
+                      <span class="lesson-scope-badge scope-company">Company</span>
+                      <div class="lesson-card-top-right">
+                        <span class="lesson-usage">Referenced 7 times</span>
+                        <button class="lesson-card-scope-btn" onclick="toggleCardScope(this, event)" title="Change scope">
+                          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="11" height="11"><path d="M1 8h14M11 4l4 4-4 4"/></svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="lesson-card-title">Management Fee Calculation Rules</div>
+                    <div class="lesson-card-preview">Management fees are calculated on committed capital during investment period, then on invested capital post-investment period. Rate is 2% per annum...</div>
+                    <div class="lesson-card-meta">
+                      <span class="lesson-card-date">Updated Jan 30</span>
+                      <span class="lesson-card-author">by Sarah Chen</span>
+                    </div>
+                  </div>
+
+                  <div class="lesson-card" data-scope="user" data-lesson="yardi-export" onclick="openLesson('yardi-export')">
+                    <div class="lesson-card-top">
+                      <span class="lesson-scope-badge scope-user">Personal</span>
+                      <div class="lesson-card-top-right">
+                        <span class="lesson-usage">Referenced 4 times</span>
+                        <button class="lesson-card-scope-btn" onclick="toggleCardScope(this, event)" title="Change scope">
+                          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="11" height="11"><path d="M1 8h14M11 4l4 4-4 4"/></svg>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="lesson-card-title">Yardi Export Cleanup Process</div>
+                    <div class="lesson-card-preview">Yardi CSV exports need these corrections: (1) Remove the first 3 header rows, (2) Strip trailing whitespace from unit codes, (3) Convert dates from MM/DD/YYYY to ISO...</div>
+                    <div class="lesson-card-meta">
+                      <span class="lesson-card-date">Updated Jan 18</span>
+                      <span class="lesson-card-author">by you</span>
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- No results -->
+                <div class="lesson-no-results" id="lessonNoResults" style="display:none;">
+                  <div class="brain-empty-icon">
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/></svg>
+                  </div>
+                  <div class="brain-empty-title" style="font-size:16px;">No lessons found</div>
+                  <div class="brain-empty-desc">Try a different search term or filter.</div>
+                </div>
+
               </div>
             </div>
+
+            <!-- Lesson Detail View (hidden by default) -->
+            <div id="lessonDetailView" class="brain-subview" style="display:none;">
+              <div class="main-header">
+                <span class="header-title">
+                  <button class="lesson-back-btn" onclick="closeLessonDetail()">&larr;</button>
+                  <span id="lessonDetailTitle">Lesson Title</span>
+                </span>
+                <div class="header-actions">
+                  <button class="header-btn icon-btn" id="lessonEditBtn" onclick="toggleLessonEdit()" title="Edit Directly"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M11.5 1.5l3 3-9 9H2.5v-3l9-9z"/></svg></button>
+                  <button class="header-btn icon-btn" onclick="openCosimoForLesson()" title="Edit with Cosimo"><svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><path d="M8 2l1.5 3.5L13 7l-3.5 1.5L8 12l-1.5-3.5L3 7l3.5-1.5z"/></svg></button>
+                  <button class="header-btn icon-btn" onclick="deleteLesson()" title="Delete Lesson"><svg viewBox="0 0 16 16" fill="none" stroke="var(--red)" stroke-width="1.5" width="14" height="14"><line x1="3" y1="4" x2="13" y2="4"/><path d="M5.5 4V2.5h5V4"/><path d="M4.5 4v9.5h7V4"/><line x1="7" y1="6.5" x2="7" y2="11"/><line x1="9" y1="6.5" x2="9" y2="11"/></svg></button>
+                </div>
+              </div>
+
+              <div class="brain-scroll" id="lessonDetailScroll">
+
+                <!-- Lesson meta bar -->
+                <div class="lesson-detail-meta">
+                  <span class="lesson-scope-badge scope-company" id="lessonDetailScope">Company</span>
+                  <span class="lesson-detail-stat">Referenced 23 times</span>
+                  <span class="lesson-detail-stat">Last used 2d ago</span>
+                  <span class="lesson-detail-stat">Updated Feb 28 by Sarah Chen</span>
+                  <button class="header-btn lesson-scope-btn" id="lessonScopeToggle" onclick="toggleLessonScope()">
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="11" height="11" style="vertical-align:-1px;margin-right:3px;"><path d="M1 8h14M11 4l4 4-4 4"/></svg>
+                    <span id="lessonScopeToggleText">Change to Personal</span>
+                  </button>
+                </div>
+
+                <!-- Lesson content body -->
+                <div class="lesson-detail-body" id="lessonDetailBody">
+
+                  <!-- Text section -->
+                  <div class="lesson-block lesson-block-text">
+                    <h3>Overview</h3>
+                    <p>All rent rolls processed by Cosimo must follow the firm's standardized format. This ensures consistency across properties, funds, and reporting periods. Deviations should be flagged for manual review.</p>
+                  </div>
+
+                  <!-- Table/Spreadsheet section -->
+                  <div class="lesson-block lesson-block-table">
+                    <h3>Required Column Layout</h3>
+                    <table class="lesson-table">
+                      <thead>
+                        <tr><th>Column</th><th>Header Name</th><th>Format</th><th>Required</th></tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>A</td><td>Unit Number</td><td>Text (e.g., "101A")</td><td>Yes</td></tr>
+                        <tr><td>B</td><td>Tenant Name</td><td>Text, Title Case</td><td>Yes</td></tr>
+                        <tr><td>C</td><td>Lease Start</td><td>YYYY-MM-DD</td><td>Yes</td></tr>
+                        <tr><td>D</td><td>Lease End</td><td>YYYY-MM-DD</td><td>Yes</td></tr>
+                        <tr><td>E</td><td>Monthly Rent</td><td>USD, no decimals</td><td>Yes</td></tr>
+                        <tr><td>F</td><td>Security Deposit</td><td>USD, no decimals</td><td>No</td></tr>
+                        <tr><td>G</td><td>Status</td><td>Current / Vacant / Notice</td><td>Yes</td></tr>
+                        <tr><td>H</td><td>Sq Footage</td><td>Integer</td><td>No</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <!-- Color guide section -->
+                  <div class="lesson-block lesson-block-colors">
+                    <h3>Status Color Coding</h3>
+                    <div class="lesson-color-grid">
+                      <div class="lesson-color-swatch">
+                        <div class="swatch-box" style="background:#3D8B40;"></div>
+                        <div class="swatch-label">Current</div>
+                        <div class="swatch-value">#3D8B40</div>
+                      </div>
+                      <div class="lesson-color-swatch">
+                        <div class="swatch-box" style="background:#B8862B;"></div>
+                        <div class="swatch-label">Notice</div>
+                        <div class="swatch-value">#B8862B</div>
+                      </div>
+                      <div class="lesson-color-swatch">
+                        <div class="swatch-box" style="background:#C04848;"></div>
+                        <div class="swatch-label">Vacant</div>
+                        <div class="swatch-value">#C04848</div>
+                      </div>
+                      <div class="lesson-color-swatch">
+                        <div class="swatch-box" style="background:#749CB5;"></div>
+                        <div class="swatch-label">Renewal Pending</div>
+                        <div class="swatch-value">#749CB5</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Rules/list section -->
+                  <div class="lesson-block lesson-block-text">
+                    <h3>Validation Rules</h3>
+                    <ol>
+                      <li>No blank rows between data entries</li>
+                      <li>Lease End must be after Lease Start</li>
+                      <li>Monthly Rent must be &gt; 0 for Current status</li>
+                      <li>Vacant units should have Tenant Name set to "VACANT"</li>
+                      <li>Unit Numbers must be unique within a property</li>
+                      <li>Dates older than 10 years should be flagged for review</li>
+                    </ol>
+                  </div>
+
+                  <!-- Font/style section -->
+                  <div class="lesson-block lesson-block-text">
+                    <h3>Formatting Notes</h3>
+                    <p>When generating rent roll reports:</p>
+                    <ul>
+                      <li>Header row: <strong>IBM Plex Mono 11px Bold</strong>, background <code>#E8E6EC</code></li>
+                      <li>Data rows: <strong>IBM Plex Mono 11px Regular</strong>, alternating <code>#FFFFFF</code> / <code>#F8F6FA</code></li>
+                      <li>Totals row: <strong>Bold</strong>, top border <code>2px solid #2D2D2E</code></li>
+                      <li>Currency: Right-aligned, USD format with commas, no decimals</li>
+                    </ul>
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
           </div>
 
           <!-- Data Graphs Section -->
@@ -1692,35 +2158,44 @@
             <div class="main-header">
               <span class="header-title">Data Graphs</span>
               <div class="header-actions">
-                <button class="header-btn primary">+ New Graph</button>
+                <div class="graph-breadcrumb" id="graphBreadcrumb">
+                  <button class="graph-crumb active" onclick="graphNavigate('root')">You</button>
+                </div>
               </div>
             </div>
-            <div class="brain-scroll">
-              <div class="brain-empty">
-                <div class="brain-empty-icon">
-                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><polyline points="1.5,12.5 5,6 9,9 14.5,2.5"/><line x1="1.5" y1="14.5" x2="1.5" y2="1.5"/><line x1="1.5" y1="14.5" x2="14.5" y2="14.5"/></svg>
+            <div class="graph-container" id="graphContainer">
+              <!-- SVG graph renders here -->
+              <svg id="graphSvg" class="graph-svg"></svg>
+
+              <!-- Node tooltip -->
+              <div class="graph-tooltip" id="graphTooltip"></div>
+
+              <!-- Detail pane (slides up from bottom) -->
+              <div class="graph-detail-pane" id="graphDetailPane">
+                <div class="graph-detail-resize" id="graphDetailResize"></div>
+                <div class="graph-detail-header">
+                  <div class="graph-detail-title-row">
+                    <div class="graph-detail-icon" id="graphDetailIcon"></div>
+                    <div>
+                      <div class="graph-detail-name" id="graphDetailName">Entity</div>
+                      <div class="graph-detail-type" id="graphDetailType">Type</div>
+                    </div>
+                  </div>
+                  <div class="graph-detail-actions">
+                    <button class="header-btn icon-btn" onclick="editGraphEntity()" title="Edit"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M11.5 1.5l3 3-9 9H2.5v-3l9-9z"/></svg></button>
+                    <button class="header-btn icon-btn" onclick="openCosimoForEntity()" title="Edit with Cosimo"><svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><path d="M8 2l1.5 3.5L13 7l-3.5 1.5L8 12l-1.5-3.5L3 7l3.5-1.5z"/></svg></button>
+                    <button class="header-btn icon-btn" onclick="closeGraphDetail()" title="Close"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg></button>
+                  </div>
                 </div>
-                <div class="brain-empty-title">Data Graphs</div>
-                <div class="brain-empty-desc">Visualize relationships between entities, funds, documents, and data sources. Graphs help Cosimo understand how your data connects and surface insights across silos.</div>
+                <div class="graph-detail-body" id="graphDetailBody">
+                  <div class="graph-detail-facts" id="graphDetailFacts"></div>
+                  <div class="graph-detail-related-label">Related</div>
+                  <div class="graph-detail-related" id="graphDetailRelated"></div>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Agent Preferences Section -->
-          <div class="brain-section" id="brain-prefs">
-            <div class="main-header">
-              <span class="header-title">Agent Preferences</span>
-            </div>
-            <div class="brain-scroll">
-              <div class="brain-empty">
-                <div class="brain-empty-icon">
-                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><line x1="2" y1="4" x2="14" y2="4"/><line x1="2" y1="8" x2="14" y2="8"/><line x1="2" y1="12" x2="14" y2="12"/><circle cx="5" cy="4" r="1.5" fill="var(--white)"/><circle cx="10" cy="8" r="1.5" fill="var(--white)"/><circle cx="7" cy="12" r="1.5" fill="var(--white)"/></svg>
-                </div>
-                <div class="brain-empty-title">Agent Preferences</div>
-                <div class="brain-empty-desc">Configure how Cosimo behaves — tone, verbosity, default models, citation style, and output formatting. Preferences apply across all conversations and workflows.</div>
-              </div>
-            </div>
-          </div>
 
     </div>
 

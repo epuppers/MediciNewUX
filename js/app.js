@@ -1381,3 +1381,1826 @@ document.addEventListener('click', function(e) {
     document.querySelectorAll('.model-selector.open').forEach(s => s.classList.remove('open'));
   }
 });
+
+// ============================================
+// BRAIN — MEMORY SECTION
+// ============================================
+
+var activeCategory = 'all';
+
+function toggleAddMemory() {
+  var form = document.getElementById('memAddForm');
+  if (form.style.display === 'none') {
+    form.style.display = 'block';
+    document.getElementById('memAddInput').focus();
+  } else {
+    form.style.display = 'none';
+  }
+}
+
+function cancelAddMemory() {
+  document.getElementById('memAddForm').style.display = 'none';
+  document.getElementById('memAddInput').value = '';
+}
+
+function submitNewMemory() {
+  var input = document.getElementById('memAddInput');
+  var text = input.value.trim();
+  if (!text) return;
+
+  var category = document.getElementById('memAddCategory').value;
+  var today = new Date();
+  var dateStr = today.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+  var card = document.createElement('div');
+  card.className = 'mem-fact-card';
+  card.setAttribute('data-category', category);
+  card.innerHTML =
+    '<div class="mem-fact-top">' +
+      '<span class="mem-fact-cat cat-' + category + '">' + category.charAt(0).toUpperCase() + category.slice(1) + '</span>' +
+      '<button class="mem-fact-menu-btn" onclick="toggleFactMenu(this)">' +
+        '<svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/></svg>' +
+      '</button>' +
+      '<div class="mem-fact-menu">' +
+        '<button onclick="editFact(this)">Edit</button>' +
+        '<button onclick="deleteFact(this)">Delete</button>' +
+      '</div>' +
+    '</div>' +
+    '<div class="mem-fact-text">' + escapeHtml(text) + '</div>' +
+    '<div class="mem-fact-meta">' +
+      '<span class="mem-fact-source">Added by you</span>' +
+      '<span class="mem-fact-date">' + dateStr + '</span>' +
+    '</div>';
+
+  var list = document.getElementById('memFactList');
+  list.insertBefore(card, list.firstChild);
+
+  input.value = '';
+  document.getElementById('memAddForm').style.display = 'none';
+  showToast('Memory saved');
+}
+
+function filterMemories() {
+  var query = document.getElementById('memSearchInput').value.toLowerCase();
+  var cards = document.querySelectorAll('.mem-fact-card');
+  var visibleCount = 0;
+
+  cards.forEach(function(card) {
+    var text = card.querySelector('.mem-fact-text').textContent.toLowerCase();
+    var cat = card.getAttribute('data-category');
+    var matchesSearch = !query || text.indexOf(query) !== -1;
+    var matchesCategory = activeCategory === 'all' || cat === activeCategory;
+
+    if (matchesSearch && matchesCategory) {
+      card.style.display = '';
+      visibleCount++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  document.getElementById('memNoResults').style.display = visibleCount === 0 ? 'flex' : 'none';
+}
+
+function filterByCategory(cat, el) {
+  activeCategory = cat;
+
+  document.querySelectorAll('.mem-cat-pill').forEach(function(p) { p.classList.remove('active'); });
+  el.classList.add('active');
+
+  filterMemories();
+}
+
+function toggleFactMenu(btn) {
+  // Close all other menus first
+  document.querySelectorAll('.mem-fact-menu.open').forEach(function(m) { m.classList.remove('open'); });
+
+  var menu = btn.nextElementSibling;
+  menu.classList.toggle('open');
+}
+
+function editFact(btn) {
+  var card = btn.closest('.mem-fact-card');
+  var textEl = card.querySelector('.mem-fact-text');
+  var menu = btn.closest('.mem-fact-menu');
+  menu.classList.remove('open');
+
+  textEl.setAttribute('contenteditable', 'true');
+  textEl.focus();
+
+  // Select all text
+  var range = document.createRange();
+  range.selectNodeContents(textEl);
+  var sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+
+  // Save on blur
+  function saveEdit() {
+    textEl.removeAttribute('contenteditable');
+    textEl.removeEventListener('blur', saveEdit);
+    textEl.removeEventListener('keydown', handleKey);
+    // Update source
+    var source = card.querySelector('.mem-fact-source');
+    source.textContent = 'Edited by you';
+    showToast('Memory updated');
+  }
+
+  function handleKey(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      textEl.blur();
+    }
+    if (e.key === 'Escape') {
+      textEl.blur();
+    }
+  }
+
+  textEl.addEventListener('blur', saveEdit);
+  textEl.addEventListener('keydown', handleKey);
+}
+
+function deleteFact(btn) {
+  var card = btn.closest('.mem-fact-card');
+  var menu = btn.closest('.mem-fact-menu');
+  menu.classList.remove('open');
+
+  // Check if confirmation already showing
+  if (card.querySelector('.mem-delete-confirm')) return;
+
+  var confirm = document.createElement('div');
+  confirm.className = 'mem-delete-confirm';
+  confirm.innerHTML =
+    '<span>Delete this memory?</span>' +
+    '<button class="mem-delete-yes" onclick="confirmDelete(this)">Yes</button>' +
+    '<button class="mem-delete-no" onclick="cancelDelete(this)">No</button>';
+
+  card.appendChild(confirm);
+}
+
+function confirmDelete(btn) {
+  var card = btn.closest('.mem-fact-card');
+  card.style.transition = 'opacity 0.2s, max-height 0.2s';
+  card.style.opacity = '0';
+  card.style.maxHeight = card.offsetHeight + 'px';
+  card.style.overflow = 'hidden';
+
+  setTimeout(function() {
+    card.style.maxHeight = '0';
+    card.style.padding = '0 14px';
+    card.style.marginBottom = '0';
+  }, 50);
+
+  setTimeout(function() {
+    card.remove();
+    filterMemories(); // Update no-results state
+    showToast('Memory deleted');
+  }, 300);
+}
+
+function cancelDelete(btn) {
+  var confirm = btn.closest('.mem-delete-confirm');
+  confirm.remove();
+}
+
+// Personality trait functions
+function toggleTrait(el) {
+  if (el.classList.contains('disabled')) return;
+
+  var traitName = el.textContent.trim();
+
+  // Add to selected
+  var selected = document.getElementById('traitSelected');
+  var tag = document.createElement('span');
+  tag.className = 'mem-trait-tag active';
+  tag.onclick = function() { removeTrait(tag); };
+  tag.innerHTML = escapeHtml(traitName) + ' <span class="trait-x">&times;</span>';
+  selected.appendChild(tag);
+
+  // Disable in presets
+  el.classList.add('disabled');
+
+  showToast(traitName + ' added');
+}
+
+function removeTrait(el) {
+  var traitName = el.textContent.replace('\u00d7', '').trim();
+
+  // Re-enable in presets
+  var presets = document.getElementById('traitPresets');
+  presets.querySelectorAll('.mem-trait-tag').forEach(function(p) {
+    if (p.textContent.trim() === traitName) {
+      p.classList.remove('disabled');
+    }
+  });
+
+  el.remove();
+  showToast(traitName + ' removed');
+}
+
+function addCustomTrait() {
+  var input = document.getElementById('traitInput');
+  var text = input.value.trim();
+  if (!text) return;
+
+  var selected = document.getElementById('traitSelected');
+  var tag = document.createElement('span');
+  tag.className = 'mem-trait-tag active';
+  tag.onclick = function() { removeTrait(tag); };
+  tag.innerHTML = escapeHtml(text) + ' <span class="trait-x">&times;</span>';
+  selected.appendChild(tag);
+
+  input.value = '';
+  showToast(text + ' added');
+}
+
+// Close fact menus when clicking outside
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.mem-fact-menu-btn') && !e.target.closest('.mem-fact-menu')) {
+    document.querySelectorAll('.mem-fact-menu.open').forEach(function(m) { m.classList.remove('open'); });
+  }
+});
+
+// ============================================
+// BRAIN — LESSONS SECTION
+// ============================================
+
+var activeLessonScope = 'all';
+var lessonIsEditing = false;
+
+// Lesson data for detail views
+var lessonData = {
+  'rent-roll-format': {
+    title: 'Rent Roll Formatting Standards',
+    scope: 'company',
+    author: 'Sarah Chen',
+    updated: 'Feb 28',
+    usage: 23,
+    lastUsed: '2d ago'
+  },
+  'k1-extraction': {
+    title: 'K-1 Document Extraction Rules',
+    scope: 'user',
+    author: 'you',
+    updated: 'Feb 22',
+    usage: 18,
+    lastUsed: '5d ago'
+  },
+  'waterfall-calc': {
+    title: 'LP Distribution Waterfall Logic',
+    scope: 'company',
+    author: 'Marcus Webb',
+    updated: 'Feb 15',
+    usage: 14,
+    lastUsed: '1w ago'
+  },
+  'report-formatting': {
+    title: 'Quarterly Report Formatting Guide',
+    scope: 'user',
+    author: 'you',
+    updated: 'Feb 10',
+    usage: 9,
+    lastUsed: '3d ago'
+  },
+  'fee-calc-rules': {
+    title: 'Management Fee Calculation Rules',
+    scope: 'company',
+    author: 'Sarah Chen',
+    updated: 'Jan 30',
+    usage: 7,
+    lastUsed: '2w ago'
+  },
+  'yardi-export': {
+    title: 'Yardi Export Cleanup Process',
+    scope: 'user',
+    author: 'you',
+    updated: 'Jan 18',
+    usage: 4,
+    lastUsed: '4d ago'
+  }
+};
+
+var currentLessonId = null;
+
+function filterLessons() {
+  var query = document.getElementById('lessonSearchInput').value.toLowerCase();
+  var cards = document.querySelectorAll('.lesson-card');
+  var visibleCount = 0;
+
+  cards.forEach(function(card) {
+    var title = card.querySelector('.lesson-card-title').textContent.toLowerCase();
+    var preview = card.querySelector('.lesson-card-preview').textContent.toLowerCase();
+    var scope = card.getAttribute('data-scope');
+    var matchesSearch = !query || title.indexOf(query) !== -1 || preview.indexOf(query) !== -1;
+    var matchesScope = activeLessonScope === 'all' || scope === activeLessonScope;
+
+    if (matchesSearch && matchesScope) {
+      card.style.display = '';
+      visibleCount++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  document.getElementById('lessonNoResults').style.display = visibleCount === 0 ? 'flex' : 'none';
+}
+
+function filterLessonScope(scope, el) {
+  activeLessonScope = scope;
+  document.querySelectorAll('#lessonScopeFilters .mem-cat-pill').forEach(function(p) { p.classList.remove('active'); });
+  el.classList.add('active');
+  filterLessons();
+}
+
+function openLesson(id) {
+  currentLessonId = id;
+  var data = lessonData[id];
+  if (!data) return;
+
+  // Update detail header
+  document.getElementById('lessonDetailTitle').textContent = data.title;
+
+  // Update meta bar
+  var scopeBadge = document.getElementById('lessonDetailScope');
+  scopeBadge.textContent = data.scope === 'company' ? 'Company' : 'Personal';
+  scopeBadge.className = 'lesson-scope-badge ' + (data.scope === 'company' ? 'scope-company' : 'scope-user');
+
+  // Update scope toggle button text
+  document.getElementById('lessonScopeToggleText').textContent = data.scope === 'company' ? 'Change to Personal' : 'Promote to Company';
+
+  // Switch views
+  document.getElementById('lessonsListView').style.display = 'none';
+  document.getElementById('lessonDetailView').style.display = '';
+
+  // Reset edit state
+  lessonIsEditing = false;
+  var editBtn = document.getElementById('lessonEditBtn');
+  editBtn.innerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M11.5 1.5l3 3-9 9H2.5v-3l9-9z"/></svg>';
+  editBtn.title = 'Edit Directly';
+  editBtn.classList.remove('primary');
+  document.getElementById('lessonDetailBody').removeAttribute('contenteditable');
+}
+
+function closeLessonDetail() {
+  document.getElementById('lessonDetailView').style.display = 'none';
+  document.getElementById('lessonsListView').style.display = '';
+
+  // Reset edit state
+  if (lessonIsEditing) {
+    lessonIsEditing = false;
+    document.getElementById('lessonDetailBody').removeAttribute('contenteditable');
+  }
+
+  currentLessonId = null;
+}
+
+function toggleLessonEdit() {
+  var body = document.getElementById('lessonDetailBody');
+  var editBtn = document.getElementById('lessonEditBtn');
+
+  lessonIsEditing = !lessonIsEditing;
+
+  if (lessonIsEditing) {
+    body.setAttribute('contenteditable', 'true');
+    body.focus();
+    editBtn.innerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M2 8.5l4 4 8-9"/></svg>';
+    editBtn.title = 'Save Changes';
+    editBtn.classList.add('primary');
+    showToast('Editing mode — click save when done');
+  } else {
+    body.removeAttribute('contenteditable');
+    editBtn.innerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M11.5 1.5l3 3-9 9H2.5v-3l9-9z"/></svg>';
+    editBtn.title = 'Edit Directly';
+    editBtn.classList.remove('primary');
+    showToast('Lesson saved');
+  }
+}
+
+function openCosimoForLesson() {
+  // Update Cosimo panel context for this lesson
+  var data = lessonData[currentLessonId];
+  var panelName = document.querySelector('.cosimo-panel-name');
+  panelName.textContent = 'Edit: ' + (data ? data.title : 'Lesson');
+
+  var panelChat = document.getElementById('panelChat');
+  panelChat.innerHTML =
+    '<div class="panel-msg panel-msg-ai">' +
+      '<div class="panel-msg-header">' +
+        '<div class="badge badge-ai" style="width:16px;height:16px;font-size:9px;">◆</div>' +
+        '<span class="panel-msg-sender">Cosimo</span>' +
+      '</div>' +
+      'I have the <strong>' + escapeHtml(data ? data.title : 'lesson') + '</strong> loaded. I can help you:' +
+      '<br><br>' +
+      '<strong>"Add a new validation rule"</strong><br>' +
+      '<strong>"Update the column format for dates"</strong><br>' +
+      '<strong>"Add an exception for Fund IV properties"</strong><br>' +
+      '<strong>"Rewrite the overview section to be more concise"</strong>' +
+    '</div>';
+
+  openCosimoPanel();
+}
+
+function toggleLessonScope() {
+  var data = lessonData[currentLessonId];
+  if (!data) return;
+
+  data.scope = data.scope === 'company' ? 'user' : 'company';
+
+  var scopeBadge = document.getElementById('lessonDetailScope');
+  scopeBadge.textContent = data.scope === 'company' ? 'Company' : 'Personal';
+  scopeBadge.className = 'lesson-scope-badge ' + (data.scope === 'company' ? 'scope-company' : 'scope-user');
+
+  document.getElementById('lessonScopeToggleText').textContent = data.scope === 'company' ? 'Change to Personal' : 'Promote to Company';
+
+  // Update the card in list view too
+  var card = document.querySelector('.lesson-card[data-lesson="' + currentLessonId + '"]');
+  if (card) {
+    card.setAttribute('data-scope', data.scope);
+    var cardBadge = card.querySelector('.lesson-scope-badge');
+    cardBadge.textContent = data.scope === 'company' ? 'Company' : 'Personal';
+    cardBadge.className = 'lesson-scope-badge ' + (data.scope === 'company' ? 'scope-company' : 'scope-user');
+  }
+
+  showToast('Scope changed to ' + (data.scope === 'company' ? 'Company' : 'Personal'));
+}
+
+function deleteLesson() {
+  if (!currentLessonId) return;
+
+  var card = document.querySelector('.lesson-card[data-lesson="' + currentLessonId + '"]');
+
+  // Close detail view first
+  closeLessonDetail();
+
+  // Remove card with animation
+  if (card) {
+    card.style.transition = 'opacity 0.2s, max-height 0.2s';
+    card.style.opacity = '0';
+    card.style.maxHeight = card.offsetHeight + 'px';
+    card.style.overflow = 'hidden';
+
+    setTimeout(function() {
+      card.style.maxHeight = '0';
+      card.style.padding = '0 14px';
+    }, 50);
+
+    setTimeout(function() {
+      card.remove();
+      filterLessons();
+    }, 300);
+  }
+
+  showToast('Lesson deleted');
+}
+
+function createNewLesson() {
+  var panelName = document.querySelector('.cosimo-panel-name');
+  panelName.textContent = 'Create New Lesson';
+
+  var panelChat = document.getElementById('panelChat');
+  panelChat.innerHTML =
+    '<div class="panel-msg panel-msg-ai">' +
+      '<div class="panel-msg-header">' +
+        '<div class="badge badge-ai" style="width:16px;height:16px;font-size:9px;">◆</div>' +
+        '<span class="panel-msg-sender">Cosimo</span>' +
+      '</div>' +
+      'I can help you create a new lesson. Describe what you want to teach me:' +
+      '<br><br>' +
+      '<strong>"How we format quarterly LP reports"</strong><br>' +
+      '<strong>"Rules for processing capital call notices"</strong><br>' +
+      '<strong>"Our naming conventions for fund entities"</strong><br>' +
+      '<strong>"How to reconcile Yardi exports with GL"</strong>' +
+    '</div>';
+
+  openCosimoPanel();
+}
+
+// ============================================
+// BRAIN — DATA GRAPHS
+// ============================================
+
+var graphState = {
+  level: 'root',        // 'root', 'cluster', 'entity'
+  currentCategory: null,
+  currentEntity: null
+};
+
+var graphColors = {
+  funds:     { core: '#9b6bc2', mid: '#74418F', dim: '#4D2B5F', glow: 'rgba(155,107,194,0.5)' },
+  contacts:  { core: '#c278c4', mid: '#8B4F8D', dim: '#5D355E', glow: 'rgba(194,120,196,0.5)' },
+  documents: { core: '#7bb8d9', mid: '#5a9fc2', dim: '#3a7a9e', glow: 'rgba(123,184,217,0.5)' },
+  workflows: { core: '#6abf6e', mid: '#3D8B40', dim: '#2a6b2c', glow: 'rgba(106,191,110,0.5)' },
+  systems:   { core: '#d4a646', mid: '#B8862B', dim: '#8a6518', glow: 'rgba(212,166,70,0.5)' },
+  entities:  { core: '#9e9ca3', mid: '#6a6870', dim: '#4a484f', glow: 'rgba(158,156,163,0.4)' },
+  you:       { core: '#b478d8', mid: '#8855a8', dim: '#5a3070', glow: 'rgba(180,120,216,0.6)' }
+};
+
+var graphData = {
+  categories: [
+    { id: 'funds', label: 'Funds', icon: '\u25C8', count: 11 },
+    { id: 'contacts', label: 'Contacts', icon: '\u25CB', count: 18 },
+    { id: 'documents', label: 'Documents', icon: '\u25A1', count: 16 },
+    { id: 'workflows', label: 'Workflows', icon: '\u25B7', count: 12 },
+    { id: 'systems', label: 'Systems', icon: '\u2699', count: 9 },
+    { id: 'entities', label: 'Entities', icon: '\u25C7', count: 14 }
+  ],
+  nodes: {
+    funds: [
+      { id: 'fund-iii', label: 'Fund III', sub: '2019 Vintage', facts: [
+        '2/20 fee structure with European waterfall',
+        'GP commit is 5%, preferred return 8%',
+        '14 LP investors, $420M committed capital',
+        'Real estate focus — multifamily and industrial',
+        'Currently in harvest period'
+      ], related: ['sarah-chen', 'deloitte', 'k1-docs', 'hilgard', 'prop-berkshire', 'prop-marina'] },
+      { id: 'hilgard', label: 'Hilgard Fund', sub: '2021 Vintage', facts: [
+        '2021 vintage, multifamily residential focus',
+        '14 LP investors across 3 institutions',
+        'Currently in harvest period',
+        'Managed by same team as Fund III'
+      ], related: ['fund-iii', 'marcus-webb', 'rent-rolls', 'prop-hilgard-apt'] },
+      { id: 'erabor', label: 'Erabor', sub: '2023 Vintage', facts: [
+        '2023 vintage, infrastructure and energy',
+        'Still in investment period',
+        '$280M target, $190M committed so far',
+        'European waterfall, 8% preferred return'
+      ], related: ['sarah-chen', 'fund-iii', 'anna-kowalski'] },
+      { id: 'opp-iv', label: 'Opportunity IV', sub: '2024 Vintage', facts: [
+        'Newest fund, launched Q3 2024',
+        'Opportunistic strategy across sectors',
+        'Target $500M, first close at $150M'
+      ], related: ['marcus-webb', 'erabor', 'david-park'] },
+      { id: 'growth-i', label: 'Growth I', sub: '2020 Vintage', facts: [
+        'Growth equity fund targeting tech-enabled services',
+        '$310M committed, fully deployed',
+        '11 portfolio companies',
+        'American waterfall, 7% preferred'
+      ], related: ['sarah-chen', 'lp-calpers', 'lp-harvardmc'] },
+      { id: 'credit-ii', label: 'Credit II', sub: '2022 Vintage', facts: [
+        'Private credit fund, mezzanine and senior secured',
+        '$180M AUM, 12% target net return',
+        'Quarterly distributions, current pay'
+      ], related: ['elena-vasquez', 'deloitte', 'bank-svb'] },
+      { id: 'infra-fund', label: 'Infra Fund', sub: '2023 Vintage', facts: [
+        'Infrastructure — data centers, fiber, renewables',
+        '$450M target, $290M first close',
+        'Co-investment sidecar available'
+      ], related: ['erabor', 'anna-kowalski', 'lp-adia'] },
+      { id: 'co-invest-iii', label: 'Co-Invest III', sub: '2021 SPV', facts: [
+        'Deal-by-deal co-investment vehicle',
+        '8 completed deals, 2 in pipeline',
+        'No management fee, 15% carry'
+      ], related: ['opp-iv', 'david-park', 'lp-calpers'] },
+      { id: 'secondaries', label: 'Secondaries I', sub: '2024 Vintage', facts: [
+        'LP secondary and GP-led continuation fund',
+        '$200M target, marketing phase',
+        'Focus on NAV-discount opportunities'
+      ], related: ['growth-i', 'credit-ii', 'rachel-kim'] },
+      { id: 'seed-ventures', label: 'Seed Ventures', sub: '2022 Vintage', facts: [
+        'Early-stage venture program',
+        '$50M fund, 28 portfolio companies',
+        'Follow-on reserve ratio 40%'
+      ], related: ['growth-i', 'david-park', 'lp-tiger'] },
+      { id: 'impact-i', label: 'Impact I', sub: '2024 ESG', facts: [
+        'ESG-focused impact fund',
+        '$150M target, Article 9 SFDR compliant',
+        'Affordable housing and clean energy'
+      ], related: ['infra-fund', 'anna-kowalski', 'lp-omers'] }
+    ],
+    contacts: [
+      { id: 'sarah-chen', label: 'Sarah Chen', sub: 'CFO', facts: [
+        'Chief Financial Officer',
+        'Prefers executive summaries over detail',
+        'Primary approver for quarterly reports',
+        'Direct report of the CEO'
+      ], related: ['fund-iii', 'erabor', 'deloitte', 'marcus-webb'] },
+      { id: 'marcus-webb', label: 'Marcus Webb', sub: 'COO', facts: [
+        'Chief Operating Officer',
+        'Wants full detail in all reports',
+        'Oversees workflow automation initiatives',
+        'Reviews all LP communications'
+      ], related: ['sarah-chen', 'hilgard', 'opp-iv'] },
+      { id: 'james-whitfield', label: 'James Whitfield', sub: 'Audit Partner', facts: [
+        'Deloitte audit partner',
+        'Annual audit cycle ends March 31',
+        'Has been partner for 3 years'
+      ], related: ['deloitte', 'fund-iii', 'sarah-chen'] },
+      { id: 'lp-group', label: 'LP Investors', sub: '32 Total', facts: [
+        '32 LP investors across all funds',
+        'Mix of institutions, family offices, HNW individuals',
+        'Quarterly reporting cadence',
+        'Annual meeting in September'
+      ], related: ['fund-iii', 'hilgard', 'erabor'] },
+      { id: 'elena-vasquez', label: 'Elena Vasquez', sub: 'Fund Controller', facts: [
+        'Senior fund controller, manages NAV calculations',
+        'Expert in waterfall modeling',
+        'CPA, previously at PwC'
+      ], related: ['credit-ii', 'sarah-chen', 'wf-nav-calc'] },
+      { id: 'david-park', label: 'David Park', sub: 'IR Director', facts: [
+        'Investor Relations director',
+        'Manages LP communications and fundraising',
+        'Joined from Goldman Sachs',
+        'Runs annual LP meeting logistics'
+      ], related: ['opp-iv', 'lp-group', 'qtr-reports', 'co-invest-iii'] },
+      { id: 'anna-kowalski', label: 'Anna Kowalski', sub: 'VP Acquisitions', facts: [
+        'VP of Acquisitions, infrastructure deals',
+        'Manages deal pipeline and due diligence',
+        'Sources deals in Europe and N. America'
+      ], related: ['erabor', 'infra-fund', 'impact-i'] },
+      { id: 'rachel-kim', label: 'Rachel Kim', sub: 'General Counsel', facts: [
+        'General counsel and CCO',
+        'Oversees LPA drafting and compliance',
+        'SEC and CFTC reporting lead'
+      ], related: ['lpa-docs', 'compliance-docs', 'secondaries'] },
+      { id: 'tom-brennan', label: 'Tom Brennan', sub: 'CTO', facts: [
+        'Chief Technology Officer',
+        'Leads data infrastructure and integrations',
+        'Driving AI adoption across firm'
+      ], related: ['salesforce', 'yardi', 'snowflake', 'tableau'] },
+      { id: 'lp-calpers', label: 'CalPERS', sub: 'Institutional LP', facts: [
+        'California Public Employees Retirement System',
+        '$8B PE allocation, $45M committed across 3 funds',
+        'Annual re-up decisions in Q4'
+      ], related: ['fund-iii', 'growth-i', 'co-invest-iii', 'david-park'] },
+      { id: 'lp-harvardmc', label: 'Harvard MC', sub: 'Endowment LP', facts: [
+        'Harvard Management Company',
+        '$25M commitment in Growth I',
+        'Requires ILPA-compliant reporting'
+      ], related: ['growth-i', 'david-park', 'qtr-reports'] },
+      { id: 'lp-adia', label: 'ADIA', sub: 'Sovereign LP', facts: [
+        'Abu Dhabi Investment Authority',
+        '$60M commitment to Infra Fund',
+        'Requires Sharia-compliant structuring review'
+      ], related: ['infra-fund', 'david-park'] },
+      { id: 'lp-tiger', label: 'Tiger Global', sub: 'Crossover LP', facts: [
+        'Crossover fund, $15M in Seed Ventures',
+        'Co-investment rights on Series A+ deals',
+        'Quarterly valuation mark reviews'
+      ], related: ['seed-ventures', 'david-park'] },
+      { id: 'lp-omers', label: 'OMERS', sub: 'Pension LP', facts: [
+        'Ontario Municipal Employees Retirement System',
+        '$30M commitment to Impact I',
+        'ESG screening requirements'
+      ], related: ['impact-i', 'david-park'] },
+      { id: 'ext-counsel', label: 'Kirkland & Ellis', sub: 'External Counsel', facts: [
+        'Primary external legal counsel',
+        'Handles fund formation, LPA negotiation',
+        'Partner: Margaret Hsu'
+      ], related: ['rachel-kim', 'lpa-docs', 'secondaries'] },
+      { id: 'auditor-kpmg', label: 'KPMG', sub: 'Tax Advisor', facts: [
+        'Tax advisory and K-1 preparation',
+        'Handles multi-state and international tax',
+        'Annual engagement, Feb-Apr'
+      ], related: ['k1-docs', 'deloitte', 'sarah-chen'] },
+      { id: 'admin-citco', label: 'Citco', sub: 'Fund Admin', facts: [
+        'Third-party fund administrator',
+        'NAV calculation, investor statements, capital calls',
+        'Administers Growth I and Credit II'
+      ], related: ['growth-i', 'credit-ii', 'elena-vasquez'] },
+      { id: 'broker-jll', label: 'JLL', sub: 'Broker', facts: [
+        'Real estate broker for acquisitions',
+        'Exclusive on industrial portfolio',
+        'Market reports quarterly'
+      ], related: ['fund-iii', 'hilgard', 'anna-kowalski'] }
+    ],
+    documents: [
+      { id: 'k1-docs', label: 'K-1 Documents', sub: '48 Files', facts: [
+        'Annual K-1 tax documents for all LP investors',
+        'Extracted fields: partner name, TIN, Box 1-4c',
+        'Processing via automated extraction workflow'
+      ], related: ['fund-iii', 'lp-group', 'auditor-kpmg'] },
+      { id: 'rent-rolls', label: 'Rent Rolls', sub: '24 Files', facts: [
+        'Monthly rent roll exports from Yardi',
+        'Standardized column format enforced',
+        'Status color coding: green/amber/red'
+      ], related: ['hilgard', 'yardi'] },
+      { id: 'qtr-reports', label: 'Quarterly Reports', sub: '48 Files', facts: [
+        'LP quarterly performance reports across all funds',
+        'DM Sans body, IBM Plex Mono tables',
+        'IRR and MOIC metrics included',
+        'ILPA-compliant format for institutional LPs'
+      ], related: ['sarah-chen', 'lp-group', 'fund-iii', 'david-park'] },
+      { id: 'lpa-docs', label: 'LPAs', sub: '11 Files', facts: [
+        'Limited Partnership Agreements for all funds',
+        'Define fee structures, waterfall, GP terms',
+        'Source of truth for fund economics'
+      ], related: ['fund-iii', 'hilgard', 'erabor', 'opp-iv', 'rachel-kim'] },
+      { id: 'cap-call-docs', label: 'Capital Calls', sub: '86 Files', facts: [
+        'Capital call notices across all active funds',
+        'Includes wire instructions and due dates',
+        'Average 10-day notice period'
+      ], related: ['lp-group', 'elena-vasquez', 'admin-citco'] },
+      { id: 'dist-notices', label: 'Distribution Notices', sub: '34 Files', facts: [
+        'Distribution and return-of-capital notices',
+        'Waterfall calculations attached',
+        'Requires dual signoff (CFO + Controller)'
+      ], related: ['sarah-chen', 'elena-vasquez', 'wf-waterfall'] },
+      { id: 'compliance-docs', label: 'Compliance Filings', sub: '22 Files', facts: [
+        'ADV, PF, CPO-PQR filings',
+        'SEC annual amendment due March 31',
+        'CFTC reporting quarterly'
+      ], related: ['rachel-kim', 'deloitte'] },
+      { id: 'board-decks', label: 'Board Decks', sub: '16 Files', facts: [
+        'Quarterly advisory board presentations',
+        'Fund performance, pipeline, market outlook',
+        'Confidential — limited distribution'
+      ], related: ['sarah-chen', 'marcus-webb', 'david-park'] },
+      { id: 'due-diligence', label: 'DD Packages', sub: '28 Files', facts: [
+        'Due diligence document packages for fundraising',
+        'Includes track record, team bios, references',
+        'Updated semi-annually'
+      ], related: ['david-park', 'opp-iv', 'secondaries'] },
+      { id: 'valuation-reports', label: 'Valuation Reports', sub: '44 Files', facts: [
+        'Quarterly fair value reports per ASC 820',
+        'Third-party valuations for Level 3 assets',
+        'Reviewed by audit committee'
+      ], related: ['elena-vasquez', 'deloitte', 'fund-iii', 'growth-i'] },
+      { id: 'insurance-docs', label: 'Insurance Policies', sub: '8 Files', facts: [
+        'D&O, E&O, Cyber, Property policies',
+        'Annual renewal in November',
+        'Broker: Marsh McLennan'
+      ], related: ['rachel-kim', 'firm'] },
+      { id: 'tax-opinions', label: 'Tax Opinions', sub: '6 Files', facts: [
+        'FIRPTA, UBTI, and ECI analysis',
+        'Blocker entity structuring opinions',
+        'Updated per new fund formation'
+      ], related: ['auditor-kpmg', 'lpa-docs', 'rachel-kim'] },
+      { id: 'side-letters', label: 'Side Letters', sub: '42 Files', facts: [
+        'LP-specific side letter agreements',
+        'MFN provisions tracked centrally',
+        'Key terms: fee discounts, co-invest, reporting'
+      ], related: ['lpa-docs', 'rachel-kim', 'lp-calpers', 'lp-adia'] },
+      { id: 'pitch-decks', label: 'Pitch Decks', sub: '14 Files', facts: [
+        'Fundraising pitch materials by fund',
+        'Version controlled, compliance-reviewed',
+        'Includes tearsheets and one-pagers'
+      ], related: ['david-park', 'opp-iv', 'impact-i', 'secondaries'] },
+      { id: 'wire-instructions', label: 'Wire Instructions', sub: '6 Files', facts: [
+        'Bank wire details for each fund entity',
+        'Dual-verification required on changes',
+        'Updated semi-annually'
+      ], related: ['bank-svb', 'cap-call-docs', 'elena-vasquez'] },
+      { id: 'org-charts', label: 'Org Charts', sub: '11 Files', facts: [
+        'Fund entity structure diagrams',
+        'GP/LP/Blocker/Feeder relationships',
+        'Updated for each new fund or restructuring'
+      ], related: ['rachel-kim', 'lpa-docs', 'firm'] }
+    ],
+    workflows: [
+      { id: 'wf-rent-roll', label: 'Rent Roll Extract', sub: 'Active', facts: [
+        'Automated Yardi CSV extraction and formatting',
+        'Runs daily at 6:00 AM',
+        '98.2% success rate across 142 runs'
+      ], related: ['rent-rolls', 'yardi', 'hilgard'] },
+      { id: 'wf-k1', label: 'K-1 Processing', sub: 'Active', facts: [
+        'Extracts and validates K-1 tax documents',
+        'Runs on document upload trigger',
+        'Flags anomalies for manual review'
+      ], related: ['k1-docs', 'fund-iii', 'lp-group'] },
+      { id: 'wf-waterfall', label: 'LP Waterfall', sub: 'Active', facts: [
+        'Calculates LP distribution waterfall',
+        'European waterfall logic per LPA terms',
+        'Handles catch-up, clawback, and GP commit'
+      ], related: ['lpa-docs', 'fund-iii', 'dist-notices'] },
+      { id: 'wf-fees', label: 'Fee Calculator', sub: 'Active', facts: [
+        'Management fee calculation engine',
+        '2% on committed during investment period',
+        'Switches to invested capital post-period'
+      ], related: ['fund-iii', 'hilgard', 'erabor'] },
+      { id: 'wf-nav-calc', label: 'NAV Calculator', sub: 'Active', facts: [
+        'Quarterly NAV calculation across all funds',
+        'Pulls from Yardi, Citco, and manual inputs',
+        'Reconciliation tolerance: 0.1%'
+      ], related: ['elena-vasquez', 'admin-citco', 'valuation-reports'] },
+      { id: 'wf-cap-call', label: 'Capital Call Gen', sub: 'Active', facts: [
+        'Generates capital call notices from templates',
+        'Auto-calculates pro-rata LP amounts',
+        'Sends via DocuSign for e-signature'
+      ], related: ['cap-call-docs', 'lp-group', 'elena-vasquez'] },
+      { id: 'wf-compliance', label: 'Compliance Monitor', sub: 'Active', facts: [
+        'Monitors regulatory filing deadlines',
+        'Alerts 30/15/7 days before due dates',
+        'Tracks SEC, CFTC, state blue sky'
+      ], related: ['compliance-docs', 'rachel-kim'] },
+      { id: 'wf-lp-portal', label: 'LP Portal Sync', sub: 'Active', facts: [
+        'Syncs documents to investor portal',
+        'Auto-publishes quarterly reports on approval',
+        'Tracks LP download activity'
+      ], related: ['qtr-reports', 'david-park', 'salesforce'] },
+      { id: 'wf-reconcile', label: 'Bank Reconciliation', sub: 'Active', facts: [
+        'Daily bank statement reconciliation',
+        'Matches capital calls and distributions',
+        'Escalates unmatched items after 3 days'
+      ], related: ['bank-svb', 'elena-vasquez', 'wire-instructions'] },
+      { id: 'wf-esg-report', label: 'ESG Reporting', sub: 'Draft', facts: [
+        'Collects ESG metrics from portfolio companies',
+        'SFDR Article 9 PAI indicators',
+        'Annual report generation'
+      ], related: ['impact-i', 'anna-kowalski', 'compliance-docs'] },
+      { id: 'wf-data-room', label: 'Data Room Mgmt', sub: 'Active', facts: [
+        'Manages virtual data rooms for fundraising',
+        'Auto-watermarks confidential documents',
+        'Tracks LP access and engagement analytics'
+      ], related: ['due-diligence', 'pitch-decks', 'david-park'] },
+      { id: 'wf-valuation', label: 'Valuation Pipeline', sub: 'Active', facts: [
+        'Quarterly valuation workflow with approvals',
+        'Draft → Review → Committee → Final pipeline',
+        'Integrates third-party valuation agents'
+      ], related: ['valuation-reports', 'sarah-chen', 'deloitte'] }
+    ],
+    systems: [
+      { id: 'yardi', label: 'Yardi Voyager', sub: 'Property Mgmt', facts: [
+        'Primary property management system',
+        'CSV exports need cleanup (3 header rows, whitespace, dates)',
+        'Preferred format: CSV over Excel'
+      ], related: ['rent-rolls', 'wf-rent-roll', 'hilgard'] },
+      { id: 'deloitte', label: 'Deloitte', sub: 'Auditor', facts: [
+        'External audit firm',
+        'Fiscal year ends March 31',
+        'Audit partner: James Whitfield'
+      ], related: ['james-whitfield', 'fund-iii', 'sarah-chen'] },
+      { id: 'salesforce', label: 'Salesforce', sub: 'CRM', facts: [
+        'LP relationship management',
+        'Tracks commitments, communications, meetings',
+        'Syncs with quarterly reporting workflow'
+      ], related: ['lp-group', 'qtr-reports', 'david-park'] },
+      { id: 'snowflake', label: 'Snowflake', sub: 'Data Warehouse', facts: [
+        'Central data warehouse for analytics',
+        'Ingests from Yardi, Salesforce, Citco',
+        'Powers Tableau dashboards and Cosimo queries'
+      ], related: ['tom-brennan', 'tableau', 'yardi'] },
+      { id: 'tableau', label: 'Tableau', sub: 'BI / Dashboards', facts: [
+        'Business intelligence and visualization',
+        'Fund performance, portfolio, LP dashboards',
+        'Embedded in LP portal'
+      ], related: ['snowflake', 'tom-brennan', 'qtr-reports'] },
+      { id: 'bank-svb', label: 'First Republic', sub: 'Banking', facts: [
+        'Primary banking relationship (formerly SVB)',
+        'Fund-level accounts, escrow services',
+        'Wire processing SLA: same day before 2pm'
+      ], related: ['wire-instructions', 'credit-ii', 'wf-reconcile'] },
+      { id: 'docusign', label: 'DocuSign', sub: 'E-Signature', facts: [
+        'Electronic signature platform',
+        'Used for capital calls, side letters, LPAs',
+        'Integrated with workflow automation'
+      ], related: ['wf-cap-call', 'side-letters', 'cap-call-docs'] },
+      { id: 'box', label: 'Box', sub: 'File Storage', facts: [
+        'Enterprise file storage and sharing',
+        'Folder structure mirrors fund hierarchy',
+        'Retention policy: 10 years post-fund termination'
+      ], related: ['tom-brennan', 'due-diligence', 'wf-data-room'] },
+      { id: 'outlook', label: 'Outlook / M365', sub: 'Email & Calendar', facts: [
+        'Microsoft 365 email and calendar',
+        'Shared calendars for fund deadlines',
+        'Archive policy: 7 years'
+      ], related: ['tom-brennan', 'salesforce', 'marcus-webb'] }
+    ],
+    entities: [
+      { id: 'firm', label: 'The Firm', sub: 'Mid-Market PE', facts: [
+        'Mid-market private equity firm',
+        '11 active funds across RE, infra, credit, growth, venture',
+        '50+ LP investors, ~$2.8B total AUM',
+        'Founded 2008, 45 employees'
+      ], related: ['fund-iii', 'hilgard', 'erabor', 'opp-iv', 'sarah-chen', 'growth-i'] },
+      { id: 'fiscal-year', label: 'Fiscal Year', sub: 'Ends Mar 31', facts: [
+        'Fiscal year ends March 31',
+        'Audit cycle runs April-June',
+        'Quarterly reporting: Jun, Sep, Dec, Mar'
+      ], related: ['deloitte', 'qtr-reports'] },
+      { id: 'fee-structure', label: 'Fee Structure', sub: '2/20 Standard', facts: [
+        '2% management fee / 20% carried interest',
+        'European waterfall across most funds',
+        '8% preferred return, then GP catch-up',
+        'Venture fund: 2.5/25 with no pref'
+      ], related: ['fund-iii', 'hilgard', 'erabor', 'lpa-docs', 'wf-fees'] },
+      { id: 'prop-berkshire', label: 'Berkshire Complex', sub: 'Multifamily', facts: [
+        '320-unit multifamily, Fund III portfolio',
+        'Acquired 2020, $62M basis',
+        'Current NOI: $4.8M, 94% occupied'
+      ], related: ['fund-iii', 'rent-rolls', 'yardi'] },
+      { id: 'prop-marina', label: 'Marina Industrial', sub: 'Industrial', facts: [
+        '480K SF industrial park, Fund III',
+        '12 tenants, triple-net leases',
+        'Cap rate at acquisition: 5.8%'
+      ], related: ['fund-iii', 'yardi'] },
+      { id: 'prop-hilgard-apt', label: 'Hilgard Apartments', sub: 'Multifamily', facts: [
+        '210-unit luxury apartments',
+        'Flagship Hilgard Fund asset',
+        'Value-add renovation 80% complete'
+      ], related: ['hilgard', 'rent-rolls', 'yardi'] },
+      { id: 'portfolio-saas', label: 'CloudMetrics', sub: 'SaaS / Growth I', facts: [
+        'B2B SaaS analytics platform',
+        'Growth I portfolio company, Series C',
+        '$18M ARR, 130% net retention'
+      ], related: ['growth-i', 'valuation-reports'] },
+      { id: 'portfolio-fintech', label: 'PayBridge', sub: 'Fintech / Growth I', facts: [
+        'Payment processing for SMBs',
+        '$42M revenue, EBITDA positive',
+        'Potential exit target — strategic interest'
+      ], related: ['growth-i', 'seed-ventures', 'valuation-reports'] },
+      { id: 'portfolio-climate', label: 'GreenGrid', sub: 'CleanTech / Impact', facts: [
+        'Grid-scale battery storage developer',
+        'Impact I portfolio, 3 projects operational',
+        '200MW pipeline, DOE loan guarantee pending'
+      ], related: ['impact-i', 'infra-fund', 'anna-kowalski'] },
+      { id: 'benchmark-pe', label: 'PE Benchmarks', sub: 'Cambridge / Preqin', facts: [
+        'Cambridge Associates PE benchmark data',
+        'Preqin peer fund comparisons',
+        'Updated quarterly, used in LP reports'
+      ], related: ['qtr-reports', 'david-park', 'tableau'] },
+      { id: 'market-data', label: 'Market Data', sub: 'CoStar / PitchBook', facts: [
+        'CoStar real estate market data',
+        'PitchBook PE deal flow and valuations',
+        'MSCI climate risk data for ESG'
+      ], related: ['anna-kowalski', 'board-decks', 'due-diligence'] },
+      { id: 'carry-plan', label: 'Carry Plan', sub: 'GP Economics', facts: [
+        'Carried interest allocation plan',
+        'Points allocated across 12 senior team members',
+        'Vesting: 4-year cliff, fund-by-fund'
+      ], related: ['fee-structure', 'firm', 'sarah-chen'] },
+      { id: 'succession-plan', label: 'Succession Plan', sub: 'Key Person', facts: [
+        'Key person provisions per LPA',
+        'Succession committee: 3 senior partners',
+        'Insurance: $10M key person policy'
+      ], related: ['firm', 'rachel-kim', 'insurance-docs'] },
+      { id: 'esg-framework', label: 'ESG Framework', sub: 'UN PRI Signatory', facts: [
+        'UN PRI signatory since 2021',
+        'Annual PRI assessment score: 4/5',
+        'TCFD-aligned climate disclosure'
+      ], related: ['impact-i', 'wf-esg-report', 'compliance-docs'] }
+    ]
+  }
+};
+
+// Find an entity across all categories
+function findEntity(entityId) {
+  for (var cat in graphData.nodes) {
+    var nodes = graphData.nodes[cat];
+    for (var i = 0; i < nodes.length; i++) {
+      if (nodes[i].id === entityId) return { node: nodes[i], category: cat };
+    }
+  }
+  return null;
+}
+
+// SVG namespace
+var SVG_NS = 'http://www.w3.org/2000/svg';
+
+// ---- PERSISTENT SVG GRAPH ENGINE ----
+// All nodes are rendered once. Navigation = animating transforms/opacity.
+
+var graphBuilt = false;
+var graphW = 0, graphH = 0, graphCX = 0, graphCY = 0;
+var graphNodeEls = {};   // id -> { g, homeX, homeY, homeR }
+var graphEdgeEls = [];
+var driftRAF = null;
+var driftItems = [];
+var ANIM = 500; // ms for transitions
+
+function buildGraph() {
+  var container = document.getElementById('graphContainer');
+  var svg = document.getElementById('graphSvg');
+  graphW = container.offsetWidth;
+  graphH = container.offsetHeight;
+
+  if (graphW < 10 || graphH < 10) {
+    setTimeout(buildGraph, 100);
+    return;
+  }
+
+  graphCX = graphW / 2;
+  graphCY = graphH / 2;
+  svg.setAttribute('viewBox', '0 0 ' + graphW + ' ' + graphH);
+
+  // Clear
+  svg.innerHTML = '';
+  graphNodeEls = {};
+  graphEdgeEls = [];
+
+  // --- Defs ---
+  var defs = document.createElementNS(SVG_NS, 'defs');
+  for (var cid in graphColors) {
+    var gc = graphColors[cid];
+    // Glow filter
+    var f = document.createElementNS(SVG_NS, 'filter');
+    f.setAttribute('id', 'glow-' + cid);
+    f.setAttribute('x', '-80%'); f.setAttribute('y', '-80%');
+    f.setAttribute('width', '260%'); f.setAttribute('height', '260%');
+    var blur = document.createElementNS(SVG_NS, 'feGaussianBlur');
+    blur.setAttribute('in', 'SourceGraphic'); blur.setAttribute('stdDeviation', '6'); blur.setAttribute('result', 'b');
+    var cm = document.createElementNS(SVG_NS, 'feColorMatrix');
+    cm.setAttribute('in', 'b'); cm.setAttribute('type', 'matrix');
+    cm.setAttribute('values', '1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.5 0');
+    var merge = document.createElementNS(SVG_NS, 'feMerge');
+    var mn1 = document.createElementNS(SVG_NS, 'feMergeNode');
+    var mn2 = document.createElementNS(SVG_NS, 'feMergeNode');
+    mn2.setAttribute('in', 'SourceGraphic');
+    merge.appendChild(mn1); merge.appendChild(mn2);
+    f.appendChild(blur); f.appendChild(cm); f.appendChild(merge);
+    defs.appendChild(f);
+
+    // Gradient
+    var grad = document.createElementNS(SVG_NS, 'radialGradient');
+    grad.setAttribute('id', 'grad-' + cid);
+    grad.setAttribute('cx', '38%'); grad.setAttribute('cy', '32%'); grad.setAttribute('r', '60%');
+    grad.setAttribute('fx', '35%'); grad.setAttribute('fy', '28%');
+    [[0,'#fff',0.25],[25,gc.core,1],[75,gc.mid,1],[100,gc.dim,1]].forEach(function(s) {
+      var stop = document.createElementNS(SVG_NS, 'stop');
+      stop.setAttribute('offset', s[0] + '%');
+      stop.setAttribute('stop-color', s[1]);
+      stop.setAttribute('stop-opacity', s[2]);
+      grad.appendChild(stop);
+    });
+    defs.appendChild(grad);
+  }
+  svg.appendChild(defs);
+
+  // --- Background click layer ---
+  var bgRect = document.createElementNS(SVG_NS, 'rect');
+  bgRect.setAttribute('width', graphW); bgRect.setAttribute('height', graphH);
+  bgRect.setAttribute('fill', 'transparent');
+  bgRect.style.cursor = 'default';
+  bgRect.addEventListener('click', function() {
+    if (graphState.level === 'cluster') graphNavigate('root');
+  });
+  svg.appendChild(bgRect);
+
+  // --- Edges layer ---
+  var edgesG = document.createElementNS(SVG_NS, 'g');
+  edgesG.setAttribute('id', 'graphEdges');
+  svg.appendChild(edgesG);
+
+  // --- Tether line (YOU → active category, shown in cluster view) ---
+  var tether = document.createElementNS(SVG_NS, 'line');
+  tether.setAttribute('id', 'graphTether');
+  tether.setAttribute('x1', graphCX); tether.setAttribute('y1', graphCY);
+  tether.setAttribute('x2', graphCX); tether.setAttribute('y2', graphCY);
+  tether.setAttribute('stroke', 'rgba(180,120,216,0.5)');
+  tether.setAttribute('stroke-width', '1.5');
+  tether.setAttribute('stroke-dasharray', '6,4');
+  tether.style.opacity = '0';
+  tether.style.transition = 'opacity ' + ANIM + 'ms ease';
+  edgesG.appendChild(tether);
+
+  // --- Orbital rings ---
+  var orbitG = document.createElementNS(SVG_NS, 'g');
+  orbitG.setAttribute('id', 'graphOrbits');
+  var cats = graphData.categories;
+  var rootRadius = Math.min(graphCX, graphCY) * 0.52;
+
+  var orbit = document.createElementNS(SVG_NS, 'circle');
+  orbit.setAttribute('cx', graphCX); orbit.setAttribute('cy', graphCY);
+  orbit.setAttribute('r', rootRadius); orbit.setAttribute('fill', 'none');
+  orbit.setAttribute('stroke', 'rgba(255,255,255,0.04)'); orbit.setAttribute('stroke-width', '1');
+  orbit.setAttribute('stroke-dasharray', '4,8');
+  orbitG.appendChild(orbit);
+  svg.appendChild(orbitG);
+
+  // --- Build edges (center to each category) ---
+  var catPositions = {};
+  for (var i = 0; i < cats.length; i++) {
+    var angle = (i / cats.length) * Math.PI * 2 - Math.PI / 2;
+    catPositions[cats[i].id] = {
+      x: graphCX + Math.cos(angle) * rootRadius,
+      y: graphCY + Math.sin(angle) * rootRadius
+    };
+
+    var edge = makeEdge(graphCX, graphCY, catPositions[cats[i].id].x, catPositions[cats[i].id].y, graphColors[cats[i].id].core, 0.2);
+    edge.dataset.type = 'root-edge';
+    edge.dataset.cat = cats[i].id;
+    edgesG.appendChild(edge);
+    graphEdgeEls.push(edge);
+  }
+
+  // Cross-connections
+  var crossLinks = [[0,1],[0,2],[0,3],[1,2],[1,3],[2,4],[2,5],[3,4],[0,5],[1,5]];
+  for (var c = 0; c < crossLinks.length; c++) {
+    var aId = cats[crossLinks[c][0]].id, bId = cats[crossLinks[c][1]].id;
+    var a = catPositions[aId], b = catPositions[bId];
+    var xedge = makeEdge(a.x, a.y, b.x, b.y, 'rgba(255,255,255,0.06)', 0.06);
+    xedge.dataset.type = 'cross-edge';
+    edgesG.appendChild(xedge);
+    graphEdgeEls.push(xedge);
+  }
+
+  // --- Nodes layer ---
+  var nodesG = document.createElementNS(SVG_NS, 'g');
+  nodesG.setAttribute('id', 'graphNodes');
+  svg.appendChild(nodesG);
+
+  // --- Center YOU node ---
+  var youNode = makeNode('you', 'YOU', '', graphCX, graphCY, 28, 'you', true);
+  youNode.g.addEventListener('click', function() { graphNavigate('root'); });
+  nodesG.appendChild(youNode.g);
+  graphNodeEls['you'] = { g: youNode.g, homeX: graphCX, homeY: graphCY, homeR: 28, catId: null, type: 'center' };
+
+  // --- Category nodes ---
+  for (var i = 0; i < cats.length; i++) {
+    var cat = cats[i];
+    var pos = catPositions[cat.id];
+    var nodeR = 20 + Math.min(cat.count, 20) * 0.6;
+
+    var cn = makeNode(cat.id, cat.label, cat.count + ' items', pos.x, pos.y, nodeR, cat.id, false, cat.count);
+    (function(catId) {
+      cn.g.addEventListener('click', function() { graphNavigate(catId); });
+    })(cat.id);
+
+    nodesG.appendChild(cn.g);
+    graphNodeEls[cat.id] = { g: cn.g, homeX: pos.x, homeY: pos.y, homeR: nodeR, catId: cat.id, type: 'category' };
+
+    // --- Child entity nodes (initially hidden, positioned at parent) ---
+    var childNodes = graphData.nodes[cat.id] || [];
+    // Distribute across rings — fewer per ring for readability
+    var maxPerRing = 7;
+    var ringCount = Math.ceil(childNodes.length / maxPerRing);
+    var minDim = Math.min(graphCX, graphCY);
+    var baseChildR = minDim * 0.45;
+    var ringSpacing = minDim * 0.22;
+
+    for (var j = 0; j < childNodes.length; j++) {
+      var cNode = childNodes[j];
+      var ringIdx = Math.floor(j / maxPerRing);
+      var posInRing = j - ringIdx * maxPerRing;
+      var nodesInThisRing = Math.min(maxPerRing, childNodes.length - ringIdx * maxPerRing);
+      var childRadius = baseChildR + ringIdx * ringSpacing;
+      var cAngle = (posInRing / nodesInThisRing) * Math.PI * 2 - Math.PI / 2 + ringIdx * 0.35;
+      var childTargetX = graphCX + Math.cos(cAngle) * childRadius;
+      var childTargetY = graphCY + Math.sin(cAngle) * childRadius;
+      var abbr = cNode.label.split(' ').map(function(w) { return w[0]; }).join('').substring(0, 3);
+      var childNodeR = ringIdx === 0 ? 16 : 13;
+
+      var en = makeNode(cNode.id, cNode.label, cNode.sub, pos.x, pos.y, 0, cat.id, false, abbr);
+      en.g.style.opacity = '0';
+      en.g.style.pointerEvents = 'none';
+
+      (function(entityId, catId) {
+        en.g.addEventListener('click', function() { openGraphEntity(entityId, catId); });
+      })(cNode.id, cat.id);
+
+      nodesG.appendChild(en.g);
+      graphNodeEls[cNode.id] = {
+        g: en.g, homeX: childTargetX, homeY: childTargetY, homeR: childNodeR,
+        parentX: pos.x, parentY: pos.y,
+        catId: cat.id, type: 'entity'
+      };
+
+      // Edges from category center to child (hidden initially)
+      var cEdge = makeEdge(graphCX, graphCY, childTargetX, childTargetY, graphColors[cat.id].core, 0.3);
+      cEdge.style.opacity = '0';
+      cEdge.dataset.type = 'child-edge';
+      cEdge.dataset.cat = cat.id;
+      edgesG.appendChild(cEdge);
+      graphEdgeEls.push(cEdge);
+    }
+  }
+
+  // --- Inter-entity edges (connections between child nodes within a category) ---
+  for (var ci = 0; ci < cats.length; ci++) {
+    var catChildren = graphData.nodes[cats[ci].id] || [];
+    var catChildIds = {};
+    catChildren.forEach(function(cn) { catChildIds[cn.id] = true; });
+
+    for (var cj = 0; cj < catChildren.length; cj++) {
+      var child = catChildren[cj];
+      if (!child.related) continue;
+      for (var ri = 0; ri < child.related.length; ri++) {
+        var relId = child.related[ri];
+        // Only draw if the related node is in the SAME category and avoid duplicates (only draw a→b where a < b)
+        if (!catChildIds[relId]) continue;
+        if (child.id >= relId) continue;
+        var ndA = graphNodeEls[child.id];
+        var ndB = graphNodeEls[relId];
+        if (!ndA || !ndB) continue;
+        var ie = makeEdge(ndA.homeX, ndA.homeY, ndB.homeX, ndB.homeY, graphColors[cats[ci].id].core, 0.15);
+        ie.style.opacity = '0';
+        ie.dataset.type = 'inter-edge';
+        ie.dataset.cat = cats[ci].id;
+        edgesG.appendChild(ie);
+        graphEdgeEls.push(ie);
+      }
+    }
+  }
+
+  // --- Cross-category related edges (dimmer, show in cluster view) ---
+  for (var ci2 = 0; ci2 < cats.length; ci2++) {
+    var catNodes2 = graphData.nodes[cats[ci2].id] || [];
+    for (var cn2 = 0; cn2 < catNodes2.length; cn2++) {
+      var cNode2 = catNodes2[cn2];
+      if (!cNode2.related) continue;
+      for (var ri2 = 0; ri2 < cNode2.related.length; ri2++) {
+        var rId2 = cNode2.related[ri2];
+        // Check if this related entity is in a DIFFERENT category
+        var relFound = findEntity(rId2);
+        if (!relFound || relFound.category === cats[ci2].id) continue;
+        if (cNode2.id >= rId2) continue; // avoid duplicates
+        var ndC = graphNodeEls[cNode2.id];
+        var ndD = graphNodeEls[rId2];
+        if (!ndC || !ndD) continue;
+        var xe = makeEdge(ndC.homeX, ndC.homeY, ndD.homeX, ndD.homeY, 'rgba(255,255,255,0.08)', 0.08);
+        xe.style.opacity = '0';
+        xe.dataset.type = 'cross-entity-edge';
+        xe.dataset.srcCat = cats[ci2].id;
+        xe.dataset.dstCat = relFound.category;
+        edgesG.appendChild(xe);
+        graphEdgeEls.push(xe);
+      }
+    }
+  }
+
+  graphBuilt = true;
+  applyRootState(false);
+  startDriftLoop(svg);
+}
+
+function makeEdge(x1, y1, x2, y2, color, opacity) {
+  var mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+  var dx = x2 - x1, dy = y2 - y1;
+  var nx = -dy * 0.08, ny = dx * 0.08;
+  var d = 'M' + x1 + ',' + y1 + ' Q' + (mx + nx) + ',' + (my + ny) + ' ' + x2 + ',' + y2;
+
+  var path = document.createElementNS(SVG_NS, 'path');
+  path.setAttribute('d', d);
+  path.setAttribute('fill', 'none');
+  path.setAttribute('stroke', color);
+  path.setAttribute('stroke-width', '1');
+  path.style.opacity = opacity;
+  path.style.transition = 'opacity ' + ANIM + 'ms ease';
+  return path;
+}
+
+function makeNode(id, label, sub, x, y, r, colorId, isCenter, innerText) {
+  var col = graphColors[colorId];
+  var g = document.createElementNS(SVG_NS, 'g');
+  g.setAttribute('data-node-id', id);
+  g.style.cursor = 'pointer';
+  g.style.transition = 'opacity ' + ANIM + 'ms ease';
+
+  // We use a nested <g> for position so we can animate it
+  var posG = document.createElementNS(SVG_NS, 'g');
+  posG.setAttribute('data-pos', '1');
+  posG.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+  g.appendChild(posG);
+
+  // Glow circle
+  var glow = document.createElementNS(SVG_NS, 'circle');
+  glow.setAttribute('cx', 0); glow.setAttribute('cy', 0);
+  glow.setAttribute('fill', 'url(#grad-' + colorId + ')');
+  glow.setAttribute('filter', 'url(#glow-' + colorId + ')');
+  glow.style.r = r + 'px';
+  posG.appendChild(glow);
+
+  // Body circle
+  var body = document.createElementNS(SVG_NS, 'circle');
+  body.setAttribute('cx', 0); body.setAttribute('cy', 0);
+  body.setAttribute('fill', 'url(#grad-' + colorId + ')');
+  body.style.r = r + 'px';
+  posG.appendChild(body);
+
+  // Edge highlight
+  var edge = document.createElementNS(SVG_NS, 'circle');
+  edge.setAttribute('cx', 0); edge.setAttribute('cy', 0);
+  edge.setAttribute('fill', 'none'); edge.setAttribute('stroke', 'rgba(255,255,255,0.12)');
+  edge.setAttribute('stroke-width', '1');
+  edge.style.r = r + 'px';
+  posG.appendChild(edge);
+
+  // Store circle refs for animation
+  g._circles = [glow, body, edge];
+  g._posG = posG;
+
+  // Inner text
+  if (innerText !== undefined && innerText !== '') {
+    var txt = document.createElementNS(SVG_NS, 'text');
+    txt.setAttribute('x', 0); txt.setAttribute('y', 0);
+    txt.setAttribute('text-anchor', 'middle'); txt.setAttribute('dominant-baseline', 'central');
+    txt.setAttribute('fill', 'rgba(255,255,255,0.85)');
+    txt.setAttribute('font-family', "'IBM Plex Mono', monospace");
+    txt.setAttribute('font-size', isCenter ? '11' : Math.max(9, r * 0.5));
+    txt.setAttribute('font-weight', '700');
+    txt.setAttribute('pointer-events', 'none');
+    txt.textContent = innerText;
+    posG.appendChild(txt);
+    g._innerText = txt;
+  }
+
+  // Label below
+  var lbl = document.createElementNS(SVG_NS, 'text');
+  lbl.setAttribute('x', 0); lbl.setAttribute('y', r + 16);
+  lbl.setAttribute('text-anchor', 'middle');
+  lbl.setAttribute('fill', 'rgba(255,255,255,0.7)');
+  lbl.setAttribute('font-family', "'IBM Plex Mono', monospace");
+  lbl.setAttribute('font-size', '10'); lbl.setAttribute('font-weight', '600');
+  lbl.setAttribute('pointer-events', 'none');
+  lbl.textContent = label;
+  posG.appendChild(lbl);
+  g._label = lbl;
+
+  // Sub label
+  if (sub) {
+    var slbl = document.createElementNS(SVG_NS, 'text');
+    slbl.setAttribute('x', 0); slbl.setAttribute('y', r + 28);
+    slbl.setAttribute('text-anchor', 'middle');
+    slbl.setAttribute('fill', 'rgba(255,255,255,0.3)');
+    slbl.setAttribute('font-family', "'IBM Plex Mono', monospace");
+    slbl.setAttribute('font-size', '9');
+    slbl.setAttribute('pointer-events', 'none');
+    slbl.textContent = sub;
+    posG.appendChild(slbl);
+    g._subLabel = slbl;
+  }
+
+  // Hover tooltip
+  g.addEventListener('mouseenter', function(e) {
+    var tip = label + (sub ? ' \u00b7 ' + sub : '');
+    showGraphTooltip(g, tip);
+  });
+  g.addEventListener('mouseleave', hideGraphTooltip);
+
+  return { g: g };
+}
+
+function animateNode(nodeData, toX, toY, toR, toOpacity, delay) {
+  var g = nodeData.g;
+  var posG = g._posG;
+  var circles = g._circles;
+  var easing = 'cubic-bezier(0.34, 1, 0.64, 1)';
+
+  setTimeout(function() {
+    // Animate position via CSS transform (animatable)
+    posG.style.transition = 'transform ' + ANIM + 'ms ' + easing;
+    posG.style.transform = 'translate(' + toX + 'px,' + toY + 'px)';
+
+    // Animate radius via CSS r property (animatable)
+    circles.forEach(function(c) {
+      c.style.transition = 'r ' + ANIM + 'ms ' + easing;
+      c.style.r = toR + 'px';
+    });
+
+    // Animate opacity
+    g.style.opacity = toOpacity;
+
+    // Update label offsets
+    if (g._label) {
+      g._label.setAttribute('y', toR + 14);
+      g._label.style.opacity = toR < 10 ? '0' : '1';
+    }
+    if (g._subLabel) {
+      g._subLabel.setAttribute('y', toR + 25);
+      // Hide sub-label on small nodes to reduce clutter
+      g._subLabel.style.opacity = toR < 18 ? '0' : '1';
+    }
+    if (g._innerText) {
+      g._innerText.setAttribute('font-size', Math.max(8, toR * 0.45));
+    }
+
+    // Pointer events
+    g.style.pointerEvents = toOpacity > 0.1 ? 'auto' : 'none';
+  }, delay || 0);
+}
+
+function applyRootState(animated) {
+  var cats = graphData.categories;
+  var d = animated ? 0 : -1; // -1 means instant
+
+  // Edges
+  graphEdgeEls.forEach(function(edge) {
+    if (!animated) edge.style.transition = 'none';
+    else edge.style.transition = 'opacity ' + ANIM + 'ms ease';
+
+    if (edge.dataset.type === 'root-edge' || edge.dataset.type === 'cross-edge') {
+      edge.style.opacity = edge.dataset.type === 'root-edge' ? '0.2' : '0.06';
+    } else {
+      edge.style.opacity = '0';
+    }
+  });
+
+  // Helper to disable transitions for instant positioning
+  function setInstant(nd) {
+    nd.g.style.transition = 'none';
+    nd.g._posG.style.transition = 'none';
+    nd.g._circles.forEach(function(c) { c.style.transition = 'none'; });
+  }
+
+  // YOU node — center, full size
+  var youD = graphNodeEls['you'];
+  if (!animated) setInstant(youD);
+  animateNode(youD, graphCX, graphCY, 28, 1, 0);
+  youD.g.classList.remove('is-home');
+
+  // Hide tether
+  var tether = document.getElementById('graphTether');
+  if (!animated) tether.style.transition = 'none';
+  else tether.style.transition = 'opacity ' + ANIM + 'ms ease';
+  tether.style.opacity = '0';
+
+  // Category nodes — orbital positions, full size
+  cats.forEach(function(cat, i) {
+    var nd = graphNodeEls[cat.id];
+    if (!animated) setInstant(nd);
+    animateNode(nd, nd.homeX, nd.homeY, nd.homeR, 1, animated ? i * 40 : 0);
+  });
+
+  // Entity nodes — collapse to parent, hidden
+  for (var nid in graphNodeEls) {
+    var nd = graphNodeEls[nid];
+    if (nd.type !== 'entity') continue;
+    if (!animated) setInstant(nd);
+    animateNode(nd, nd.parentX, nd.parentY, 0, 0, 0);
+  }
+
+  // Background cursor
+  document.querySelector('#graphSvg rect').style.cursor = 'default';
+}
+
+function applyClusterState(catId) {
+  var cats = graphData.categories;
+  var col = graphColors[catId];
+
+  // Edges — hide root edges, show child + inter-entity edges for this category
+  graphEdgeEls.forEach(function(edge) {
+    edge.style.transition = 'opacity ' + ANIM + 'ms ease';
+    if (edge.dataset.type === 'child-edge' && edge.dataset.cat === catId) {
+      edge.style.opacity = '0.2';
+    } else if (edge.dataset.type === 'inter-edge' && edge.dataset.cat === catId) {
+      edge.style.opacity = '0.15';
+    } else if (edge.dataset.type === 'root-edge' && edge.dataset.cat === catId) {
+      edge.style.opacity = '0.15';
+    } else {
+      edge.style.opacity = '0';
+    }
+  });
+
+  // YOU node — move to top-left corner as a small "home" bubble
+  var youD = graphNodeEls['you'];
+  animateNode(youD, 50, 50, 18, 0.85, 0);
+  youD.g.classList.add('is-home');
+
+  // Tether line from YOU bubble to center category
+  var tether = document.getElementById('graphTether');
+  tether.setAttribute('stroke', col.glow.replace(/[\d.]+\)$/, '0.6)'));
+  tether.setAttribute('x1', 50); tether.setAttribute('y1', 50);
+  tether.setAttribute('x2', graphCX); tether.setAttribute('y2', graphCY);
+  tether.style.opacity = '1';
+
+  // Category nodes — clicked one moves to center and grows, others shrink to edges
+  var otherIdx = 0;
+  var otherCats = cats.filter(function(c) { return c.id !== catId; });
+  var edgeR = Math.min(graphCX, graphCY) * 0.85;
+
+  cats.forEach(function(cat) {
+    var nd = graphNodeEls[cat.id];
+    if (cat.id === catId) {
+      // Animate to center, slightly smaller so children have room
+      animateNode(nd, graphCX, graphCY, 24, 1, 0);
+    } else {
+      // Animate to periphery, shrink
+      var angle = (otherIdx / otherCats.length) * Math.PI * 2 - Math.PI * 0.3;
+      var ex = graphCX + Math.cos(angle) * edgeR;
+      var ey = graphCY + Math.sin(angle) * edgeR;
+      animateNode(nd, ex, ey, 8, 0.35, 0);
+      otherIdx++;
+    }
+  });
+
+  // Entity nodes for this category — expand from center to orbital positions
+  var childNodes = graphData.nodes[catId] || [];
+  childNodes.forEach(function(cNode, i) {
+    var nd = graphNodeEls[cNode.id];
+    if (nd) {
+      animateNode(nd, nd.homeX, nd.homeY, nd.homeR, 1, 80 + i * 35);
+    }
+  });
+
+  // Entity nodes for OTHER categories — ensure hidden
+  for (var nid in graphNodeEls) {
+    var nd = graphNodeEls[nid];
+    if (nd.type === 'entity' && nd.catId !== catId) {
+      animateNode(nd, nd.parentX, nd.parentY, 0, 0, 0);
+    }
+  }
+
+  // Background cursor
+  document.querySelector('#graphSvg rect').style.cursor = 'pointer';
+}
+
+function graphNavigate(target) {
+  closeGraphDetail();
+  hideGraphTooltip();
+
+  if (target === 'root') {
+    graphState.level = 'root';
+    graphState.currentCategory = null;
+    graphState.currentEntity = null;
+    updateBreadcrumb();
+    applyRootState(true);
+  } else {
+    graphState.level = 'cluster';
+    graphState.currentCategory = target;
+    graphState.currentEntity = null;
+    updateBreadcrumb();
+    applyClusterState(target);
+  }
+}
+
+function openGraphEntity(entityId, categoryId) {
+  graphState.currentEntity = entityId;
+  var found = findEntity(entityId);
+  if (!found) return;
+
+  var node = found.node;
+  var col = graphColors[found.category];
+
+  updateBreadcrumb();
+
+  document.getElementById('graphDetailName').textContent = node.label;
+  document.getElementById('graphDetailType').textContent = node.sub;
+
+  var iconEl = document.getElementById('graphDetailIcon');
+  iconEl.style.background = col.core;
+  iconEl.style.borderColor = col.dim;
+  iconEl.style.color = '#fff';
+  iconEl.innerHTML = '&#9670;';
+
+  var factsHtml = '';
+  for (var i = 0; i < node.facts.length; i++) {
+    factsHtml += '<div class="graph-fact-row"><span class="graph-fact-bullet">\u2022</span><span class="graph-fact-text">' + escapeHtml(node.facts[i]) + '</span></div>';
+  }
+  document.getElementById('graphDetailFacts').innerHTML = factsHtml;
+
+  var relHtml = '';
+  for (var i = 0; i < node.related.length; i++) {
+    var rel = findEntity(node.related[i]);
+    if (rel) {
+      relHtml += '<button class="graph-related-pill" onclick="navigateToRelated(\'' + rel.node.id + '\', \'' + rel.category + '\')">' + escapeHtml(rel.node.label) + '</button>';
+    }
+  }
+  document.getElementById('graphDetailRelated').innerHTML = relHtml;
+
+  // Highlight the clicked node
+  var nd = graphNodeEls[entityId];
+  if (nd) {
+    nd.g._circles[2].setAttribute('stroke', 'rgba(255,255,255,0.5)');
+    nd.g._circles[2].setAttribute('stroke-width', '2');
+  }
+
+  document.getElementById('graphDetailPane').classList.add('open');
+}
+
+function closeGraphDetail() {
+  document.getElementById('graphDetailPane').classList.remove('open');
+
+  // Un-highlight any selected node
+  if (graphState.currentEntity) {
+    var nd = graphNodeEls[graphState.currentEntity];
+    if (nd) {
+      nd.g._circles[2].setAttribute('stroke', 'rgba(255,255,255,0.12)');
+      nd.g._circles[2].setAttribute('stroke-width', '1');
+    }
+  }
+
+  graphState.currentEntity = null;
+  updateBreadcrumb();
+}
+
+function navigateToRelated(entityId, categoryId) {
+  // Un-highlight current
+  closeGraphDetail();
+
+  if (categoryId !== graphState.currentCategory) {
+    graphState.level = 'cluster';
+    graphState.currentCategory = categoryId;
+    updateBreadcrumb();
+    applyClusterState(categoryId);
+    setTimeout(function() {
+      openGraphEntity(entityId, categoryId);
+    }, ANIM + 50);
+  } else {
+    setTimeout(function() {
+      openGraphEntity(entityId, categoryId);
+    }, 100);
+  }
+}
+
+function updateBreadcrumb() {
+  var bc = document.getElementById('graphBreadcrumb');
+  var html = '<button class="graph-crumb' + (graphState.level === 'root' ? ' active' : '') + '" onclick="graphNavigate(\'root\')">You</button>';
+
+  if (graphState.currentCategory) {
+    var cat = graphData.categories.find(function(c) { return c.id === graphState.currentCategory; });
+    html += '<span class="graph-crumb-sep">&rsaquo;</span>';
+    html += '<button class="graph-crumb' + (!graphState.currentEntity ? ' active' : '') + '" onclick="graphNavigate(\'' + graphState.currentCategory + '\')">' + (cat ? cat.label : '') + '</button>';
+  }
+
+  if (graphState.currentEntity) {
+    var found = findEntity(graphState.currentEntity);
+    if (found) {
+      html += '<span class="graph-crumb-sep">&rsaquo;</span>';
+      html += '<button class="graph-crumb active">' + found.node.label + '</button>';
+    }
+  }
+
+  bc.innerHTML = html;
+}
+
+function showGraphTooltip(nodeG, text) {
+  var tip = document.getElementById('graphTooltip');
+  var container = document.getElementById('graphContainer');
+  var cr = container.getBoundingClientRect();
+  var svg = document.getElementById('graphSvg');
+  var vb = svg.viewBox.baseVal;
+  var sx = cr.width / (vb.width || cr.width);
+  var sy = cr.height / (vb.height || cr.height);
+
+  var posG = nodeG._posG || nodeG.querySelector('[data-pos]');
+  if (posG) {
+    var t = posG.style.transform || posG.getAttribute('transform') || '';
+    var m = t.match(/translate\(([\d.\-]+)(?:px)?\s*,\s*([\d.\-]+)(?:px)?\)/);
+    if (m) {
+      var ncx = parseFloat(m[1]) * sx;
+      var ncy = parseFloat(m[2]) * sy;
+
+      tip.textContent = text;
+      tip.classList.add('show');
+
+      var tipW = tip.offsetWidth;
+      var left = ncx - tipW / 2;
+      if (left < 4) left = 4;
+      if (left + tipW > cr.width - 4) left = cr.width - tipW - 4;
+      tip.style.left = left + 'px';
+      tip.style.top = (ncy - 40) + 'px';
+    }
+  }
+}
+
+function hideGraphTooltip() {
+  document.getElementById('graphTooltip').classList.remove('show');
+}
+
+// Drift animation
+function startDriftLoop(svg) {
+  if (driftRAF) cancelAnimationFrame(driftRAF);
+  driftItems = [];
+
+  // Collect all position groups
+  var allPosGs = svg.querySelectorAll('[data-pos]');
+  allPosGs.forEach(function(pg, i) {
+    driftItems.push({
+      el: pg,
+      phase: i * 1.1 + Math.random() * 2,
+      ampX: 1.5 + Math.random() * 2,
+      ampY: 1.5 + Math.random() * 2,
+      speed: 0.25 + Math.random() * 0.3,
+      baseTransform: null // will be read each frame
+    });
+  });
+
+  var t0 = performance.now();
+  function tick(now) {
+    var t = (now - t0) / 1000;
+    for (var i = 0; i < driftItems.length; i++) {
+      var d = driftItems[i];
+      // Read the current base transform (set by animations)
+      var raw = d.el.style.transform || d.el.getAttribute('transform') || 'translate(0,0)';
+      var m = raw.match(/translate\(([\d.\-]+)(?:px)?\s*,\s*([\d.\-]+)(?:px)?\)/);
+      if (!m) continue;
+      var bx = parseFloat(m[1]), by = parseFloat(m[2]);
+
+      var dx = Math.sin(t * d.speed + d.phase) * d.ampX;
+      var dy = Math.cos(t * d.speed * 0.7 + d.phase + 1) * d.ampY;
+
+      // We DON'T overwrite transform — drift is too subtle to fight the animation.
+      // Instead we only apply drift when no CSS transition is active.
+      // The visual drift is small enough that it works naturally.
+    }
+    driftRAF = requestAnimationFrame(tick);
+  }
+  // Drift disabled for now to avoid fighting transitions — the animated navigation IS the motion.
+  // driftRAF = requestAnimationFrame(tick);
+}
+
+function editGraphEntity() {
+  if (!graphState.currentEntity) return;
+  var found = findEntity(graphState.currentEntity);
+  if (!found) return;
+  showToast('Editing ' + found.node.label + ' — coming soon');
+}
+
+function openCosimoForEntity() {
+  if (!graphState.currentEntity) return;
+  var found = findEntity(graphState.currentEntity);
+  if (!found) return;
+
+  var panelName = document.querySelector('.cosimo-panel-name');
+  panelName.textContent = 'Edit: ' + found.node.label;
+
+  var panelChat = document.getElementById('panelChat');
+  panelChat.innerHTML =
+    '<div class="panel-msg panel-msg-ai">' +
+      '<div class="panel-msg-header">' +
+        '<div class="badge badge-ai" style="width:16px;height:16px;font-size:9px;">◆</div>' +
+        '<span class="panel-msg-sender">Cosimo</span>' +
+      '</div>' +
+      'I have <strong>' + escapeHtml(found.node.label) + '</strong> loaded. I can help you:' +
+      '<br><br>' +
+      '<strong>"Update the fee structure details"</strong><br>' +
+      '<strong>"Add a new related contact"</strong><br>' +
+      '<strong>"Correct the committed capital amount"</strong><br>' +
+      '<strong>"Remove outdated information"</strong>' +
+    '</div>';
+
+  openCosimoPanel();
+}
+
+// Alias for backward compat
+function renderGraph() {
+  if (!graphBuilt) {
+    buildGraph();
+  } else {
+    // Rebuild on resize
+    graphBuilt = false;
+    buildGraph();
+  }
+}
+
+// Render graph when switching to graphs section
+var origSwitchBrainSection = switchBrainSection;
+switchBrainSection = function(section, el) {
+  origSwitchBrainSection(section, el);
+  if (section === 'graphs') {
+    setTimeout(function() {
+      if (!graphBuilt) buildGraph();
+    }, 50);
+  }
+};
+
+// Re-render on resize
+var graphResizeTimer;
+window.addEventListener('resize', function() {
+  clearTimeout(graphResizeTimer);
+  graphResizeTimer = setTimeout(function() {
+    if (document.getElementById('brain-graphs').classList.contains('active')) {
+      graphBuilt = false;
+      buildGraph();
+    }
+  }, 300);
+});
+
+// Detail pane resize via drag handle
+(function() {
+  var handle = document.getElementById('graphDetailResize');
+  if (!handle) return;
+  var pane = document.getElementById('graphDetailPane');
+  var container = document.getElementById('graphContainer');
+  var dragging = false;
+  var startY = 0;
+  var startH = 0;
+
+  handle.addEventListener('mousedown', function(e) {
+    e.preventDefault();
+    dragging = true;
+    startY = e.clientY;
+    startH = pane.offsetHeight;
+    pane.style.transition = 'none';
+    document.body.style.cursor = 'ns-resize';
+    document.body.style.userSelect = 'none';
+  });
+
+  window.addEventListener('mousemove', function(e) {
+    if (!dragging) return;
+    var containerH = container.offsetHeight;
+    var newH = startH + (startY - e.clientY);
+    var minH = 120;
+    var maxH = containerH * 0.85;
+    newH = Math.max(minH, Math.min(maxH, newH));
+    pane.style.height = newH + 'px';
+  });
+
+  window.addEventListener('mouseup', function() {
+    if (!dragging) return;
+    dragging = false;
+    pane.style.transition = '';
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+  });
+})();
+
+function toggleCardScope(btn, e) {
+  e.stopPropagation(); // Don't open the lesson detail
+
+  var card = btn.closest('.lesson-card');
+  var lessonId = card.getAttribute('data-lesson');
+  var data = lessonData[lessonId];
+  if (!data) return;
+
+  data.scope = data.scope === 'company' ? 'user' : 'company';
+  card.setAttribute('data-scope', data.scope);
+
+  var badge = card.querySelector('.lesson-scope-badge');
+  badge.textContent = data.scope === 'company' ? 'Company' : 'Personal';
+  badge.className = 'lesson-scope-badge ' + (data.scope === 'company' ? 'scope-company' : 'scope-user');
+
+  showToast('Scope changed to ' + (data.scope === 'company' ? 'Company' : 'Personal'));
+
+  // Re-apply filters in case scope filter is active
+  filterLessons();
+}
