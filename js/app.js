@@ -1,6 +1,98 @@
 // ============================================
 // MOCK DATA — THREADS
 // ============================================
+// ============================================
+// MOCK DATA — WORKFLOWS
+// ============================================
+const MOCK_WORKFLOWS = {
+  'rent-roll': {
+    title: 'Rent Roll Extraction',
+    desc: 'Extracts and standardizes rent roll data from uploaded PDFs into clean xlsx format.',
+    cardDesc: 'Extracts and standardizes rent roll data from uploaded PDFs. Outputs clean xlsx with unit-level detail, floor mapping, and lease terms.',
+    status: 'active',
+    steps: 4,
+    runs: 47,
+    lastRun: '2h ago',
+    lastShort: '2h',
+    notif: false
+  },
+  'k1-extract': {
+    title: 'K-1 Document Processing',
+    desc: 'Parses K-1 tax documents, extracts allocations, and maps to fund accounting structure.',
+    cardDesc: 'Parses K-1 tax documents, extracts allocations, and maps to fund accounting structure. Flags discrepancies against capital accounts.',
+    status: 'active',
+    steps: 5,
+    runs: 23,
+    lastRun: '6h ago',
+    lastShort: '6h',
+    notif: false
+  },
+  'lp-waterfall': {
+    title: 'LP Distribution Waterfall',
+    desc: 'Calculates LP/GP distribution splits across preferred return, catch-up, and carried interest tiers.',
+    cardDesc: 'Calculates LP/GP distribution splits across preferred return, catch-up, and carried interest tiers. Generates allocation schedules.',
+    status: 'draft',
+    steps: 6,
+    runs: 0,
+    lastRun: 'Created Feb 20',
+    lastShort: '\u2014',
+    notif: false
+  },
+  'fee-calc': {
+    title: 'Management Fee Calculator',
+    desc: 'Computes management fees across fund vehicles using committed/invested capital basis.',
+    cardDesc: 'Computes management fees across fund vehicles using committed/invested capital basis, step-downs, and offset provisions.',
+    status: 'active',
+    steps: 3,
+    runs: 31,
+    lastRun: '1d ago',
+    lastShort: '1d',
+    notif: false
+  },
+  'covenant': {
+    title: 'Loan Covenant Monitor',
+    desc: 'Monitors DSCR, LTV, and debt yield covenants across the loan book.',
+    cardDesc: 'Monitors DSCR, LTV, and debt yield covenants across the loan book. Alerts when metrics approach or breach thresholds.',
+    status: 'paused',
+    steps: 4,
+    runs: 18,
+    lastRun: 'Paused Feb 15',
+    lastShort: '10d',
+    notif: true
+  }
+};
+
+// ============================================
+// MOCK DATA — SPREADSHEET
+// ============================================
+const MOCK_SPREADSHEET = {
+  columns: ['A','B','C','D','E','F','G','H'],
+  headers: ['Period', 'Quarter', 'Committed Cap', 'Fee Rate', 'Gross Fee', 'Offset', 'Net Fee', 'Cumulative'],
+  rows: [
+    { row: 1, cells: ['Period', 'Quarter', 'Committed Cap', 'Fee Rate', 'Gross Fee', 'Offset', 'Net Fee', 'Cumulative'] },
+    { row: 2, cells: ['2025', 'Q1', '$86,000,000', '1.75%', '$376,250', '$0', '$376,250', '$376,250'],
+      formulas: [null, null, null, null, '=C2*D2/4', null, '=E2-F2', '=G2'] },
+    { row: 3, cells: ['2025', 'Q2', '$86,000,000', '1.75%', '$376,250', '$42,000', '$334,250', '$710,500'],
+      formulas: [null, null, null, null, '=C3*D3/4', null, '=E3-F3', '=H2+G3'] },
+    { row: 4, cells: ['2025', 'Q3', '$86,000,000', '1.75%', '$376,250', '$18,500', '$357,750', '$1,068,250'],
+      formulas: [null, null, null, null, '=C4*D4/4', null, '=E4-F4', '=H3+G4'] },
+    { row: 5, cells: ['2025', 'Q4', '$86,000,000', '1.75%', '$376,250', '$0', '$376,250', '$1,444,500'],
+      formulas: [null, null, null, null, '=C5*D5/4', null, '=E5-F5', '=H4+G5'] },
+    { row: 6, cells: ['', '', '', '', '', '', '', ''], formulas: null },
+    { row: 7, cells: ['2026', 'Q1', '$86,000,000', '1.25%', '$268,750', '$0', '$268,750', '$1,713,250'],
+      formulas: [null, null, null, null, '=C7*D7/4', null, '=E7-F7', '=H5+G7'] },
+    { row: 8, cells: ['2026', 'Q2', '$86,000,000', '1.25%', '$268,750', '$0', '$268,750', '$1,982,000'],
+      formulas: [null, null, null, null, '=C8*D8/4', null, '=E8-F8', '=H7+G8'] },
+    { row: 9, cells: ['2026', 'Q3', '$86,000,000', '1.25%', '$268,750', '$0', '$268,750', '$2,250,750'],
+      formulas: [null, null, null, null, '=C9*D9/4', null, '=E9-F9', '=H8+G9'] },
+    { row: 10, cells: ['2026', 'Q4', '$86,000,000', '1.25%', '$268,750', '$0', '$268,750', '$2,519,500'],
+      formulas: [null, null, null, null, '=C10*D10/4', null, '=E10-F10', '=H9+G10'] },
+    { row: 11, cells: ['', '', '', '', '', '', '', ''], formulas: null },
+    { row: 12, cells: ['TOTAL', '', '', '', '$2,580,000', '$60,500', '$2,519,500', ''],
+      formulas: [null, null, null, null, '=SUM(E2:E10)', '=SUM(F2:F10)', '=SUM(G2:G10)', null] },
+  ]
+};
+
 const MOCK_THREADS = {
   fund3: {
     title: 'Fund III — Allocation Drift',
@@ -882,31 +974,8 @@ function switchFilePanelTab(tab) {
 // ============================================
 // INTERACTIVE SPREADSHEET
 // ============================================
-const sheetData = [
-  { row: 1, cells: ['Period', 'Quarter', 'Committed Cap', 'Fee Rate', 'Gross Fee', 'Offset', 'Net Fee', 'Cumulative'] },
-  { row: 2, cells: ['2025', 'Q1', '$86,000,000', '1.75%', '$376,250', '$0', '$376,250', '$376,250'],
-    formulas: [null, null, null, null, '=C2*D2/4', null, '=E2-F2', '=G2'] },
-  { row: 3, cells: ['2025', 'Q2', '$86,000,000', '1.75%', '$376,250', '$42,000', '$334,250', '$710,500'],
-    formulas: [null, null, null, null, '=C3*D3/4', null, '=E3-F3', '=H2+G3'] },
-  { row: 4, cells: ['2025', 'Q3', '$86,000,000', '1.75%', '$376,250', '$18,500', '$357,750', '$1,068,250'],
-    formulas: [null, null, null, null, '=C4*D4/4', null, '=E4-F4', '=H3+G4'] },
-  { row: 5, cells: ['2025', 'Q4', '$86,000,000', '1.75%', '$376,250', '$0', '$376,250', '$1,444,500'],
-    formulas: [null, null, null, null, '=C5*D5/4', null, '=E5-F5', '=H4+G5'] },
-  { row: 6, cells: ['', '', '', '', '', '', '', ''], formulas: null },
-  { row: 7, cells: ['2026', 'Q1', '$86,000,000', '1.25%', '$268,750', '$0', '$268,750', '$1,713,250'],
-    formulas: [null, null, null, null, '=C7*D7/4', null, '=E7-F7', '=H5+G7'] },
-  { row: 8, cells: ['2026', 'Q2', '$86,000,000', '1.25%', '$268,750', '$0', '$268,750', '$1,982,000'],
-    formulas: [null, null, null, null, '=C8*D8/4', null, '=E8-F8', '=H7+G8'] },
-  { row: 9, cells: ['2026', 'Q3', '$86,000,000', '1.25%', '$268,750', '$0', '$268,750', '$2,250,750'],
-    formulas: [null, null, null, null, '=C9*D9/4', null, '=E9-F9', '=H8+G9'] },
-  { row: 10, cells: ['2026', 'Q4', '$86,000,000', '1.25%', '$268,750', '$0', '$268,750', '$2,519,500'],
-    formulas: [null, null, null, null, '=C10*D10/4', null, '=E10-F10', '=H9+G10'] },
-  { row: 11, cells: ['', '', '', '', '', '', '', ''], formulas: null },
-  { row: 12, cells: ['TOTAL', '', '', '', '$2,580,000', '$60,500', '$2,519,500', ''],
-    formulas: [null, null, null, null, '=SUM(E2:E10)', '=SUM(F2:F10)', '=SUM(G2:G10)', null] },
-];
-
-const colLetters = ['A','B','C','D','E','F','G','H'];
+const sheetData = MOCK_SPREADSHEET.rows;
+const colLetters = MOCK_SPREADSHEET.columns;
 let sheetBuilt = false;
 
 function buildSpreadsheet() {
@@ -1093,31 +1162,8 @@ function fillSuggestion(text) {
 // ============================================
 // WORKFLOW DETAIL
 // ============================================
-const workflowData = {
-  'rent-roll': {
-    title: 'Rent Roll Extraction',
-    desc: 'Extracts and standardizes rent roll data from uploaded PDFs into clean xlsx format.'
-  },
-  'k1-extract': {
-    title: 'K-1 Document Processing',
-    desc: 'Parses K-1 tax documents, extracts allocations, and maps to fund accounting structure.'
-  },
-  'lp-waterfall': {
-    title: 'LP Distribution Waterfall',
-    desc: 'Calculates LP/GP distribution splits across preferred return, catch-up, and carried interest tiers.'
-  },
-  'fee-calc': {
-    title: 'Management Fee Calculator',
-    desc: 'Computes management fees across fund vehicles using committed/invested capital basis.'
-  },
-  'covenant': {
-    title: 'Loan Covenant Monitor',
-    desc: 'Monitors DSCR, LTV, and debt yield covenants across the loan book.'
-  }
-};
-
 function showWorkflowDetail(id, el) {
-  const data = workflowData[id];
+  const data = MOCK_WORKFLOWS[id];
   if (!data) return;
 
   document.getElementById('wfDetailTitle').textContent = data.title;
@@ -1130,20 +1176,17 @@ function showWorkflowDetail(id, el) {
   // Reset to overview tab
   switchTab('overview', document.querySelector('.tab-btn'));
 
-  // Update sidebar active
+  // Update sidebar active — match by data-wf-id attribute
   document.querySelectorAll('.wf-side-item').forEach(item => item.classList.remove('active'));
   if (el) {
     const sideItem = el.closest('.wf-side-item');
     if (sideItem) sideItem.classList.add('active');
   }
-  // Also sync sidebar when clicked from card (match by id)
-  const sidebarMap = {
-    'rent-roll': 0, 'k1-extract': 1, 'lp-waterfall': 2, 'fee-calc': 3, 'covenant': 4
-  };
-  const sideItems = document.querySelectorAll('.wf-side-item');
-  if (sidebarMap[id] !== undefined && sideItems[sidebarMap[id]]) {
+  // Also sync sidebar when clicked from card (match by data attribute)
+  var sideTarget = document.querySelector('.wf-side-item[data-wf-id="' + id + '"]');
+  if (sideTarget) {
     document.querySelectorAll('.wf-side-item').forEach(item => item.classList.remove('active'));
-    sideItems[sidebarMap[id]].classList.add('active');
+    sideTarget.classList.add('active');
   }
 }
 

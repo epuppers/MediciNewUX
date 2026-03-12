@@ -9,6 +9,12 @@
 - [x] **1.1 — Extract thread data to data object**
   Created `MOCK_THREADS` at top of app.js combining `threadTitles`, `threadHasFiles`, and search keywords into a single object. Removed old `threadTitles` and `threadHasFiles` constants. Updated all references in `selectThread()`, `updateFilesButton()`, `openFilePanel()`, `exportThread()`, and `runGlobalSearchEnhanced()`. Search function now derives its searchable list from `MOCK_THREADS` instead of a hardcoded array.
 
+- [x] **1.2 — Extract workflow data to data object**
+  Created `MOCK_WORKFLOWS` at top of app.js combining the old `workflowData` (title, desc) with sidebar metadata (status, lastRun, notif) and card metadata (cardDesc, steps, runs, lastShort). Removed old `workflowData` object and hardcoded `sidebarMap` index-based lookup. Replaced with `data-wf-id` attributes on sidebar HTML items for clean ID-based sidebar sync in `showWorkflowDetail()`.
+
+- [x] **1.3 — Extract spreadsheet data to data object**
+  Created `MOCK_SPREADSHEET` at top of app.js with `columns` (A–H), `headers`, and `rows` arrays. Old `sheetData` and `colLetters` now reference `MOCK_SPREADSHEET.rows` and `MOCK_SPREADSHEET.columns`. `buildSpreadsheet()` unchanged — still works via the aliases.
+
 ### Current Task
 (none — awaiting next instruction)
 
