@@ -30,6 +30,9 @@
 - [x] **1.8 — Extract purple intensity base colors to data object**
   Renamed `purpleBaseColors` to `CONFIG_PURPLE_BASE_COLORS` and `rgbCompanions` to `CONFIG_RGB_COMPANIONS` across all references in app.js. Both objects use the CONFIG_ prefix since they are configuration, not mock data.
 
+- [x] **1.9 — Collect all MOCK* and CONFIG* objects into a single data file**
+  Created `js/mock-data.js` containing all data objects: `MOCK_WORKFLOWS`, `MOCK_SPREADSHEET`, `MOCK_MEMORY`, `MOCK_TASKS`, `MOCK_CALENDAR`, `MOCK_USAGE`, `MOCK_LESSONS`, `MOCK_THREADS`, `CONFIG_PURPLE_BASE_COLORS`, `CONFIG_RGB_COMPANIONS`, `MOCK_GRAPH_DATA`. Added `<script src="js/mock-data.js">` tag in index.html before app.js. Removed all data object definitions from app.js (~680 lines moved out).
+
 ### Current Task
 (none — awaiting next instruction)
 
