@@ -70,35 +70,35 @@
     <div id="workflowSidebar" style="display:none;">
       <div class="side-label">Workflows</div>
       <div class="workflow-sidebar-list">
-        <div class="wf-side-item" onclick="showWorkflowDetail('rent-roll', this)">
+        <div class="wf-side-item" data-wf-id="rent-roll" onclick="showWorkflowDetail('rent-roll', this)">
           Rent Roll Extraction
           <div class="wf-side-meta">
             <span class="wf-side-status active-status">Active</span>
             Last run: 2h ago
           </div>
         </div>
-        <div class="wf-side-item" onclick="showWorkflowDetail('k1-extract', this)">
+        <div class="wf-side-item" data-wf-id="k1-extract" onclick="showWorkflowDetail('k1-extract', this)">
           K-1 Document Processing
           <div class="wf-side-meta">
             <span class="wf-side-status active-status">Active</span>
             Last run: 6h ago
           </div>
         </div>
-        <div class="wf-side-item" onclick="showWorkflowDetail('lp-waterfall', this)">
+        <div class="wf-side-item" data-wf-id="lp-waterfall" onclick="showWorkflowDetail('lp-waterfall', this)">
           LP Distribution Waterfall
           <div class="wf-side-meta">
             <span class="wf-side-status draft-status">Draft</span>
             Created Feb 20
           </div>
         </div>
-        <div class="wf-side-item" onclick="showWorkflowDetail('fee-calc', this)">
+        <div class="wf-side-item" data-wf-id="fee-calc" onclick="showWorkflowDetail('fee-calc', this)">
           Management Fee Calculator
           <div class="wf-side-meta">
             <span class="wf-side-status active-status">Active</span>
             Last run: 1d ago
           </div>
         </div>
-        <div class="wf-side-item" onclick="showWorkflowDetail('covenant', this)">
+        <div class="wf-side-item" data-wf-id="covenant" onclick="showWorkflowDetail('covenant', this)">
           Loan Covenant Monitor
           <span class="wf-notif-dot"></span>
           <div class="wf-side-meta">
@@ -1707,7 +1707,7 @@
               <div class="mem-section">
                 <div class="mem-section-label">What Describes Your Work</div>
                 <div class="mem-role-card">
-                  <div class="mem-role-text" contenteditable="true" id="roleField" data-placeholder="Describe what you do, your role, your firm...">VP of Fund Accounting at a mid-market PE firm. I manage 12 funds across 3 vintages, primarily focused on real estate and infrastructure. I report to the CFO and work closely with investor relations.</div>
+                  <div class="mem-role-text" contenteditable="true" id="roleField" data-placeholder="Describe what you do, your role, your firm..."></div>
                 </div>
               </div>
 
@@ -1715,24 +1715,8 @@
               <div class="mem-section">
                 <div class="mem-section-label">What Traits Should Cosimo Have?</div>
                 <div class="mem-personality">
-                  <div class="mem-trait-selected" id="traitSelected">
-                    <span class="mem-trait-tag active" onclick="removeTrait(this)">Direct <span class="trait-x">&times;</span></span>
-                    <span class="mem-trait-tag active" onclick="removeTrait(this)">Detail-oriented <span class="trait-x">&times;</span></span>
-                    <span class="mem-trait-tag active" onclick="removeTrait(this)">Professional <span class="trait-x">&times;</span></span>
-                  </div>
-                  <div class="mem-trait-presets" id="traitPresets">
-                    <span class="mem-trait-tag" onclick="toggleTrait(this)">Witty</span>
-                    <span class="mem-trait-tag" onclick="toggleTrait(this)">Friendly</span>
-                    <span class="mem-trait-tag" onclick="toggleTrait(this)">Formal</span>
-                    <span class="mem-trait-tag disabled" onclick="toggleTrait(this)">Direct</span>
-                    <span class="mem-trait-tag" onclick="toggleTrait(this)">Cautious</span>
-                    <span class="mem-trait-tag disabled" onclick="toggleTrait(this)">Detail-oriented</span>
-                    <span class="mem-trait-tag" onclick="toggleTrait(this)">Big-picture</span>
-                    <span class="mem-trait-tag" onclick="toggleTrait(this)">Encouraging</span>
-                    <span class="mem-trait-tag disabled" onclick="toggleTrait(this)">Professional</span>
-                    <span class="mem-trait-tag" onclick="toggleTrait(this)">Concise</span>
-                    <span class="mem-trait-tag" onclick="toggleTrait(this)">Thorough</span>
-                  </div>
+                  <div class="mem-trait-selected" id="traitSelected"></div>
+                  <div class="mem-trait-presets" id="traitPresets"></div>
                   <div class="mem-trait-custom">
                     <input type="text" class="mem-trait-input" id="traitInput" placeholder="Add a custom trait..." onkeydown="if(event.key==='Enter'){addCustomTrait(); event.preventDefault();}" />
                     <button class="mem-trait-add-btn" onclick="addCustomTrait()">Add</button>
@@ -1779,154 +1763,8 @@
                   </div>
                 </div>
 
-                <!-- Fact Cards -->
-                <div class="mem-fact-list" id="memFactList">
-
-                  <div class="mem-fact-card" data-category="preference">
-                    <div class="mem-fact-top">
-                      <span class="mem-fact-cat cat-preference">Preference</span>
-                      <button class="mem-fact-menu-btn" onclick="toggleFactMenu(this)">
-                        <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/></svg>
-                      </button>
-                      <div class="mem-fact-menu">
-                        <button onclick="editFact(this)">Edit</button>
-                        <button onclick="deleteFact(this)">Delete</button>
-                      </div>
-                    </div>
-                    <div class="mem-fact-text">Prefers IRR over MOIC when comparing fund performance across vintages.</div>
-                    <div class="mem-fact-meta">
-                      <span class="mem-fact-source">Learned from conversation</span>
-                      <span class="mem-fact-date">Feb 14, 2026</span>
-                    </div>
-                  </div>
-
-                  <div class="mem-fact-card" data-category="contact">
-                    <div class="mem-fact-top">
-                      <span class="mem-fact-cat cat-contact">Contact</span>
-                      <button class="mem-fact-menu-btn" onclick="toggleFactMenu(this)">
-                        <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/></svg>
-                      </button>
-                      <div class="mem-fact-menu">
-                        <button onclick="editFact(this)">Edit</button>
-                        <button onclick="deleteFact(this)">Delete</button>
-                      </div>
-                    </div>
-                    <div class="mem-fact-text">Reports go to Sarah Chen (CFO) and Marcus Webb (COO). Sarah prefers executive summaries; Marcus wants full detail.</div>
-                    <div class="mem-fact-meta">
-                      <span class="mem-fact-source">Learned from conversation</span>
-                      <span class="mem-fact-date">Feb 12, 2026</span>
-                    </div>
-                  </div>
-
-                  <div class="mem-fact-card" data-category="fund">
-                    <div class="mem-fact-top">
-                      <span class="mem-fact-cat cat-fund">Fund</span>
-                      <button class="mem-fact-menu-btn" onclick="toggleFactMenu(this)">
-                        <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/></svg>
-                      </button>
-                      <div class="mem-fact-menu">
-                        <button onclick="editFact(this)">Edit</button>
-                        <button onclick="deleteFact(this)">Delete</button>
-                      </div>
-                    </div>
-                    <div class="mem-fact-text">Fund III has a 2/20 fee structure with European waterfall. GP commit is 5%. Preferred return is 8%.</div>
-                    <div class="mem-fact-meta">
-                      <span class="mem-fact-source">Added by you</span>
-                      <span class="mem-fact-date">Feb 10, 2026</span>
-                    </div>
-                  </div>
-
-                  <div class="mem-fact-card" data-category="style">
-                    <div class="mem-fact-top">
-                      <span class="mem-fact-cat cat-style">Style</span>
-                      <button class="mem-fact-menu-btn" onclick="toggleFactMenu(this)">
-                        <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/></svg>
-                      </button>
-                      <div class="mem-fact-menu">
-                        <button onclick="editFact(this)">Edit</button>
-                        <button onclick="deleteFact(this)">Delete</button>
-                      </div>
-                    </div>
-                    <div class="mem-fact-text">Always include vintage year when referencing funds. Never abbreviate fund names in reports.</div>
-                    <div class="mem-fact-meta">
-                      <span class="mem-fact-source">Learned from conversation</span>
-                      <span class="mem-fact-date">Feb 8, 2026</span>
-                    </div>
-                  </div>
-
-                  <div class="mem-fact-card" data-category="workflow">
-                    <div class="mem-fact-top">
-                      <span class="mem-fact-cat cat-workflow">Workflow</span>
-                      <button class="mem-fact-menu-btn" onclick="toggleFactMenu(this)">
-                        <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/></svg>
-                      </button>
-                      <div class="mem-fact-menu">
-                        <button onclick="editFact(this)">Edit</button>
-                        <button onclick="deleteFact(this)">Delete</button>
-                      </div>
-                    </div>
-                    <div class="mem-fact-text">Uses Yardi Voyager for property management data exports. Prefers CSV format over Excel for data imports.</div>
-                    <div class="mem-fact-meta">
-                      <span class="mem-fact-source">Learned from conversation</span>
-                      <span class="mem-fact-date">Feb 6, 2026</span>
-                    </div>
-                  </div>
-
-                  <div class="mem-fact-card" data-category="preference">
-                    <div class="mem-fact-top">
-                      <span class="mem-fact-cat cat-preference">Preference</span>
-                      <button class="mem-fact-menu-btn" onclick="toggleFactMenu(this)">
-                        <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/></svg>
-                      </button>
-                      <div class="mem-fact-menu">
-                        <button onclick="editFact(this)">Edit</button>
-                        <button onclick="deleteFact(this)">Delete</button>
-                      </div>
-                    </div>
-                    <div class="mem-fact-text">When building financial models, always start with assumptions tab, then build out to projections.</div>
-                    <div class="mem-fact-meta">
-                      <span class="mem-fact-source">Learned from conversation</span>
-                      <span class="mem-fact-date">Feb 3, 2026</span>
-                    </div>
-                  </div>
-
-                  <div class="mem-fact-card" data-category="contact">
-                    <div class="mem-fact-top">
-                      <span class="mem-fact-cat cat-contact">Contact</span>
-                      <button class="mem-fact-menu-btn" onclick="toggleFactMenu(this)">
-                        <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/></svg>
-                      </button>
-                      <div class="mem-fact-menu">
-                        <button onclick="editFact(this)">Edit</button>
-                        <button onclick="deleteFact(this)">Delete</button>
-                      </div>
-                    </div>
-                    <div class="mem-fact-text">Primary auditor is Deloitte. Audit partner is James Whitfield. Fiscal year ends March 31.</div>
-                    <div class="mem-fact-meta">
-                      <span class="mem-fact-source">Added by you</span>
-                      <span class="mem-fact-date">Jan 28, 2026</span>
-                    </div>
-                  </div>
-
-                  <div class="mem-fact-card" data-category="fund">
-                    <div class="mem-fact-top">
-                      <span class="mem-fact-cat cat-fund">Fund</span>
-                      <button class="mem-fact-menu-btn" onclick="toggleFactMenu(this)">
-                        <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/></svg>
-                      </button>
-                      <div class="mem-fact-menu">
-                        <button onclick="editFact(this)">Edit</button>
-                        <button onclick="deleteFact(this)">Delete</button>
-                      </div>
-                    </div>
-                    <div class="mem-fact-text">Hilgard Fund is a 2021 vintage focused on multifamily residential. 14 LP investors. Currently in harvest period.</div>
-                    <div class="mem-fact-meta">
-                      <span class="mem-fact-source">Learned from conversation</span>
-                      <span class="mem-fact-date">Jan 22, 2026</span>
-                    </div>
-                  </div>
-
-                </div>
+                <!-- Fact Cards (rendered from MOCK_MEMORY by renderMemoryFromData()) -->
+                <div class="mem-fact-list" id="memFactList"></div>
 
                 <!-- No results state -->
                 <div class="mem-no-results" id="memNoResults" style="display:none;">

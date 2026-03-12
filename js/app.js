@@ -93,6 +93,25 @@ const MOCK_SPREADSHEET = {
   ]
 };
 
+// ============================================
+// MOCK DATA — BRAIN MEMORY
+// ============================================
+const MOCK_MEMORY = {
+  roleProfile: 'VP of Fund Accounting at a mid-market PE firm. I manage 12 funds across 3 vintages, primarily focused on real estate and infrastructure. I report to the CFO and work closely with investor relations.',
+  selectedTraits: ['Direct', 'Detail-oriented', 'Professional'],
+  presetTraits: ['Witty', 'Friendly', 'Formal', 'Direct', 'Cautious', 'Detail-oriented', 'Big-picture', 'Encouraging', 'Professional', 'Concise', 'Thorough'],
+  facts: [
+    { category: 'preference', text: 'Prefers IRR over MOIC when comparing fund performance across vintages.', source: 'Learned from conversation', date: 'Feb 14, 2026' },
+    { category: 'contact', text: 'Reports go to Sarah Chen (CFO) and Marcus Webb (COO). Sarah prefers executive summaries; Marcus wants full detail.', source: 'Learned from conversation', date: 'Feb 12, 2026' },
+    { category: 'fund', text: 'Fund III has a 2/20 fee structure with European waterfall. GP commit is 5%. Preferred return is 8%.', source: 'Added by you', date: 'Feb 10, 2026' },
+    { category: 'style', text: 'Always include vintage year when referencing funds. Never abbreviate fund names in reports.', source: 'Learned from conversation', date: 'Feb 8, 2026' },
+    { category: 'workflow', text: 'Uses Yardi Voyager for property management data exports. Prefers CSV format over Excel for data imports.', source: 'Learned from conversation', date: 'Feb 6, 2026' },
+    { category: 'preference', text: 'When building financial models, always start with assumptions tab, then build out to projections.', source: 'Learned from conversation', date: 'Feb 3, 2026' },
+    { category: 'contact', text: 'Primary auditor is Deloitte. Audit partner is James Whitfield. Fiscal year ends March 31.', source: 'Added by you', date: 'Jan 28, 2026' },
+    { category: 'fund', text: 'Hilgard Fund is a 2021 vintage focused on multifamily residential. 14 LP investors. Currently in harvest period.', source: 'Learned from conversation', date: 'Jan 22, 2026' }
+  ]
+};
+
 const MOCK_THREADS = {
   fund3: {
     title: 'Fund III — Allocation Drift',
@@ -1707,6 +1726,56 @@ document.addEventListener('click', function(e) {
 // ============================================
 
 var activeCategory = 'all';
+
+function renderMemoryFromData() {
+  // Render role profile
+  var roleField = document.getElementById('roleField');
+  if (roleField) roleField.textContent = MOCK_MEMORY.roleProfile;
+
+  // Render selected traits
+  var traitSelected = document.getElementById('traitSelected');
+  if (traitSelected) {
+    traitSelected.innerHTML = MOCK_MEMORY.selectedTraits.map(function(t) {
+      return '<span class="mem-trait-tag active" onclick="removeTrait(this)">' + escapeHtml(t) + ' <span class="trait-x">&times;</span></span>';
+    }).join('');
+  }
+
+  // Render preset traits (disable those that are selected)
+  var traitPresets = document.getElementById('traitPresets');
+  if (traitPresets) {
+    traitPresets.innerHTML = MOCK_MEMORY.presetTraits.map(function(t) {
+      var isSelected = MOCK_MEMORY.selectedTraits.indexOf(t) !== -1;
+      return '<span class="mem-trait-tag' + (isSelected ? ' disabled' : '') + '" onclick="toggleTrait(this)">' + escapeHtml(t) + '</span>';
+    }).join('');
+  }
+
+  // Render fact cards
+  var factList = document.getElementById('memFactList');
+  if (factList) {
+    factList.innerHTML = MOCK_MEMORY.facts.map(function(f) {
+      return '<div class="mem-fact-card" data-category="' + f.category + '">' +
+        '<div class="mem-fact-top">' +
+          '<span class="mem-fact-cat cat-' + f.category + '">' + f.category.charAt(0).toUpperCase() + f.category.slice(1) + '</span>' +
+          '<button class="mem-fact-menu-btn" onclick="toggleFactMenu(this)">' +
+            '<svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/></svg>' +
+          '</button>' +
+          '<div class="mem-fact-menu">' +
+            '<button onclick="editFact(this)">Edit</button>' +
+            '<button onclick="deleteFact(this)">Delete</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="mem-fact-text">' + escapeHtml(f.text) + '</div>' +
+        '<div class="mem-fact-meta">' +
+          '<span class="mem-fact-source">' + escapeHtml(f.source) + '</span>' +
+          '<span class="mem-fact-date">' + escapeHtml(f.date) + '</span>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+}
+
+// Render memory data on load
+(function() { renderMemoryFromData(); })();
 
 function toggleAddMemory() {
   var form = document.getElementById('memAddForm');
