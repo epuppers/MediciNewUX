@@ -167,3 +167,28 @@ When ALL tasks below are checked off in progress.md, output:
 
 - [ ] **6.4 — Update CLAUDE.md**
       Update the project structure section to reflect any new files (mock-data.js, icons.js, etc.). Update the JS sections list. Verify all line counts are current.
+
+## Phase 7: Design Token Compliance
+
+- [ ] **7.1 — Add missing color tokens to tokens.css**
+      Audit all CSS files for raw hex colors not covered by existing tokens. Common offenders: dark surface colors (#0e0e10, #1a1a1c, #2a2a2f, #28282d, #36363c), bevel highlight/shadow colors for green/red/amber states. Add new tokens for each (e.g., --surface-dark-1, --surface-dark-2, or extend existing scales). Add both light and dark mode values. Do NOT change any visual appearance — the new tokens must resolve to the exact same colors currently hardcoded.
+
+- [ ] **7.2 — Add missing RGB triplet tokens**
+      Add --green-rgb, --red-rgb, --amber-rgb, --blue-3-rgb triplet tokens to tokens.css (both light and dark mode). These follow the same pattern as --violet-3-rgb and --berry-3-rgb.
+
+- [ ] **7.3 — Replace all raw hex colors in CSS with tokens**
+      Replace every raw hex color across all CSS files with the appropriate var(--token). After this task, `grep -rn '#[0-9a-fA-F]' css/` should return zero results outside of tokens.css itself.
+
+- [ ] **7.4 — Replace all raw rgba() values in CSS with RGB triplet tokens**
+      Replace every hardcoded rgba(R,G,B,A) call with the rgba(var(--token-rgb), A) pattern. After this task, no CSS file outside tokens.css should contain raw RGB numbers inside rgba().
+
+- [ ] **7.5 — Add missing border-radius tokens**
+      Add --r-xs: 2px and --r-pill: 9px to tokens.css. Replace all remaining raw border-radius values with the appropriate token.
+
+- [ ] **7.6 — Fix icons.js logic bug**
+      The icon() function uses `w != null || h != null` — should be `&&`. Fix it.
+
+## Completion Signal (Phase 7)
+
+When ALL Phase 7 tasks are checked off in progress.md, output:
+<promise>POLISHED</promise>
