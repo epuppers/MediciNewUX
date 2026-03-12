@@ -3,7 +3,7 @@
 **Started:** 2026-03-11
 **Last updated:** 2026-03-11
 
-## Status: IN PROGRESS — Phase 5
+## Status: COMPLETE — Phase 5
 
 ### Completed Tasks
 - [x] **1.1 — Extract thread data to data object**
@@ -101,6 +101,9 @@
 
 - [x] **5.5 — Verify all panel open/close transitions**
   Audited all 7 panel types. Panels with CSS transitions: file panel (width 0.2s ease), Cosimo panel (translateX 0.3s ease), graph detail pane (translateY 0.4s cubic-bezier), panel overlay (opacity 0.2s ease) — all properly disabled by the `[data-a11y-motion="reduced"]` and `@media (prefers-reduced-motion)` rules via `transition-duration: 0.01ms !important`. Panels using display toggling (no animation): sidebar collapse, header dropdowns (tasks/calendar/usage), profile menu — instant appear/disappear by design, no reduced-motion issue. No JS-driven panel animations found. No artifacts, no leaking transitions. No code changes needed.
+
+- [x] **5.6 — Verify accessibility settings persistence**
+  Verified all 6 settings save to localStorage and restore on page load: (1) Theme (`theme` key) — saved in `toggleTheme()`, restored in IIFE at line 130. (2) Purple intensity (`purpleIntensity`) — saved in `applyPurpleIntensity()`, restored in IIFE at line 464, slider value also restored. (3) Font size zoom (`a11yFontSize`) — saved in `applyFontSizeBoost()`, restored in IIFE at line 587, slider value also restored. (4) Dyslexia font (`a11yDyslexia`) — saved in `toggleDyslexiaFont()`, restored at line 594. (5) Reduced motion (`a11yMotion`) — saved in `toggleReducedMotion()`, restored at line 598, also respects OS `prefers-reduced-motion` as fallback. (6) High contrast (`a11yContrast`) — saved in `toggleHighContrast()`, restored at line 602. All toggle UI states sync via `syncA11yToggles()` on load. No code changes needed.
 
 ### Current Task
 (none — awaiting next instruction)
