@@ -123,8 +123,11 @@
 - [x] **7.2 — Add missing RGB triplet tokens**
   Added `--green-rgb`, `--red-rgb`, `--amber-rgb`, and `--blue-3-rgb` triplet tokens to both `:root` (light) and `[data-theme="dark"]` sections of tokens.css. Light values: 61,139,64 / 192,72,72 / 184,134,43 / 116,156,181. Dark values: 76,175,80 / 224,85,85 / 212,160,48 / 140,184,212. These follow the same pattern as existing `--violet-3-rgb` and `--berry-3-rgb` and enable `rgba(var(--token-rgb), alpha)` usage.
 
+- [x] **7.3 — Replace all raw hex colors in CSS with tokens**
+  Replaced ~80 raw hex color values across 5 CSS files (chat.css, layout.css, components.css, workflows.css, utilities.css) with `var(--token)` references. Key mappings: dark surfaces (#0e0e10→surface-0, #1a1a1d→surface-1, #28282d→surface-2, #2a2a2f→surface-3), bevel pairs (#e06060/#802020→red-hi/red-lo, #5aad5c/#2a6b2c→green-hi/green-lo), text (#f0eef4→text-light), hover (#b84040→red-dark), semantic (#3D8B40→green, #C04848→red, #B8862B→amber, #749CB5→blue-3). Added `--surface-graph-bg: #0e0d12` token for graph canvas. Moved high-contrast token overrides from layout.css to tokens.css. Fixed 3 near-miss typos (#5aad5d→#5aad5c, #2a6a2c→#2a6b2c, #1a1a1c→#1a1a1d). `grep -rn '#[0-9a-fA-F]' css/` now returns zero results outside tokens.css.
+
 ### Current Task
-Phase 7 — task 7.2 complete
+Phase 7 — task 7.3 complete
 
 ### Blocked / Notes
 (none)

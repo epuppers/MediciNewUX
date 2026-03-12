@@ -46,7 +46,7 @@
 
 .step-marker.complete {
   background: var(--green);
-  border-color: #5aad5c #2a6b2c #2a6b2c #5aad5c;
+  border-color: var(--green-hi) var(--green-lo) var(--green-lo) var(--green-hi);
   color: var(--white);
 }
 
@@ -130,12 +130,12 @@
 
 .run-status-dot.success {
   background: var(--green);
-  border-color: #5aad5c #2a6b2c #2a6b2c #5aad5c;
+  border-color: var(--green-hi) var(--green-lo) var(--green-lo) var(--green-hi);
 }
 
 .run-status-dot.failed {
   background: var(--red);
-  border-color: #e06060 #802020 #802020 #e06060;
+  border-color: var(--red-hi) var(--red-lo) var(--red-lo) var(--red-hi);
 }
 
 .run-status-dot.running-dot {
@@ -855,7 +855,7 @@
 .mem-delete-yes {
   background: var(--red);
   color: var(--white);
-  border-color: #e06060 #802020 #802020 #e06060;
+  border-color: var(--red-hi) var(--red-lo) var(--red-lo) var(--red-hi);
   border-radius: var(--r-md);
 }
 
@@ -1171,7 +1171,7 @@
   position: relative;
   overflow: hidden;
   min-height: 0;
-  background: #0e0d12;
+  background: var(--surface-graph-bg);
   background-image:
     radial-gradient(ellipse at 50% 45%, rgba(var(--violet-3-rgb),0.12) 0%, transparent 60%),
     radial-gradient(ellipse at 20% 80%, rgba(61,139,64,0.04) 0%, transparent 40%),
@@ -1240,7 +1240,7 @@
 .graph-tooltip {
   position: absolute;
   background: rgba(45,45,46,0.92);
-  color: #e0dee5;
+  color: var(--taupe-5);
   font-family: var(--mono);
   font-size: 11px;
   padding: 5px 10px;
@@ -1599,7 +1599,7 @@
   color: var(--white);
   background: var(--red);
   border: 1px solid;
-  border-color: #e06060 #802020 #802020 #e06060;
+  border-color: var(--red-hi) var(--red-lo) var(--red-lo) var(--red-hi);
   flex-shrink: 0;
   border-radius: var(--r-md);
 }
@@ -1944,7 +1944,7 @@
 
 /* Cosimo panel header — must stay dark */
 [data-theme="dark"] .cosimo-panel-header {
-  background: #28282d;
+  background: var(--surface-2);
 }
 
 [data-theme="dark"] .cosimo-panel-name {
@@ -1958,12 +1958,12 @@
 
 /* Step markers — text on colored backgrounds */
 [data-theme="dark"] .step-marker.complete {
-  color: #f0eef4;
-  border-color: #5cb85e #2d7a2f #2d7a2f #5cb85e;
+  color: var(--text-light);
+  border-color: var(--green-hi) var(--green-lo) var(--green-lo) var(--green-hi);
 }
 
 [data-theme="dark"] .step-marker.running {
-  color: #f0eef4;
+  color: var(--text-light);
   border-color: var(--violet-2) var(--violet-4) var(--violet-4) var(--violet-2);
 }
 
@@ -1979,11 +1979,11 @@
 
 /* Run status dots */
 [data-theme="dark"] .run-status-dot.success {
-  border-color: #5cb85e #2d7a2f #2d7a2f #5cb85e;
+  border-color: var(--green-hi) var(--green-lo) var(--green-lo) var(--green-hi);
 }
 
 [data-theme="dark"] .run-status-dot.failed {
-  border-color: #e06868 #901818 #901818 #e06868;
+  border-color: var(--red-hi) var(--red-lo) var(--red-lo) var(--red-hi);
 }
 
 /* Panel messages */
@@ -1999,7 +1999,7 @@
 
 /* Panel send button — text on violet bg */
 [data-theme="dark"] .panel-send-btn {
-  color: #f0eef4;
+  color: var(--text-light);
 }
 
 /* Pulse animation for dark mode */
@@ -2022,7 +2022,7 @@
 }
 
 [data-theme="dark"] .mem-trait-tag.active {
-  color: #f0eef4;
+  color: var(--text-light);
 }
 
 [data-theme="dark"] .mem-cat-pill.active {
@@ -2046,7 +2046,7 @@
 }
 
 [data-theme="dark"] .mem-delete-yes {
-  color: #f0eef4;
+  color: var(--text-light);
 }
 
 [data-theme="dark"] .cat-workflow {
@@ -2086,7 +2086,7 @@
 
 /* Graph — dark mode (graph is already dark-themed, just tweak detail pane) */
 [data-theme="dark"] .graph-container {
-  background: #0a0a0e;
+  background: var(--surface-graph);
   background-image:
     radial-gradient(ellipse at 50% 45%, rgba(var(--violet-3-rgb),0.15) 0%, transparent 60%),
     radial-gradient(ellipse at 20% 80%, rgba(76,175,80,0.04) 0%, transparent 40%),
@@ -2120,7 +2120,7 @@
 }
 
 [data-theme="dark"] .reasoning-header {
-  background: #28282d;
+  background: var(--surface-2);
 }
 
 [data-theme="dark"] .reasoning-header-label {
@@ -2128,7 +2128,7 @@
 }
 
 [data-theme="dark"] .reasoning-step-item {
-  border-bottom-color: #2a2a2f;
+  border-bottom-color: var(--surface-3);
 }
 
 [data-theme="dark"] .cosimo-reasoning.collapsed .reasoning-header-label {
@@ -2145,7 +2145,7 @@
 
 [data-theme="dark"] .error-state-icon,
 [data-theme="dark"] .cosimo-error-icon {
-  color: #f0eef4;
+  color: var(--text-light);
 }
 
 [data-theme="dark"] .error-state-retry,
@@ -2160,7 +2160,7 @@
 
 /* Brain nav — dark mode */
 [data-theme="dark"] .brain-nav {
-  border-top-color: #2a2a2f;
+  border-top-color: var(--surface-3);
 }
 
 [data-theme="dark"] .brain-nav-btn:hover {
@@ -2174,7 +2174,7 @@
 
 /* Lesson applied — dark mode */
 [data-theme="dark"] .lesson-applied-label {
-  color: #f0eef4;
+  color: var(--text-light);
 }
 
 /* Panel overlay — dark mode */

@@ -205,10 +205,10 @@
 
 .brain-empty-title-lg { font-size: 16px; }
 
-.swatch-green { background: #3D8B40; }
-.swatch-gold { background: #B8862B; }
-.swatch-red { background: #C04848; }
-.swatch-blue { background: #749CB5; }
+.swatch-green { background: var(--green); }
+.swatch-gold { background: var(--amber); }
+.swatch-red { background: var(--red); }
+.swatch-blue { background: var(--blue-3); }
 
 .badge-sm {
   width: 16px;

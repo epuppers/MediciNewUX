@@ -68,6 +68,7 @@
   --surface-2: #28282d;
   --surface-3: #2a2a2f;
   --surface-graph: #0a0a0e;
+  --surface-graph-bg: #0e0d12;
 
   /* Light text for dark backgrounds */
   --text-light: #f0eef4;
@@ -152,6 +153,7 @@
   --surface-2: #28282d;
   --surface-3: #2a2a2f;
   --surface-graph: #0a0a0e;
+  --surface-graph-bg: #0e0d12;
 
   /* Light text */
   --text-light: #f0eef4;
@@ -160,9 +162,23 @@
   --red-dark: #a03838;
 }
 
-/* Body background override (taupe-4 flips to light, body must stay dark) */
-[data-theme="dark"] body {
-  background-color: #111113;
+/* ============================================
+   HIGH CONTRAST TOKEN OVERRIDES
+   ============================================ */
+
+[data-a11y-contrast="high"] {
+  --taupe-1: #CCC9D0;
+  --taupe-2: #908E96;
+  --taupe-3: #5A595E;
+  --taupe-4: #3A3A3C;
+}
+
+[data-theme="dark"][data-a11y-contrast="high"] {
+  --taupe-1: #3a3a42;
+  --taupe-2: #55555e;
+  --taupe-3: #9b9aa2;
+  --taupe-4: #c8c6ce;
+  --taupe-5: #f0eef5;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }

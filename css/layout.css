@@ -16,7 +16,7 @@
   width: 264px;
   background: var(--taupe-5);
   border: 2px solid;
-  border-color: var(--taupe-3) #1a1a1c #1a1a1c var(--taupe-3);
+  border-color: var(--taupe-3) var(--surface-1) var(--surface-1) var(--taupe-3);
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -308,7 +308,7 @@
   height: 14px;
   background: var(--red);
   border: 1px solid;
-  border-color: #e06060 #802020 #802020 #e06060;
+  border-color: var(--red-hi) var(--red-lo) var(--red-lo) var(--red-hi);
   font-family: var(--mono);
   font-size: 9px;
   font-weight: 700;
@@ -585,12 +585,7 @@
 }
 
 /* High contrast + focus — stronger borders, text, and focus rings */
-[data-a11y-contrast="high"] {
-  --taupe-1: #CCC9D0;
-  --taupe-2: #908E96;
-  --taupe-3: #5A595E;
-  --taupe-4: #3A3A3C;
-}
+/* (token overrides moved to tokens.css) */
 
 /* Focus rings — only on keyboard navigation */
 [data-a11y-contrast="high"] *:focus-visible {
@@ -621,14 +616,7 @@
   font-weight: 700;
 }
 
-/* Dark mode high contrast adjustments */
-[data-theme="dark"][data-a11y-contrast="high"] {
-  --taupe-1: #3a3a42;
-  --taupe-2: #55555e;
-  --taupe-3: #9b9aa2;
-  --taupe-4: #c8c6ce;
-  --taupe-5: #f0eef5;
-}
+/* Dark mode high contrast adjustments — token overrides moved to tokens.css */
 
 /* ============================================
    DROPDOWN PANELS (tasks, calendar)
@@ -666,7 +654,7 @@
   background: var(--red);
   color: var(--white);
   border: 1px solid;
-  border-color: #e06060 #802020 #802020 #e06060;
+  border-color: var(--red-hi) var(--red-lo) var(--red-lo) var(--red-hi);
   padding: 0px 5px;
   font-size: 9px;
   margin-left: 6px;
@@ -808,7 +796,7 @@
 
 .task-item.urgent .task-dot {
   background: var(--red);
-  border-color: #e06060 #802020 #802020 #e06060;
+  border-color: var(--red-hi) var(--red-lo) var(--red-lo) var(--red-hi);
 }
 
 .task-body { flex: 1; }
@@ -942,7 +930,7 @@
   padding: 7px 10px;
   background: var(--taupe-4);
   border: 1px solid;
-  border-color: var(--taupe-3) #1a1a1c #1a1a1c var(--taupe-3);
+  border-color: var(--taupe-3) var(--surface-1) var(--surface-1) var(--taupe-3);
   font-size: 12px;
   font-weight: 600;
   color: var(--taupe-1);
@@ -952,7 +940,7 @@
 }
 
 .new-btn:hover { background: var(--chinese-4); }
-.new-btn:active { border-color: #1a1a1c var(--taupe-3) var(--taupe-3) #1a1a1c; }
+.new-btn:active { border-color: var(--surface-1) var(--taupe-3) var(--taupe-3) var(--surface-1); }
 .new-btn:focus-visible { outline: 2px solid var(--violet-3); outline-offset: 2px; }
 
 .sidebar-search {
@@ -968,7 +956,7 @@
   color: var(--taupe-1);
   background: rgba(0,0,0,0.25);
   border: 1px solid;
-  border-color: #1a1a1c var(--taupe-4) var(--taupe-4) #1a1a1c;
+  border-color: var(--surface-1) var(--taupe-4) var(--taupe-4) var(--surface-1);
   outline: none;
   border-radius: var(--r-sm);
 }
@@ -1187,7 +1175,7 @@
   height: 7px;
   background: var(--red);
   border: 1px solid;
-  border-color: #e06060 #802020 #802020 #e06060;
+  border-color: var(--red-hi) var(--red-lo) var(--red-lo) var(--red-hi);
   margin-left: 6px;
   vertical-align: middle;
   flex-shrink: 0;
@@ -1362,17 +1350,17 @@ main {
 
 /* Sidebar surfaces — must stay dark despite taupe scale flip */
 [data-theme="dark"] .sidebar {
-  background: #1a1a1d;
-  border-color: #0e0e10;
+  background: var(--surface-1);
+  border-color: var(--surface-0);
 }
 
 [data-theme="dark"] .sidebar-header {
-  background: #1a1a1d;
-  border-bottom-color: #2a2a2f;
+  background: var(--surface-1);
+  border-bottom-color: var(--surface-3);
 }
 
 [data-theme="dark"] .sidebar-footer {
-  border-top-color: #2a2a2f;
+  border-top-color: var(--surface-3);
 }
 
 
@@ -1398,12 +1386,12 @@ main {
 
 /* Top tab bar dark mode */
 [data-theme="dark"] .top-tab-bar {
-  border-bottom-color: #2a2a2f;
+  border-bottom-color: var(--surface-3);
 }
 
 [data-theme="dark"] .top-tab {
   background: rgba(0,0,0,0.25);
-  border-color: #2a2a2f;
+  border-color: var(--surface-3);
   color: var(--taupe-3);
 }
 
@@ -1415,7 +1403,7 @@ main {
 [data-theme="dark"] .top-tab.active {
   color: var(--taupe-5);
   background: var(--off-white);
-  border-color: #2a2a2f #2a2a2f transparent #2a2a2f;
+  border-color: var(--surface-3) var(--surface-3) transparent var(--surface-3);
 }
 
 [data-theme="dark"] .top-tab.active::before {
@@ -1424,7 +1412,7 @@ main {
 
 [data-theme="dark"] .sidebar-search-input {
   background: rgba(0,0,0,0.4);
-  border-color: #0e0e10 #2a2a2f #2a2a2f #0e0e10;
+  border-color: var(--surface-0) var(--surface-3) var(--surface-3) var(--surface-0);
 }
 
 [data-theme="dark"] .sidebar-search-input:focus {
@@ -1437,7 +1425,7 @@ main {
 }
 
 [data-theme="dark"] .search-result-item {
-  border-bottom-color: #2a2a2f;
+  border-bottom-color: var(--surface-3);
 }
 
 [data-theme="dark"] .search-result-item:hover {
@@ -1458,11 +1446,11 @@ main {
 }
 
 [data-theme="dark"] .top-profile .theme-toggle {
-  border-color: #2a2a2f;
+  border-color: var(--surface-3);
 }
 
 [data-theme="dark"] .th-dropdown {
-  border-color: #0e0e10;
+  border-color: var(--surface-0);
 }
 
 [data-theme="dark"] .th-dropdown-footer:hover {
@@ -1506,13 +1494,13 @@ main {
 }
 
 [data-theme="dark"] .top-profile-avatar {
-  color: #f0eef4;
+  color: var(--text-light);
 }
 
 /* Sidebar inputs & buttons */
 [data-theme="dark"] .new-btn {
-  background: #2a2a2f;
-  border-color: var(--taupe-3) #0e0e10 #0e0e10 var(--taupe-3);
+  background: var(--surface-3);
+  border-color: var(--taupe-3) var(--surface-0) var(--surface-0) var(--taupe-3);
 }
 
 [data-theme="dark"] .new-btn:hover {
@@ -1520,7 +1508,7 @@ main {
 }
 
 [data-theme="dark"] .new-btn:active {
-  border-color: #0e0e10 var(--taupe-3) var(--taupe-3) #0e0e10;
+  border-color: var(--surface-0) var(--taupe-3) var(--taupe-3) var(--surface-0);
 }
 
 /* Hover states */
@@ -1532,7 +1520,7 @@ main {
 
 /* Main content — flat border on dark */
 [data-theme="dark"] main {
-  border-color: #0e0e10;
+  border-color: var(--surface-0);
 }
 
 /* Header button hover — berry-5 flips dark, use berry-3 */
@@ -1542,17 +1530,17 @@ main {
 }
 
 [data-theme="dark"] .header-btn.primary {
-  color: #f0eef4;
+  color: var(--text-light);
 }
 
 /* User avatar text on colored bg */
 [data-theme="dark"] .user-avatar {
-  color: #f0eef4;
+  color: var(--text-light);
 }
 
 /* Theme toggle */
 [data-theme="dark"] .theme-toggle {
-  border-color: #2a2a2f;
+  border-color: var(--surface-3);
 }
 
 [data-theme="dark"] #themeToggleTrack {
@@ -1581,5 +1569,5 @@ main {
 }
 
 [data-theme="dark"] .wf-notif-dot {
-  border-color: #e06868 #901818 #901818 #e06868;
+  border-color: var(--red-hi) var(--red-lo) var(--red-lo) var(--red-hi);
 }

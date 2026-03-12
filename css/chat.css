@@ -88,7 +88,7 @@
   background: var(--taupe-5);
   color: var(--taupe-1);
   border: 1px solid;
-  border-color: var(--taupe-4) #0e0e10 #0e0e10 var(--taupe-4);
+  border-color: var(--taupe-4) var(--surface-0) var(--surface-0) var(--taupe-4);
   box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
   opacity: 0;
   transform: translateY(8px);
@@ -252,7 +252,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 4px 10px;
-  background: #1a1a1c;
+  background: var(--surface-1);
   border-bottom: 1px solid var(--taupe-4);
   border-radius: var(--r-sm) var(--r-sm) 0 0;
 }
@@ -433,7 +433,7 @@
   width: 10px; height: 10px;
   background: var(--red);
   border: 1px solid;
-  border-color: #e06060 #802020 #802020 #e06060;
+  border-color: var(--red-hi) var(--red-lo) var(--red-lo) var(--red-hi);
   flex-shrink: 0;
   border-radius: var(--r-md);
 }
@@ -669,7 +669,7 @@
   height: 32px;
   background: var(--green);
   border: 1px solid;
-  border-color: #5aad5d #2a6a2c #2a6a2c #5aad5d;
+  border-color: var(--green-hi) var(--green-lo) var(--green-lo) var(--green-hi);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1001,7 +1001,7 @@
   height: 28px;
   background: var(--green);
   border: 1px solid;
-  border-color: #5aad5d #2a6a2c #2a6a2c #5aad5d;
+  border-color: var(--green-hi) var(--green-lo) var(--green-lo) var(--green-hi);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1219,11 +1219,11 @@
   align-items: center;
   background: var(--red);
   color: var(--white);
-  border-color: #e06060 #802020 #802020 #e06060;
+  border-color: var(--red-hi) var(--red-lo) var(--red-lo) var(--red-hi);
 }
 
 .cmd-stop:hover {
-  background: #b84040;
+  background: var(--red-dark);
 }
 
 .stop-icon {
@@ -1424,7 +1424,7 @@
 
 /* Section bar surfaces — taupe-5 flips to light text, bars must stay dark */
 [data-theme="dark"] .art-bar {
-  background: #28282d;
+  background: var(--surface-2);
 }
 
 [data-theme="dark"] .art-title {
@@ -1442,7 +1442,7 @@
 }
 
 [data-theme="dark"] .art-close {
-  border-color: #e06868 #901818 #901818 #e06868;
+  border-color: var(--red-hi) var(--red-lo) var(--red-lo) var(--red-hi);
 }
 
 /* Flat borders for 3D elements on dark */
@@ -1455,7 +1455,7 @@
 [data-theme="dark"] .badge-ai,
 [data-theme="dark"] .badge-human,
 [data-theme="dark"] .cmd-primary {
-  color: #f0eef4;
+  color: var(--text-light);
 }
 
 /* Cards */
@@ -1501,21 +1501,21 @@
 }
 
 [data-theme="dark"] .file-attachment-icon {
-  color: #f0eef4;
+  color: var(--text-light);
 }
 
 /* Right panel */
 [data-theme="dark"] .file-panel.open {
-  border-left-color: #0e0e10;
+  border-left-color: var(--surface-0);
 }
 
 [data-theme="dark"] .file-panel-header {
-  border-bottom-color: #2a2a2f;
+  border-bottom-color: var(--surface-3);
 }
 
 [data-theme="dark"] .file-panel-tab {
   background: rgba(0,0,0,0.25);
-  border-color: #2a2a2f;
+  border-color: var(--surface-3);
 }
 
 [data-theme="dark"] .file-panel-tab:hover {
@@ -1526,7 +1526,7 @@
 [data-theme="dark"] .file-panel-tab.active {
   color: var(--taupe-5);
   background: var(--off-white);
-  border-color: #2a2a2f #2a2a2f transparent #2a2a2f;
+  border-color: var(--surface-3) var(--surface-3) transparent var(--surface-3);
 }
 
 [data-theme="dark"] .file-panel-tab.active::before {
@@ -1534,7 +1534,7 @@
 }
 
 [data-theme="dark"] .fp-folder-header {
-  border-bottom-color: #2a2a2f;
+  border-bottom-color: var(--surface-3);
 }
 
 [data-theme="dark"] .fp-file-item.active {
@@ -1542,7 +1542,7 @@
 }
 
 [data-theme="dark"] .fp-file-bar {
-  background: #28282d;
+  background: var(--surface-2);
 }
 
 [data-theme="dark"] .fp-file-name {
@@ -1550,15 +1550,15 @@
 }
 
 [data-theme="dark"] .fp-sheet th {
-  border-color: #2a2a2f;
+  border-color: var(--surface-3);
 }
 
 [data-theme="dark"] .fp-sheet td {
-  border-color: #2a2a2f;
+  border-color: var(--surface-3);
 }
 
 [data-theme="dark"] .fp-file-item-icon {
-  color: #f0eef4;
+  color: var(--text-light);
 }
 
 /* Erabor sections */
@@ -1567,12 +1567,12 @@
 }
 
 [data-theme="dark"] .erabor-section-title {
-  background: #28282d;
+  background: var(--surface-2);
   color: var(--taupe-4);
 }
 
 [data-theme="dark"] .erabor-kv {
-  border-bottom-color: #2a2a2f;
+  border-bottom-color: var(--surface-3);
 }
 
 [data-theme="dark"] .erabor-v.erabor-flag {
@@ -1581,7 +1581,7 @@
 
 /* Stop button */
 [data-theme="dark"] .cmd-stop {
-  color: #f0eef4;
+  color: var(--text-light);
 }
 
 /* Message actions */
@@ -1633,7 +1633,7 @@
 }
 
 [data-theme="dark"] .model-option {
-  border-bottom-color: #2a2a2f;
+  border-bottom-color: var(--surface-3);
 }
 
 [data-theme="dark"] .model-option:hover {
