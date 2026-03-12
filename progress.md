@@ -18,6 +18,9 @@
 - [x] **1.4 — Extract Brain Memory data to data object**
   Created `MOCK_MEMORY` at top of app.js with `roleProfile`, `selectedTraits`, `presetTraits`, and `facts` arrays. Added `renderMemoryFromData()` function that populates role text, trait tags, and fact cards from the data object. Removed all hardcoded memory content from index.html (role text, trait tags, 8 fact cards). HTML now contains empty containers populated by JS on load.
 
+- [x] **1.5 — Extract Brain Lessons data to data object**
+  Created `MOCK_LESSONS` at top of app.js consolidating old `lessonData` with card-level preview text from HTML. Added `renderLessonList()` function that generates lesson cards from data. Old `lessonData` now references `MOCK_LESSONS`. Removed all 6 hardcoded lesson cards from index.html.
+
 ### Current Task
 (none — awaiting next instruction)
 

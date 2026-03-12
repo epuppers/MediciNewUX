@@ -112,6 +112,66 @@ const MOCK_MEMORY = {
   ]
 };
 
+// ============================================
+// MOCK DATA — BRAIN LESSONS
+// ============================================
+const MOCK_LESSONS = {
+  'rent-roll-format': {
+    title: 'Rent Roll Formatting Standards',
+    scope: 'company',
+    author: 'Sarah Chen',
+    updated: 'Feb 28',
+    usage: 23,
+    lastUsed: '2d ago',
+    preview: 'All rent rolls must follow the standardized column layout: Unit, Tenant, Lease Start, Lease End, Monthly Rent, Status. Column headers use title case...'
+  },
+  'k1-extraction': {
+    title: 'K-1 Document Extraction Rules',
+    scope: 'user',
+    author: 'you',
+    updated: 'Feb 22',
+    usage: 18,
+    lastUsed: '5d ago',
+    preview: 'When extracting K-1 data, always pull: Partner name, TIN (last 4 only), ordinary income (Box 1), rental income (Box 2), guaranteed payments (Box 4c)...'
+  },
+  'waterfall-calc': {
+    title: 'LP Distribution Waterfall Logic',
+    scope: 'company',
+    author: 'Marcus Webb',
+    updated: 'Feb 15',
+    usage: 14,
+    lastUsed: '1w ago',
+    preview: 'Distribution follows European waterfall: (1) Return of capital, (2) Preferred return at 8%, (3) GP catch-up to 20%, (4) 80/20 split above hurdle...'
+  },
+  'report-formatting': {
+    title: 'Quarterly Report Formatting Guide',
+    scope: 'user',
+    author: 'you',
+    updated: 'Feb 10',
+    usage: 9,
+    lastUsed: '3d ago',
+    preview: 'Reports use DM Sans for body text, IBM Plex Mono for data tables. Primary color is #2D2D2E, accent is #74418F. Section headers are 16pt bold...'
+  },
+  'fee-calc-rules': {
+    title: 'Management Fee Calculation Rules',
+    scope: 'company',
+    author: 'Sarah Chen',
+    updated: 'Jan 30',
+    usage: 7,
+    lastUsed: '2w ago',
+    preview: 'Management fees are calculated on committed capital during investment period, then on invested capital post-investment period. Rate is 2% per annum...'
+  },
+  'yardi-export': {
+    title: 'Yardi Export Cleanup Process',
+    scope: 'user',
+    author: 'you',
+    updated: 'Jan 18',
+    usage: 4,
+    lastUsed: '4d ago',
+    preview: 'Yardi CSV exports need these corrections: (1) Remove the first 3 header rows, (2) Strip trailing whitespace from unit codes, (3) Convert dates from MM/DD/YYYY to ISO...'
+  }
+};
+
 const MOCK_THREADS = {
   fund3: {
     title: 'Fund III — Allocation Drift',
@@ -2017,57 +2077,36 @@ document.addEventListener('click', function(e) {
 var activeLessonScope = 'all';
 var lessonIsEditing = false;
 
-// Lesson data for detail views
-var lessonData = {
-  'rent-roll-format': {
-    title: 'Rent Roll Formatting Standards',
-    scope: 'company',
-    author: 'Sarah Chen',
-    updated: 'Feb 28',
-    usage: 23,
-    lastUsed: '2d ago'
-  },
-  'k1-extraction': {
-    title: 'K-1 Document Extraction Rules',
-    scope: 'user',
-    author: 'you',
-    updated: 'Feb 22',
-    usage: 18,
-    lastUsed: '5d ago'
-  },
-  'waterfall-calc': {
-    title: 'LP Distribution Waterfall Logic',
-    scope: 'company',
-    author: 'Marcus Webb',
-    updated: 'Feb 15',
-    usage: 14,
-    lastUsed: '1w ago'
-  },
-  'report-formatting': {
-    title: 'Quarterly Report Formatting Guide',
-    scope: 'user',
-    author: 'you',
-    updated: 'Feb 10',
-    usage: 9,
-    lastUsed: '3d ago'
-  },
-  'fee-calc-rules': {
-    title: 'Management Fee Calculation Rules',
-    scope: 'company',
-    author: 'Sarah Chen',
-    updated: 'Jan 30',
-    usage: 7,
-    lastUsed: '2w ago'
-  },
-  'yardi-export': {
-    title: 'Yardi Export Cleanup Process',
-    scope: 'user',
-    author: 'you',
-    updated: 'Jan 18',
-    usage: 4,
-    lastUsed: '4d ago'
-  }
-};
+var lessonData = MOCK_LESSONS;
+
+function renderLessonList() {
+  var list = document.getElementById('lessonList');
+  if (!list) return;
+  var scopeArrowSvg = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="11" height="11"><path d="M1 8h14M11 4l4 4-4 4"/></svg>';
+  list.innerHTML = Object.keys(MOCK_LESSONS).map(function(id) {
+    var d = MOCK_LESSONS[id];
+    var scopeClass = d.scope === 'company' ? 'scope-company' : 'scope-user';
+    var scopeLabel = d.scope === 'company' ? 'Company' : 'Personal';
+    return '<div class="lesson-card" data-scope="' + d.scope + '" data-lesson="' + id + '" onclick="openLesson(\'' + id + '\')">' +
+      '<div class="lesson-card-top">' +
+        '<span class="lesson-scope-badge ' + scopeClass + '">' + scopeLabel + '</span>' +
+        '<div class="lesson-card-top-right">' +
+          '<span class="lesson-usage">Referenced ' + d.usage + ' times</span>' +
+          '<button class="lesson-card-scope-btn" onclick="toggleCardScope(this, event)" title="Change scope">' + scopeArrowSvg + '</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="lesson-card-title">' + escapeHtml(d.title) + '</div>' +
+      '<div class="lesson-card-preview">' + escapeHtml(d.preview) + '</div>' +
+      '<div class="lesson-card-meta">' +
+        '<span class="lesson-card-date">Updated ' + d.updated + '</span>' +
+        '<span class="lesson-card-author">by ' + escapeHtml(d.author) + '</span>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+// Render lesson list on load
+(function() { renderLessonList(); })();
 
 var currentLessonId = null;
 
