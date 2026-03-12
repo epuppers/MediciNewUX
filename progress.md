@@ -3,7 +3,7 @@
 **Started:** 2026-03-11
 **Last updated:** 2026-03-11
 
-## Status: IN PROGRESS — Phase 2
+## Status: COMPLETE — Phase 2
 
 ### Completed Tasks
 - [x] **1.1 — Extract thread data to data object**
@@ -44,6 +44,9 @@
 
 - [x] **2.4 — Remove all inline style attributes from index.html**
   Removed all 37 inline `style="..."` attributes from index.html. Created utility classes in utilities.css: `.text-green`, `.text-red`, `.cursor-default`, `.inline-icon`, `.brain-empty-title-lg`, `.swatch-green/gold/red/blue`, `.badge-sm`, `.flex-fill`, `.wf-listing-layout`, `.wf-detail-layout`, `.wf-detail-header-row`, `.mb-12`, `.mb-14`. Replaced `style="display:none"` with `.hidden` class on 13 elements and updated all corresponding JS toggle code to use `classList.add/remove('hidden')` instead of `style.display`.
+
+- [x] **2.5 — Extract SVG icons to a shared reference**
+  Created `js/icons.js` with `ICONS` object containing 30 named SVG icon strings (brain, lessons, graphs, chat, workflows, gauge, folder, export, share, thumbUp, thumbDown, attach, computer, cloud, send, chevronDown, stop, search, person, building, edit, cosimo, trash, trashRed, close, arrowRight, copy, regen, dots, checkmark, retry). Added `icon(name, w, h)` helper for custom sizing and `injectIcons()` function that populates `[data-icon]` elements in HTML. Replaced all inline SVGs in index.html with `<span data-icon="name">` elements (only the graph canvas SVG remains as a container). Updated app.js to reference `ICONS.*` instead of inline SVG strings. Usage gauge SVG kept inline due to dynamic data interpolation.
 
 ### Current Task
 (none — awaiting next instruction)

@@ -1,4 +1,8 @@
 // All MOCK_* and CONFIG_* data objects are in js/mock-data.js
+// All SVG icons are in js/icons.js — use ICONS.name or icon(name, w, h)
+
+// Inject icons from data-icon attributes on page load
+injectIcons();
 
 // ============================================
 // RICH TEXT INPUT
@@ -131,12 +135,8 @@ function showToast(text, duration) {
 // MESSAGE HOVER ACTIONS (#1)
 // ============================================
 (function() {
-  // SVG icons
-  const icons = {
-    copy: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5.5" y="1.5" width="8" height="10"/><path d="M2.5 4.5v10h8"/></svg>',
-    regen: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 8a5.5 5.5 0 0 1 9.5-3.75M13.5 8a5.5 5.5 0 0 1-9.5 3.75"/><path d="M12 1v3.25h-3.25M4 15v-3.25h3.25" fill="currentColor" stroke="none"/></svg>',
-    del: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12M5 4V2.5h6V4M4 4v9.5h8V4"/><line x1="6.5" y1="6.5" x2="6.5" y2="11"/><line x1="9.5" y1="6.5" x2="9.5" y2="11"/></svg>'
-  };
+  // SVG icons — from shared ICONS object
+  const icons = { copy: ICONS.copy, regen: ICONS.regen, del: ICONS.trash };
 
   document.addEventListener('mouseenter', function(e) {
     const block = e.target.closest('.msg-block');
@@ -211,8 +211,8 @@ function showToast(text, duration) {
 // THREAD HOVER ACTIONS (#10)
 // ============================================
 (function() {
-  const shareIcon = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="3" r="2"/><circle cx="4" cy="8" r="2"/><circle cx="12" cy="13" r="2"/><line x1="5.8" y1="7" x2="10.2" y2="4"/><line x1="5.8" y1="9" x2="10.2" y2="12"/></svg>';
-  const delIcon = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12M5 4V2.5h6V4M4 4v9.5h8V4"/><line x1="6.5" y1="6.5" x2="6.5" y2="11"/><line x1="9.5" y1="6.5" x2="9.5" y2="11"/></svg>';
+  const shareIcon = ICONS.share;
+  const delIcon = ICONS.trash;
 
   document.addEventListener('mouseenter', function(e) {
     const item = e.target.closest('.thread-item');
@@ -1647,7 +1647,7 @@ function renderMemoryFromData() {
         '<div class="mem-fact-top">' +
           '<span class="mem-fact-cat cat-' + f.category + '">' + f.category.charAt(0).toUpperCase() + f.category.slice(1) + '</span>' +
           '<button class="mem-fact-menu-btn">' +
-            '<svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/></svg>' +
+            ICONS.dots +
           '</button>' +
           '<div class="mem-fact-menu">' +
             '<button class="mem-fact-edit">Edit</button>' +
@@ -1698,7 +1698,7 @@ function submitNewMemory() {
     '<div class="mem-fact-top">' +
       '<span class="mem-fact-cat cat-' + category + '">' + category.charAt(0).toUpperCase() + category.slice(1) + '</span>' +
       '<button class="mem-fact-menu-btn">' +
-        '<svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/></svg>' +
+        ICONS.dots +
       '</button>' +
       '<div class="mem-fact-menu">' +
         '<button class="mem-fact-edit">Edit</button>' +
@@ -1912,7 +1912,7 @@ var lessonData = MOCK_LESSONS;
 function renderLessonList() {
   var list = document.getElementById('lessonList');
   if (!list) return;
-  var scopeArrowSvg = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="11" height="11"><path d="M1 8h14M11 4l4 4-4 4"/></svg>';
+  var scopeArrowSvg = ICONS.arrowRight;
   list.innerHTML = Object.keys(MOCK_LESSONS).map(function(id) {
     var d = MOCK_LESSONS[id];
     var scopeClass = d.scope === 'company' ? 'scope-company' : 'scope-user';
@@ -1993,7 +1993,7 @@ function openLesson(id) {
   // Reset edit state
   lessonIsEditing = false;
   var editBtn = document.getElementById('lessonEditBtn');
-  editBtn.innerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M11.5 1.5l3 3-9 9H2.5v-3l9-9z"/></svg>';
+  editBtn.innerHTML = ICONS.edit;
   editBtn.title = 'Edit Directly';
   editBtn.classList.remove('primary');
   document.getElementById('lessonDetailBody').removeAttribute('contenteditable');
@@ -2021,13 +2021,13 @@ function toggleLessonEdit() {
   if (lessonIsEditing) {
     body.setAttribute('contenteditable', 'true');
     body.focus();
-    editBtn.innerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M2 8.5l4 4 8-9"/></svg>';
+    editBtn.innerHTML = ICONS.checkmark;
     editBtn.title = 'Save Changes';
     editBtn.classList.add('primary');
     showToast('Editing mode — click save when done');
   } else {
     body.removeAttribute('contenteditable');
-    editBtn.innerHTML = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M11.5 1.5l3 3-9 9H2.5v-3l9-9z"/></svg>';
+    editBtn.innerHTML = ICONS.edit;
     editBtn.title = 'Edit Directly';
     editBtn.classList.remove('primary');
     showToast('Lesson saved');

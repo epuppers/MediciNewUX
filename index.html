@@ -114,15 +114,15 @@
       <div class="side-label">Brain</div>
       <div class="brain-nav-items">
         <button class="brain-nav-btn" data-section="memory" title="Memory">
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" width="13" height="13"><path d="M4 2.5C2.5 2.5 1.5 3.8 1.5 5.2c0 1 .4 1.7.9 2.2"/><path d="M2.4 7.4c-.5.6-.7 1.5-.3 2.3.4.9 1.2 1.3 2 1.3"/><path d="M4.1 11c-.1.8.3 1.7 1.1 2.2.9.5 1.8.4 2.5 0"/><path d="M7.7 13.2c.5.5 1.3.8 2.1.5.9-.3 1.4-1 1.5-1.8"/><path d="M11.3 11.9c.7-.1 1.4-.6 1.7-1.4.3-.9 0-1.8-.5-2.3"/><path d="M12.5 8.2c.6-.5 1-1.3 1-2.2 0-1.4-1-2.7-2.5-2.7"/><path d="M11 3.3c-.3-1-1.2-1.8-2.5-1.8S6.3 2.3 6 3.3"/><path d="M4 3.3c.3-1 1.2-1.8 2-1.8"/><path d="M3.5 5.5c1.5 0 3 .8 4 2"/><path d="M7.5 7.5c1-1.2 2.5-2 4-2"/><path d="M7.5 7.5v5.7"/></svg>
+          <span data-icon="brain"></span>
           Memory
         </button>
         <button class="brain-nav-btn" data-section="lessons" title="Lessons">
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M2 2h12v11H9l-1 2-1-2H2z"/><line x1="5" y1="5.5" x2="11" y2="5.5"/><line x1="5" y1="8.5" x2="9" y2="8.5"/></svg>
+          <span data-icon="lessons"></span>
           Lessons
         </button>
         <button class="brain-nav-btn" data-section="graphs" title="Data Graphs">
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><circle cx="4" cy="4" r="2"/><circle cx="12" cy="4" r="2"/><circle cx="8" cy="13" r="2"/><line x1="5.5" y1="5.5" x2="7" y2="11"/><line x1="10.5" y1="5.5" x2="9" y2="11"/><line x1="6" y1="4" x2="10" y2="4"/></svg>
+          <span data-icon="graphs"></span>
           Graphs
         </button>
       </div>
@@ -140,10 +140,10 @@
     <!-- ======== TOP TAB BAR ======== -->
     <div class="top-tab-bar">
       <button class="top-tab active" id="tabChat">
-        <span class="top-tab-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="12" height="12"><path d="M1 3h14v9H5l-4 3v-3H1z"/></svg></span> Chat
+        <span class="top-tab-icon" data-icon="chat"></span> Chat
       </button>
       <button class="top-tab" id="tabWorkflows">
-        <span class="top-tab-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="12" height="12"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41"/></svg></span> Workflows
+        <span class="top-tab-icon" data-icon="workflows"></span> Workflows
       </button>
       <div class="top-tab-spacer"></div>
       <div class="top-header-right">
@@ -155,7 +155,7 @@
           <span class="th-icon">▦</span>
         </div>
         <div class="top-icon-btn" id="usageBtn" title="Usage">
-          <svg viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="11"><path d="M1 11 A7 7 0 0 1 15 11"/><line x1="8" y1="11" x2="10.5" y2="4" stroke-width="2" stroke-linecap="square"/><rect x="6.5" y="9.5" width="3" height="3" fill="currentColor" stroke="none"/></svg>
+          <span data-icon="gauge"></span>
         </div>
         <div class="th-divider"></div>
         <div class="top-profile">
@@ -253,9 +253,9 @@
       <div class="main-header" id="chatHeader">
         <span class="header-title" id="chatHeaderTitle">Fund III — Allocation Drift</span>
         <div class="header-actions">
-          <button class="header-btn icon-btn disabled" id="filesBtn" disabled title="Files"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M1.5 3.5v9h13v-7h-7l-2-2z"/></svg></button>
-          <button class="header-btn icon-btn" id="exportBtn" title="Export"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M8 1.5v9M4.5 7L8 10.5 11.5 7"/><path d="M2.5 11.5v3h11v-3"/></svg></button>
-          <button class="header-btn icon-btn" id="shareBtn" title="Share"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><circle cx="12" cy="3" r="2"/><circle cx="4" cy="8" r="2"/><circle cx="12" cy="13" r="2"/><line x1="5.8" y1="7" x2="10.2" y2="4"/><line x1="5.8" y1="9" x2="10.2" y2="12"/></svg></button>
+          <button class="header-btn icon-btn disabled" id="filesBtn" disabled title="Files"><span data-icon="folder"></span></button>
+          <button class="header-btn icon-btn" id="exportBtn" title="Export"><span data-icon="export"></span></button>
+          <button class="header-btn icon-btn" id="shareBtn" title="Share"><span data-icon="share"></span></button>
         </div>
       </div>
 
@@ -357,8 +357,8 @@
               <p><strong>Recommendation:</strong> Paired trade — trim the S&P 500 position and rotate into the EAFE sleeve. I've drafted the rebalancing memo for the IC. Want me to pull it up, or look at tax implications first?</p>
             </div>
             <div class="msg-feedback">
-              <button class="feedback-btn up" title="Good response"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 22V11l3-8 2 1-1 5h7a2 2 0 0 1 2 2.2l-1.2 7A2 2 0 0 1 16.8 20H7z"/><rect x="1" y="11" width="5" height="11"/></svg></button>
-              <button class="feedback-btn down" title="Poor response"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2v11l-3 8-2-1 1-5H6a2 2 0 0 1-2-2.2l1.2-7A2 2 0 0 1 7.2 4H17z"/><rect x="18" y="2" width="5" height="11"/></svg></button>
+              <button class="feedback-btn up" title="Good response"><span data-icon="thumbUp"></span></button>
+              <button class="feedback-btn down" title="Poor response"><span data-icon="thumbDown"></span></button>
             </div>
           </div>
         </div>
@@ -429,8 +429,8 @@
               </div>
             </div>
             <div class="msg-feedback">
-              <button class="feedback-btn up" title="Good response"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 22V11l3-8 2 1-1 5h7a2 2 0 0 1 2 2.2l-1.2 7A2 2 0 0 1 16.8 20H7z"/><rect x="1" y="11" width="5" height="11"/></svg></button>
-              <button class="feedback-btn down" title="Poor response"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2v11l-3 8-2-1 1-5H6a2 2 0 0 1-2-2.2l1.2-7A2 2 0 0 1 7.2 4H17z"/><rect x="18" y="2" width="5" height="11"/></svg></button>
+              <button class="feedback-btn up" title="Good response"><span data-icon="thumbUp"></span></button>
+              <button class="feedback-btn down" title="Poor response"><span data-icon="thumbDown"></span></button>
             </div>
           </div>
         </div>
@@ -440,23 +440,23 @@
         <div class="input-row">
           <div class="text-input" contenteditable="true" data-placeholder="Continue this thread..."></div>
           <div class="attach-wrapper">
-            <button class="cmd-btn" title="Attach file"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M8.5 3.5v7a2 2 0 0 1-4 0v-7a3 3 0 0 1 6 0v7.5a4 4 0 0 1-8 0V5"/></svg></button>
+            <button class="cmd-btn" title="Attach file"><span data-icon="attach"></span></button>
             <div class="attach-menu">
               <button class="attach-option" title="From computer">
-                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><rect x="1.5" y="1.5" width="13" height="9"/><line x1="6" y1="10.5" x2="6" y2="13"/><line x1="10" y1="10.5" x2="10" y2="13"/><line x1="4" y1="13" x2="12" y2="13"/></svg>
+                <span data-icon="computer"></span>
               </button>
               <button class="attach-option" title="From cloud drive">
-                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M4 13.5H3.5a3 3 0 0 1-.4-5.97 4 4 0 0 1 7.8-1.53A3.5 3.5 0 0 1 13 12.5H4z"/></svg>
+                <span data-icon="cloud"></span>
               </button>
             </div>
           </div>
-          <button class="cmd-btn cmd-primary" title="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M1.5 8h11M8.5 4L12.5 8 8.5 12"/></svg></button>
+          <button class="cmd-btn cmd-primary" title="Send"><span data-icon="send"></span></button>
         </div>
         <div class="input-footer">
           <div class="model-selector">
             <button class="model-selector-btn">
               <span class="model-selector-label">Analyst</span>
-              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>
+              <span data-icon="chevronDown"></span>
             </button>
             <div class="model-dropdown">
               <button class="model-option" data-model="assistant">
@@ -559,23 +559,23 @@
         <div class="input-row">
           <div class="text-input" contenteditable="true" data-placeholder="Continue this thread..."></div>
           <div class="attach-wrapper">
-            <button class="cmd-btn" title="Attach file"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M8.5 3.5v7a2 2 0 0 1-4 0v-7a3 3 0 0 1 6 0v7.5a4 4 0 0 1-8 0V5"/></svg></button>
+            <button class="cmd-btn" title="Attach file"><span data-icon="attach"></span></button>
             <div class="attach-menu">
               <button class="attach-option" title="From computer">
-                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><rect x="1.5" y="1.5" width="13" height="9"/><line x1="6" y1="10.5" x2="6" y2="13"/><line x1="10" y1="10.5" x2="10" y2="13"/><line x1="4" y1="13" x2="12" y2="13"/></svg>
+                <span data-icon="computer"></span>
               </button>
               <button class="attach-option" title="From cloud drive">
-                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M4 13.5H3.5a3 3 0 0 1-.4-5.97 4 4 0 0 1 7.8-1.53A3.5 3.5 0 0 1 13 12.5H4z"/></svg>
+                <span data-icon="cloud"></span>
               </button>
             </div>
           </div>
-          <button class="cmd-btn cmd-primary" title="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M1.5 8h11M8.5 4L12.5 8 8.5 12"/></svg></button>
+          <button class="cmd-btn cmd-primary" title="Send"><span data-icon="send"></span></button>
         </div>
         <div class="input-footer">
           <div class="model-selector">
             <button class="model-selector-btn">
               <span class="model-selector-label">Analyst</span>
-              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>
+              <span data-icon="chevronDown"></span>
             </button>
             <div class="model-dropdown">
               <button class="model-option" data-model="assistant">
@@ -638,23 +638,23 @@
         <div class="input-row">
           <div class="text-input" contenteditable="true" data-placeholder="Continue this thread..."></div>
           <div class="attach-wrapper">
-            <button class="cmd-btn" title="Attach file"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M8.5 3.5v7a2 2 0 0 1-4 0v-7a3 3 0 0 1 6 0v7.5a4 4 0 0 1-8 0V5"/></svg></button>
+            <button class="cmd-btn" title="Attach file"><span data-icon="attach"></span></button>
             <div class="attach-menu">
               <button class="attach-option" title="From computer">
-                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><rect x="1.5" y="1.5" width="13" height="9"/><line x1="6" y1="10.5" x2="6" y2="13"/><line x1="10" y1="10.5" x2="10" y2="13"/><line x1="4" y1="13" x2="12" y2="13"/></svg>
+                <span data-icon="computer"></span>
               </button>
               <button class="attach-option" title="From cloud drive">
-                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M4 13.5H3.5a3 3 0 0 1-.4-5.97 4 4 0 0 1 7.8-1.53A3.5 3.5 0 0 1 13 12.5H4z"/></svg>
+                <span data-icon="cloud"></span>
               </button>
             </div>
           </div>
-          <button class="cmd-btn cmd-primary" title="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M1.5 8h11M8.5 4L12.5 8 8.5 12"/></svg></button>
+          <button class="cmd-btn cmd-primary" title="Send"><span data-icon="send"></span></button>
         </div>
         <div class="input-footer">
           <div class="model-selector">
             <button class="model-selector-btn">
               <span class="model-selector-label">Analyst</span>
-              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>
+              <span data-icon="chevronDown"></span>
             </button>
             <div class="model-dropdown">
               <button class="model-option" data-model="assistant">
@@ -695,23 +695,23 @@
         <div class="input-row">
           <div class="text-input" id="new-thread-input" contenteditable="true" data-placeholder="Ask Cosimo anything..."></div>
           <div class="attach-wrapper">
-            <button class="cmd-btn" title="Attach file"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M8.5 3.5v7a2 2 0 0 1-4 0v-7a3 3 0 0 1 6 0v7.5a4 4 0 0 1-8 0V5"/></svg></button>
+            <button class="cmd-btn" title="Attach file"><span data-icon="attach"></span></button>
             <div class="attach-menu">
               <button class="attach-option" title="From computer">
-                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><rect x="1.5" y="1.5" width="13" height="9"/><line x1="6" y1="10.5" x2="6" y2="13"/><line x1="10" y1="10.5" x2="10" y2="13"/><line x1="4" y1="13" x2="12" y2="13"/></svg>
+                <span data-icon="computer"></span>
               </button>
               <button class="attach-option" title="From cloud drive">
-                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M4 13.5H3.5a3 3 0 0 1-.4-5.97 4 4 0 0 1 7.8-1.53A3.5 3.5 0 0 1 13 12.5H4z"/></svg>
+                <span data-icon="cloud"></span>
               </button>
             </div>
           </div>
-          <button class="cmd-btn cmd-primary" title="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M1.5 8h11M8.5 4L12.5 8 8.5 12"/></svg></button>
+          <button class="cmd-btn cmd-primary" title="Send"><span data-icon="send"></span></button>
         </div>
         <div class="input-footer">
           <div class="model-selector">
             <button class="model-selector-btn">
               <span class="model-selector-label">Analyst</span>
-              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>
+              <span data-icon="chevronDown"></span>
             </button>
             <div class="model-dropdown">
               <button class="model-option" data-model="assistant">
@@ -767,9 +767,7 @@
                   <div class="cosimo-error-meta">Error 504 · Gateway Timeout · Vault Integration · Feb 20, 9:46 AM</div>
                 </div>
                 <button class="cosimo-error-retry" id="k1RetryBtn">
-                  <svg class="retry-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M13.65 2.35A7.96 7.96 0 0 0 8 0C3.58 0 0 3.58 0 8s3.58 8 8 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 8 14 6 6 0 1 1 8 2c1.66 0 3.14.69 4.22 1.78L9 7h7V0l-2.35 2.35z" fill="currentColor"/>
-                  </svg>
+                  <span data-icon="retry"></span>
                   Retry
                 </button>
               </div>
@@ -782,23 +780,23 @@
         <div class="input-row">
           <div class="text-input" contenteditable="true" data-placeholder="Continue this thread..."></div>
           <div class="attach-wrapper">
-            <button class="cmd-btn" title="Attach file"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M8.5 3.5v7a2 2 0 0 1-4 0v-7a3 3 0 0 1 6 0v7.5a4 4 0 0 1-8 0V5"/></svg></button>
+            <button class="cmd-btn" title="Attach file"><span data-icon="attach"></span></button>
             <div class="attach-menu">
               <button class="attach-option" title="From computer">
-                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><rect x="1.5" y="1.5" width="13" height="9"/><line x1="6" y1="10.5" x2="6" y2="13"/><line x1="10" y1="10.5" x2="10" y2="13"/><line x1="4" y1="13" x2="12" y2="13"/></svg>
+                <span data-icon="computer"></span>
               </button>
               <button class="attach-option" title="From cloud drive">
-                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M4 13.5H3.5a3 3 0 0 1-.4-5.97 4 4 0 0 1 7.8-1.53A3.5 3.5 0 0 1 13 12.5H4z"/></svg>
+                <span data-icon="cloud"></span>
               </button>
             </div>
           </div>
-          <button class="cmd-btn cmd-primary" title="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M1.5 8h11M8.5 4L12.5 8 8.5 12"/></svg></button>
+          <button class="cmd-btn cmd-primary" title="Send"><span data-icon="send"></span></button>
         </div>
         <div class="input-footer">
           <div class="model-selector">
             <button class="model-selector-btn">
               <span class="model-selector-label">Analyst</span>
-              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>
+              <span data-icon="chevronDown"></span>
             </button>
             <div class="model-dropdown">
               <button class="model-option" data-model="assistant">
@@ -1001,9 +999,9 @@
         <div class="input-row">
           <div class="text-input" id="erabor-input" contenteditable="true" data-placeholder="Continue this thread..."></div>
           <button class="cmd-btn">Attach</button>
-          <button class="cmd-btn cmd-primary" id="erabor-send-btn" title="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M1.5 8h11M8.5 4L12.5 8 8.5 12"/></svg></button>
+          <button class="cmd-btn cmd-primary" id="erabor-send-btn" title="Send"><span data-icon="send"></span></button>
           <button class="cmd-btn cmd-stop hidden" id="erabor-stop-btn" title="Stop">
-            <svg class="stop-icon" viewBox="0 0 12 12" fill="currentColor"><rect x="1" y="1" width="10" height="10" rx="0"/></svg>
+            <span data-icon="stop"></span>
           </button>
         </div>
         <div class="input-footer">
@@ -1011,7 +1009,7 @@
           <div class="model-selector">
             <button class="model-selector-btn">
               <span class="model-selector-label">Analyst</span>
-              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>
+              <span data-icon="chevronDown"></span>
             </button>
             <div class="model-dropdown">
               <button class="model-option" data-model="assistant">
@@ -1639,7 +1637,7 @@
                 <div class="mem-section-label">Core Memories</div>
                 <div class="mem-facts-toolbar">
                   <div class="mem-search-wrap">
-                    <svg class="mem-search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/></svg>
+                    <span class="mem-search-icon" data-icon="search"></span>
                     <input type="text" class="mem-search-input" id="memSearchInput" placeholder="Search memories..." />
                   </div>
                   <div class="mem-category-filters" id="memCategoryFilters">
@@ -1679,7 +1677,7 @@
                 <!-- No results state -->
                 <div class="mem-no-results hidden" id="memNoResults">
                   <div class="brain-empty-icon">
-                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/></svg>
+                    <span data-icon="search" data-icon-w="32" data-icon-h="32"></span>
                   </div>
                   <div class="brain-empty-title brain-empty-title-lg">No memories found</div>
                   <div class="brain-empty-desc">Try a different search or category filter.</div>
@@ -1705,7 +1703,7 @@
 
                 <!-- Search -->
                 <div class="mem-search-wrap mb-12">
-                  <svg class="mem-search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/></svg>
+                  <span class="mem-search-icon" data-icon="search"></span>
                   <input type="text" class="mem-search-input" id="lessonSearchInput" placeholder="Search lessons..." />
                 </div>
 
@@ -1713,10 +1711,10 @@
                 <div class="mem-category-filters mb-14" id="lessonScopeFilters">
                   <button class="mem-cat-pill active">All</button>
                   <button class="mem-cat-pill">
-                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" width="11" height="11" class="inline-icon"><circle cx="8" cy="5" r="3"/><path d="M2.5 14c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/></svg>Personal
+                    <span data-icon="person"></span>Personal
                   </button>
                   <button class="mem-cat-pill">
-                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" width="11" height="11" class="inline-icon"><rect x="2" y="4" width="12" height="10"/><rect x="5" y="1" width="6" height="5"/><line x1="8" y1="8" x2="8" y2="10"/></svg>Company
+                    <span data-icon="building"></span>Company
                   </button>
                 </div>
 
@@ -1726,7 +1724,7 @@
                 <!-- No results -->
                 <div class="lesson-no-results hidden" id="lessonNoResults">
                   <div class="brain-empty-icon">
-                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/></svg>
+                    <span data-icon="search" data-icon-w="32" data-icon-h="32"></span>
                   </div>
                   <div class="brain-empty-title brain-empty-title-lg">No lessons found</div>
                   <div class="brain-empty-desc">Try a different search term or filter.</div>
@@ -1743,9 +1741,9 @@
                   <span id="lessonDetailTitle">Lesson Title</span>
                 </span>
                 <div class="header-actions">
-                  <button class="header-btn icon-btn" id="lessonEditBtn" title="Edit Directly"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M11.5 1.5l3 3-9 9H2.5v-3l9-9z"/></svg></button>
-                  <button class="header-btn icon-btn" id="lessonCosimoBtn" title="Edit with Cosimo"><svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><path d="M8 2l1.5 3.5L13 7l-3.5 1.5L8 12l-1.5-3.5L3 7l3.5-1.5z"/></svg></button>
-                  <button class="header-btn icon-btn" id="lessonDeleteBtn" title="Delete Lesson"><svg viewBox="0 0 16 16" fill="none" stroke="var(--red)" stroke-width="1.5" width="14" height="14"><line x1="3" y1="4" x2="13" y2="4"/><path d="M5.5 4V2.5h5V4"/><path d="M4.5 4v9.5h7V4"/><line x1="7" y1="6.5" x2="7" y2="11"/><line x1="9" y1="6.5" x2="9" y2="11"/></svg></button>
+                  <button class="header-btn icon-btn" id="lessonEditBtn" title="Edit Directly"><span data-icon="edit"></span></button>
+                  <button class="header-btn icon-btn" id="lessonCosimoBtn" title="Edit with Cosimo"><span data-icon="cosimo"></span></button>
+                  <button class="header-btn icon-btn" id="lessonDeleteBtn" title="Delete Lesson"><span data-icon="trashRed"></span></button>
                 </div>
               </div>
 
@@ -1758,7 +1756,7 @@
                   <span class="lesson-detail-stat">Last used 2d ago</span>
                   <span class="lesson-detail-stat">Updated Feb 28 by Sarah Chen</span>
                   <button class="header-btn lesson-scope-btn" id="lessonScopeToggle">
-                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="11" height="11" class="inline-icon"><path d="M1 8h14M11 4l4 4-4 4"/></svg>
+                    <span data-icon="arrowRight"></span>
                     <span id="lessonScopeToggleText">Change to Personal</span>
                   </button>
                 </div>
@@ -1880,9 +1878,9 @@
                     </div>
                   </div>
                   <div class="graph-detail-actions">
-                    <button class="header-btn icon-btn" id="graphEditBtn" title="Edit"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M11.5 1.5l3 3-9 9H2.5v-3l9-9z"/></svg></button>
-                    <button class="header-btn icon-btn" id="graphCosimoBtn" title="Edit with Cosimo"><svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><path d="M8 2l1.5 3.5L13 7l-3.5 1.5L8 12l-1.5-3.5L3 7l3.5-1.5z"/></svg></button>
-                    <button class="header-btn icon-btn" id="graphCloseBtn" title="Close"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg></button>
+                    <button class="header-btn icon-btn" id="graphEditBtn" title="Edit"><span data-icon="edit"></span></button>
+                    <button class="header-btn icon-btn" id="graphCosimoBtn" title="Edit with Cosimo"><span data-icon="cosimo"></span></button>
+                    <button class="header-btn icon-btn" id="graphCloseBtn" title="Close"><span data-icon="close"></span></button>
                   </div>
                 </div>
                 <div class="graph-detail-body" id="graphDetailBody">
@@ -1931,7 +1929,7 @@
   <div class="cosimo-panel-input">
     <div class="panel-input-row">
       <div class="panel-text-input" id="panelInput" contenteditable="true" data-placeholder="Describe a change..."></div>
-      <button class="panel-send-btn" id="cosimoPanelSend" title="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="12" height="12"><path d="M1.5 8h11M8.5 4L12.5 8 8.5 12"/></svg></button>
+      <button class="panel-send-btn" id="cosimoPanelSend" title="Send"><span data-icon="send" data-icon-w="12" data-icon-h="12"></span></button>
     </div>
   </div>
 </div>
@@ -1940,6 +1938,7 @@
 <div class="resize-grip"></div>
 <div class="design-label">Cosimo v2.1</div>
 
+<script src="js/icons.js"></script>
 <script src="js/mock-data.js"></script>
 <script src="js/app.js"></script>
 
