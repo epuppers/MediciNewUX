@@ -2929,17 +2929,6 @@ function openCosimoForEntity() {
   openCosimoPanel();
 }
 
-// Alias for backward compat
-function renderGraph() {
-  if (!graphBuilt) {
-    buildGraph();
-  } else {
-    // Rebuild on resize
-    graphBuilt = false;
-    buildGraph();
-  }
-}
-
 // Render graph when switching to graphs section
 var origSwitchBrainSection = switchBrainSection;
 switchBrainSection = function(section, el) {

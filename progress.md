@@ -72,6 +72,9 @@
 - [x] **4.1 — Group and order functions logically**
   Reordered all sections in app.js (3408 lines) to match the target logical grouping: (1) Imports/Constants/Config, (2) IIFE initializers (rich text, theme restore, drag-drop, hover actions, drag-resize), (3) Purple Intensity + Accessibility, (4) Core UI (mode switching, panel toggles, sidebar, cosimo, dropdown), (5) Chat (search, input, feedback, threads, file panel, spreadsheet, export, K-1, Erabor, streaming, attach, model selector), (6) Workflows, (7) Brain—Memory, (8) Brain—Lessons, (9) Brain—Data Graphs, (10) Utilities (toast, escapeHtml), (11) Init (event listeners). Moved `escapeHtml` to Utilities section. Moved `toggleTheme` to Purple Intensity section. Line count preserved exactly at 3408.
 
+- [x] **4.2 — Remove dead code**
+  Searched all functions and variables in app.js for unused definitions. Found and removed 1 dead function: `renderGraph()` (line 2933) — a backward-compat wrapper around `buildGraph()` that was never called anywhere; `buildGraph()` is called directly instead. All other functions are actively called from the event listeners IIFE or other code paths. All mock-data.js exports and icons.js icons are actively used. No inline event handlers remain in HTML.
+
 ### Current Task
 (none — awaiting next instruction)
 
