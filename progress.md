@@ -63,6 +63,9 @@
 - [x] **3.5 — Audit border-radius consistency**
   Searched all CSS files for raw `border-radius: Npx` and `border-radius: N%` values. Found 3 raw px values (`9px`, `2px`, `2px`) and 5 `50%` values — all are intentional special cases for pill shapes (toggle track, slider track, resize handle) and circles (avatars, slider thumbs), not standard corner radii. No raw px values need converting to `var(--r-sm/md/lg)` tokens. All compound border-radius values already use tokens.
 
+- [x] **3.6 — Audit rgba() color consistency**
+  Searched all CSS files for hardcoded rgba() values matching violet-3 (`116,65,143` / `136,85,168`) and berry-3 (`139,79,141` / `168,96,170`) in both light and dark mode variants. Found zero hardcoded values — all 34 violet/berry rgba calls already use the `rgba(var(--violet-3-rgb), alpha)` / `rgba(var(--berry-3-rgb), alpha)` token pattern, so the purple intensity slider correctly affects them all.
+
 ### Current Task
 (none — awaiting next instruction)
 
