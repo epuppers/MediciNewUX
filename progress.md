@@ -3,7 +3,7 @@
 **Started:** 2026-03-11
 **Last updated:** 2026-03-11
 
-## Status: COMPLETE — Phase 2
+## Status: IN PROGRESS — Phase 3
 
 ### Completed Tasks
 - [x] **1.1 — Extract thread data to data object**
@@ -47,6 +47,9 @@
 
 - [x] **2.5 — Extract SVG icons to a shared reference**
   Created `js/icons.js` with `ICONS` object containing 30 named SVG icon strings (brain, lessons, graphs, chat, workflows, gauge, folder, export, share, thumbUp, thumbDown, attach, computer, cloud, send, chevronDown, stop, search, person, building, edit, cosimo, trash, trashRed, close, arrowRight, copy, regen, dots, checkmark, retry). Added `icon(name, w, h)` helper for custom sizing and `injectIcons()` function that populates `[data-icon]` elements in HTML. Replaced all inline SVGs in index.html with `<span data-icon="name">` elements (only the graph canvas SVG remains as a container). Updated app.js to reference `ICONS.*` instead of inline SVG strings. Usage gauge SVG kept inline due to dynamic data interpolation.
+
+- [x] **3.1 — Audit and remove duplicate CSS rules**
+  Searched all 6 CSS files for duplicate selectors. Found one true duplicate: `.sidebar-search` appeared twice in layout.css (lines 971 and 998) with split properties (`margin-top` and `position: relative`). Merged into a single rule block and removed the duplicate. All other multi-occurrences are intentional dark mode overrides, pseudo-class variants, or child selectors — not duplicates.
 
 ### Current Task
 (none — awaiting next instruction)
