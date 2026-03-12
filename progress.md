@@ -96,6 +96,9 @@
 - [x] **5.3 — Verify error states**
   Made the K-1 error pattern reusable by creating `.error-state` class aliases alongside existing `.cosimo-error` selectors. Added `.error-state`, `.error-state-icon`, `.error-state-content`, `.error-state-title`, `.error-state-detail`, `.error-state-meta`, `.error-state-retry` as grouped selectors with their `cosimo-error` counterparts — same styles, no duplication. Added dark mode overrides for all `.error-state-*` variants. Added `:focus-visible` to retry button. Existing HTML unchanged — `cosimo-error` classes still work, but new error instances can use the generic `error-state` pattern.
 
+- [x] **5.4 — Check streaming/generation states**
+  Audited the Erabor streaming sequence: thinking cubes (`cube-wave` animation), reasoning step reveal (CSS transition), stream cursor blink (`blink-cursor`), stop/send button toggle, and character-by-character text streaming. CSS-based animations (thinking cubes, cursor blink, reasoning transitions) were already handled by reduced-motion via the global `animation-duration/transition-duration: 0.01ms !important` override. **Fixed**: JS-driven streaming was NOT respecting reduced-motion — added `reducedMotion` check at the top of `runEraborSequence()` and `streamReply()`. When reduced-motion is active, the entire Erabor sequence now skips staged animation and reveals final content instantly. Stop button, completion, and input re-enable all verified working.
+
 ### Current Task
 (none — awaiting next instruction)
 

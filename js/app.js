@@ -1312,6 +1312,20 @@ Chat.runEraborSequence = function() {
   const scroll = document.getElementById('erabor-scroll');
   const thinkingCubes = thinking.querySelector('.cosimo-thinking');
 
+  var reducedMotion = document.documentElement.getAttribute('data-a11y-motion') === 'reduced' ||
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Reduced motion: skip all staged animation, reveal final state instantly
+  if (reducedMotion) {
+    thinking.classList.add('hidden');
+    reasoning.classList.add('hidden');
+    document.getElementById('erabor-latency').classList.remove('hidden');
+    reply.classList.remove('hidden');
+    steps.forEach(function(s) { s.classList.add('visible'); });
+    Chat.streamReply(scroll);
+    return;
+  }
+
   // Show stop button, hide send, disable input
   Chat.showEraborStopBtn(true);
   Chat.disableInput('erabor', true);
@@ -1396,6 +1410,15 @@ Chat.cancelErabor = function() {
  */
 Chat.streamReply = function(scroll) {
   const blocks = document.querySelectorAll('#erabor-reply .erabor-stream-block');
+  var reducedMotion = document.documentElement.getAttribute('data-a11y-motion') === 'reduced' ||
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Reduced motion: reveal all content instantly, skip character-by-character streaming
+  if (reducedMotion) {
+    blocks.forEach(function(block) { block.style.display = ''; block.classList.add('streamed'); });
+    Chat.markEraborDone();
+    return;
+  }
 
   // Pre-process: capture each block's original HTML, then hide content
   const blockData = [];
