@@ -1,4 +1,52 @@
 // ============================================
+// MOCK DATA — THREADS
+// ============================================
+const MOCK_THREADS = {
+  fund3: {
+    title: 'Fund III — Allocation Drift',
+    meta: 'Today, 2:31 PM',
+    hasFiles: false,
+    indicator: null,
+    keywords: 'fund allocation drift ips mandate rebalance trim large cap equity'
+  },
+  hilgard: {
+    title: 'Hilgard — Fee Analysis',
+    meta: 'Feb 22, 4:15 PM',
+    hasFiles: true,
+    indicator: 'ready',
+    keywords: 'hilgard fee analysis management committed capital offset'
+  },
+  q4lp: {
+    title: 'Q4 LP Distribution Waterfall',
+    meta: 'Yesterday, 11:20 AM',
+    hasFiles: false,
+    indicator: null,
+    keywords: 'q4 lp distribution waterfall carry preferred return'
+  },
+  k1: {
+    title: 'K-1 Document Extraction',
+    meta: 'Feb 20, 9:45 AM',
+    hasFiles: false,
+    indicator: 'error',
+    keywords: 'k1 k-1 tax document extraction partner allocation ridgeline'
+  },
+  erabor: {
+    title: 'Erabor Partnership Terms',
+    meta: 'Feb 18, 3:30 PM',
+    hasFiles: false,
+    indicator: null,
+    keywords: 'erabor partnership terms gp commit clawback side letter marcus'
+  },
+  new: {
+    title: 'New Thread',
+    meta: '',
+    hasFiles: false,
+    indicator: null,
+    keywords: ''
+  }
+};
+
+// ============================================
 // RICH TEXT INPUT
 // ============================================
 (function() {
@@ -290,15 +338,11 @@ function runGlobalSearchEnhanced(q) {
   // Debounce 200ms then search
   searchTimer = setTimeout(() => {
     const ql = q.toLowerCase();
-    // Search all threads by keyword
-    const allThreads = [
-      { id: 'fund3', title: 'Fund III — Allocation Drift', keywords: 'fund allocation drift ips mandate rebalance trim large cap equity' },
-      { id: 'hilgard', title: 'Hilgard — Fee Analysis', keywords: 'hilgard fee analysis management committed capital offset' },
-      { id: 'q4lp', title: 'Q4 LP Distribution Waterfall', keywords: 'q4 lp distribution waterfall carry preferred return' },
-      { id: 'k1', title: 'K-1 Document Extraction', keywords: 'k1 k-1 tax document extraction partner allocation ridgeline' },
-      { id: 'erabor', title: 'Erabor Partnership Terms', keywords: 'erabor partnership terms gp commit clawback side letter marcus' }
-    ];
-    const matches = allThreads.filter(t =>
+    // Search all threads by keyword using MOCK_THREADS
+    const searchable = Object.keys(MOCK_THREADS)
+      .filter(id => id !== 'new')
+      .map(id => ({ id: id, title: MOCK_THREADS[id].title, keywords: MOCK_THREADS[id].keywords }));
+    const matches = searchable.filter(t =>
       t.title.toLowerCase().includes(ql) || t.keywords.includes(ql)
     );
 
@@ -701,23 +745,6 @@ function runGlobalSearch(q) {
 // ============================================
 // THREAD SWITCHING
 // ============================================
-const threadTitles = {
-  fund3: 'Fund III — Allocation Drift',
-  hilgard: 'Hilgard — Fee Analysis',
-  q4lp: 'Q4 LP Distribution Waterfall',
-  k1: 'K-1 Document Extraction',
-  erabor: 'Erabor Partnership Terms',
-  new: 'New Thread'
-};
-
-const threadHasFiles = {
-  fund3: false,
-  hilgard: true,
-  q4lp: false,
-  k1: false,
-  erabor: false,
-  new: false
-};
 
 let activeThread = 'fund3';
 
@@ -737,7 +764,7 @@ function selectThread(id, el) {
 
   // Update header title
   const title = document.getElementById('chatHeaderTitle');
-  if (title && threadTitles[id]) title.textContent = threadTitles[id];
+  if (title && MOCK_THREADS[id]) title.textContent = MOCK_THREADS[id].title;
 
   // Update Files button state
   updateFilesButton();
@@ -752,7 +779,7 @@ function selectThread(id, el) {
 function updateFilesButton() {
   const btn = document.getElementById('filesBtn');
   if (!btn) return;
-  if (threadHasFiles[activeThread]) {
+  if (MOCK_THREADS[activeThread].hasFiles) {
     btn.classList.remove('disabled');
     btn.disabled = false;
   } else {
@@ -765,7 +792,7 @@ function updateFilesButton() {
 // FILE PANEL
 // ============================================
 function openFilePanel(tab) {
-  if (!threadHasFiles[activeThread]) return;
+  if (!MOCK_THREADS[activeThread].hasFiles) return;
   const panel = document.getElementById('filePanel');
   panel.classList.add('open');
   document.getElementById('filePanelResizeHandle').classList.add('visible');
@@ -1023,7 +1050,7 @@ function exportThread() {
   const thread = document.getElementById('thread-' + activeThread);
   if (!thread) return;
   const messages = thread.querySelectorAll('.msg-block');
-  let md = '# ' + (threadTitles[activeThread] || 'Thread') + '\n\n';
+  let md = '# ' + (MOCK_THREADS[activeThread].title || 'Thread') + '\n\n';
   messages.forEach(msg => {
     const sender = msg.querySelector('.sender');
     const time = msg.querySelector('.timestamp');
@@ -1037,7 +1064,7 @@ function exportThread() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = (threadTitles[activeThread] || 'thread').replace(/[^a-z0-9]/gi, '-').toLowerCase() + '.md';
+  a.download = (MOCK_THREADS[activeThread].title || 'thread').replace(/[^a-z0-9]/gi, '-').toLowerCase() + '.md';
   a.click();
   URL.revokeObjectURL(url);
   showToast('Exported as Markdown');
