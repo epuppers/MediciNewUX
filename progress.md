@@ -24,6 +24,9 @@
 - [x] **1.6 — Extract Graph data to data object**
   Renamed `graphData` to `MOCK_GRAPH_DATA` across all 12 references in app.js. Verified no hardcoded graph content exists in HTML — all graph nodes/categories are already rendered from JS.
 
+- [x] **1.7 — Extract header panel data (tasks, calendar, usage)**
+  Created `MOCK_TASKS`, `MOCK_CALENDAR`, and `MOCK_USAGE` data objects at top of app.js. Added `renderHeaderPanels()` function that populates all three header dropdown panels (task items, calendar events, usage gauge + stats) from data. Removed all hardcoded panel content from index.html — panels are now empty containers populated on load.
+
 ### Current Task
 (none — awaiting next instruction)
 

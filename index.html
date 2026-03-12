@@ -237,104 +237,14 @@
     </div>
 
     <!-- Task Panel Dropdown -->
-    <div class="th-dropdown" id="taskPanel" style="display:none;">
-      <div class="th-dropdown-header">Assigned Tasks <span class="th-dropdown-count">3</span></div>
-      <div class="task-item urgent">
-        <div class="task-dot"></div>
-        <div class="task-body">
-          <div class="task-title">Review Halcyon Towers IC memo</div>
-          <div class="task-meta">Due today · Assigned by Sarah K.</div>
-        </div>
-        <div class="task-priority urgent-label">URGENT</div>
-      </div>
-      <div class="task-item">
-        <div class="task-dot"></div>
-        <div class="task-body">
-          <div class="task-title">Approve row 14 rent roll change</div>
-          <div class="task-meta">Due Mar 10 · Spreadsheets</div>
-        </div>
-      </div>
-      <div class="task-item">
-        <div class="task-dot"></div>
-        <div class="task-body">
-          <div class="task-title">Follow up — James Leland LP commitment</div>
-          <div class="task-meta">Due Mar 12 · CRM</div>
-        </div>
-      </div>
-      <div class="th-dropdown-footer">View all tasks</div>
-    </div>
+    <!-- Task Panel (rendered from MOCK_TASKS by renderHeaderPanels()) -->
+    <div class="th-dropdown" id="taskPanel" style="display:none;"></div>
 
-    <!-- Calendar Panel Dropdown -->
-    <div class="th-dropdown th-dropdown-calendar" id="calendarPanel" style="display:none;">
-      <div class="th-dropdown-header">March 2026</div>
-      <div class="mini-cal">
-        <div class="mini-cal-days">Su Mo Tu We Th Fr Sa</div>
-        <div class="mini-cal-grid" id="miniCalGrid"></div>
-      </div>
-      <div class="th-dropdown-header" style="border-top:1px solid var(--taupe-2);">Upcoming</div>
-      <div class="cal-event"><div class="cal-event-dot" style="background:var(--violet-3)"></div><div><div class="cal-event-title">IC Vote — Halcyon Towers</div><div class="cal-event-meta">Mar 12, 10:00 AM</div></div></div>
-      <div class="cal-event"><div class="cal-event-dot" style="background:var(--blue-3)"></div><div><div class="cal-event-title">LP Call — James Leland</div><div class="cal-event-meta">Mar 14, 2:00 PM</div></div></div>
-      <div class="cal-event"><div class="cal-event-dot" style="background:var(--green)"></div><div><div class="cal-event-title">Fund III Quarterly Review</div><div class="cal-event-meta">Mar 18, 9:00 AM</div></div></div>
-    </div>
+    <!-- Calendar Panel (rendered from MOCK_CALENDAR by renderHeaderPanels()) -->
+    <div class="th-dropdown th-dropdown-calendar" id="calendarPanel" style="display:none;"></div>
 
-    <!-- Usage Panel Dropdown -->
-    <div class="th-dropdown th-dropdown-usage" id="usagePanel" style="display:none;">
-      <div class="th-dropdown-header">Credit Usage — March 2026</div>
-      <div class="usage-meter-wrap">
-        <div class="usage-gauge">
-          <svg viewBox="0 0 200 130" class="usage-gauge-svg">
-            <defs>
-              <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="var(--violet-3)"/>
-                <stop offset="60%" stop-color="var(--berry-3)"/>
-                <stop offset="100%" stop-color="var(--red)"/>
-              </linearGradient>
-            </defs>
-            <!-- Background arc -->
-            <path d="M20 105 A80 80 0 0 1 180 105" fill="none" stroke="var(--taupe-1)" stroke-width="14" stroke-linecap="square"/>
-            <!-- Filled arc (60.3%) -->
-            <path d="M20 105 A80 80 0 0 1 124.5 29" fill="none" stroke="url(#gaugeGrad)" stroke-width="14" stroke-linecap="square"/>
-            <!-- Tick marks -->
-            <line x1="20" y1="105" x2="20" y2="95" stroke="var(--taupe-3)" stroke-width="1.5"/>
-            <line x1="100" y1="25" x2="100" y2="35" stroke="var(--taupe-3)" stroke-width="1.5"/>
-            <line x1="180" y1="105" x2="180" y2="95" stroke="var(--taupe-3)" stroke-width="1.5"/>
-            <!-- Needle -->
-            <line x1="100" y1="105" x2="120" y2="42" stroke="var(--taupe-5)" stroke-width="2.5" stroke-linecap="square"/>
-            <rect x="95" y="100" width="10" height="10" fill="var(--taupe-5)"/>
-            <!-- Scale labels -->
-            <text x="20" y="122" font-family="'IBM Plex Mono', monospace" font-size="9" font-weight="600" fill="var(--taupe-3)" text-anchor="middle">0</text>
-            <text x="180" y="122" font-family="'IBM Plex Mono', monospace" font-size="9" font-weight="600" fill="var(--taupe-3)" text-anchor="middle">34.0M</text>
-          </svg>
-          <div class="usage-gauge-readout">
-            <span class="usage-gauge-value">60.3%</span>
-            <span class="usage-gauge-unit">used this period</span>
-          </div>
-        </div>
-        <div class="usage-stats">
-          <div class="usage-stat-row">
-            <span class="usage-stat-label">Plan Limit</span>
-            <span class="usage-stat-value">34.0M credits</span>
-          </div>
-          <div class="usage-stat-row">
-            <span class="usage-stat-label">Used</span>
-            <span class="usage-stat-value">20.5M credits</span>
-          </div>
-          <div class="usage-stat-row">
-            <span class="usage-stat-label">Remaining</span>
-            <span class="usage-stat-value usage-stat-highlight">13.5M credits</span>
-          </div>
-          <div class="usage-stat-divider"></div>
-          <div class="usage-stat-row">
-            <span class="usage-stat-label">Overage</span>
-            <span class="usage-stat-value">$0.00</span>
-          </div>
-          <div class="usage-stat-row">
-            <span class="usage-stat-label">Renews</span>
-            <span class="usage-stat-value">Apr 1, 2026</span>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Usage Panel (rendered from MOCK_USAGE by renderHeaderPanels()) -->
+    <div class="th-dropdown th-dropdown-usage" id="usagePanel" style="display:none;"></div>
 
     <!-- ======== CHAT VIEW ======== -->
     <div class="view-container active" id="chatView">

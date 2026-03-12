@@ -113,6 +113,33 @@ const MOCK_MEMORY = {
 };
 
 // ============================================
+// MOCK DATA — HEADER PANELS (Tasks, Calendar, Usage)
+// ============================================
+const MOCK_TASKS = [
+  { title: 'Review Halcyon Towers IC memo', meta: 'Due today · Assigned by Sarah K.', urgent: true },
+  { title: 'Approve row 14 rent roll change', meta: 'Due Mar 10 · Spreadsheets', urgent: false },
+  { title: 'Follow up — James Leland LP commitment', meta: 'Due Mar 12 · CRM', urgent: false }
+];
+
+const MOCK_CALENDAR = {
+  month: 'March 2026',
+  events: [
+    { title: 'IC Vote — Halcyon Towers', meta: 'Mar 12, 10:00 AM', color: 'var(--violet-3)' },
+    { title: 'LP Call — James Leland', meta: 'Mar 14, 2:00 PM', color: 'var(--blue-3)' },
+    { title: 'Fund III Quarterly Review', meta: 'Mar 18, 9:00 AM', color: 'var(--green)' }
+  ]
+};
+
+const MOCK_USAGE = {
+  planLimit: '34.0M credits',
+  used: '20.5M credits',
+  remaining: '13.5M credits',
+  percentUsed: '60.3%',
+  overage: '$0.00',
+  renews: 'Apr 1, 2026'
+};
+
+// ============================================
 // MOCK DATA — BRAIN LESSONS
 // ============================================
 const MOCK_LESSONS = {
@@ -1100,6 +1127,78 @@ function buildSpreadsheet() {
 // ============================================
 // TASK & CALENDAR PANELS
 // ============================================
+function renderHeaderPanels() {
+  // Render tasks
+  var taskPanel = document.getElementById('taskPanel');
+  if (taskPanel) {
+    var taskItems = MOCK_TASKS.map(function(t) {
+      return '<div class="task-item' + (t.urgent ? ' urgent' : '') + '">' +
+        '<div class="task-dot"></div>' +
+        '<div class="task-body">' +
+          '<div class="task-title">' + escapeHtml(t.title) + '</div>' +
+          '<div class="task-meta">' + escapeHtml(t.meta) + '</div>' +
+        '</div>' +
+        (t.urgent ? '<div class="task-priority urgent-label">URGENT</div>' : '') +
+      '</div>';
+    }).join('');
+    taskPanel.innerHTML =
+      '<div class="th-dropdown-header">Assigned Tasks <span class="th-dropdown-count">' + MOCK_TASKS.length + '</span></div>' +
+      taskItems +
+      '<div class="th-dropdown-footer">View all tasks</div>';
+  }
+
+  // Render calendar events
+  var calPanel = document.getElementById('calendarPanel');
+  if (calPanel) {
+    var eventsHtml = MOCK_CALENDAR.events.map(function(e) {
+      return '<div class="cal-event"><div class="cal-event-dot" style="background:' + e.color + '"></div><div><div class="cal-event-title">' + escapeHtml(e.title) + '</div><div class="cal-event-meta">' + escapeHtml(e.meta) + '</div></div></div>';
+    }).join('');
+    calPanel.innerHTML =
+      '<div class="th-dropdown-header">' + escapeHtml(MOCK_CALENDAR.month) + '</div>' +
+      '<div class="mini-cal"><div class="mini-cal-days">Su Mo Tu We Th Fr Sa</div><div class="mini-cal-grid" id="miniCalGrid"></div></div>' +
+      '<div class="th-dropdown-header" style="border-top:1px solid var(--taupe-2);">Upcoming</div>' +
+      eventsHtml;
+  }
+
+  // Render usage stats
+  var usagePanel = document.getElementById('usagePanel');
+  if (usagePanel) {
+    usagePanel.innerHTML =
+      '<div class="th-dropdown-header">Credit Usage — ' + escapeHtml(MOCK_CALENDAR.month) + '</div>' +
+      '<div class="usage-meter-wrap">' +
+        '<div class="usage-gauge">' +
+          '<svg viewBox="0 0 200 130" class="usage-gauge-svg">' +
+            '<defs><linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="var(--violet-3)"/><stop offset="60%" stop-color="var(--berry-3)"/><stop offset="100%" stop-color="var(--red)"/></linearGradient></defs>' +
+            '<path d="M20 105 A80 80 0 0 1 180 105" fill="none" stroke="var(--taupe-1)" stroke-width="14" stroke-linecap="square"/>' +
+            '<path d="M20 105 A80 80 0 0 1 124.5 29" fill="none" stroke="url(#gaugeGrad)" stroke-width="14" stroke-linecap="square"/>' +
+            '<line x1="20" y1="105" x2="20" y2="95" stroke="var(--taupe-3)" stroke-width="1.5"/>' +
+            '<line x1="100" y1="25" x2="100" y2="35" stroke="var(--taupe-3)" stroke-width="1.5"/>' +
+            '<line x1="180" y1="105" x2="180" y2="95" stroke="var(--taupe-3)" stroke-width="1.5"/>' +
+            '<line x1="100" y1="105" x2="120" y2="42" stroke="var(--taupe-5)" stroke-width="2.5" stroke-linecap="square"/>' +
+            '<rect x="95" y="100" width="10" height="10" fill="var(--taupe-5)"/>' +
+            '<text x="20" y="122" font-family="\'IBM Plex Mono\', monospace" font-size="9" font-weight="600" fill="var(--taupe-3)" text-anchor="middle">0</text>' +
+            '<text x="180" y="122" font-family="\'IBM Plex Mono\', monospace" font-size="9" font-weight="600" fill="var(--taupe-3)" text-anchor="middle">' + escapeHtml(MOCK_USAGE.planLimit) + '</text>' +
+          '</svg>' +
+          '<div class="usage-gauge-readout">' +
+            '<span class="usage-gauge-value">' + escapeHtml(MOCK_USAGE.percentUsed) + '</span>' +
+            '<span class="usage-gauge-unit">used this period</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="usage-stats">' +
+          '<div class="usage-stat-row"><span class="usage-stat-label">Plan Limit</span><span class="usage-stat-value">' + escapeHtml(MOCK_USAGE.planLimit) + '</span></div>' +
+          '<div class="usage-stat-row"><span class="usage-stat-label">Used</span><span class="usage-stat-value">' + escapeHtml(MOCK_USAGE.used) + '</span></div>' +
+          '<div class="usage-stat-row"><span class="usage-stat-label">Remaining</span><span class="usage-stat-value usage-stat-highlight">' + escapeHtml(MOCK_USAGE.remaining) + '</span></div>' +
+          '<div class="usage-stat-divider"></div>' +
+          '<div class="usage-stat-row"><span class="usage-stat-label">Overage</span><span class="usage-stat-value">' + escapeHtml(MOCK_USAGE.overage) + '</span></div>' +
+          '<div class="usage-stat-row"><span class="usage-stat-label">Renews</span><span class="usage-stat-value">' + escapeHtml(MOCK_USAGE.renews) + '</span></div>' +
+        '</div>' +
+      '</div>';
+  }
+}
+
+// Render header panels on load
+(function() { renderHeaderPanels(); })();
+
 function closeAllPanels() {
   var tp = document.getElementById('taskPanel');
   var cp = document.getElementById('calendarPanel');
