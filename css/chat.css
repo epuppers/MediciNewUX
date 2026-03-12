@@ -225,7 +225,6 @@
   color: var(--taupe-4);
   background: var(--off-white);
   border: 1px solid;
-  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
   cursor: pointer;
   transition: all 0.12s;
   border-radius: var(--r-md);
@@ -753,11 +752,8 @@
 
 .file-panel-tab {
   padding: 0 12px;
-  font-family: var(--mono);
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
   color: var(--taupe-3);
   background: var(--taupe-1);
   border: 1px solid var(--taupe-2);
@@ -866,7 +862,6 @@
   color: var(--taupe-5);
   background: var(--white);
   border: 1px solid;
-  border-color: var(--taupe-3) var(--taupe-1) var(--taupe-1) var(--taupe-3);
   padding: 2px 8px;
   min-width: 36px;
   text-align: center;
@@ -1300,12 +1295,9 @@
 }
 
 .cosimo-error-title {
-  font-family: var(--mono);
   font-size: 12px;
   font-weight: 700;
   color: var(--red);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
   margin-bottom: 6px;
 }
 
@@ -1329,11 +1321,8 @@
   align-items: center;
   gap: 6px;
   padding: 6px 14px;
-  font-family: var(--mono);
   font-size: 11px;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
   color: var(--taupe-5);
   background: var(--taupe-1);
   border: 1px solid;
@@ -1398,7 +1387,6 @@
   color: var(--taupe-5);
   background: var(--off-white);
   border: 1px solid;
-  border-color: var(--taupe-3) var(--taupe-1) var(--taupe-1) var(--taupe-3);
   outline: none;
   overflow-y: auto;
   min-height: 36px;
@@ -1443,7 +1431,6 @@
 .cmd-btn {
   padding: 8px 12px;
   min-height: 36px;
-  font-family: var(--mono);
   font-size: 12px;
   font-weight: 600;
   color: var(--taupe-4);
@@ -1451,8 +1438,6 @@
   border: 1px solid;
   border-color: var(--white) var(--taupe-3) var(--taupe-3) var(--white);
   cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1513,15 +1498,12 @@
   align-items: center;
   gap: 5px;
   padding: 2px 8px;
-  font-family: var(--mono);
   font-size: 11px;
   font-weight: 600;
   color: var(--taupe-4);
   background: transparent;
   border: 1px solid var(--taupe-2);
   cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
   transition: all 0.1s;
   white-space: nowrap;
   border-radius: var(--r-md);
@@ -1592,12 +1574,9 @@
 }
 
 .model-option-name {
-  font-family: var(--mono);
   font-size: 12px;
   font-weight: 600;
   color: var(--taupe-5);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .model-option-desc {
@@ -1609,15 +1588,12 @@
 
 /* Model badge on AI messages */
 .model-badge {
-  font-family: var(--mono);
   font-size: 10px;
   font-weight: 600;
   color: var(--taupe-3);
   background: var(--off-white);
   border: 1px solid var(--taupe-2);
   padding: 1px 6px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
   border-radius: var(--r-md);
 }
 

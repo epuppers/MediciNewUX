@@ -33,7 +33,6 @@
   height: 40px;
   background: var(--white);
   border: 2px solid;
-  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
   border-radius: var(--r-md);
   display: flex;
   align-items: center;
@@ -67,7 +66,6 @@
   flex: 1;
   background: var(--white);
   border: 2px solid;
-  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
   border-radius: var(--r-md);
   padding: 10px 14px;
 }
@@ -93,15 +91,12 @@
 }
 
 .step-tag {
-  font-family: var(--mono);
   font-size: 11px;
   padding: 3px 7px;
   border: 1px solid var(--berry-2);
   border-radius: var(--r-md);
   color: var(--berry-4);
   background: var(--berry-1);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 /* ============================================
@@ -323,7 +318,6 @@
   color: var(--taupe-5);
   background: var(--off-white);
   border: 1px solid;
-  border-color: var(--taupe-3) var(--taupe-1) var(--taupe-1) var(--taupe-3);
   border-radius: var(--r-md);
   outline: none;
   overflow-y: auto;
@@ -346,7 +340,6 @@
 
 .panel-send-btn {
   padding: 7px 12px;
-  font-family: var(--mono);
   font-size: 11px;
   font-weight: 600;
   color: var(--white);
@@ -355,8 +348,6 @@
   border-color: var(--violet-2) var(--violet-5) var(--violet-5) var(--violet-2);
   border-radius: var(--r-md);
   cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .panel-send-btn:hover { background: var(--violet-4); }
@@ -519,7 +510,6 @@
   color: var(--taupe-5);
   background: var(--off-white);
   border: 1px solid;
-  border-color: var(--taupe-3) var(--taupe-1) var(--taupe-1) var(--taupe-3);
   border-radius: var(--r-md);
   outline: none;
 }
@@ -530,7 +520,6 @@
 
 .mem-trait-add-btn {
   padding: 5px 12px;
-  font-family: var(--mono);
   font-size: 11px;
   font-weight: 600;
   color: var(--taupe-5);
@@ -539,8 +528,6 @@
   border-color: var(--taupe-1) var(--taupe-2) var(--taupe-2) var(--taupe-1);
   border-radius: var(--r-md);
   cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .mem-trait-add-btn:hover {
@@ -636,7 +623,6 @@
   color: var(--taupe-5);
   background: var(--off-white);
   border: 1px solid;
-  border-color: var(--taupe-3) var(--taupe-1) var(--taupe-1) var(--taupe-3);
   border-radius: var(--r-md);
   outline: none;
   margin-bottom: 8px;
@@ -1357,11 +1343,8 @@
 }
 
 .graph-detail-type {
-  font-family: var(--mono);
   font-size: 10px;
   color: var(--taupe-3);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .graph-detail-actions { display: flex; gap: 4px; }

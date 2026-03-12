@@ -51,6 +51,9 @@
 - [x] **3.1 — Audit and remove duplicate CSS rules**
   Searched all 6 CSS files for duplicate selectors. Found one true duplicate: `.sidebar-search` appeared twice in layout.css (lines 971 and 998) with split properties (`margin-top` and `position: relative`). Merged into a single rule block and removed the duplicate. All other multi-occurrences are intentional dark mode overrides, pseudo-class variants, or child selectors — not duplicates.
 
+- [x] **3.2 — Extract repeated patterns into utility classes**
+  Created `.bevel`, `.bevel-inset`, and `.label-mono` utility classes in utilities.css. Applied `.bevel` to ~47 elements in index.html using `border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2)` and removed redundant CSS from 8 selectors (`.th-dropdown`, `.header-btn`, `.wf-card`, `.detail-section`, `.wf-stats-section`, `.empty-thread-chip`, `.step-marker`, `.step-card`). Applied `.bevel-inset` to ~11 elements using the inset pattern and cleaned 5 selectors (`.panel-text-input`, `.mem-trait-input`, `.mem-add-input`, `.fp-cell-ref`, `.text-input`). Applied `.label-mono` to ~90+ elements using exact `font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.05em;` and cleaned 16 selectors. Skipped JS-generated elements and selectors with non-matching letter-spacing values (0.08em, 0.1em, 0.12em, 0.18em).
+
 ### Current Task
 (none — awaiting next instruction)
 

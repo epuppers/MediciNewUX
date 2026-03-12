@@ -35,7 +35,6 @@
   margin-bottom: 16px;
   background: var(--white);
   border: 2px solid;
-  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
   border-radius: var(--r-md);
 }
 
@@ -92,7 +91,6 @@
 .wf-card {
   background: var(--white);
   border: 2px solid;
-  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
   margin-bottom: 8px;
   cursor: pointer;
   transition: border-color 0.15s;
@@ -120,13 +118,10 @@
 }
 
 .wf-card-status {
-  font-family: var(--mono);
   font-size: 12px;
   font-weight: 600;
   padding: 3px 8px;
   border: 1px solid;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
   border-radius: var(--r-sm);
 }
 
@@ -311,7 +306,6 @@
 .detail-section {
   background: var(--white);
   border: 2px solid;
-  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
   margin-bottom: 12px;
   border-radius: var(--r-md);
 }
@@ -465,13 +459,10 @@
 }
 
 .file-chip {
-  font-family: var(--mono);
   font-size: 12px;
   font-weight: 600;
   padding: 3px 8px;
   border: 1px solid;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
   border-radius: var(--r-sm);
 }
 

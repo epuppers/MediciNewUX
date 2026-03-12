@@ -194,6 +194,23 @@
 
 .hidden { display: none !important; }
 
+/* Beveled 3D border — raised (light top-left, dark bottom-right) */
+.bevel {
+  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+}
+
+/* Beveled 3D border — inset/pressed (dark top-left, light bottom-right) */
+.bevel-inset {
+  border-color: var(--taupe-3) var(--taupe-1) var(--taupe-1) var(--taupe-3);
+}
+
+/* Mono uppercase label pattern */
+.label-mono {
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
 .text-green { color: var(--green); }
 .text-red { color: var(--red); }
 .cursor-default { cursor: default; }

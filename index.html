@@ -29,7 +29,7 @@
         </div>
       </div>
 
-      <button class="new-btn" id="newBtn">+ New Thread</button>
+      <button class="new-btn label-mono" id="newBtn">+ New Thread</button>
 
       <div class="sidebar-search">
         <input type="text" class="sidebar-search-input" placeholder="Search..." />
@@ -48,7 +48,7 @@
         <div class="thread-item" data-thread-id="hilgard">
           Hilgard — Fee Analysis
           <div class="thread-meta">Feb 22, 4:15 PM</div>
-          <span class="thread-indicator ready">Ready</span>
+          <span class="thread-indicator label-mono ready">Ready</span>
         </div>
         <div class="thread-item" data-thread-id="q4lp">
           Q4 LP Distribution Waterfall
@@ -57,7 +57,7 @@
         <div class="thread-item" data-thread-id="k1">
           K-1 Document Extraction
           <div class="thread-meta">Feb 20, 9:45 AM</div>
-          <span class="thread-indicator error">Error</span>
+          <span class="thread-indicator label-mono error">Error</span>
         </div>
         <div class="thread-item" data-thread-id="erabor">
           Erabor Partnership Terms
@@ -139,10 +139,10 @@
 
     <!-- ======== TOP TAB BAR ======== -->
     <div class="top-tab-bar">
-      <button class="top-tab active" id="tabChat">
+      <button class="top-tab label-mono active" id="tabChat">
         <span class="top-tab-icon" data-icon="chat"></span> Chat
       </button>
-      <button class="top-tab" id="tabWorkflows">
+      <button class="top-tab label-mono" id="tabWorkflows">
         <span class="top-tab-icon" data-icon="workflows"></span> Workflows
       </button>
       <div class="top-tab-spacer"></div>
@@ -162,7 +162,7 @@
           <div class="top-profile-avatar">E</div>
           <span class="top-profile-name">Eliot Puplett</span>
         </div>
-        <div class="th-dropdown th-dropdown-profile hidden" id="profilePanel">
+        <div class="th-dropdown th-dropdown-profile bevel hidden" id="profilePanel">
           <div class="profile-menu-theme">
             <span class="profile-menu-theme-label">Dark mode</span>
             <div class="profile-menu-toggle" id="themeToggleSwitch">
@@ -231,20 +231,20 @@
           </div>
 
           <div class="profile-menu-divider"></div>
-          <div class="profile-menu-item profile-menu-signout">Sign Out</div>
+          <div class="profile-menu-item label-mono profile-menu-signout">Sign Out</div>
         </div>
       </div>
     </div>
 
     <!-- Task Panel Dropdown -->
     <!-- Task Panel (rendered from MOCK_TASKS by renderHeaderPanels()) -->
-    <div class="th-dropdown hidden" id="taskPanel"></div>
+    <div class="th-dropdown bevel hidden" id="taskPanel"></div>
 
     <!-- Calendar Panel (rendered from MOCK_CALENDAR by renderHeaderPanels()) -->
-    <div class="th-dropdown th-dropdown-calendar hidden" id="calendarPanel"></div>
+    <div class="th-dropdown th-dropdown-calendar bevel hidden" id="calendarPanel"></div>
 
     <!-- Usage Panel (rendered from MOCK_USAGE by renderHeaderPanels()) -->
-    <div class="th-dropdown th-dropdown-usage hidden" id="usagePanel"></div>
+    <div class="th-dropdown th-dropdown-usage bevel hidden" id="usagePanel"></div>
 
     <!-- ======== CHAT VIEW ======== -->
     <div class="view-container active" id="chatView">
@@ -253,9 +253,9 @@
       <div class="main-header" id="chatHeader">
         <span class="header-title" id="chatHeaderTitle">Fund III — Allocation Drift</span>
         <div class="header-actions">
-          <button class="header-btn icon-btn disabled" id="filesBtn" disabled title="Files"><span data-icon="folder"></span></button>
-          <button class="header-btn icon-btn" id="exportBtn" title="Export"><span data-icon="export"></span></button>
-          <button class="header-btn icon-btn" id="shareBtn" title="Share"><span data-icon="share"></span></button>
+          <button class="header-btn bevel label-mono icon-btn disabled" id="filesBtn" disabled title="Files"><span data-icon="folder"></span></button>
+          <button class="header-btn bevel label-mono icon-btn" id="exportBtn" title="Export"><span data-icon="export"></span></button>
+          <button class="header-btn bevel label-mono icon-btn" id="shareBtn" title="Share"><span data-icon="share"></span></button>
         </div>
       </div>
 
@@ -289,7 +289,7 @@
               <span class="sender">Cosimo</span>
               <span class="timestamp">2:32 PM</span>
               <span class="latency-chip">3.2s</span>
-              <span class="model-badge">Analyst</span>
+              <span class="model-badge label-mono">Analyst</span>
             </div>
 
             <div class="artifact">
@@ -385,7 +385,7 @@
               <span class="sender">Cosimo</span>
               <span class="timestamp">2:35 PM</span>
               <span class="latency-chip">4.8s</span>
-              <span class="model-badge">Expert</span>
+              <span class="model-badge label-mono">Expert</span>
             </div>
 
             <div class="msg-body">
@@ -438,9 +438,9 @@
 
       <div class="input-area">
         <div class="input-row">
-          <div class="text-input" contenteditable="true" data-placeholder="Continue this thread..."></div>
+          <div class="text-input bevel-inset" contenteditable="true" data-placeholder="Continue this thread..."></div>
           <div class="attach-wrapper">
-            <button class="cmd-btn" title="Attach file"><span data-icon="attach"></span></button>
+            <button class="cmd-btn label-mono" title="Attach file"><span data-icon="attach"></span></button>
             <div class="attach-menu">
               <button class="attach-option" title="From computer">
                 <span data-icon="computer"></span>
@@ -450,25 +450,25 @@
               </button>
             </div>
           </div>
-          <button class="cmd-btn cmd-primary" title="Send"><span data-icon="send"></span></button>
+          <button class="cmd-btn label-mono cmd-primary" title="Send"><span data-icon="send"></span></button>
         </div>
         <div class="input-footer">
           <div class="model-selector">
-            <button class="model-selector-btn">
+            <button class="model-selector-btn label-mono">
               <span class="model-selector-label">Analyst</span>
               <span data-icon="chevronDown"></span>
             </button>
             <div class="model-dropdown">
               <button class="model-option" data-model="assistant">
-                <span class="model-option-name">Assistant</span>
+                <span class="model-option-name label-mono">Assistant</span>
                 <span class="model-option-desc">Quick questions and lookups</span>
               </button>
               <button class="model-option selected" data-model="analyst">
-                <span class="model-option-name">Analyst</span>
+                <span class="model-option-name label-mono">Analyst</span>
                 <span class="model-option-desc">Drafts, summaries, and document review</span>
               </button>
               <button class="model-option" data-model="expert">
-                <span class="model-option-name">Expert</span>
+                <span class="model-option-name label-mono">Expert</span>
                 <span class="model-option-desc">Complex analysis and long-form deliverables</span>
               </button>
             </div>
@@ -503,7 +503,7 @@
               <span class="sender">Cosimo</span>
               <span class="timestamp">4:16 PM</span>
               <span class="latency-chip">4.1s</span>
-              <span class="model-badge">Analyst</span>
+              <span class="model-badge label-mono">Analyst</span>
             </div>
 
             <div class="msg-body">
@@ -546,7 +546,7 @@
               <span class="sender">Cosimo</span>
               <span class="timestamp">4:19 PM</span>
               <span class="latency-chip">2.8s</span>
-              <span class="model-badge">Analyst</span>
+              <span class="model-badge label-mono">Analyst</span>
             </div>
             <div class="msg-body">
               <p>Cross-referenced against <strong>Hilgard_Monitoring_Fees_2025.pdf</strong> from your Feb 15 upload. Both offset amounts match — $42,000 (Q2, Brightfield advisory) and $18,500 (Q3, Crestline consulting). The xlsx is accurate. No discrepancies found.</p>
@@ -557,9 +557,9 @@
 
       <div class="input-area">
         <div class="input-row">
-          <div class="text-input" contenteditable="true" data-placeholder="Continue this thread..."></div>
+          <div class="text-input bevel-inset" contenteditable="true" data-placeholder="Continue this thread..."></div>
           <div class="attach-wrapper">
-            <button class="cmd-btn" title="Attach file"><span data-icon="attach"></span></button>
+            <button class="cmd-btn label-mono" title="Attach file"><span data-icon="attach"></span></button>
             <div class="attach-menu">
               <button class="attach-option" title="From computer">
                 <span data-icon="computer"></span>
@@ -569,25 +569,25 @@
               </button>
             </div>
           </div>
-          <button class="cmd-btn cmd-primary" title="Send"><span data-icon="send"></span></button>
+          <button class="cmd-btn label-mono cmd-primary" title="Send"><span data-icon="send"></span></button>
         </div>
         <div class="input-footer">
           <div class="model-selector">
-            <button class="model-selector-btn">
+            <button class="model-selector-btn label-mono">
               <span class="model-selector-label">Analyst</span>
               <span data-icon="chevronDown"></span>
             </button>
             <div class="model-dropdown">
               <button class="model-option" data-model="assistant">
-                <span class="model-option-name">Assistant</span>
+                <span class="model-option-name label-mono">Assistant</span>
                 <span class="model-option-desc">Quick questions and lookups</span>
               </button>
               <button class="model-option selected" data-model="analyst">
-                <span class="model-option-name">Analyst</span>
+                <span class="model-option-name label-mono">Analyst</span>
                 <span class="model-option-desc">Drafts, summaries, and document review</span>
               </button>
               <button class="model-option" data-model="expert">
-                <span class="model-option-name">Expert</span>
+                <span class="model-option-name label-mono">Expert</span>
                 <span class="model-option-desc">Complex analysis and long-form deliverables</span>
               </button>
             </div>
@@ -621,7 +621,7 @@
               <div class="badge badge-ai">◆</div>
               <span class="sender">Cosimo</span>
               <span class="timestamp">11:20 AM</span>
-              <span class="model-badge">Assistant</span>
+              <span class="model-badge label-mono">Assistant</span>
             </div>
             <div class="msg-body">
               <div class="cosimo-thinking">
@@ -636,9 +636,9 @@
 
       <div class="input-area">
         <div class="input-row">
-          <div class="text-input" contenteditable="true" data-placeholder="Continue this thread..."></div>
+          <div class="text-input bevel-inset" contenteditable="true" data-placeholder="Continue this thread..."></div>
           <div class="attach-wrapper">
-            <button class="cmd-btn" title="Attach file"><span data-icon="attach"></span></button>
+            <button class="cmd-btn label-mono" title="Attach file"><span data-icon="attach"></span></button>
             <div class="attach-menu">
               <button class="attach-option" title="From computer">
                 <span data-icon="computer"></span>
@@ -648,25 +648,25 @@
               </button>
             </div>
           </div>
-          <button class="cmd-btn cmd-primary" title="Send"><span data-icon="send"></span></button>
+          <button class="cmd-btn label-mono cmd-primary" title="Send"><span data-icon="send"></span></button>
         </div>
         <div class="input-footer">
           <div class="model-selector">
-            <button class="model-selector-btn">
+            <button class="model-selector-btn label-mono">
               <span class="model-selector-label">Analyst</span>
               <span data-icon="chevronDown"></span>
             </button>
             <div class="model-dropdown">
               <button class="model-option" data-model="assistant">
-                <span class="model-option-name">Assistant</span>
+                <span class="model-option-name label-mono">Assistant</span>
                 <span class="model-option-desc">Quick questions and lookups</span>
               </button>
               <button class="model-option selected" data-model="analyst">
-                <span class="model-option-name">Analyst</span>
+                <span class="model-option-name label-mono">Analyst</span>
                 <span class="model-option-desc">Drafts, summaries, and document review</span>
               </button>
               <button class="model-option" data-model="expert">
-                <span class="model-option-name">Expert</span>
+                <span class="model-option-name label-mono">Expert</span>
                 <span class="model-option-desc">Complex analysis and long-form deliverables</span>
               </button>
             </div>
@@ -684,18 +684,18 @@
           <div class="empty-thread-title">What can Cosimo help with?</div>
           <div class="empty-thread-sub">Ask about fund performance, document analysis, compliance checks, or anything across your portfolio.</div>
           <div class="empty-thread-suggestions">
-            <button class="empty-thread-chip" data-suggestion="Compare Q3 and Q4 distributions across all active funds">Distribution comparison</button>
-            <button class="empty-thread-chip" data-suggestion="Pull the latest NAV report for Fund IV and flag any valuation changes above 10%">NAV review</button>
-            <button class="empty-thread-chip" data-suggestion="Summarize all outstanding covenant violations across the loan book">Covenant check</button>
-            <button class="empty-thread-chip" data-suggestion="Generate a capital call notice for the next tranche">Capital call</button>
+            <button class="empty-thread-chip bevel" data-suggestion="Compare Q3 and Q4 distributions across all active funds">Distribution comparison</button>
+            <button class="empty-thread-chip bevel" data-suggestion="Pull the latest NAV report for Fund IV and flag any valuation changes above 10%">NAV review</button>
+            <button class="empty-thread-chip bevel" data-suggestion="Summarize all outstanding covenant violations across the loan book">Covenant check</button>
+            <button class="empty-thread-chip bevel" data-suggestion="Generate a capital call notice for the next tranche">Capital call</button>
           </div>
         </div>
       </div>
       <div class="input-area">
         <div class="input-row">
-          <div class="text-input" id="new-thread-input" contenteditable="true" data-placeholder="Ask Cosimo anything..."></div>
+          <div class="text-input bevel-inset" id="new-thread-input" contenteditable="true" data-placeholder="Ask Cosimo anything..."></div>
           <div class="attach-wrapper">
-            <button class="cmd-btn" title="Attach file"><span data-icon="attach"></span></button>
+            <button class="cmd-btn label-mono" title="Attach file"><span data-icon="attach"></span></button>
             <div class="attach-menu">
               <button class="attach-option" title="From computer">
                 <span data-icon="computer"></span>
@@ -705,25 +705,25 @@
               </button>
             </div>
           </div>
-          <button class="cmd-btn cmd-primary" title="Send"><span data-icon="send"></span></button>
+          <button class="cmd-btn label-mono cmd-primary" title="Send"><span data-icon="send"></span></button>
         </div>
         <div class="input-footer">
           <div class="model-selector">
-            <button class="model-selector-btn">
+            <button class="model-selector-btn label-mono">
               <span class="model-selector-label">Analyst</span>
               <span data-icon="chevronDown"></span>
             </button>
             <div class="model-dropdown">
               <button class="model-option" data-model="assistant">
-                <span class="model-option-name">Assistant</span>
+                <span class="model-option-name label-mono">Assistant</span>
                 <span class="model-option-desc">Quick questions and lookups</span>
               </button>
               <button class="model-option selected" data-model="analyst">
-                <span class="model-option-name">Analyst</span>
+                <span class="model-option-name label-mono">Analyst</span>
                 <span class="model-option-desc">Drafts, summaries, and document review</span>
               </button>
               <button class="model-option" data-model="expert">
-                <span class="model-option-name">Expert</span>
+                <span class="model-option-name label-mono">Expert</span>
                 <span class="model-option-desc">Complex analysis and long-form deliverables</span>
               </button>
             </div>
@@ -756,17 +756,17 @@
               <div class="badge badge-ai">◆</div>
               <span class="sender">Cosimo</span>
               <span class="timestamp">9:45 AM</span>
-              <span class="model-badge">Expert</span>
+              <span class="model-badge label-mono">Expert</span>
             </div>
             <div class="msg-body">
               <div class="cosimo-error">
                 <div class="cosimo-error-icon">!</div>
                 <div class="cosimo-error-content">
-                  <div class="cosimo-error-title">Unable to complete request</div>
+                  <div class="cosimo-error-title label-mono">Unable to complete request</div>
                   <div class="cosimo-error-detail">Connection to Ridgeline Capital document vault timed out after 30s. The K-1 extraction pipeline could not retrieve the source documents. This may be due to an expired API token or a temporary outage on the custodian's end.</div>
                   <div class="cosimo-error-meta">Error 504 · Gateway Timeout · Vault Integration · Feb 20, 9:46 AM</div>
                 </div>
-                <button class="cosimo-error-retry" id="k1RetryBtn">
+                <button class="cosimo-error-retry label-mono" id="k1RetryBtn">
                   <span data-icon="retry"></span>
                   Retry
                 </button>
@@ -778,9 +778,9 @@
 
       <div class="input-area">
         <div class="input-row">
-          <div class="text-input" contenteditable="true" data-placeholder="Continue this thread..."></div>
+          <div class="text-input bevel-inset" contenteditable="true" data-placeholder="Continue this thread..."></div>
           <div class="attach-wrapper">
-            <button class="cmd-btn" title="Attach file"><span data-icon="attach"></span></button>
+            <button class="cmd-btn label-mono" title="Attach file"><span data-icon="attach"></span></button>
             <div class="attach-menu">
               <button class="attach-option" title="From computer">
                 <span data-icon="computer"></span>
@@ -790,25 +790,25 @@
               </button>
             </div>
           </div>
-          <button class="cmd-btn cmd-primary" title="Send"><span data-icon="send"></span></button>
+          <button class="cmd-btn label-mono cmd-primary" title="Send"><span data-icon="send"></span></button>
         </div>
         <div class="input-footer">
           <div class="model-selector">
-            <button class="model-selector-btn">
+            <button class="model-selector-btn label-mono">
               <span class="model-selector-label">Analyst</span>
               <span data-icon="chevronDown"></span>
             </button>
             <div class="model-dropdown">
               <button class="model-option" data-model="assistant">
-                <span class="model-option-name">Assistant</span>
+                <span class="model-option-name label-mono">Assistant</span>
                 <span class="model-option-desc">Quick questions and lookups</span>
               </button>
               <button class="model-option selected" data-model="analyst">
-                <span class="model-option-name">Analyst</span>
+                <span class="model-option-name label-mono">Analyst</span>
                 <span class="model-option-desc">Drafts, summaries, and document review</span>
               </button>
               <button class="model-option" data-model="expert">
-                <span class="model-option-name">Expert</span>
+                <span class="model-option-name label-mono">Expert</span>
                 <span class="model-option-desc">Complex analysis and long-form deliverables</span>
               </button>
             </div>
@@ -842,7 +842,7 @@
               <span class="sender">Cosimo</span>
               <span class="timestamp">3:30 PM</span>
               <span class="latency-chip hidden" id="erabor-latency">4.2s</span>
-              <span class="model-badge">Expert</span>
+              <span class="model-badge label-mono">Expert</span>
             </div>
 
             <!-- State 1: Thinking cubes -->
@@ -997,31 +997,31 @@
 
       <div class="input-area" id="erabor-input-area">
         <div class="input-row">
-          <div class="text-input" id="erabor-input" contenteditable="true" data-placeholder="Continue this thread..."></div>
-          <button class="cmd-btn">Attach</button>
-          <button class="cmd-btn cmd-primary" id="erabor-send-btn" title="Send"><span data-icon="send"></span></button>
-          <button class="cmd-btn cmd-stop hidden" id="erabor-stop-btn" title="Stop">
+          <div class="text-input bevel-inset" id="erabor-input" contenteditable="true" data-placeholder="Continue this thread..."></div>
+          <button class="cmd-btn label-mono">Attach</button>
+          <button class="cmd-btn label-mono cmd-primary" id="erabor-send-btn" title="Send"><span data-icon="send"></span></button>
+          <button class="cmd-btn label-mono cmd-stop hidden" id="erabor-stop-btn" title="Stop">
             <span data-icon="stop"></span>
           </button>
         </div>
         <div class="input-footer">
           <span>⌘B bold · ⌘I italic · ⌘U underline · **markdown**</span>
           <div class="model-selector">
-            <button class="model-selector-btn">
+            <button class="model-selector-btn label-mono">
               <span class="model-selector-label">Analyst</span>
               <span data-icon="chevronDown"></span>
             </button>
             <div class="model-dropdown">
               <button class="model-option" data-model="assistant">
-                <span class="model-option-name">Assistant</span>
+                <span class="model-option-name label-mono">Assistant</span>
                 <span class="model-option-desc">Quick questions and lookups</span>
               </button>
               <button class="model-option selected" data-model="analyst">
-                <span class="model-option-name">Analyst</span>
+                <span class="model-option-name label-mono">Analyst</span>
                 <span class="model-option-desc">Drafts, summaries, and document review</span>
               </button>
               <button class="model-option" data-model="expert">
-                <span class="model-option-name">Expert</span>
+                <span class="model-option-name label-mono">Expert</span>
                 <span class="model-option-desc">Complex analysis and long-form deliverables</span>
               </button>
             </div>
@@ -1037,8 +1037,8 @@
       <div class="file-panel" id="filePanel">
         <div class="file-panel-header">
           <div class="file-panel-tabs">
-            <button class="file-panel-tab active" id="fpTabViewer">Viewer</button>
-            <button class="file-panel-tab" id="fpTabFolder">Files</button>
+            <button class="file-panel-tab label-mono active" id="fpTabViewer">Viewer</button>
+            <button class="file-panel-tab label-mono" id="fpTabFolder">Files</button>
           </div>
           <button class="file-panel-close" id="fpCloseBtn">✕</button>
         </div>
@@ -1050,7 +1050,7 @@
             <span class="fp-file-name">Hilgard_Fund_II_Fee_Analysis.xlsx</span>
           </div>
           <div class="fp-formula-bar">
-            <span class="fp-cell-ref" id="fpCellRef">A1</span>
+            <span class="fp-cell-ref bevel-inset" id="fpCellRef">A1</span>
             <span class="fp-formula" id="fpFormula">Period</span>
           </div>
           <div class="fp-sheet-wrap">
@@ -1096,13 +1096,13 @@
         <div class="main-header">
           <span class="header-title">Workflows</span>
           <div class="header-actions">
-            <button class="header-btn primary" id="newWorkflowBtn">+ New Workflow</button>
+            <button class="header-btn bevel label-mono primary" id="newWorkflowBtn">+ New Workflow</button>
           </div>
         </div>
 
         <div class="wf-listing">
           <!-- Stats -->
-          <div class="wf-stats-section">
+          <div class="wf-stats-section bevel">
             <div class="wf-stats-section-bar">
               <div class="art-stripe"></div>
               <span class="detail-section-title">Overview</span>
@@ -1120,10 +1120,10 @@
           </div>
 
           <!-- Cards -->
-          <div class="wf-card" data-wf-id="rent-roll">
+          <div class="wf-card bevel" data-wf-id="rent-roll">
             <div class="wf-card-header">
               <span class="wf-card-title">Rent Roll Extraction</span>
-              <span class="wf-card-status status-active">Active</span>
+              <span class="wf-card-status label-mono status-active">Active</span>
             </div>
             <div class="wf-card-body">
               <span class="wf-card-desc">Extracts and standardizes rent roll data from uploaded PDFs. Outputs clean xlsx with unit-level detail, floor mapping, and lease terms.</span>
@@ -1144,10 +1144,10 @@
             </div>
           </div>
 
-          <div class="wf-card" data-wf-id="k1-extract">
+          <div class="wf-card bevel" data-wf-id="k1-extract">
             <div class="wf-card-header">
               <span class="wf-card-title">K-1 Document Processing</span>
-              <span class="wf-card-status status-active">Active</span>
+              <span class="wf-card-status label-mono status-active">Active</span>
             </div>
             <div class="wf-card-body">
               <span class="wf-card-desc">Parses K-1 tax documents, extracts allocations, and maps to fund accounting structure. Flags discrepancies against capital accounts.</span>
@@ -1168,10 +1168,10 @@
             </div>
           </div>
 
-          <div class="wf-card" data-wf-id="lp-waterfall">
+          <div class="wf-card bevel" data-wf-id="lp-waterfall">
             <div class="wf-card-header">
               <span class="wf-card-title">LP Distribution Waterfall</span>
-              <span class="wf-card-status status-draft">Draft</span>
+              <span class="wf-card-status label-mono status-draft">Draft</span>
             </div>
             <div class="wf-card-body">
               <span class="wf-card-desc">Calculates LP/GP distribution splits across preferred return, catch-up, and carried interest tiers. Generates allocation schedules.</span>
@@ -1192,10 +1192,10 @@
             </div>
           </div>
 
-          <div class="wf-card" data-wf-id="fee-calc">
+          <div class="wf-card bevel" data-wf-id="fee-calc">
             <div class="wf-card-header">
               <span class="wf-card-title">Management Fee Calculator</span>
-              <span class="wf-card-status status-active">Active</span>
+              <span class="wf-card-status label-mono status-active">Active</span>
             </div>
             <div class="wf-card-body">
               <span class="wf-card-desc">Computes management fees across fund vehicles using committed/invested capital basis, step-downs, and offset provisions.</span>
@@ -1216,10 +1216,10 @@
             </div>
           </div>
 
-          <div class="wf-card" data-wf-id="covenant">
+          <div class="wf-card bevel" data-wf-id="covenant">
             <div class="wf-card-header">
               <span class="wf-card-title">Loan Covenant Monitor</span>
-              <span class="wf-card-status status-paused">Paused</span>
+              <span class="wf-card-status label-mono status-paused">Paused</span>
             </div>
             <div class="wf-card-body">
               <span class="wf-card-desc">Monitors DSCR, LTV, and debt yield covenants across the loan book. Alerts when metrics approach or breach thresholds.</span>
@@ -1251,7 +1251,7 @@
           </div>
           <div class="header-actions">
             <div class="dropdown-wrapper">
-              <button class="header-btn" id="wfActionsBtn">Actions ▾</button>
+              <button class="header-btn bevel label-mono" id="wfActionsBtn">Actions ▾</button>
               <div class="dropdown-menu" id="actionDropdown">
                 <button class="dropdown-item" data-action="run-now">▶ Run Now</button>
                 <button class="dropdown-item" data-action="duplicate">⧉ Duplicate</button>
@@ -1259,7 +1259,7 @@
                 <button class="dropdown-item text-red" data-action="delete">✕ Delete Workflow</button>
               </div>
             </div>
-            <button class="header-btn primary" id="wfRunBtn">▶ Run</button>
+            <button class="header-btn bevel label-mono primary" id="wfRunBtn">▶ Run</button>
           </div>
         </div>
 
@@ -1279,7 +1279,7 @@
             <!-- OVERVIEW TAB -->
             <div class="tab-panel active" id="tab-overview">
               <div class="overview-grid">
-                <div class="detail-section">
+                <div class="detail-section bevel">
                   <div class="detail-section-bar">
                     <div class="art-stripe"></div>
                     <span class="detail-section-title">Status</span>
@@ -1305,7 +1305,7 @@
                   </div>
                 </div>
 
-                <div class="detail-section">
+                <div class="detail-section bevel">
                   <div class="detail-section-bar">
                     <div class="art-stripe"></div>
                     <span class="detail-section-title">Performance</span>
@@ -1331,7 +1331,7 @@
                   </div>
                 </div>
 
-                <div class="detail-section overview-full">
+                <div class="detail-section bevel overview-full">
                   <div class="detail-section-bar">
                     <div class="art-stripe"></div>
                     <span class="detail-section-title">Recent Activity</span>
@@ -1366,7 +1366,7 @@
 
             <!-- CONFIGURATION TAB -->
             <div class="tab-panel" id="tab-config">
-              <div class="detail-section">
+              <div class="detail-section bevel">
                 <div class="detail-section-bar">
                   <div class="art-stripe"></div>
                   <span class="detail-section-title">Source Data Locations</span>
@@ -1401,7 +1401,7 @@
                 </div>
               </div>
 
-              <div class="detail-section">
+              <div class="detail-section bevel">
                 <div class="detail-section-bar">
                   <div class="art-stripe"></div>
                   <span class="detail-section-title">Input Configuration</span>
@@ -1412,9 +1412,9 @@
                     <span class="config-label">Accepted Types</span>
                     <div class="config-value">
                       <div class="file-type-chips">
-                        <span class="file-chip pdf">.pdf</span>
-                        <span class="file-chip xlsx">.xlsx</span>
-                        <span class="file-chip csv">.csv</span>
+                        <span class="file-chip label-mono pdf">.pdf</span>
+                        <span class="file-chip label-mono xlsx">.xlsx</span>
+                        <span class="file-chip label-mono csv">.csv</span>
                       </div>
                     </div>
                   </div>
@@ -1429,7 +1429,7 @@
                 </div>
               </div>
 
-              <div class="detail-section">
+              <div class="detail-section bevel">
                 <div class="detail-section-bar">
                   <div class="art-stripe"></div>
                   <span class="detail-section-title">Output Configuration</span>
@@ -1440,7 +1440,7 @@
                     <span class="config-label">Output Format</span>
                     <div class="config-value">
                       <div class="file-type-chips">
-                        <span class="file-chip xlsx">.xlsx</span>
+                        <span class="file-chip label-mono xlsx">.xlsx</span>
                       </div>
                     </div>
                   </div>
@@ -1473,51 +1473,51 @@
                 <div class="step-connector"></div>
 
                 <div class="step-item">
-                  <div class="step-marker complete">1</div>
-                  <div class="step-card">
+                  <div class="step-marker bevel complete">1</div>
+                  <div class="step-card bevel">
                     <div class="step-card-title">Ingest & Validate</div>
                     <div class="step-card-desc">Accept uploaded files, validate format and size constraints. Reject unsupported types with error message.</div>
                     <div class="step-card-tags">
-                      <span class="step-tag">Input</span>
-                      <span class="step-tag">Validation</span>
+                      <span class="step-tag label-mono">Input</span>
+                      <span class="step-tag label-mono">Validation</span>
                     </div>
                   </div>
                 </div>
 
                 <div class="step-item">
-                  <div class="step-marker complete">2</div>
-                  <div class="step-card">
+                  <div class="step-marker bevel complete">2</div>
+                  <div class="step-card bevel">
                     <div class="step-card-title">Extract & Parse</div>
                     <div class="step-card-desc">Run PDF extraction with OCR fallback. Identify table structures, header rows, and unit-level data. Handle multi-page spreads.</div>
                     <div class="step-card-tags">
-                      <span class="step-tag">PDF</span>
-                      <span class="step-tag">OCR</span>
-                      <span class="step-tag">Tables</span>
+                      <span class="step-tag label-mono">PDF</span>
+                      <span class="step-tag label-mono">OCR</span>
+                      <span class="step-tag label-mono">Tables</span>
                     </div>
                   </div>
                 </div>
 
                 <div class="step-item">
-                  <div class="step-marker running">3</div>
-                  <div class="step-card">
+                  <div class="step-marker bevel running">3</div>
+                  <div class="step-card bevel">
                     <div class="step-card-title">Standardize & Enrich</div>
                     <div class="step-card-desc">Map extracted data to standard columns. Infer floor numbers from unit IDs. Normalize dates, currency, and square footage. Apply lesson rules.</div>
                     <div class="step-card-tags">
-                      <span class="step-tag">Mapping</span>
-                      <span class="step-tag">Inference</span>
-                      <span class="step-tag">Lesson</span>
+                      <span class="step-tag label-mono">Mapping</span>
+                      <span class="step-tag label-mono">Inference</span>
+                      <span class="step-tag label-mono">Lesson</span>
                     </div>
                   </div>
                 </div>
 
                 <div class="step-item">
-                  <div class="step-marker">4</div>
-                  <div class="step-card">
+                  <div class="step-marker bevel">4</div>
+                  <div class="step-card bevel">
                     <div class="step-card-title">Generate Output</div>
                     <div class="step-card-desc">Build formatted xlsx with property-level sheets. Add summary tab with vacancy rates and rent PSF metrics. Save to destination folder.</div>
                     <div class="step-card-tags">
-                      <span class="step-tag">Output</span>
-                      <span class="step-tag">XLSX</span>
+                      <span class="step-tag label-mono">Output</span>
+                      <span class="step-tag label-mono">XLSX</span>
                     </div>
                   </div>
                 </div>
@@ -1526,7 +1526,7 @@
 
             <!-- RUNS TAB -->
             <div class="tab-panel" id="tab-runs">
-              <div class="detail-section">
+              <div class="detail-section bevel">
                 <div class="detail-section-bar">
                   <div class="art-stripe"></div>
                   <span class="detail-section-title">Execution History</span>
@@ -1606,7 +1606,7 @@
             <div class="main-header">
               <span class="header-title">Memory</span>
               <div class="header-actions">
-                <button class="header-btn primary" id="addMemoryBtn">+ Add Memory</button>
+                <button class="header-btn bevel label-mono primary" id="addMemoryBtn">+ Add Memory</button>
               </div>
             </div>
             <div class="brain-scroll" id="memoryScroll">
@@ -1626,8 +1626,8 @@
                   <div class="mem-trait-selected" id="traitSelected"></div>
                   <div class="mem-trait-presets" id="traitPresets"></div>
                   <div class="mem-trait-custom">
-                    <input type="text" class="mem-trait-input" id="traitInput" placeholder="Add a custom trait..." />
-                    <button class="mem-trait-add-btn" id="traitAddBtn">Add</button>
+                    <input type="text" class="mem-trait-input bevel-inset" id="traitInput" placeholder="Add a custom trait..." />
+                    <button class="mem-trait-add-btn label-mono" id="traitAddBtn">Add</button>
                   </div>
                 </div>
               </div>
@@ -1653,7 +1653,7 @@
                 <!-- Add Memory Inline Form (hidden by default) -->
                 <div class="mem-add-form hidden" id="memAddForm">
                   <div class="mem-add-form-inner">
-                    <input type="text" class="mem-add-input" id="memAddInput" placeholder="Type a fact Cosimo should remember..." />
+                    <input type="text" class="mem-add-input bevel-inset" id="memAddInput" placeholder="Type a fact Cosimo should remember..." />
                     <div class="mem-add-form-row">
                       <select class="mem-add-category" id="memAddCategory">
                         <option value="preference">Preference</option>
@@ -1664,8 +1664,8 @@
                         <option value="context">Context</option>
                       </select>
                       <div class="mem-add-actions">
-                        <button class="header-btn" id="memCancelBtn">Cancel</button>
-                        <button class="header-btn primary" id="memSaveBtn">Save</button>
+                        <button class="header-btn bevel label-mono" id="memCancelBtn">Cancel</button>
+                        <button class="header-btn bevel label-mono primary" id="memSaveBtn">Save</button>
                       </div>
                     </div>
                   </div>
@@ -1696,7 +1696,7 @@
               <div class="main-header">
                 <span class="header-title">Lessons</span>
                 <div class="header-actions">
-                  <button class="header-btn primary" id="newLessonBtn">+ New Lesson</button>
+                  <button class="header-btn bevel label-mono primary" id="newLessonBtn">+ New Lesson</button>
                 </div>
               </div>
               <div class="brain-scroll">
@@ -1741,9 +1741,9 @@
                   <span id="lessonDetailTitle">Lesson Title</span>
                 </span>
                 <div class="header-actions">
-                  <button class="header-btn icon-btn" id="lessonEditBtn" title="Edit Directly"><span data-icon="edit"></span></button>
-                  <button class="header-btn icon-btn" id="lessonCosimoBtn" title="Edit with Cosimo"><span data-icon="cosimo"></span></button>
-                  <button class="header-btn icon-btn" id="lessonDeleteBtn" title="Delete Lesson"><span data-icon="trashRed"></span></button>
+                  <button class="header-btn bevel label-mono icon-btn" id="lessonEditBtn" title="Edit Directly"><span data-icon="edit"></span></button>
+                  <button class="header-btn bevel label-mono icon-btn" id="lessonCosimoBtn" title="Edit with Cosimo"><span data-icon="cosimo"></span></button>
+                  <button class="header-btn bevel label-mono icon-btn" id="lessonDeleteBtn" title="Delete Lesson"><span data-icon="trashRed"></span></button>
                 </div>
               </div>
 
@@ -1755,7 +1755,7 @@
                   <span class="lesson-detail-stat">Referenced 23 times</span>
                   <span class="lesson-detail-stat">Last used 2d ago</span>
                   <span class="lesson-detail-stat">Updated Feb 28 by Sarah Chen</span>
-                  <button class="header-btn lesson-scope-btn" id="lessonScopeToggle">
+                  <button class="header-btn bevel label-mono lesson-scope-btn" id="lessonScopeToggle">
                     <span data-icon="arrowRight"></span>
                     <span id="lessonScopeToggleText">Change to Personal</span>
                   </button>
@@ -1874,13 +1874,13 @@
                     <div class="graph-detail-icon" id="graphDetailIcon"></div>
                     <div>
                       <div class="graph-detail-name" id="graphDetailName">Entity</div>
-                      <div class="graph-detail-type" id="graphDetailType">Type</div>
+                      <div class="graph-detail-type label-mono" id="graphDetailType">Type</div>
                     </div>
                   </div>
                   <div class="graph-detail-actions">
-                    <button class="header-btn icon-btn" id="graphEditBtn" title="Edit"><span data-icon="edit"></span></button>
-                    <button class="header-btn icon-btn" id="graphCosimoBtn" title="Edit with Cosimo"><span data-icon="cosimo"></span></button>
-                    <button class="header-btn icon-btn" id="graphCloseBtn" title="Close"><span data-icon="close"></span></button>
+                    <button class="header-btn bevel label-mono icon-btn" id="graphEditBtn" title="Edit"><span data-icon="edit"></span></button>
+                    <button class="header-btn bevel label-mono icon-btn" id="graphCosimoBtn" title="Edit with Cosimo"><span data-icon="cosimo"></span></button>
+                    <button class="header-btn bevel label-mono icon-btn" id="graphCloseBtn" title="Close"><span data-icon="close"></span></button>
                   </div>
                 </div>
                 <div class="graph-detail-body" id="graphDetailBody">
@@ -1928,8 +1928,8 @@
 
   <div class="cosimo-panel-input">
     <div class="panel-input-row">
-      <div class="panel-text-input" id="panelInput" contenteditable="true" data-placeholder="Describe a change..."></div>
-      <button class="panel-send-btn" id="cosimoPanelSend" title="Send"><span data-icon="send" data-icon-w="12" data-icon-h="12"></span></button>
+      <div class="panel-text-input bevel-inset" id="panelInput" contenteditable="true" data-placeholder="Describe a change..."></div>
+      <button class="panel-send-btn label-mono" id="cosimoPanelSend" title="Send"><span data-icon="send" data-icon-w="12" data-icon-h="12"></span></button>
     </div>
   </div>
 </div>

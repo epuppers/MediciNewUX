@@ -200,11 +200,8 @@
 
 .top-tab {
   padding: 0 16px;
-  font-family: var(--mono);
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
   color: var(--taupe-3);
   background: var(--taupe-1);
   border: 1px solid var(--taupe-2);
@@ -392,14 +389,11 @@
 
 .profile-menu-item {
   padding: 8px 12px;
-  font-family: var(--mono);
   font-size: 11px;
   font-weight: 600;
   color: var(--taupe-4);
   cursor: pointer;
   transition: all 0.1s;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .profile-menu-item:first-child {
@@ -650,7 +644,6 @@
   width: 300px;
   background: var(--white);
   border: 2px solid;
-  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
   z-index: 200;
   overflow: hidden;
   border-radius: var(--r-md);
@@ -954,14 +947,11 @@
   background: var(--taupe-4);
   border: 1px solid;
   border-color: var(--taupe-3) #1a1a1c #1a1a1c var(--taupe-3);
-  font-family: var(--mono);
   font-size: 12px;
   font-weight: 600;
   color: var(--taupe-1);
   cursor: pointer;
   text-align: center;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
   border-radius: var(--r-sm);
 }
 
@@ -1167,14 +1157,11 @@
 /* Thread indicators */
 .thread-indicator {
   display: inline-block;
-  font-family: var(--mono);
   font-size: 9px;
   font-weight: 600;
   padding: 1px 5px;
   margin-top: 4px;
   border: 1px solid;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
   border-radius: var(--r-md);
 }
 
@@ -1365,16 +1352,12 @@ main {
 
 .header-btn {
   padding: 4px 10px;
-  font-family: var(--mono);
   font-size: 11px;
   font-weight: 600;
   color: var(--taupe-4);
   background: var(--off-white);
   border: 1px solid;
-  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
   cursor: pointer;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
   border-radius: var(--r-md);
 }
 
