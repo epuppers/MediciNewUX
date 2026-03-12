@@ -1571,6 +1571,8 @@
 /* ============================================
    COSIMO ERROR STATE
    ============================================ */
+/* Reusable error state pattern */
+.error-state,
 .cosimo-error {
   display: flex;
   align-items: flex-start;
@@ -1584,6 +1586,7 @@
   border-radius: var(--r-md);
 }
 
+.error-state-icon,
 .cosimo-error-icon {
   width: 22px;
   height: 22px;
@@ -1601,11 +1604,13 @@
   border-radius: var(--r-md);
 }
 
+.error-state-content,
 .cosimo-error-content {
   flex: 1;
   min-width: 0;
 }
 
+.error-state-title,
 .cosimo-error-title {
   font-size: 12px;
   font-weight: 700;
@@ -1613,6 +1618,7 @@
   margin-bottom: 6px;
 }
 
+.error-state-detail,
 .cosimo-error-detail {
   font-family: var(--mono);
   font-size: 12px;
@@ -1621,6 +1627,7 @@
   margin-bottom: 8px;
 }
 
+.error-state-meta,
 .cosimo-error-meta {
   font-family: var(--mono);
   font-size: 10px;
@@ -1628,6 +1635,7 @@
   letter-spacing: 0.05em;
 }
 
+.error-state-retry,
 .cosimo-error-retry {
   display: flex;
   align-items: center;
@@ -1646,14 +1654,22 @@
   border-radius: var(--r-md);
 }
 
+.error-state-retry:hover,
 .cosimo-error-retry:hover {
   background: var(--berry-1);
   color: var(--berry-5);
   border-color: var(--berry-2) var(--berry-4) var(--berry-4) var(--berry-2);
 }
 
+.error-state-retry:active,
 .cosimo-error-retry:active {
   border-color: var(--taupe-3) var(--white) var(--white) var(--taupe-3);
+}
+
+.error-state-retry:focus-visible,
+.cosimo-error-retry:focus-visible {
+  outline: 2px solid var(--violet-3);
+  outline-offset: 2px;
 }
 
 .retry-icon {
@@ -2119,21 +2135,25 @@
   color: var(--taupe-2);
 }
 
-/* Cosimo error — dark mode */
+/* Error state — dark mode */
+[data-theme="dark"] .error-state,
 [data-theme="dark"] .cosimo-error {
   background: rgba(192,72,72,0.08);
   border-color: var(--taupe-2);
   border-left-color: var(--red);
 }
 
+[data-theme="dark"] .error-state-icon,
 [data-theme="dark"] .cosimo-error-icon {
   color: #f0eef4;
 }
 
+[data-theme="dark"] .error-state-retry,
 [data-theme="dark"] .cosimo-error-retry {
   color: var(--taupe-4);
 }
 
+[data-theme="dark"] .error-state-retry:hover,
 [data-theme="dark"] .cosimo-error-retry:hover {
   color: var(--berry-3);
 }
