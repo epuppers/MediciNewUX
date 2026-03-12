@@ -113,23 +113,49 @@ injectIcons();
 })();
 
 // ============================================
-// TOAST NOTIFICATIONS (#8)
+// THEME TOGGLE
 // ============================================
-function showToast(text, duration) {
-  const container = document.getElementById('toastContainer');
-  if (!container) return;
-  const toast = document.createElement('div');
-  toast.className = 'toast';
-  toast.textContent = text;
-  container.appendChild(toast);
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => toast.classList.add('show'));
+(function() {
+  const saved = localStorage.getItem('theme');
+  if (saved) document.documentElement.setAttribute('data-theme', saved);
+})();
+
+// ============================================
+// DRAG & DROP FILE ZONE (#7)
+// ============================================
+(function() {
+  let dragCounter = 0;
+  document.addEventListener('dragenter', function(e) {
+    const area = e.target.closest('.input-area');
+    if (!area) return;
+    e.preventDefault();
+    dragCounter++;
+    area.classList.add('drop-active');
   });
-  setTimeout(() => {
-    toast.classList.remove('show');
-    setTimeout(() => toast.remove(), 200);
-  }, duration || 2000);
-}
+  document.addEventListener('dragleave', function(e) {
+    const area = e.target.closest('.input-area');
+    if (!area) return;
+    dragCounter--;
+    if (dragCounter <= 0) {
+      area.classList.remove('drop-active');
+      dragCounter = 0;
+    }
+  });
+  document.addEventListener('dragover', function(e) {
+    if (e.target.closest('.input-area')) e.preventDefault();
+  });
+  document.addEventListener('drop', function(e) {
+    const area = e.target.closest('.input-area');
+    if (!area) return;
+    e.preventDefault();
+    area.classList.remove('drop-active');
+    dragCounter = 0;
+    const files = e.dataTransfer.files;
+    if (files.length) {
+      showToast('Attached: ' + files[0].name);
+    }
+  });
+})();
 
 // ============================================
 // MESSAGE HOVER ACTIONS (#1)
@@ -260,122 +286,61 @@ function showToast(text, duration) {
 })();
 
 // ============================================
-// FEEDBACK BUTTONS (#9)
-// ============================================
-function giveFeedback(btn, type) {
-  const container = btn.closest('.msg-feedback');
-  container.querySelectorAll('.feedback-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  showToast(type === 'up' ? 'Thanks for the feedback' : 'Feedback noted — we\'ll improve');
-}
-
-// ============================================
-// SEARCH STATES (#5)
-// ============================================
-let searchTimer = null;
-function runGlobalSearchEnhanced(q) {
-  const results = document.getElementById('searchResults');
-  if (!results) return;
-
-  // Clear previous debounce
-  if (searchTimer) clearTimeout(searchTimer);
-
-  // Empty query — close
-  if (!q.trim()) {
-    results.classList.add('hidden');
-    return;
-  }
-
-  results.classList.remove('hidden');
-  results.innerHTML = '<div class="search-status">Searching...</div>';
-
-  // Debounce 200ms then search
-  searchTimer = setTimeout(() => {
-    const ql = q.toLowerCase();
-    // Search all threads by keyword using MOCK_THREADS
-    const searchable = Object.keys(MOCK_THREADS)
-      .filter(id => id !== 'new')
-      .map(id => ({ id: id, title: MOCK_THREADS[id].title, keywords: MOCK_THREADS[id].keywords }));
-    const matches = searchable.filter(t =>
-      t.title.toLowerCase().includes(ql) || t.keywords.includes(ql)
-    );
-
-    if (matches.length) {
-      results.innerHTML = matches.map(m =>
-        '<div class="search-result-item" data-thread-id="' + m.id + '">' +
-        m.title + '</div>'
-      ).join('');
-    } else {
-      results.innerHTML = '<div class="search-no-results">No results for "' + escapeHtml(q) + '"</div>';
-    }
-  }, 200);
-}
-
-function closeSearch() {
-  const results = document.getElementById('searchResults');
-  if (results) results.classList.add('hidden');
-}
-
-// ============================================
-// DRAG & DROP FILE ZONE (#7)
+// DRAG-RESIZE PANELS
 // ============================================
 (function() {
-  let dragCounter = 0;
-  document.addEventListener('dragenter', function(e) {
-    const area = e.target.closest('.input-area');
-    if (!area) return;
-    e.preventDefault();
-    dragCounter++;
-    area.classList.add('drop-active');
-  });
-  document.addEventListener('dragleave', function(e) {
-    const area = e.target.closest('.input-area');
-    if (!area) return;
-    dragCounter--;
-    if (dragCounter <= 0) {
-      area.classList.remove('drop-active');
-      dragCounter = 0;
-    }
-  });
-  document.addEventListener('dragover', function(e) {
-    if (e.target.closest('.input-area')) e.preventDefault();
-  });
-  document.addEventListener('drop', function(e) {
-    const area = e.target.closest('.input-area');
-    if (!area) return;
-    e.preventDefault();
-    area.classList.remove('drop-active');
-    dragCounter = 0;
-    const files = e.dataTransfer.files;
-    if (files.length) {
-      showToast('Attached: ' + files[0].name);
-    }
-  });
-})();
+  function initResize(handleId, getTarget, getSide) {
+    const handle = document.getElementById(handleId);
+    if (!handle) return;
 
-// ============================================
-// INPUT DISABLED DURING GENERATION (#6)
-// ============================================
-function disableInput(threadId, disable) {
-  const thread = document.getElementById('thread-' + threadId);
-  if (!thread) return;
-  const input = thread.querySelector('.text-input');
-  if (!input) return;
-  if (disable) {
-    input.classList.add('disabled');
-    input.setAttribute('contenteditable', 'false');
-  } else {
-    input.classList.remove('disabled');
-    input.setAttribute('contenteditable', 'true');
+    let startX, startW, target;
+
+    handle.addEventListener('mousedown', function(e) {
+      e.preventDefault();
+      target = getTarget();
+      if (!target) return;
+      startX = e.clientX;
+      startW = target.offsetWidth;
+      handle.classList.add('dragging');
+      target.classList.add('no-transition');
+      target.classList.add('dragging');
+      document.body.style.cursor = 'col-resize';
+      document.body.style.userSelect = 'none';
+
+      function onMove(e) {
+        const delta = e.clientX - startX;
+        const newW = getSide === 'left'
+          ? startW - delta   // right panel: drag left = wider
+          : startW + delta;  // sidebar: drag right = wider
+        target.style.width = newW + 'px';
+      }
+
+      function onUp() {
+        handle.classList.remove('dragging');
+        target.classList.remove('no-transition');
+        target.classList.remove('dragging');
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+      }
+
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
   }
-}
 
-// ============================================
-// THEME TOGGLE
-// ============================================
-(function() {
-  const saved = localStorage.getItem('theme');
-  if (saved) document.documentElement.setAttribute('data-theme', saved);
+  // Sidebar: drag right edge to resize
+  initResize('sidebarResizeHandle',
+    () => document.getElementById('sidebar'),
+    'right'
+  );
+
+  // File panel: drag left edge to resize
+  initResize('filePanelResizeHandle',
+    () => document.getElementById('filePanel'),
+    'left'
+  );
 })();
 
 function toggleTheme() {
@@ -672,190 +637,6 @@ function runGlobalSearch(q) {
 }
 
 // ============================================
-// THREAD SWITCHING
-// ============================================
-
-let activeThread = 'fund3';
-
-function selectThread(id, el) {
-  activeThread = id;
-
-  // Update sidebar
-  document.querySelectorAll('.thread-item').forEach(t => t.classList.remove('active'));
-  if (el) el.classList.add('active');
-
-  // Switch thread content
-  document.querySelectorAll('.chat-thread').forEach(t => t.classList.remove('active'));
-  const thread = document.getElementById('thread-' + id);
-  if (thread) {
-    thread.classList.add('active');
-  }
-
-  // Update header title
-  const title = document.getElementById('chatHeaderTitle');
-  if (title && MOCK_THREADS[id]) title.textContent = MOCK_THREADS[id].title;
-
-  // Update Files button state
-  updateFilesButton();
-
-  // Close file panel when switching threads
-  closeFilePanel();
-
-  // Trigger Erabor animation when that thread is selected
-  if (id === 'erabor') runEraborSequence();
-}
-
-function updateFilesButton() {
-  const btn = document.getElementById('filesBtn');
-  if (!btn) return;
-  if (MOCK_THREADS[activeThread].hasFiles) {
-    btn.classList.remove('disabled');
-    btn.disabled = false;
-  } else {
-    btn.classList.add('disabled');
-    btn.disabled = true;
-  }
-}
-
-// ============================================
-// FILE PANEL
-// ============================================
-function openFilePanel(tab) {
-  if (!MOCK_THREADS[activeThread].hasFiles) return;
-  const panel = document.getElementById('filePanel');
-  panel.classList.add('open');
-  document.getElementById('filePanelResizeHandle').classList.add('visible');
-  switchFilePanelTab(tab || 'viewer');
-  if (tab === 'viewer') buildSpreadsheet();
-}
-
-function closeFilePanel() {
-  const panel = document.getElementById('filePanel');
-  panel.classList.remove('open');
-  panel.style.width = '';
-  document.getElementById('filePanelResizeHandle').classList.remove('visible');
-}
-
-// ============================================
-// DRAG-RESIZE PANELS
-// ============================================
-(function() {
-  function initResize(handleId, getTarget, getSide) {
-    const handle = document.getElementById(handleId);
-    if (!handle) return;
-
-    let startX, startW, target;
-
-    handle.addEventListener('mousedown', function(e) {
-      e.preventDefault();
-      target = getTarget();
-      if (!target) return;
-      startX = e.clientX;
-      startW = target.offsetWidth;
-      handle.classList.add('dragging');
-      target.classList.add('no-transition');
-      target.classList.add('dragging');
-      document.body.style.cursor = 'col-resize';
-      document.body.style.userSelect = 'none';
-
-      function onMove(e) {
-        const delta = e.clientX - startX;
-        const newW = getSide === 'left'
-          ? startW - delta   // right panel: drag left = wider
-          : startW + delta;  // sidebar: drag right = wider
-        target.style.width = newW + 'px';
-      }
-
-      function onUp() {
-        handle.classList.remove('dragging');
-        target.classList.remove('no-transition');
-        target.classList.remove('dragging');
-        document.body.style.cursor = '';
-        document.body.style.userSelect = '';
-        document.removeEventListener('mousemove', onMove);
-        document.removeEventListener('mouseup', onUp);
-      }
-
-      document.addEventListener('mousemove', onMove);
-      document.addEventListener('mouseup', onUp);
-    });
-  }
-
-  // Sidebar: drag right edge to resize
-  initResize('sidebarResizeHandle',
-    () => document.getElementById('sidebar'),
-    'right'
-  );
-
-  // File panel: drag left edge to resize
-  initResize('filePanelResizeHandle',
-    () => document.getElementById('filePanel'),
-    'left'
-  );
-})();
-
-function switchFilePanelTab(tab) {
-  document.querySelectorAll('.file-panel-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.file-panel-view').forEach(v => v.classList.remove('active'));
-
-  if (tab === 'viewer') {
-    document.getElementById('fpTabViewer').classList.add('active');
-    document.getElementById('fpViewer').classList.add('active');
-    buildSpreadsheet();
-  } else {
-    document.getElementById('fpTabFolder').classList.add('active');
-    document.getElementById('fpFolder').classList.add('active');
-  }
-}
-
-// ============================================
-// INTERACTIVE SPREADSHEET
-// ============================================
-const sheetData = MOCK_SPREADSHEET.rows;
-const colLetters = MOCK_SPREADSHEET.columns;
-let sheetBuilt = false;
-
-function buildSpreadsheet() {
-  if (sheetBuilt) return;
-  sheetBuilt = true;
-
-  const tbody = document.getElementById('fpSheetBody');
-  tbody.innerHTML = '';
-
-  sheetData.forEach((row) => {
-    const tr = document.createElement('tr');
-    // Row number
-    const rowTd = document.createElement('td');
-    rowTd.textContent = row.row;
-    tr.appendChild(rowTd);
-
-    row.cells.forEach((val, ci) => {
-      const td = document.createElement('td');
-      td.textContent = val;
-      const isNum = /^\$/.test(val) || /^\d+\.\d+%$/.test(val);
-      if (isNum) td.classList.add('fp-cell-number');
-
-      const formula = row.formulas && row.formulas[ci];
-      td.dataset.cellRef = colLetters[ci] + row.row;
-      td.dataset.formula = formula || val;
-      td.dataset.value = val;
-
-      td.addEventListener('click', function() {
-        // Clear previous selection
-        document.querySelectorAll('.fp-cell-selected').forEach(c => c.classList.remove('fp-cell-selected'));
-        td.classList.add('fp-cell-selected');
-        document.getElementById('fpCellRef').textContent = td.dataset.cellRef;
-        document.getElementById('fpFormula').textContent = formula || val;
-      });
-
-      tr.appendChild(td);
-    });
-
-    tbody.appendChild(tr);
-  });
-}
-
-// ============================================
 // TASK & CALENDAR PANELS
 // ============================================
 function renderHeaderPanels() {
@@ -1022,115 +803,6 @@ function handleNew() {
 }
 
 // ============================================
-// EXPORT & SHARE (#13)
-// ============================================
-function exportThread() {
-  const thread = document.getElementById('thread-' + activeThread);
-  if (!thread) return;
-  const messages = thread.querySelectorAll('.msg-block');
-  let md = '# ' + (MOCK_THREADS[activeThread].title || 'Thread') + '\n\n';
-  messages.forEach(msg => {
-    const sender = msg.querySelector('.sender');
-    const time = msg.querySelector('.timestamp');
-    const body = msg.querySelector('.msg-body');
-    if (sender && body) {
-      md += '**' + sender.textContent + '** (' + (time ? time.textContent : '') + ')\n';
-      md += body.textContent.trim() + '\n\n---\n\n';
-    }
-  });
-  const blob = new Blob([md], { type: 'text/markdown' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = (MOCK_THREADS[activeThread].title || 'thread').replace(/[^a-z0-9]/gi, '-').toLowerCase() + '.md';
-  a.click();
-  URL.revokeObjectURL(url);
-  showToast('Exported as Markdown');
-}
-
-function shareThread() {
-  const url = window.location.origin + '/thread/' + activeThread;
-  navigator.clipboard.writeText(url).then(() => showToast('Share link copied'));
-}
-
-function fillSuggestion(text) {
-  const input = document.getElementById('new-thread-input');
-  if (input) {
-    input.textContent = text;
-    input.focus();
-    // Place cursor at end
-    const sel = window.getSelection();
-    const range = document.createRange();
-    range.selectNodeContents(input);
-    range.collapse(false);
-    sel.removeAllRanges();
-    sel.addRange(range);
-  }
-}
-
-// ============================================
-// WORKFLOW DETAIL
-// ============================================
-function showWorkflowDetail(id, el) {
-  const data = MOCK_WORKFLOWS[id];
-  if (!data) return;
-
-  document.getElementById('wfDetailTitle').textContent = data.title;
-  document.getElementById('wfDetailDesc').textContent = data.desc;
-
-  document.getElementById('wfListing').classList.add('hidden');
-  const detail = document.getElementById('wfDetail');
-  detail.classList.remove('hidden');
-
-  // Reset to overview tab
-  switchTab('overview', document.querySelector('.tab-btn'));
-
-  // Update sidebar active — match by data-wf-id attribute
-  document.querySelectorAll('.wf-side-item').forEach(item => item.classList.remove('active'));
-  if (el) {
-    const sideItem = el.closest('.wf-side-item');
-    if (sideItem) sideItem.classList.add('active');
-  }
-  // Also sync sidebar when clicked from card (match by data attribute)
-  var sideTarget = document.querySelector('.wf-side-item[data-wf-id="' + id + '"]');
-  if (sideTarget) {
-    document.querySelectorAll('.wf-side-item').forEach(item => item.classList.remove('active'));
-    sideTarget.classList.add('active');
-  }
-}
-
-function showWorkflowListing() {
-  document.getElementById('wfListing').classList.remove('hidden');
-  document.getElementById('wfDetail').classList.add('hidden');
-  document.querySelectorAll('.wf-side-item').forEach(item => item.classList.remove('active'));
-  closeCosimoPanel();
-}
-
-// ============================================
-// TABS
-// ============================================
-function switchTab(tabId, btn) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-
-  btn.classList.add('active');
-  document.getElementById('tab-' + tabId).classList.add('active');
-}
-
-// ============================================
-// DROPDOWN
-// ============================================
-function toggleDropdown(e) {
-  e.stopPropagation();
-  const menu = document.getElementById('actionDropdown');
-  menu.classList.toggle('show');
-}
-
-document.addEventListener('click', () => {
-  document.getElementById('actionDropdown')?.classList.remove('show');
-});
-
-// ============================================
 // COSIMO PANEL
 // ============================================
 function openCosimoPanel() {
@@ -1205,6 +877,266 @@ function sendPanelMessage() {
 }
 
 // ============================================
+// DROPDOWN
+// ============================================
+function toggleDropdown(e) {
+  e.stopPropagation();
+  const menu = document.getElementById('actionDropdown');
+  menu.classList.toggle('show');
+}
+
+document.addEventListener('click', () => {
+  document.getElementById('actionDropdown')?.classList.remove('show');
+});
+
+// ============================================
+// SEARCH STATES (#5)
+// ============================================
+let searchTimer = null;
+function runGlobalSearchEnhanced(q) {
+  const results = document.getElementById('searchResults');
+  if (!results) return;
+
+  // Clear previous debounce
+  if (searchTimer) clearTimeout(searchTimer);
+
+  // Empty query — close
+  if (!q.trim()) {
+    results.classList.add('hidden');
+    return;
+  }
+
+  results.classList.remove('hidden');
+  results.innerHTML = '<div class="search-status">Searching...</div>';
+
+  // Debounce 200ms then search
+  searchTimer = setTimeout(() => {
+    const ql = q.toLowerCase();
+    // Search all threads by keyword using MOCK_THREADS
+    const searchable = Object.keys(MOCK_THREADS)
+      .filter(id => id !== 'new')
+      .map(id => ({ id: id, title: MOCK_THREADS[id].title, keywords: MOCK_THREADS[id].keywords }));
+    const matches = searchable.filter(t =>
+      t.title.toLowerCase().includes(ql) || t.keywords.includes(ql)
+    );
+
+    if (matches.length) {
+      results.innerHTML = matches.map(m =>
+        '<div class="search-result-item" data-thread-id="' + m.id + '">' +
+        m.title + '</div>'
+      ).join('');
+    } else {
+      results.innerHTML = '<div class="search-no-results">No results for "' + escapeHtml(q) + '"</div>';
+    }
+  }, 200);
+}
+
+function closeSearch() {
+  const results = document.getElementById('searchResults');
+  if (results) results.classList.add('hidden');
+}
+
+// ============================================
+// INPUT DISABLED DURING GENERATION (#6)
+// ============================================
+function disableInput(threadId, disable) {
+  const thread = document.getElementById('thread-' + threadId);
+  if (!thread) return;
+  const input = thread.querySelector('.text-input');
+  if (!input) return;
+  if (disable) {
+    input.classList.add('disabled');
+    input.setAttribute('contenteditable', 'false');
+  } else {
+    input.classList.remove('disabled');
+    input.setAttribute('contenteditable', 'true');
+  }
+}
+
+// ============================================
+// FEEDBACK BUTTONS (#9)
+// ============================================
+function giveFeedback(btn, type) {
+  const container = btn.closest('.msg-feedback');
+  container.querySelectorAll('.feedback-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  showToast(type === 'up' ? 'Thanks for the feedback' : 'Feedback noted — we\'ll improve');
+}
+
+// ============================================
+// THREAD SWITCHING
+// ============================================
+
+let activeThread = 'fund3';
+
+function selectThread(id, el) {
+  activeThread = id;
+
+  // Update sidebar
+  document.querySelectorAll('.thread-item').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+
+  // Switch thread content
+  document.querySelectorAll('.chat-thread').forEach(t => t.classList.remove('active'));
+  const thread = document.getElementById('thread-' + id);
+  if (thread) {
+    thread.classList.add('active');
+  }
+
+  // Update header title
+  const title = document.getElementById('chatHeaderTitle');
+  if (title && MOCK_THREADS[id]) title.textContent = MOCK_THREADS[id].title;
+
+  // Update Files button state
+  updateFilesButton();
+
+  // Close file panel when switching threads
+  closeFilePanel();
+
+  // Trigger Erabor animation when that thread is selected
+  if (id === 'erabor') runEraborSequence();
+}
+
+function updateFilesButton() {
+  const btn = document.getElementById('filesBtn');
+  if (!btn) return;
+  if (MOCK_THREADS[activeThread].hasFiles) {
+    btn.classList.remove('disabled');
+    btn.disabled = false;
+  } else {
+    btn.classList.add('disabled');
+    btn.disabled = true;
+  }
+}
+
+// ============================================
+// FILE PANEL
+// ============================================
+function openFilePanel(tab) {
+  if (!MOCK_THREADS[activeThread].hasFiles) return;
+  const panel = document.getElementById('filePanel');
+  panel.classList.add('open');
+  document.getElementById('filePanelResizeHandle').classList.add('visible');
+  switchFilePanelTab(tab || 'viewer');
+  if (tab === 'viewer') buildSpreadsheet();
+}
+
+function closeFilePanel() {
+  const panel = document.getElementById('filePanel');
+  panel.classList.remove('open');
+  panel.style.width = '';
+  document.getElementById('filePanelResizeHandle').classList.remove('visible');
+}
+
+function switchFilePanelTab(tab) {
+  document.querySelectorAll('.file-panel-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.file-panel-view').forEach(v => v.classList.remove('active'));
+
+  if (tab === 'viewer') {
+    document.getElementById('fpTabViewer').classList.add('active');
+    document.getElementById('fpViewer').classList.add('active');
+    buildSpreadsheet();
+  } else {
+    document.getElementById('fpTabFolder').classList.add('active');
+    document.getElementById('fpFolder').classList.add('active');
+  }
+}
+
+// ============================================
+// INTERACTIVE SPREADSHEET
+// ============================================
+const sheetData = MOCK_SPREADSHEET.rows;
+const colLetters = MOCK_SPREADSHEET.columns;
+let sheetBuilt = false;
+
+function buildSpreadsheet() {
+  if (sheetBuilt) return;
+  sheetBuilt = true;
+
+  const tbody = document.getElementById('fpSheetBody');
+  tbody.innerHTML = '';
+
+  sheetData.forEach((row) => {
+    const tr = document.createElement('tr');
+    // Row number
+    const rowTd = document.createElement('td');
+    rowTd.textContent = row.row;
+    tr.appendChild(rowTd);
+
+    row.cells.forEach((val, ci) => {
+      const td = document.createElement('td');
+      td.textContent = val;
+      const isNum = /^\$/.test(val) || /^\d+\.\d+%$/.test(val);
+      if (isNum) td.classList.add('fp-cell-number');
+
+      const formula = row.formulas && row.formulas[ci];
+      td.dataset.cellRef = colLetters[ci] + row.row;
+      td.dataset.formula = formula || val;
+      td.dataset.value = val;
+
+      td.addEventListener('click', function() {
+        // Clear previous selection
+        document.querySelectorAll('.fp-cell-selected').forEach(c => c.classList.remove('fp-cell-selected'));
+        td.classList.add('fp-cell-selected');
+        document.getElementById('fpCellRef').textContent = td.dataset.cellRef;
+        document.getElementById('fpFormula').textContent = formula || val;
+      });
+
+      tr.appendChild(td);
+    });
+
+    tbody.appendChild(tr);
+  });
+}
+
+// ============================================
+// EXPORT & SHARE (#13)
+// ============================================
+function exportThread() {
+  const thread = document.getElementById('thread-' + activeThread);
+  if (!thread) return;
+  const messages = thread.querySelectorAll('.msg-block');
+  let md = '# ' + (MOCK_THREADS[activeThread].title || 'Thread') + '\n\n';
+  messages.forEach(msg => {
+    const sender = msg.querySelector('.sender');
+    const time = msg.querySelector('.timestamp');
+    const body = msg.querySelector('.msg-body');
+    if (sender && body) {
+      md += '**' + sender.textContent + '** (' + (time ? time.textContent : '') + ')\n';
+      md += body.textContent.trim() + '\n\n---\n\n';
+    }
+  });
+  const blob = new Blob([md], { type: 'text/markdown' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = (MOCK_THREADS[activeThread].title || 'thread').replace(/[^a-z0-9]/gi, '-').toLowerCase() + '.md';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Exported as Markdown');
+}
+
+function shareThread() {
+  const url = window.location.origin + '/thread/' + activeThread;
+  navigator.clipboard.writeText(url).then(() => showToast('Share link copied'));
+}
+
+function fillSuggestion(text) {
+  const input = document.getElementById('new-thread-input');
+  if (input) {
+    input.textContent = text;
+    input.focus();
+    // Place cursor at end
+    const sel = window.getSelection();
+    const range = document.createRange();
+    range.selectNodeContents(input);
+    range.collapse(false);
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
+}
+
+// ============================================
 // K-1 ERROR RETRY
 // ============================================
 function retryK1() {
@@ -1218,12 +1150,6 @@ function retryK1() {
     btn.classList.remove('retrying');
     alert('Retry failed — Ridgeline Capital vault is still unreachable. Contact integrations team or try again later.');
   }, 2500);
-}
-
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
 }
 
 // ============================================
@@ -1610,6 +1536,55 @@ document.addEventListener('click', function(e) {
     document.querySelectorAll('.model-selector.open').forEach(s => s.classList.remove('open'));
   }
 });
+
+// ============================================
+// WORKFLOW DETAIL
+// ============================================
+function showWorkflowDetail(id, el) {
+  const data = MOCK_WORKFLOWS[id];
+  if (!data) return;
+
+  document.getElementById('wfDetailTitle').textContent = data.title;
+  document.getElementById('wfDetailDesc').textContent = data.desc;
+
+  document.getElementById('wfListing').classList.add('hidden');
+  const detail = document.getElementById('wfDetail');
+  detail.classList.remove('hidden');
+
+  // Reset to overview tab
+  switchTab('overview', document.querySelector('.tab-btn'));
+
+  // Update sidebar active — match by data-wf-id attribute
+  document.querySelectorAll('.wf-side-item').forEach(item => item.classList.remove('active'));
+  if (el) {
+    const sideItem = el.closest('.wf-side-item');
+    if (sideItem) sideItem.classList.add('active');
+  }
+  // Also sync sidebar when clicked from card (match by data attribute)
+  var sideTarget = document.querySelector('.wf-side-item[data-wf-id="' + id + '"]');
+  if (sideTarget) {
+    document.querySelectorAll('.wf-side-item').forEach(item => item.classList.remove('active'));
+    sideTarget.classList.add('active');
+  }
+}
+
+function showWorkflowListing() {
+  document.getElementById('wfListing').classList.remove('hidden');
+  document.getElementById('wfDetail').classList.add('hidden');
+  document.querySelectorAll('.wf-side-item').forEach(item => item.classList.remove('active'));
+  closeCosimoPanel();
+}
+
+// ============================================
+// TABS
+// ============================================
+function switchTab(tabId, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+
+  btn.classList.add('active');
+  document.getElementById('tab-' + tabId).classList.add('active');
+}
 
 // ============================================
 // BRAIN — MEMORY SECTION
@@ -2131,6 +2106,27 @@ function createNewLesson() {
     '</div>';
 
   openCosimoPanel();
+}
+
+function toggleCardScope(btn, e) {
+  e.stopPropagation(); // Don't open the lesson detail
+
+  var card = btn.closest('.lesson-card');
+  var lessonId = card.getAttribute('data-lesson');
+  var data = lessonData[lessonId];
+  if (!data) return;
+
+  data.scope = data.scope === 'company' ? 'user' : 'company';
+  card.setAttribute('data-scope', data.scope);
+
+  var badge = card.querySelector('.lesson-scope-badge');
+  badge.textContent = data.scope === 'company' ? 'Company' : 'Personal';
+  badge.className = 'lesson-scope-badge ' + (data.scope === 'company' ? 'scope-company' : 'scope-user');
+
+  showToast('Scope changed to ' + (data.scope === 'company' ? 'Company' : 'Personal'));
+
+  // Re-apply filters in case scope filter is active
+  filterLessons();
 }
 
 // ============================================
@@ -3006,25 +3002,29 @@ window.addEventListener('resize', function() {
   });
 })();
 
-function toggleCardScope(btn, e) {
-  e.stopPropagation(); // Don't open the lesson detail
+// ============================================
+// TOAST NOTIFICATIONS (#8)
+// ============================================
+function showToast(text, duration) {
+  const container = document.getElementById('toastContainer');
+  if (!container) return;
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = text;
+  container.appendChild(toast);
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => toast.classList.add('show'));
+  });
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 200);
+  }, duration || 2000);
+}
 
-  var card = btn.closest('.lesson-card');
-  var lessonId = card.getAttribute('data-lesson');
-  var data = lessonData[lessonId];
-  if (!data) return;
-
-  data.scope = data.scope === 'company' ? 'user' : 'company';
-  card.setAttribute('data-scope', data.scope);
-
-  var badge = card.querySelector('.lesson-scope-badge');
-  badge.textContent = data.scope === 'company' ? 'Company' : 'Personal';
-  badge.className = 'lesson-scope-badge ' + (data.scope === 'company' ? 'scope-company' : 'scope-user');
-
-  showToast('Scope changed to ' + (data.scope === 'company' ? 'Company' : 'Personal'));
-
-  // Re-apply filters in case scope filter is active
-  filterLessons();
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
 }
 
 // ============================================

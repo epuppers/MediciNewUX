@@ -3,7 +3,7 @@
 **Started:** 2026-03-11
 **Last updated:** 2026-03-11
 
-## Status: COMPLETE — Phase 3
+## Status: IN PROGRESS — Phase 4
 
 ### Completed Tasks
 - [x] **1.1 — Extract thread data to data object**
@@ -68,6 +68,9 @@
 
 - [x] **3.7 — Add missing dark mode support**
   Audited all components in dark mode. Added missing overrides: (1) `.bevel` and `.bevel-inset` utilities — flatten to `var(--taupe-2)` in dark mode to prevent 3D inversion since taupe scale flips; (2) `.profile-menu-item:hover` and `.th-dropdown-footer:hover` — use `var(--berry-3)` text for readability; (3) `.profile-menu-theme:hover` — subtle berry tint; (4) `.profile-menu-divider` — use `var(--taupe-2)` for visibility; (5) `.profile-menu-toggle-thumb` — use `var(--taupe-4)` background for contrast against dark track; (6) `.fp-folder-header` — darken border; (7) `.fp-file-item.active` — flatten border in dark mode. Accessibility toggles and folder-tab styles were already properly handled.
+
+- [x] **4.1 — Group and order functions logically**
+  Reordered all sections in app.js (3408 lines) to match the target logical grouping: (1) Imports/Constants/Config, (2) IIFE initializers (rich text, theme restore, drag-drop, hover actions, drag-resize), (3) Purple Intensity + Accessibility, (4) Core UI (mode switching, panel toggles, sidebar, cosimo, dropdown), (5) Chat (search, input, feedback, threads, file panel, spreadsheet, export, K-1, Erabor, streaming, attach, model selector), (6) Workflows, (7) Brain—Memory, (8) Brain—Lessons, (9) Brain—Data Graphs, (10) Utilities (toast, escapeHtml), (11) Init (event listeners). Moved `escapeHtml` to Utilities section. Moved `toggleTheme` to Purple Intensity section. Line count preserved exactly at 3408.
 
 ### Current Task
 (none — awaiting next instruction)
