@@ -11,18 +11,20 @@ Serves at http://localhost:8082/index.html
 
 ## Project Structure
 ```
-index.html          — Main SPA (all views: Chat, Workflows, Brain) (~2300 lines)
+index.html          — Main SPA (all views: Chat, Workflows, Brain) (~1955 lines)
 login.html          — Authentication screen (SSO-only, no email form)
-js/app.js           — All application logic (~3450 lines)
-css/tokens.css      — Design tokens, color palette, dark mode vars, border radii, RGB triplets
-css/layout.css      — App frame, sidebar, panels, resize handles, accessibility modes (~1750 lines)
-css/chat.css        — Chat messages, streaming, artifacts, file panel (~1950 lines)
-css/workflows.css   — Workflow listing and detail views, folder-tab pattern (~640 lines)
-css/components.css  — Workflow steps/runs, Brain sections, Cosimo panel (~1616 lines)
-css/utilities.css   — Helpers (dropdowns, scrollbars, overlays) (~190 lines)
+js/app.js           — Application logic, namespaced modules (~3710 lines)
+js/mock-data.js     — All MOCK_* and CONFIG_* data objects (~710 lines)
+js/icons.js         — SVG icon strings + icon() helper + injectIcons() (~94 lines)
+css/tokens.css      — Design tokens, color palette, dark mode vars, border radii, RGB triplets (~133 lines)
+css/layout.css      — App frame, sidebar, panels, resize handles, accessibility modes (~1585 lines)
+css/chat.css        — Chat messages, streaming, artifacts, file panel (~1649 lines)
+css/workflows.css   — Workflow listing and detail views, folder-tab pattern (~592 lines)
+css/components.css  — Workflow steps/runs, Brain sections, Cosimo panel, error states (~2183 lines)
+css/utilities.css   — Helpers (dropdowns, scrollbars, overlays, bevels, label-mono) (~245 lines)
 fonts/              — ChicagoFLF.ttf (retro display font)
-PRD.md              — Refactoring task list (read this first on every iteration)
-progress.md         — Tracks completed tasks (update after each task)
+PRD.md              — Refactoring task list
+progress.md         — Tracks completed tasks
 ```
 
 ## Architecture Overview
@@ -45,32 +47,30 @@ progress.md         — Tracks completed tasks (update after each task)
 - Login page: 6-sphere inverted triangle (`.hero-spheres` with `.hero-sphere.dark` / `.hero-sphere.light`)
 - Main app sidebar: small mark (`.logo-mark` > `.logo-mark-inner`)
 
-### Key JS Sections in app.js
-1. Rich text input (contenteditable markdown shortcuts)
-2. Toast notifications
-3. Message hover actions (copy, regen, delete)
-4. Thread hover actions (share, delete)
-5. Feedback buttons
-6. Search (global, debounced)
-7. Drag & drop file zone
-8. Input disabled during generation
-9. Theme toggle (localStorage, data-theme attribute)
-10. **Purple intensity** (HSL adjustment of berry/violet/chinese tokens, localStorage)
-11. **Accessibility** (font size zoom, dyslexia font, reduced motion, high contrast)
-12. Mode switching (chat/workflows/brain)
-13. Thread switching + file panel
-14. Drag-resize panels (sidebar, file panel)
-15. Spreadsheet builder (mock data)
-16. Header panel toggles (tasks, calendar, usage, profile)
-17. Export/share thread
-18. Workflow data + detail/listing switching
-19. Cosimo panel (slide-in chat)
-20. Erabor streaming demo (typing animation + sections)
-21. Streaming text engine (tokenizeHTML, typeTextBlock, streamSectionBlock)
-22. Attach file dropdown + model selector
-23. Brain Memory (add/edit/delete/filter facts, traits)
-24. Brain Lessons (list/detail/edit/scope/delete)
-25. Brain Data Graphs (SVG force graph, navigation, drill-down, tooltips)
+### JS Namespace Modules in app.js
+Functions are organized into namespace objects to reduce globals:
+
+- **ColorUtils** — hexToHsl, hslToHex, hexToRgbString
+- **A11y** (7 functions) — toggleTheme, applyPurpleIntensity, applyFontSizeBoost, toggleDyslexiaFont, toggleReducedMotion, toggleHighContrast, syncA11yToggles
+- **UI** (15 functions) — switchMode, switchBrainSection, renderHeaderPanels, closeAllPanels, toggleTaskPanel, toggleCalendarPanel, toggleUsagePanel, toggleProfileMenu, buildMiniCalendar, handleNew, openCosimoPanel, closeCosimoPanel, handlePanelKey, sendPanelMessage, toggleDropdown
+- **Chat** (30 functions) — runGlobalSearch, closeSearch, disableInput, giveFeedback, selectThread, updateFilesButton, openFilePanel, closeFilePanel, switchFilePanelTab, buildSpreadsheet, exportThread, shareThread, fillSuggestion, retryK1, streamReply, typeTextBlock, streamSectionBlock, tokenizeHTML, runEraborSequence, markEraborDone, cancelErabor, eraborTimer, showEraborStopBtn, softScroll, isNearBottom, attachFromComputer, attachFromDrive, toggleModelDropdown, selectModel
+- **Workflows** (3 functions) — showWorkflowDetail, showWorkflowListing, switchTab
+- **BrainMemory** (14 functions) — renderMemoryFromData, toggleAddMemory, cancelAddMemory, submitNewMemory, filterMemories, filterByCategory, toggleFactMenu, editFact, deleteFact, confirmDelete, cancelDelete, toggleTrait, removeTrait, addCustomTrait
+- **BrainLessons** (11 functions) — renderLessonList, filterLessons, filterLessonScope, openLesson, closeLessonDetail, toggleLessonEdit, openCosimoForLesson, toggleLessonScope, deleteLesson, createNewLesson, toggleCardScope
+- **Graph** (18 functions) — findEntity, buildGraph, makeEdge, makeNode, animateNode, applyRootState, applyClusterState, graphNavigate, openGraphEntity, closeGraphDetail, navigateToRelated, updateBreadcrumb, showGraphTooltip, hideGraphTooltip, startDriftLoop, editGraphEntity, openCosimoForEntity
+- **Globals** — showToast, escapeHtml
+
+### Key JS Sections (in order)
+1. IIFEs: Rich text input, theme restore, drag-drop, hover actions, drag-resize
+2. A11y: Purple intensity, color utilities, accessibility toggles
+3. Core UI: Mode switching, panel toggles, sidebar, Cosimo panel, dropdowns
+4. Chat: Search, input, feedback, threads, file panel, spreadsheet, export, streaming
+5. Workflows: Detail/listing switching, tab navigation
+6. Brain—Memory: Facts CRUD, traits, filtering
+7. Brain—Lessons: List/detail, editing, scoping
+8. Brain—Data Graphs: SVG force graph, navigation, tooltips, drift animation
+9. Utilities: Toast, escapeHtml
+10. Init: Event listeners IIFE (event delegation)
 
 ## Design System Rules
 - ALL colors must use `var(--token)` from tokens.css — no raw hex/rgb
@@ -85,11 +85,15 @@ progress.md         — Tracks completed tasks (update after each task)
 
 ## Code Conventions
 - CSS classes: kebab-case (e.g., `.chat-thread`, `.msg-block`)
-- JS functions: camelCase (e.g., `showToast()`, `selectThread()`)
+- JS functions: Namespace.camelCase (e.g., `Chat.selectThread()`, `A11y.toggleTheme()`)
 - HTML IDs: camelCase (e.g., `#chatView`, `#filePanel`)
+- Data attributes for event delegation: `data-thread-id`, `data-wf-id`, `data-section`, `data-tab`, `data-action`, `data-icon`
+- Mock data prefix: `MOCK_` (e.g., `MOCK_THREADS`), config prefix: `CONFIG_`
 - Keep inline styles to zero — use CSS classes
+- No inline event handlers — use event delegation in initEventListeners()
 - Prefer CSS custom properties for any repeated value
 - Section headers in JS/CSS: `// ========` comment blocks with descriptive names
+- All public functions have JSDoc comments
 
 ## Critical Rules for Refactoring Agents
 

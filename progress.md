@@ -3,7 +3,7 @@
 **Started:** 2026-03-11
 **Last updated:** 2026-03-11
 
-## Status: IN PROGRESS — Phase 6
+## Status: COMPLETE — Phase 6 (ALL PHASES DONE)
 
 ### Completed Tasks
 - [x] **1.1 — Extract thread data to data object**
@@ -114,8 +114,11 @@
 - [x] **6.3 — Validate HTML**
   Comprehensive HTML validation audit. Fixed: (1) Converted 3 `<div class="top-icon-btn">` to `<button>` for proper semantics, added button reset CSS (padding, font, color). (2) Added `aria-label` to 9 icon-only buttons (filesBtn, exportBtn, shareBtn, lessonEditBtn, lessonCosimoBtn, lessonDeleteBtn, graphEditBtn, graphCosimoBtn, graphCloseBtn). (3) Added `aria-label` to 7 panels (profilePanel, taskPanel, calendarPanel, usagePanel, filePanel, cosimoPanel) and `aria-hidden` to panelOverlay. (4) Added `role="switch"` and `aria-checked="false"` to 4 toggle switches (theme, dyslexia, motion, contrast). Updated `syncA11yToggles()` and `toggleTheme()` to sync `aria-checked` state. (5) Added `role="textbox"` and `aria-label` to 8 contenteditable div inputs. No duplicate IDs found (workflow items use data-wf-id, not id). No unclosed tags (654 opening divs match 654 closing). No images needing alt text.
 
+- [x] **6.4 — Update CLAUDE.md**
+  Updated Project Structure section: added js/mock-data.js (~710 lines), js/icons.js (~94 lines), updated all line counts to current values (index.html ~1955, app.js ~3710, layout.css ~1585, chat.css ~1649, workflows.css ~592, components.css ~2183, utilities.css ~245, tokens.css ~133). Replaced "Key JS Sections" list with "JS Namespace Modules" documenting all 9 namespace objects and their function counts. Added "Key JS Sections" ordered list showing the 10 logical section groups. Updated Code Conventions to reflect namespace pattern (Namespace.camelCase), data attributes for event delegation, MOCK_/CONFIG_ prefixes, no inline handlers rule, and JSDoc convention.
+
 ### Current Task
-(none — awaiting next instruction)
+ALL PHASES COMPLETE
 
 ### Blocked / Notes
 (none)
