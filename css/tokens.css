@@ -42,6 +42,10 @@
   --chinese-4: #4A2E50;
   --chinese-5: #2A182E;
 
+  /* RGB triplets for alpha usage — updated by purple intensity slider */
+  --violet-3-rgb: 116,65,143;
+  --berry-3-rgb: 139,79,141;
+
   --white: #FFFFFF;
   --off-white: #F8F6FA;
   --green: #3D8B40;
@@ -51,6 +55,11 @@
   --pixel: 'ChicagoFLF', sans-serif;
   --mono: 'IBM Plex Mono', monospace;
   --sans: 'DM Sans', sans-serif;
+
+  /* Border radii */
+  --r-sm: 3px;
+  --r-md: 4px;
+  --r-lg: 6px;
 }
 
 /* ============================================
@@ -94,6 +103,10 @@
   --chinese-3: #8a6c92;
   --chinese-4: #4A2E50;
   --chinese-5: #2A182E;
+
+  /* RGB triplets for alpha usage */
+  --violet-3-rgb: 136,85,168;
+  --berry-3-rgb: 168,96,170;
 
   /* Semantic — brightened for dark-bg legibility */
   --green: #4caf50;

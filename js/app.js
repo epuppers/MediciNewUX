@@ -385,7 +385,245 @@ function toggleTheme() {
   const next = current === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', next);
   localStorage.setItem('theme', next);
+  // Re-apply purple intensity for new theme
+  const saved = localStorage.getItem('purpleIntensity');
+  if (saved) applyPurpleIntensity(saved);
 }
+
+// ============================================
+// PURPLE INTENSITY
+// ============================================
+const purpleBaseColors = {
+  light: {
+    '--berry-1': '#E0D0E1', '--berry-2': '#C4A6C5', '--berry-3': '#8B4F8D',
+    '--berry-4': '#5D355E', '--berry-5': '#2E1A2F',
+    '--violet-1': '#D8C8E2', '--violet-2': '#A383B4', '--violet-3': '#74418F',
+    '--violet-4': '#4D2B5F', '--violet-5': '#271630',
+    '--chinese-1': '#D8CAD9', '--chinese-2': '#A891AD', '--chinese-3': '#7F6485',
+    '--chinese-4': '#4A2E50', '--chinese-5': '#2A182E'
+  },
+  dark: {
+    '--berry-1': '#2e1f2f', '--berry-2': '#5a3a5c', '--berry-3': '#a860aa',
+    '--berry-4': '#5D355E', '--berry-5': '#2E1A2F',
+    '--violet-1': '#241a2f', '--violet-2': '#6a4a80', '--violet-3': '#8855a8',
+    '--violet-4': '#4D2B5F', '--violet-5': '#271630',
+    '--chinese-1': '#261a28', '--chinese-2': '#4e3854', '--chinese-3': '#8a6c92',
+    '--chinese-4': '#4A2E50', '--chinese-5': '#2A182E'
+  }
+};
+
+function hexToHsl(hex) {
+  var r = parseInt(hex.slice(1, 3), 16) / 255;
+  var g = parseInt(hex.slice(3, 5), 16) / 255;
+  var b = parseInt(hex.slice(5, 7), 16) / 255;
+  var max = Math.max(r, g, b), min = Math.min(r, g, b);
+  var h, s, l = (max + min) / 2;
+  if (max === min) { h = s = 0; }
+  else {
+    var d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+      case g: h = ((b - r) / d + 2) / 6; break;
+      case b: h = ((r - g) / d + 4) / 6; break;
+    }
+  }
+  return [h * 360, s * 100, l * 100];
+}
+
+function hslToHex(h, s, l) {
+  h /= 360; s /= 100; l /= 100;
+  var r, g, b;
+  if (s === 0) { r = g = b = l; }
+  else {
+    function hue2rgb(p, q, t) {
+      if (t < 0) t += 1; if (t > 1) t -= 1;
+      if (t < 1/6) return p + (q - p) * 6 * t;
+      if (t < 1/2) return q;
+      if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+      return p;
+    }
+    var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    var p = 2 * l - q;
+    r = hue2rgb(p, q, h + 1/3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1/3);
+  }
+  return '#' + [r, g, b].map(function(x) {
+    var hex = Math.round(x * 255).toString(16);
+    return hex.length === 1 ? '0' + hex : hex;
+  }).join('');
+}
+
+function hexToRgbString(hex) {
+  return parseInt(hex.slice(1,3),16) + ',' +
+         parseInt(hex.slice(3,5),16) + ',' +
+         parseInt(hex.slice(5,7),16);
+}
+
+// Map: which tokens also need an RGB triplet companion
+var rgbCompanions = {
+  '--violet-3': '--violet-3-rgb',
+  '--berry-3': '--berry-3-rgb'
+};
+
+function applyPurpleIntensity(value) {
+  var intensity = parseInt(value, 10);
+  var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  var bases = isDark ? purpleBaseColors.dark : purpleBaseColors.light;
+  var root = document.documentElement;
+
+  Object.keys(bases).forEach(function(prop) {
+    var hsl = hexToHsl(bases[prop]);
+    var newSat = Math.min(100, hsl[1] * (intensity / 100));
+    var newHex = hslToHex(hsl[0], newSat, hsl[2]);
+    root.style.setProperty(prop, newHex);
+
+    // Also update RGB triplet if this token has one
+    if (rgbCompanions[prop]) {
+      root.style.setProperty(rgbCompanions[prop], hexToRgbString(newHex));
+    }
+  });
+
+  // Update label
+  var label = document.getElementById('contrastValue');
+  if (label) label.textContent = intensity + '%';
+
+  localStorage.setItem('purpleIntensity', intensity);
+}
+
+// Restore saved intensity on load
+(function() {
+  var saved = localStorage.getItem('purpleIntensity');
+  if (saved) {
+    applyPurpleIntensity(saved);
+    var slider = document.getElementById('purpleIntensitySlider');
+    if (slider) slider.value = saved;
+  }
+})();
+
+// ============================================
+// ACCESSIBILITY
+// ============================================
+
+// --- Font size boost ---
+// App uses px units throughout, so root font-size changes have no effect.
+// CSS zoom on the app frame scales everything proportionally including px.
+// We compensate the frame dimensions so it still fills the viewport.
+var fontSizeZoomLevels = [1, 1.05, 1.1, 1.15, 1.2];
+
+function applyFontSizeBoost(value) {
+  var step = parseInt(value, 10);
+  var zoom = fontSizeZoomLevels[step] || 1;
+  var frame = document.querySelector('.app-frame');
+  if (!frame) return;
+
+  if (zoom === 1) {
+    frame.style.zoom = '';
+    frame.style.width = '';
+    frame.style.height = '';
+  } else {
+    frame.style.zoom = zoom;
+    frame.style.width = (100 / zoom) + 'vw';
+    frame.style.height = (100 / zoom) + 'vh';
+  }
+
+  var label = document.getElementById('fontSizeValue');
+  if (label) {
+    if (step === 0) label.textContent = '100%';
+    else label.textContent = Math.round(zoom * 100) + '%';
+  }
+  localStorage.setItem('a11yFontSize', step);
+}
+
+// --- Dyslexia font ---
+function toggleDyslexiaFont() {
+  var root = document.documentElement;
+  var active = root.getAttribute('data-a11y-font') === 'dyslexia';
+  if (active) {
+    root.removeAttribute('data-a11y-font');
+    localStorage.setItem('a11yDyslexia', 'off');
+  } else {
+    root.setAttribute('data-a11y-font', 'dyslexia');
+    localStorage.setItem('a11yDyslexia', 'on');
+  }
+  syncA11yToggles();
+}
+
+// --- Reduced motion ---
+function toggleReducedMotion() {
+  var root = document.documentElement;
+  var active = root.getAttribute('data-a11y-motion') === 'reduced';
+  if (active) {
+    root.removeAttribute('data-a11y-motion');
+    localStorage.setItem('a11yMotion', 'off');
+  } else {
+    root.setAttribute('data-a11y-motion', 'reduced');
+    localStorage.setItem('a11yMotion', 'on');
+  }
+  syncA11yToggles();
+}
+
+// --- High contrast + focus ---
+function toggleHighContrast() {
+  var root = document.documentElement;
+  var active = root.getAttribute('data-a11y-contrast') === 'high';
+  if (active) {
+    root.removeAttribute('data-a11y-contrast');
+    localStorage.setItem('a11yContrast', 'off');
+  } else {
+    root.setAttribute('data-a11y-contrast', 'high');
+    localStorage.setItem('a11yContrast', 'on');
+  }
+  syncA11yToggles();
+}
+
+// --- Sync toggle visuals to current state ---
+function syncA11yToggles() {
+  var root = document.documentElement;
+
+  var dyslexiaOn = root.getAttribute('data-a11y-font') === 'dyslexia';
+  var motionOn = root.getAttribute('data-a11y-motion') === 'reduced';
+  var contrastOn = root.getAttribute('data-a11y-contrast') === 'high';
+
+  var dt = document.getElementById('dyslexiaToggleTrack');
+  var dh = document.getElementById('dyslexiaToggleThumb');
+  var mt = document.getElementById('motionToggleTrack');
+  var mh = document.getElementById('motionToggleThumb');
+  var ct = document.getElementById('contrastToggleTrack');
+  var ch = document.getElementById('contrastToggleThumb');
+
+  if (dt) dt.classList.toggle('active', dyslexiaOn);
+  if (dh) dh.classList.toggle('active', dyslexiaOn);
+  if (mt) mt.classList.toggle('active', motionOn);
+  if (mh) mh.classList.toggle('active', motionOn);
+  if (ct) ct.classList.toggle('active', contrastOn);
+  if (ch) ch.classList.toggle('active', contrastOn);
+}
+
+// --- Restore all a11y settings on load ---
+(function() {
+  var fontSize = localStorage.getItem('a11yFontSize');
+  if (fontSize && parseInt(fontSize, 10) > 0) {
+    applyFontSizeBoost(fontSize);
+    var slider = document.getElementById('fontSizeSlider');
+    if (slider) slider.value = fontSize;
+  }
+
+  if (localStorage.getItem('a11yDyslexia') === 'on') {
+    document.documentElement.setAttribute('data-a11y-font', 'dyslexia');
+  }
+  // Respect OS preference, or saved user preference
+  var motionPref = localStorage.getItem('a11yMotion');
+  if (motionPref === 'on' || (motionPref === null && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+    document.documentElement.setAttribute('data-a11y-motion', 'reduced');
+  }
+  if (localStorage.getItem('a11yContrast') === 'on') {
+    document.documentElement.setAttribute('data-a11y-contrast', 'high');
+  }
+
+  syncA11yToggles();
+})();
 
 // ============================================
 // MODE SWITCHING
@@ -402,7 +640,6 @@ function switchMode(mode, btn) {
   const brainView = document.getElementById('brainView');
   const chatSidebar = document.getElementById('chatSidebar');
   const workflowSidebar = document.getElementById('workflowSidebar');
-  const brainSidebar = document.getElementById('brainSidebar');
   const newBtn = document.getElementById('newBtn');
 
   // Hide all views
@@ -410,36 +647,48 @@ function switchMode(mode, btn) {
   workflowsView.classList.remove('active');
   brainView.classList.remove('active');
 
-  // Hide all sidebars
+  // Hide sidebars
   chatSidebar.style.display = 'none';
   workflowSidebar.style.display = 'none';
-  brainSidebar.style.display = 'none';
+
+  // Clear brain nav active state when switching modes
+  document.querySelectorAll('.brain-nav-btn').forEach(b => b.classList.remove('active'));
 
   if (mode === 'chat') {
     chatView.classList.add('active');
-    chatSidebar.style.display = 'block';
+    chatSidebar.style.display = 'flex';
     newBtn.textContent = '+ New Thread';
     newBtn.style.display = '';
   } else if (mode === 'workflows') {
     workflowsView.classList.add('active');
-    workflowSidebar.style.display = 'block';
+    workflowSidebar.style.display = 'flex';
     newBtn.textContent = '+ New Workflow';
     newBtn.style.display = '';
     showWorkflowListing();
-  } else if (mode === 'brain') {
-    brainView.classList.add('active');
-    brainSidebar.style.display = 'block';
-    newBtn.style.display = 'none';
   }
 }
 
 function switchBrainSection(section, el) {
-  // Update sidebar active state
-  var brainSidebar = document.getElementById('brainSidebar');
-  brainSidebar.querySelectorAll('.thread-item').forEach(function(item) { item.classList.remove('active'); });
-  el.classList.add('active');
+  currentMode = 'brain';
 
-  // Switch content section
+  // Update brain nav active state
+  document.querySelectorAll('.brain-nav-btn').forEach(function(b) { b.classList.remove('active'); });
+  if (el) el.classList.add('active');
+
+  // Activate brain view, hide others
+  document.getElementById('chatView').classList.remove('active');
+  document.getElementById('workflowsView').classList.remove('active');
+  document.getElementById('brainView').classList.add('active');
+
+  // Deactivate top tabs (brain has no top tab now)
+  document.querySelectorAll('.top-tab').forEach(function(b) { b.classList.remove('active'); });
+
+  // Hide mode-specific sidebars, hide new button
+  document.getElementById('chatSidebar').style.display = 'none';
+  document.getElementById('workflowSidebar').style.display = 'none';
+  document.getElementById('newBtn').style.display = 'none';
+
+  // Switch brain content section
   document.querySelectorAll('.brain-section').forEach(function(s) { s.classList.remove('active'); });
   var target = document.getElementById('brain-' + section);
   if (target) target.classList.add('active');
@@ -874,6 +1123,7 @@ function showWorkflowDetail(id, el) {
 function showWorkflowListing() {
   document.getElementById('wfListing').style.display = 'flex';
   document.getElementById('wfDetail').style.display = 'none';
+  document.querySelectorAll('.wf-side-item').forEach(item => item.classList.remove('active'));
   closeCosimoPanel();
 }
 

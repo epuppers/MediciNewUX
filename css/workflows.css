@@ -36,6 +36,7 @@
   background: var(--white);
   border: 2px solid;
   border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+  border-radius: var(--r-md);
 }
 
 .wf-stats-section-bar {
@@ -95,6 +96,7 @@
   margin-bottom: 8px;
   cursor: pointer;
   transition: border-color 0.15s;
+  border-radius: var(--r-md);
 }
 
 .wf-card:hover {
@@ -125,6 +127,7 @@
   border: 1px solid;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  border-radius: var(--r-sm);
 }
 
 .status-active {
@@ -199,7 +202,6 @@
 .wf-detail-header {
   padding: 14px 20px 0;
   background: var(--white);
-  border-bottom: 1px solid var(--taupe-1);
 }
 
 .wf-detail-top {
@@ -218,6 +220,7 @@
   border: 1px solid var(--taupe-2);
   cursor: pointer;
   transition: all 0.1s;
+  border-radius: var(--r-sm);
 }
 
 .back-btn:hover {
@@ -243,6 +246,8 @@
 .tab-bar {
   display: flex;
   gap: 0;
+  border-bottom: 1px solid var(--taupe-2);
+  position: relative;
 }
 
 .tab-btn {
@@ -251,23 +256,40 @@
   font-size: 11px;
   font-weight: 600;
   color: var(--taupe-3);
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid transparent;
+  background: var(--taupe-1);
+  border: 1px solid var(--taupe-2);
+  border-bottom: 1px solid var(--taupe-2);
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  transition: all 0.15s;
+  transition: color 0.15s, background 0.15s;
+  border-radius: var(--r-md) var(--r-md) 0 0;
+  margin-bottom: -1px;
+  position: relative;
+  z-index: 1;
 }
 
 .tab-btn:hover {
   color: var(--taupe-5);
-  background: rgba(0,0,0,0.02);
+  background: var(--berry-1);
 }
 
 .tab-btn.active {
   color: var(--violet-3);
-  border-bottom-color: var(--violet-3);
+  background: var(--off-white);
+  border-color: var(--taupe-2) var(--taupe-2) transparent var(--taupe-2);
+  z-index: 2;
+}
+
+.tab-btn.active::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--violet-3);
+  border-radius: var(--r-md) var(--r-md) 0 0;
 }
 
 /* Tab content */
@@ -291,6 +313,7 @@
   border: 2px solid;
   border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
   margin-bottom: 12px;
+  border-radius: var(--r-md);
 }
 
 .detail-section-bar {
@@ -358,6 +381,7 @@
   border: 1px solid var(--taupe-2);
   margin-bottom: 6px;
   transition: border-color 0.15s;
+  border-radius: var(--r-md);
 }
 
 .source-item:hover {
@@ -377,6 +401,7 @@
   font-size: 16px;
   color: var(--taupe-1);
   flex-shrink: 0;
+  border-radius: var(--r-sm);
 }
 
 .source-info {
@@ -404,6 +429,7 @@
   border: 1px solid var(--taupe-2);
   padding: 2px 6px;
   background: var(--white);
+  border-radius: var(--r-sm);
 }
 
 .add-source-btn {
@@ -421,12 +447,13 @@
   margin-top: 6px;
   width: 100%;
   transition: all 0.15s;
+  border-radius: var(--r-md);
 }
 
 .add-source-btn:hover {
   border-color: var(--violet-3);
   color: var(--violet-3);
-  background: rgba(116,65,143,0.04);
+  background: rgba(var(--violet-3-rgb),0.04);
 }
 
 /* File type chips */
@@ -445,12 +472,13 @@
   border: 1px solid;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  border-radius: var(--r-sm);
 }
 
 .file-chip.pdf { color: var(--red); border-color: var(--red); background: rgba(192,72,72,0.08); }
 .file-chip.xlsx { color: var(--green); border-color: var(--green); background: rgba(61,139,64,0.08); }
 .file-chip.csv { color: var(--blue-3); border-color: var(--blue-3); background: rgba(116,156,181,0.08); }
-.file-chip.docx { color: var(--violet-3); border-color: var(--violet-3); background: rgba(116,65,143,0.08); }
+.file-chip.docx { color: var(--violet-3); border-color: var(--violet-3); background: rgba(var(--violet-3-rgb),0.08); }
 
 /* ============================================
    LESSON APPLIED COMPONENT
@@ -463,6 +491,7 @@
   margin-top: 12px;
   cursor: pointer;
   transition: border-color 0.15s;
+  border-radius: var(--r-md);
 }
 
 .lesson-applied:hover {
@@ -476,6 +505,7 @@
   padding: 6px 12px;
   background: var(--violet-3);
   border-bottom: 1px solid var(--violet-4);
+  border-radius: var(--r-sm) var(--r-sm) 0 0;
 }
 
 .lesson-applied-icon {
@@ -564,7 +594,7 @@
 [data-theme="dark"] .file-chip.pdf { background: rgba(224,85,85,0.12); }
 [data-theme="dark"] .file-chip.xlsx { background: rgba(76,175,80,0.12); }
 [data-theme="dark"] .file-chip.csv { background: rgba(140,184,212,0.12); }
-[data-theme="dark"] .file-chip.docx { background: rgba(136,85,168,0.12); }
+[data-theme="dark"] .file-chip.docx { background: rgba(var(--violet-3-rgb),0.12); }
 
 /* Source items */
 [data-theme="dark"] .source-item {
@@ -576,12 +606,31 @@
 }
 
 [data-theme="dark"] .add-source-btn:hover {
-  background: rgba(136,85,168,0.08);
+  background: rgba(var(--violet-3-rgb),0.08);
 }
 
 /* Tab bar */
+[data-theme="dark"] .tab-bar {
+  border-bottom-color: #2a2a2f;
+}
+
+[data-theme="dark"] .tab-btn {
+  background: rgba(0,0,0,0.25);
+  border-color: #2a2a2f;
+}
+
 [data-theme="dark"] .tab-btn:hover {
-  background: rgba(255,255,255,0.03);
+  color: var(--taupe-5);
+  background: var(--berry-1);
+}
+
+[data-theme="dark"] .tab-btn.active {
+  background: var(--off-white);
+  border-color: #2a2a2f #2a2a2f transparent #2a2a2f;
+}
+
+[data-theme="dark"] .tab-btn.active::before {
+  background: var(--violet-2);
 }
 
 /* Lesson applied — text on colored bar */

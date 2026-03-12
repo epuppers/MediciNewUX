@@ -19,6 +19,7 @@
   border-color: var(--taupe-2) var(--taupe-4) var(--taupe-4) var(--taupe-2);
   z-index: 50;
   box-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+  border-radius: var(--r-md);
 }
 
 .dropdown-menu.show {
@@ -47,7 +48,7 @@
 }
 
 .dropdown-item.violet:hover {
-  background: rgba(116,65,143,0.1);
+  background: rgba(var(--violet-3-rgb),0.1);
   color: var(--violet-3);
 }
 
@@ -171,7 +172,7 @@
 }
 
 [data-theme="dark"] .dropdown-item.violet:hover {
-  background: rgba(136,85,168,0.15);
+  background: rgba(var(--violet-3-rgb),0.15);
 }
 
 [data-theme="dark"] .panel-overlay {

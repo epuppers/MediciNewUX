@@ -6,7 +6,7 @@
 <title>Cosimo — Applied Intelligence Platform</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/layout.css">
 <link rel="stylesheet" href="css/chat.css">
@@ -22,7 +22,7 @@
   <div class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <div class="logo-row">
-        <div class="logo-mark"><div class="logo-mark-inner"></div></div>
+        <div class="logo-mark"><div class="logo-spheres"><div class="logo-sphere dark"></div><div class="logo-sphere light"></div><div class="logo-sphere dark"></div><div class="logo-sphere dark"></div><div class="logo-sphere dark"></div><div class="logo-sphere dark"></div></div></div>
         <div>
           <div class="logo-title">COSIMO</div>
           <div class="logo-sub">MEDICI & COMPANY</div>
@@ -70,7 +70,7 @@
     <div id="workflowSidebar" style="display:none;">
       <div class="side-label">Workflows</div>
       <div class="workflow-sidebar-list">
-        <div class="wf-side-item active" onclick="showWorkflowDetail('rent-roll', this)">
+        <div class="wf-side-item" onclick="showWorkflowDetail('rent-roll', this)">
           Rent Roll Extraction
           <div class="wf-side-meta">
             <span class="wf-side-status active-status">Active</span>
@@ -109,22 +109,22 @@
       </div>
     </div>
 
-    <!-- Brain sidebar items -->
-    <div id="brainSidebar" style="display:none;">
+    <!-- Brain nav — always visible at bottom of sidebar -->
+    <div class="brain-nav" id="brainNav">
       <div class="side-label">Brain</div>
-      <div class="thread-list">
-        <div class="thread-item active" onclick="switchBrainSection('memory', this)">
+      <div class="brain-nav-items">
+        <button class="brain-nav-btn" onclick="switchBrainSection('memory', this)" title="Memory">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" width="13" height="13"><path d="M4 2.5C2.5 2.5 1.5 3.8 1.5 5.2c0 1 .4 1.7.9 2.2"/><path d="M2.4 7.4c-.5.6-.7 1.5-.3 2.3.4.9 1.2 1.3 2 1.3"/><path d="M4.1 11c-.1.8.3 1.7 1.1 2.2.9.5 1.8.4 2.5 0"/><path d="M7.7 13.2c.5.5 1.3.8 2.1.5.9-.3 1.4-1 1.5-1.8"/><path d="M11.3 11.9c.7-.1 1.4-.6 1.7-1.4.3-.9 0-1.8-.5-2.3"/><path d="M12.5 8.2c.6-.5 1-1.3 1-2.2 0-1.4-1-2.7-2.5-2.7"/><path d="M11 3.3c-.3-1-1.2-1.8-2.5-1.8S6.3 2.3 6 3.3"/><path d="M4 3.3c.3-1 1.2-1.8 2-1.8"/><path d="M3.5 5.5c1.5 0 3 .8 4 2"/><path d="M7.5 7.5c1-1.2 2.5-2 4-2"/><path d="M7.5 7.5v5.7"/></svg>
           Memory
-          <div class="thread-meta">Facts, preferences, context</div>
-        </div>
-        <div class="thread-item" onclick="switchBrainSection('lessons', this)">
+        </button>
+        <button class="brain-nav-btn" onclick="switchBrainSection('lessons', this)" title="Lessons">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M2 2h12v11H9l-1 2-1-2H2z"/><line x1="5" y1="5.5" x2="11" y2="5.5"/><line x1="5" y1="8.5" x2="9" y2="8.5"/></svg>
           Lessons
-          <div class="thread-meta">Patterns &amp; domain knowledge</div>
-        </div>
-        <div class="thread-item" onclick="switchBrainSection('graphs', this)">
-          Data Graphs
-          <div class="thread-meta">Entity relationships</div>
-        </div>
+        </button>
+        <button class="brain-nav-btn" onclick="switchBrainSection('graphs', this)" title="Data Graphs">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><circle cx="4" cy="4" r="2"/><circle cx="12" cy="4" r="2"/><circle cx="8" cy="13" r="2"/><line x1="5.5" y1="5.5" x2="7" y2="11"/><line x1="10.5" y1="5.5" x2="9" y2="11"/><line x1="6" y1="4" x2="10" y2="4"/></svg>
+          Graphs
+        </button>
       </div>
     </div>
 
@@ -145,9 +145,6 @@
       <button class="top-tab" id="tabWorkflows" onclick="switchMode('workflows', this)">
         <span class="top-tab-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="12" height="12"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41"/></svg></span> Workflows
       </button>
-      <button class="top-tab" id="tabBrain" onclick="switchMode('brain', this)">
-        <span class="top-tab-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="12" height="12"><path d="M8 14.5V8"/><path d="M4.5 3.5C3 3.5 1.5 4.8 1.5 6.5c0 1.2.6 2 1.2 2.5-.3.7-.2 1.8.5 2.5s1.8 1 2.8.8c.5.8 1.2 1.2 2 1.2"/><path d="M11.5 3.5c1.5 0 3 1.3 3 3 0 1.2-.6 2-1.2 2.5.3.7.2 1.8-.5 2.5s-1.8 1-2.8.8c-.5.8-1.2 1.2-2 1.2"/><path d="M5.5 2.5C5.5 1.5 6.5 1 8 1s2.5.5 2.5 1.5S9.5 4 8 4 5.5 3.5 5.5 2.5z"/><path d="M3 7c1.2.3 2.5.8 3.5 1.5"/><path d="M13 7c-1.2.3-2.5.8-3.5 1.5"/></svg></span> Brain
-      </button>
       <div class="top-tab-spacer"></div>
       <div class="top-header-right">
         <div class="top-icon-btn" id="taskAlertBtn" onclick="toggleTaskPanel()" title="Assigned Tasks">
@@ -164,12 +161,75 @@
         <div class="top-profile" onclick="toggleProfileMenu()">
           <div class="top-profile-avatar">E</div>
           <span class="top-profile-name">Eliot Puplett</span>
-          <button class="theme-toggle" onclick="event.stopPropagation(); toggleTheme()" title="Toggle dark mode">◐</button>
         </div>
         <div class="th-dropdown th-dropdown-profile" id="profilePanel" style="display:none;">
-          <div class="profile-menu-item" onclick="alert('Edit Profile')">Edit Profile</div>
-          <div class="profile-menu-item" onclick="alert('Notification Settings')">Notification Settings</div>
-          <div class="profile-menu-item" onclick="alert('Integrations')">Integrations</div>
+          <div class="profile-menu-theme" onclick="event.stopPropagation(); toggleTheme()">
+            <span class="profile-menu-theme-label">Dark mode</span>
+            <div class="profile-menu-toggle" id="themeToggleSwitch">
+              <div class="profile-menu-toggle-track" id="themeToggleTrack">
+                <div class="profile-menu-toggle-thumb" id="themeToggleThumb"></div>
+              </div>
+            </div>
+          </div>
+          <div class="profile-menu-contrast" onclick="event.stopPropagation()">
+            <div class="profile-menu-contrast-header">
+              <span class="profile-menu-theme-label">Purple intensity</span>
+              <span class="profile-menu-contrast-value" id="contrastValue">100%</span>
+            </div>
+            <input type="range" class="profile-menu-slider" id="purpleIntensitySlider" min="0" max="150" value="100" oninput="applyPurpleIntensity(this.value)">
+            <div class="profile-menu-slider-labels">
+              <span>Subtle</span>
+              <span>Default</span>
+              <span>Vivid</span>
+            </div>
+          </div>
+          <div class="profile-menu-divider"></div>
+          <div class="profile-menu-section-label">Accessibility</div>
+
+          <!-- Font size slider -->
+          <div class="profile-menu-contrast" onclick="event.stopPropagation()">
+            <div class="profile-menu-contrast-header">
+              <span class="profile-menu-theme-label">Text size</span>
+              <span class="profile-menu-contrast-value" id="fontSizeValue">100%</span>
+            </div>
+            <input type="range" class="profile-menu-slider" id="fontSizeSlider" min="0" max="4" step="1" value="0" oninput="applyFontSizeBoost(this.value)">
+            <div class="profile-menu-slider-labels">
+              <span>100%</span>
+              <span>110%</span>
+              <span>120%</span>
+            </div>
+          </div>
+
+          <!-- Dyslexia-friendly font -->
+          <div class="profile-menu-theme" onclick="event.stopPropagation(); toggleDyslexiaFont()">
+            <span class="profile-menu-theme-label">Dyslexia-friendly font</span>
+            <div class="profile-menu-toggle">
+              <div class="profile-menu-toggle-track" id="dyslexiaToggleTrack">
+                <div class="profile-menu-toggle-thumb" id="dyslexiaToggleThumb"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reduced motion -->
+          <div class="profile-menu-theme" onclick="event.stopPropagation(); toggleReducedMotion()">
+            <span class="profile-menu-theme-label">Reduced motion</span>
+            <div class="profile-menu-toggle">
+              <div class="profile-menu-toggle-track" id="motionToggleTrack">
+                <div class="profile-menu-toggle-thumb" id="motionToggleThumb"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- High contrast + focus -->
+          <div class="profile-menu-theme" onclick="event.stopPropagation(); toggleHighContrast()">
+            <span class="profile-menu-theme-label">High contrast &amp; focus</span>
+            <div class="profile-menu-toggle">
+              <div class="profile-menu-toggle-track" id="contrastToggleTrack">
+                <div class="profile-menu-toggle-thumb" id="contrastToggleThumb"></div>
+              </div>
+            </div>
+          </div>
+
           <div class="profile-menu-divider"></div>
           <div class="profile-menu-item profile-menu-signout" onclick="window.location.href='login.html'">Sign Out</div>
         </div>
@@ -2209,7 +2269,7 @@
 <div class="cosimo-panel" id="cosimoPanel">
   <div class="cosimo-panel-header">
     <div class="cosimo-panel-title">
-      <div class="logo-mark"><div class="logo-mark-inner"></div></div>
+      <div class="logo-mark"><div class="logo-spheres"><div class="logo-sphere dark"></div><div class="logo-sphere light"></div><div class="logo-sphere dark"></div><div class="logo-sphere dark"></div><div class="logo-sphere dark"></div><div class="logo-sphere dark"></div></div></div>
       <span class="cosimo-panel-name">Edit with Cosimo</span>
     </div>
     <button class="panel-close-btn" onclick="closeCosimoPanel()">✕ Close</button>
