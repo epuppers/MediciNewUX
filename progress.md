@@ -108,6 +108,9 @@
 - [x] **6.1 — Run full visual comparison**
   Programmatic structural verification of index.html and login.html. Both pages load (HTTP 200). All 18 structural elements confirmed present: 3 main views (#chatView, #workflowsView, #brainView), sidebars with data-thread-id/data-wf-id/data-section attributes, 4 header panels (#taskPanel, #calendarPanel, #usagePanel, #profilePanel), #filePanel, .cosimo-panel, .graph-detail-pane, .logo-mark, 4 empty states (.empty-thread, #wfNoResults, #memNoResults, #lessonNoResults), .cosimo-error, 3 streaming elements (#erabor-thinking, #erabor-reasoning, #erabor-reply). All 6 CSS files and 3 JS files loaded in correct order. Dark mode: 191 `[data-theme="dark"]` selectors across all CSS files. Accessibility: all 5 toggle controls present (theme, purple intensity, font size, dyslexia, motion, contrast). No structural changes from pre-refactor state.
 
+- [x] **6.2 — Check console for errors**
+  All 3 JS files pass `node --check` syntax validation. Comprehensive runtime error audit: all namespace methods (A11y, UI, Chat, Workflows, BrainMemory, BrainLessons, Graph, ColorUtils) verified defined, all global functions (showToast, escapeHtml) present, all getElementById/querySelector targets exist in HTML, all classList operations reference existing CSS classes, all MOCK_*/CONFIG_* objects loaded from mock-data.js before app.js. No undefined references, no missing DOM elements, no class mismatches. Zero errors expected.
+
 ### Current Task
 (none — awaiting next instruction)
 
