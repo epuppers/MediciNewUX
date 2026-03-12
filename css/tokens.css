@@ -45,6 +45,10 @@
   /* RGB triplets for alpha usage — updated by purple intensity slider */
   --violet-3-rgb: 116,65,143;
   --berry-3-rgb: 139,79,141;
+  --green-rgb: 61,139,64;
+  --red-rgb: 192,72,72;
+  --amber-rgb: 184,134,43;
+  --blue-3-rgb: 116,156,181;
 
   --white: #FFFFFF;
   --off-white: #F8F6FA;
@@ -126,6 +130,10 @@
   /* RGB triplets for alpha usage */
   --violet-3-rgb: 136,85,168;
   --berry-3-rgb: 168,96,170;
+  --green-rgb: 76,175,80;
+  --red-rgb: 224,85,85;
+  --amber-rgb: 212,160,48;
+  --blue-3-rgb: 140,184,212;
 
   /* Semantic — brightened for dark-bg legibility */
   --green: #4caf50;

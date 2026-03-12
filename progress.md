@@ -120,8 +120,11 @@
 - [x] **7.1 — Add missing color tokens to tokens.css**
   Audited all CSS files for raw hex colors not covered by existing tokens. Added 11 new tokens to both `:root` (light) and `[data-theme="dark"]` sections: bevel highlight/shadow pairs (`--green-hi`, `--green-lo`, `--red-hi`, `--red-lo`), dark surface depth scale (`--surface-0` through `--surface-3`, `--surface-graph`), light text for dark backgrounds (`--text-light`), and red hover shade (`--red-dark`). All new tokens resolve to the exact same hex colors currently hardcoded — no visual change.
 
+- [x] **7.2 — Add missing RGB triplet tokens**
+  Added `--green-rgb`, `--red-rgb`, `--amber-rgb`, and `--blue-3-rgb` triplet tokens to both `:root` (light) and `[data-theme="dark"]` sections of tokens.css. Light values: 61,139,64 / 192,72,72 / 184,134,43 / 116,156,181. Dark values: 76,175,80 / 224,85,85 / 212,160,48 / 140,184,212. These follow the same pattern as existing `--violet-3-rgb` and `--berry-3-rgb` and enable `rgba(var(--token-rgb), alpha)` usage.
+
 ### Current Task
-Phase 7 — task 7.1 complete
+Phase 7 — task 7.2 complete
 
 ### Blocked / Notes
 (none)
