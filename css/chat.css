@@ -1199,6 +1199,8 @@
 
 .cmd-btn:hover { background: var(--berry-1); }
 .cmd-btn:active { border-color: var(--taupe-3) var(--white) var(--white) var(--taupe-3); }
+.cmd-btn:focus-visible { outline: 2px solid var(--violet-3); outline-offset: 2px; }
+.cmd-btn:disabled { opacity: 0.5; cursor: default; pointer-events: none; }
 
 .cmd-primary {
   background: var(--violet-3);

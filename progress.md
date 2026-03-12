@@ -3,7 +3,7 @@
 **Started:** 2026-03-11
 **Last updated:** 2026-03-11
 
-## Status: COMPLETE — Phase 4
+## Status: IN PROGRESS — Phase 5
 
 ### Completed Tasks
 - [x] **1.1 — Extract thread data to data object**
@@ -86,6 +86,9 @@
 
 - [x] **4.6 — Wrap global functions into namespace objects**
   Created 7 namespace objects: `A11y` (7 functions — toggleTheme, applyPurpleIntensity, applyFontSizeBoost, toggleDyslexiaFont, toggleReducedMotion, toggleHighContrast, syncA11yToggles), `UI` (15 functions + currentMode state — switchMode, switchBrainSection, renderHeaderPanels, closeAllPanels, toggleTaskPanel, toggleCalendarPanel, toggleUsagePanel, toggleProfileMenu, buildMiniCalendar, handleNew, openCosimoPanel, closeCosimoPanel, handlePanelKey, sendPanelMessage, toggleDropdown), `Chat` (30 functions + state — runGlobalSearch, closeSearch, disableInput, giveFeedback, selectThread, updateFilesButton, openFilePanel, closeFilePanel, switchFilePanelTab, buildSpreadsheet, exportThread, shareThread, fillSuggestion, retryK1, isNearBottom, softScroll, eraborTimer, showEraborStopBtn, runEraborSequence, markEraborDone, cancelErabor, streamReply, typeTextBlock, streamSectionBlock, tokenizeHTML, attachFromComputer, attachFromDrive, toggleModelDropdown, selectModel + searchTimer/activeThread/sheetData/colLetters/sheetBuilt/erabor* state), `Workflows` (3 functions — showWorkflowDetail, showWorkflowListing, switchTab), `BrainMemory` (13 functions — renderMemoryFromData, toggleAddMemory, cancelAddMemory, submitNewMemory, filterMemories, filterByCategory, toggleFactMenu, editFact, deleteFact, confirmDelete, cancelDelete, toggleTrait, removeTrait, addCustomTrait), `BrainLessons` (11 functions + currentLessonId — renderLessonList, filterLessons, filterLessonScope, openLesson, closeLessonDetail, toggleLessonEdit, openCosimoForLesson, toggleLessonScope, deleteLesson, createNewLesson, toggleCardScope), `Graph` (18 functions + all graph state — findEntity, buildGraph, makeEdge, makeNode, animateNode, applyRootState, applyClusterState, graphNavigate, openGraphEntity, closeGraphDetail, navigateToRelated, updateBreadcrumb, showGraphTooltip, hideGraphTooltip, startDriftLoop, editGraphEntity, openCosimoForEntity + graphState/graphColors/graphNodeEls/graphEdgeEls/graphBuilt/driftRAF/driftItems/ANIM). Kept `showToast` and `escapeHtml` global. Updated all 97 function definitions, all internal cross-references, and all call sites in the event listeners IIFE. Wrapped the `switchBrainSection` override in an IIFE. Syntax verified with `node --check`.
+
+- [x] **5.1 — Audit all button states**
+  Audited all 9 button types for missing interactive states. Added `:focus-visible` with `outline: 2px solid var(--violet-3); outline-offset: 2px` to all 9 buttons (`.sso-btn`, `.auth-submit`, `.header-btn`, `.new-btn`, `.tab-btn`, `.back-btn`, `.cmd-btn`, `.panel-send-btn`, `.profile-menu-toggle`). Added missing `:active` states to `.back-btn` and `.panel-send-btn`. Added `:disabled` styles to `.cmd-btn`, `.panel-send-btn`, and `.auth-submit`. Added missing dark mode overrides for `.back-btn` (base + hover). Tab button focus uses `outline-offset: -2px` to stay within the tab bar. Profile toggle focus targets the track via `.profile-menu-toggle:focus-visible .profile-menu-toggle-track`.
 
 ### Current Task
 (none — awaiting next instruction)

@@ -223,6 +223,12 @@
   border-color: var(--taupe-4);
 }
 
+.back-btn:active {
+  border-color: var(--taupe-4) var(--taupe-1) var(--taupe-1) var(--taupe-4);
+}
+
+.back-btn:focus-visible { outline: 2px solid var(--violet-3); outline-offset: 2px; }
+
 .wf-detail-name {
   font-family: var(--pixel);
   font-size: 22px;
@@ -286,6 +292,8 @@
   background: var(--violet-3);
   border-radius: var(--r-md) var(--r-md) 0 0;
 }
+
+.tab-btn:focus-visible { outline: 2px solid var(--violet-3); outline-offset: -2px; }
 
 /* Tab content */
 .tab-content {
@@ -562,5 +570,14 @@
 
 [data-theme="dark"] .tab-btn.active::before {
   background: var(--violet-2);
+}
+
+[data-theme="dark"] .back-btn {
+  border-color: var(--taupe-2);
+}
+
+[data-theme="dark"] .back-btn:hover {
+  color: var(--taupe-5);
+  border-color: var(--taupe-3);
 }
 

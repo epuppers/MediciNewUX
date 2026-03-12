@@ -280,6 +280,8 @@ body {
   border-color: var(--berry-4) var(--berry-2) var(--berry-2) var(--berry-4);
 }
 
+.sso-btn:focus-visible { outline: 2px solid var(--violet-3); outline-offset: 2px; }
+
 .sso-icon {
   width: 18px;
   height: 18px;
@@ -387,6 +389,9 @@ body {
 .auth-submit:active {
   border-color: var(--violet-5) var(--violet-2) var(--violet-2) var(--violet-5);
 }
+
+.auth-submit:focus-visible { outline: 2px solid var(--violet-3); outline-offset: 2px; }
+.auth-submit:disabled { opacity: 0.5; cursor: default; }
 
 /* Footer links */
 .auth-footer {
