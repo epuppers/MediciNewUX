@@ -3374,4 +3374,29 @@ function toggleCardScope(btn, e) {
   if (cosimoPanelClose) cosimoPanelClose.addEventListener('click', function() { closeCosimoPanel(); });
   if (cosimoPanelSend) cosimoPanelSend.addEventListener('click', function() { sendPanelMessage(); });
 
+  // --- Input handlers (replaces inline oninput/onkeydown) ---
+  var sidebarSearch = document.querySelector('.sidebar-search-input');
+  if (sidebarSearch) sidebarSearch.addEventListener('input', function() { runGlobalSearch(this.value); });
+
+  var purpleSlider = document.getElementById('purpleIntensitySlider');
+  if (purpleSlider) purpleSlider.addEventListener('input', function() { applyPurpleIntensity(this.value); });
+
+  var fontSizeSlider = document.getElementById('fontSizeSlider');
+  if (fontSizeSlider) fontSizeSlider.addEventListener('input', function() { applyFontSizeBoost(this.value); });
+
+  var memSearchInput = document.getElementById('memSearchInput');
+  if (memSearchInput) memSearchInput.addEventListener('input', function() { filterMemories(); });
+
+  var lessonSearchInput = document.getElementById('lessonSearchInput');
+  if (lessonSearchInput) lessonSearchInput.addEventListener('input', function() { filterLessons(); });
+
+  var traitInput = document.getElementById('traitInput');
+  if (traitInput) traitInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') { addCustomTrait(); e.preventDefault(); } });
+
+  var memAddInput = document.getElementById('memAddInput');
+  if (memAddInput) memAddInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') { submitNewMemory(); e.preventDefault(); } });
+
+  var panelInput = document.getElementById('panelInput');
+  if (panelInput) panelInput.addEventListener('keydown', function(e) { handlePanelKey(e); });
+
 })();

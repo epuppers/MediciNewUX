@@ -36,6 +36,9 @@
 - [x] **2.1 — Remove all inline onclick handlers from index.html**
   Removed all 123 inline `onclick` attributes from index.html. Added `data-thread-id`, `data-section`, `data-tab`, `data-wf-id`, `data-suggestion`, `data-action`, `data-nav`, `data-entity-id`/`data-entity-cat` attributes and IDs to elements for targeting. Created `initEventListeners()` IIFE (~250 lines) at end of app.js using event delegation for repeated patterns (thread list, workflow list/cards, brain nav, feedback buttons, model selectors, attach options, memory facts/traits, lesson cards, graph breadcrumbs/pills) and direct listeners for unique buttons. Also removed inline onclick from JS-generated HTML in `renderMemoryFromData()`, `renderLessonList()`, `submitNewMemory()`, `deleteFact()`, search results, and graph breadcrumbs/pills.
 
+- [x] **2.2 — Remove inline oninput handlers from index.html**
+  Removed 5 `oninput` and 3 `onkeydown` inline attributes from index.html. Added corresponding `addEventListener('input')` and `addEventListener('keydown')` calls in `initEventListeners()`: sidebar search, purple intensity slider, font size slider, memory search, lesson search, trait input Enter, memory add input Enter, and Cosimo panel keydown.
+
 ### Current Task
 (none — awaiting next instruction)
 

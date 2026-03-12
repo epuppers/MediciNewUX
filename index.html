@@ -32,7 +32,7 @@
       <button class="new-btn" id="newBtn">+ New Thread</button>
 
       <div class="sidebar-search">
-        <input type="text" class="sidebar-search-input" placeholder="Search..." oninput="runGlobalSearch(this.value)" />
+        <input type="text" class="sidebar-search-input" placeholder="Search..." />
         <div class="search-results" id="searchResults" style="display:none;"></div>
       </div>
     </div>
@@ -176,7 +176,7 @@
               <span class="profile-menu-theme-label">Purple intensity</span>
               <span class="profile-menu-contrast-value" id="contrastValue">100%</span>
             </div>
-            <input type="range" class="profile-menu-slider" id="purpleIntensitySlider" min="0" max="150" value="100" oninput="applyPurpleIntensity(this.value)">
+            <input type="range" class="profile-menu-slider" id="purpleIntensitySlider" min="0" max="150" value="100">
             <div class="profile-menu-slider-labels">
               <span>Subtle</span>
               <span>Default</span>
@@ -192,7 +192,7 @@
               <span class="profile-menu-theme-label">Text size</span>
               <span class="profile-menu-contrast-value" id="fontSizeValue">100%</span>
             </div>
-            <input type="range" class="profile-menu-slider" id="fontSizeSlider" min="0" max="4" step="1" value="0" oninput="applyFontSizeBoost(this.value)">
+            <input type="range" class="profile-menu-slider" id="fontSizeSlider" min="0" max="4" step="1" value="0">
             <div class="profile-menu-slider-labels">
               <span>100%</span>
               <span>110%</span>
@@ -1628,7 +1628,7 @@
                   <div class="mem-trait-selected" id="traitSelected"></div>
                   <div class="mem-trait-presets" id="traitPresets"></div>
                   <div class="mem-trait-custom">
-                    <input type="text" class="mem-trait-input" id="traitInput" placeholder="Add a custom trait..." onkeydown="if(event.key==='Enter'){addCustomTrait(); event.preventDefault();}" />
+                    <input type="text" class="mem-trait-input" id="traitInput" placeholder="Add a custom trait..." />
                     <button class="mem-trait-add-btn" id="traitAddBtn">Add</button>
                   </div>
                 </div>
@@ -1640,7 +1640,7 @@
                 <div class="mem-facts-toolbar">
                   <div class="mem-search-wrap">
                     <svg class="mem-search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/></svg>
-                    <input type="text" class="mem-search-input" id="memSearchInput" placeholder="Search memories..." oninput="filterMemories()" />
+                    <input type="text" class="mem-search-input" id="memSearchInput" placeholder="Search memories..." />
                   </div>
                   <div class="mem-category-filters" id="memCategoryFilters">
                     <button class="mem-cat-pill active">All</button>
@@ -1655,7 +1655,7 @@
                 <!-- Add Memory Inline Form (hidden by default) -->
                 <div class="mem-add-form" id="memAddForm" style="display:none;">
                   <div class="mem-add-form-inner">
-                    <input type="text" class="mem-add-input" id="memAddInput" placeholder="Type a fact Cosimo should remember..." onkeydown="if(event.key==='Enter'){submitNewMemory(); event.preventDefault();}" />
+                    <input type="text" class="mem-add-input" id="memAddInput" placeholder="Type a fact Cosimo should remember..." />
                     <div class="mem-add-form-row">
                       <select class="mem-add-category" id="memAddCategory">
                         <option value="preference">Preference</option>
@@ -1706,7 +1706,7 @@
                 <!-- Search -->
                 <div class="mem-search-wrap" style="margin-bottom:12px;">
                   <svg class="mem-search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/></svg>
-                  <input type="text" class="mem-search-input" id="lessonSearchInput" placeholder="Search lessons..." oninput="filterLessons()" />
+                  <input type="text" class="mem-search-input" id="lessonSearchInput" placeholder="Search lessons..." />
                 </div>
 
                 <!-- Scope Filter -->
@@ -1930,7 +1930,7 @@
 
   <div class="cosimo-panel-input">
     <div class="panel-input-row">
-      <div class="panel-text-input" id="panelInput" contenteditable="true" data-placeholder="Describe a change..." onkeydown="handlePanelKey(event)"></div>
+      <div class="panel-text-input" id="panelInput" contenteditable="true" data-placeholder="Describe a change..."></div>
       <button class="panel-send-btn" id="cosimoPanelSend" title="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="12" height="12"><path d="M1.5 8h11M8.5 4L12.5 8 8.5 12"/></svg></button>
     </div>
   </div>
