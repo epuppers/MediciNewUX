@@ -3,7 +3,7 @@
 **Started:** 2026-03-11
 **Last updated:** 2026-03-11
 
-## Status: COMPLETE — Phase 5
+## Status: IN PROGRESS — Phase 6
 
 ### Completed Tasks
 - [x] **1.1 — Extract thread data to data object**
@@ -104,6 +104,9 @@
 
 - [x] **5.6 — Verify accessibility settings persistence**
   Verified all 6 settings save to localStorage and restore on page load: (1) Theme (`theme` key) — saved in `toggleTheme()`, restored in IIFE at line 130. (2) Purple intensity (`purpleIntensity`) — saved in `applyPurpleIntensity()`, restored in IIFE at line 464, slider value also restored. (3) Font size zoom (`a11yFontSize`) — saved in `applyFontSizeBoost()`, restored in IIFE at line 587, slider value also restored. (4) Dyslexia font (`a11yDyslexia`) — saved in `toggleDyslexiaFont()`, restored at line 594. (5) Reduced motion (`a11yMotion`) — saved in `toggleReducedMotion()`, restored at line 598, also respects OS `prefers-reduced-motion` as fallback. (6) High contrast (`a11yContrast`) — saved in `toggleHighContrast()`, restored at line 602. All toggle UI states sync via `syncA11yToggles()` on load. No code changes needed.
+
+- [x] **6.1 — Run full visual comparison**
+  Programmatic structural verification of index.html and login.html. Both pages load (HTTP 200). All 18 structural elements confirmed present: 3 main views (#chatView, #workflowsView, #brainView), sidebars with data-thread-id/data-wf-id/data-section attributes, 4 header panels (#taskPanel, #calendarPanel, #usagePanel, #profilePanel), #filePanel, .cosimo-panel, .graph-detail-pane, .logo-mark, 4 empty states (.empty-thread, #wfNoResults, #memNoResults, #lessonNoResults), .cosimo-error, 3 streaming elements (#erabor-thinking, #erabor-reasoning, #erabor-reply). All 6 CSS files and 3 JS files loaded in correct order. Dark mode: 191 `[data-theme="dark"]` selectors across all CSS files. Accessibility: all 5 toggle controls present (theme, purple intensity, font size, dyslexia, motion, contrast). No structural changes from pre-refactor state.
 
 ### Current Task
 (none — awaiting next instruction)
