@@ -57,6 +57,9 @@
 - [x] **3.3 — Move misplaced CSS to correct files**
   Moved 4 groups of misplaced CSS rules to components.css: (1) Cosimo thinking/reasoning/error styles + dark mode overrides from chat.css (~330 lines), (2) Brain view/nav/empty/notes-banner styles from layout.css (~110 lines), (3) Lesson-applied component + dark mode override from workflows.css (~55 lines), (4) Panel overlay + dark mode override from utilities.css (~20 lines). All dark mode overrides moved alongside their base styles. Model selector correctly stays in chat.css, accessibility modes correctly stay in layout.css.
 
+- [x] **3.4 — Normalize dark mode override structure**
+  Audited all 6 CSS files for scattered `[data-theme="dark"]` rules. Found 3 scattered rules in layout.css mixed into the profile toggle section: `#themeToggleTrack`, `#themeToggleThumb`, and `.profile-menu-slider`. Moved all 3 to the dark mode overrides section at the end of layout.css near other theme-toggle overrides. All other files (tokens.css, chat.css, workflows.css, components.css, utilities.css) were already properly organized. No cross-file dark mode duplicates found.
+
 ### Current Task
 (none — awaiting next instruction)
 
