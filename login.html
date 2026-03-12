@@ -512,7 +512,7 @@ body {
 
       <!-- SSO Providers -->
       <div class="sso-buttons">
-        <button class="sso-btn" onclick="window.location.href='index.html'">
+        <button class="sso-btn">
           <span class="sso-icon">
             <svg viewBox="0 0 18 18" fill="none">
               <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
@@ -523,7 +523,7 @@ body {
           </span>
           Continue with Google
         </button>
-        <button class="sso-btn" onclick="window.location.href='index.html'">
+        <button class="sso-btn">
           <span class="sso-icon">
             <svg viewBox="0 0 21 21" fill="none">
               <rect x="1" y="1" width="9" height="9" fill="#F25022"/>
@@ -534,7 +534,7 @@ body {
           </span>
           Continue with Microsoft
         </button>
-        <button class="sso-btn" onclick="window.location.href='index.html'">
+        <button class="sso-btn">
           <span class="sso-icon">
             <svg viewBox="0 0 18 18" fill="none">
               <path d="M15.31 11.34l-1.37-1.37a.47.47 0 0 0-.67 0L9 14.24l-4.27-4.27a.47.47 0 0 0-.67 0l-1.37 1.37a.47.47 0 0 0 0 .67l5.97 5.97a.47.47 0 0 0 .67 0l5.97-5.97a.47.47 0 0 0 .01-.67zm0-6.32L13.94 3.65a.47.47 0 0 0-.67 0L9 7.92 4.73 3.65a.47.47 0 0 0-.67 0L2.69 5.02a.47.47 0 0 0 0 .67l5.97 5.97a.47.47 0 0 0 .67 0l5.97-5.97a.47.47 0 0 0 .01-.67z" fill="#2684FF"/>
@@ -581,6 +581,11 @@ body {
     container.appendChild(p);
   }
 })();
+
+// SSO button listeners (replaces inline onclick)
+document.querySelectorAll('.sso-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() { window.location.href = 'index.html'; });
+});
 </script>
 
 </body>

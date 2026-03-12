@@ -39,6 +39,9 @@
 - [x] **2.2 — Remove inline oninput handlers from index.html**
   Removed 5 `oninput` and 3 `onkeydown` inline attributes from index.html. Added corresponding `addEventListener('input')` and `addEventListener('keydown')` calls in `initEventListeners()`: sidebar search, purple intensity slider, font size slider, memory search, lesson search, trait input Enter, memory add input Enter, and Cosimo panel keydown.
 
+- [x] **2.3 — Remove inline onclick handlers from login.html**
+  Removed 3 `onclick="window.location.href='index.html'"` from SSO buttons. Added `addEventListener` in the existing `<script>` block using `querySelectorAll('.sso-btn')`.
+
 ### Current Task
 (none — awaiting next instruction)
 
