@@ -3133,6 +3133,12 @@ function toggleCardScope(btn, e) {
   if (exportBtn) exportBtn.addEventListener('click', function() { exportThread(); });
   if (shareBtn) shareBtn.addEventListener('click', function() { shareThread(); });
 
+  // --- File attachment link in chat body ---
+  document.addEventListener('click', function(e) {
+    var attachment = e.target.closest('.file-attachment');
+    if (attachment) openFilePanel('viewer');
+  });
+
   // --- Feedback buttons (delegation on chat area) ---
   document.addEventListener('click', function(e) {
     var fbBtn = e.target.closest('.feedback-btn');
