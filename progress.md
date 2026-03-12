@@ -3,7 +3,7 @@
 **Started:** 2026-03-11
 **Last updated:** 2026-03-11
 
-## Status: IN PROGRESS — Phase 1
+## Status: IN PROGRESS — Phase 2
 
 ### Completed Tasks
 - [x] **1.1 — Extract thread data to data object**
@@ -32,6 +32,9 @@
 
 - [x] **1.9 — Collect all MOCK* and CONFIG* objects into a single data file**
   Created `js/mock-data.js` containing all data objects: `MOCK_WORKFLOWS`, `MOCK_SPREADSHEET`, `MOCK_MEMORY`, `MOCK_TASKS`, `MOCK_CALENDAR`, `MOCK_USAGE`, `MOCK_LESSONS`, `MOCK_THREADS`, `CONFIG_PURPLE_BASE_COLORS`, `CONFIG_RGB_COMPANIONS`, `MOCK_GRAPH_DATA`. Added `<script src="js/mock-data.js">` tag in index.html before app.js. Removed all data object definitions from app.js (~680 lines moved out).
+
+- [x] **2.1 — Remove all inline onclick handlers from index.html**
+  Removed all 123 inline `onclick` attributes from index.html. Added `data-thread-id`, `data-section`, `data-tab`, `data-wf-id`, `data-suggestion`, `data-action`, `data-nav`, `data-entity-id`/`data-entity-cat` attributes and IDs to elements for targeting. Created `initEventListeners()` IIFE (~250 lines) at end of app.js using event delegation for repeated patterns (thread list, workflow list/cards, brain nav, feedback buttons, model selectors, attach options, memory facts/traits, lesson cards, graph breadcrumbs/pills) and direct listeners for unique buttons. Also removed inline onclick from JS-generated HTML in `renderMemoryFromData()`, `renderLessonList()`, `submitNewMemory()`, `deleteFact()`, search results, and graph breadcrumbs/pills.
 
 ### Current Task
 (none — awaiting next instruction)

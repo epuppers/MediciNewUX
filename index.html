@@ -29,7 +29,7 @@
         </div>
       </div>
 
-      <button class="new-btn" id="newBtn" onclick="handleNew()">+ New Thread</button>
+      <button class="new-btn" id="newBtn">+ New Thread</button>
 
       <div class="sidebar-search">
         <input type="text" class="sidebar-search-input" placeholder="Search..." oninput="runGlobalSearch(this.value)" />
@@ -41,25 +41,25 @@
     <div id="chatSidebar">
       <div class="side-label">Recent</div>
       <div class="thread-list">
-        <div class="thread-item active" onclick="selectThread('fund3', this)">
+        <div class="thread-item active" data-thread-id="fund3">
           Fund III — Allocation Drift
           <div class="thread-meta">Today, 2:31 PM</div>
         </div>
-        <div class="thread-item" onclick="selectThread('hilgard', this)">
+        <div class="thread-item" data-thread-id="hilgard">
           Hilgard — Fee Analysis
           <div class="thread-meta">Feb 22, 4:15 PM</div>
           <span class="thread-indicator ready">Ready</span>
         </div>
-        <div class="thread-item" onclick="selectThread('q4lp', this)">
+        <div class="thread-item" data-thread-id="q4lp">
           Q4 LP Distribution Waterfall
           <div class="thread-meta">Yesterday, 11:20 AM</div>
         </div>
-        <div class="thread-item" onclick="selectThread('k1', this)">
+        <div class="thread-item" data-thread-id="k1">
           K-1 Document Extraction
           <div class="thread-meta">Feb 20, 9:45 AM</div>
           <span class="thread-indicator error">Error</span>
         </div>
-        <div class="thread-item" onclick="selectThread('erabor', this)">
+        <div class="thread-item" data-thread-id="erabor">
           Erabor Partnership Terms
           <div class="thread-meta">Feb 18, 3:30 PM</div>
         </div>
@@ -70,35 +70,35 @@
     <div id="workflowSidebar" style="display:none;">
       <div class="side-label">Workflows</div>
       <div class="workflow-sidebar-list">
-        <div class="wf-side-item" data-wf-id="rent-roll" onclick="showWorkflowDetail('rent-roll', this)">
+        <div class="wf-side-item" data-wf-id="rent-roll">
           Rent Roll Extraction
           <div class="wf-side-meta">
             <span class="wf-side-status active-status">Active</span>
             Last run: 2h ago
           </div>
         </div>
-        <div class="wf-side-item" data-wf-id="k1-extract" onclick="showWorkflowDetail('k1-extract', this)">
+        <div class="wf-side-item" data-wf-id="k1-extract">
           K-1 Document Processing
           <div class="wf-side-meta">
             <span class="wf-side-status active-status">Active</span>
             Last run: 6h ago
           </div>
         </div>
-        <div class="wf-side-item" data-wf-id="lp-waterfall" onclick="showWorkflowDetail('lp-waterfall', this)">
+        <div class="wf-side-item" data-wf-id="lp-waterfall">
           LP Distribution Waterfall
           <div class="wf-side-meta">
             <span class="wf-side-status draft-status">Draft</span>
             Created Feb 20
           </div>
         </div>
-        <div class="wf-side-item" data-wf-id="fee-calc" onclick="showWorkflowDetail('fee-calc', this)">
+        <div class="wf-side-item" data-wf-id="fee-calc">
           Management Fee Calculator
           <div class="wf-side-meta">
             <span class="wf-side-status active-status">Active</span>
             Last run: 1d ago
           </div>
         </div>
-        <div class="wf-side-item" data-wf-id="covenant" onclick="showWorkflowDetail('covenant', this)">
+        <div class="wf-side-item" data-wf-id="covenant">
           Loan Covenant Monitor
           <span class="wf-notif-dot"></span>
           <div class="wf-side-meta">
@@ -113,15 +113,15 @@
     <div class="brain-nav" id="brainNav">
       <div class="side-label">Brain</div>
       <div class="brain-nav-items">
-        <button class="brain-nav-btn" onclick="switchBrainSection('memory', this)" title="Memory">
+        <button class="brain-nav-btn" data-section="memory" title="Memory">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" width="13" height="13"><path d="M4 2.5C2.5 2.5 1.5 3.8 1.5 5.2c0 1 .4 1.7.9 2.2"/><path d="M2.4 7.4c-.5.6-.7 1.5-.3 2.3.4.9 1.2 1.3 2 1.3"/><path d="M4.1 11c-.1.8.3 1.7 1.1 2.2.9.5 1.8.4 2.5 0"/><path d="M7.7 13.2c.5.5 1.3.8 2.1.5.9-.3 1.4-1 1.5-1.8"/><path d="M11.3 11.9c.7-.1 1.4-.6 1.7-1.4.3-.9 0-1.8-.5-2.3"/><path d="M12.5 8.2c.6-.5 1-1.3 1-2.2 0-1.4-1-2.7-2.5-2.7"/><path d="M11 3.3c-.3-1-1.2-1.8-2.5-1.8S6.3 2.3 6 3.3"/><path d="M4 3.3c.3-1 1.2-1.8 2-1.8"/><path d="M3.5 5.5c1.5 0 3 .8 4 2"/><path d="M7.5 7.5c1-1.2 2.5-2 4-2"/><path d="M7.5 7.5v5.7"/></svg>
           Memory
         </button>
-        <button class="brain-nav-btn" onclick="switchBrainSection('lessons', this)" title="Lessons">
+        <button class="brain-nav-btn" data-section="lessons" title="Lessons">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M2 2h12v11H9l-1 2-1-2H2z"/><line x1="5" y1="5.5" x2="11" y2="5.5"/><line x1="5" y1="8.5" x2="9" y2="8.5"/></svg>
           Lessons
         </button>
-        <button class="brain-nav-btn" onclick="switchBrainSection('graphs', this)" title="Data Graphs">
+        <button class="brain-nav-btn" data-section="graphs" title="Data Graphs">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><circle cx="4" cy="4" r="2"/><circle cx="12" cy="4" r="2"/><circle cx="8" cy="13" r="2"/><line x1="5.5" y1="5.5" x2="7" y2="11"/><line x1="10.5" y1="5.5" x2="9" y2="11"/><line x1="6" y1="4" x2="10" y2="4"/></svg>
           Graphs
         </button>
@@ -139,31 +139,31 @@
 
     <!-- ======== TOP TAB BAR ======== -->
     <div class="top-tab-bar">
-      <button class="top-tab active" id="tabChat" onclick="switchMode('chat', this)">
+      <button class="top-tab active" id="tabChat">
         <span class="top-tab-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="12" height="12"><path d="M1 3h14v9H5l-4 3v-3H1z"/></svg></span> Chat
       </button>
-      <button class="top-tab" id="tabWorkflows" onclick="switchMode('workflows', this)">
+      <button class="top-tab" id="tabWorkflows">
         <span class="top-tab-icon"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="12" height="12"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41"/></svg></span> Workflows
       </button>
       <div class="top-tab-spacer"></div>
       <div class="top-header-right">
-        <div class="top-icon-btn" id="taskAlertBtn" onclick="toggleTaskPanel()" title="Assigned Tasks">
+        <div class="top-icon-btn" id="taskAlertBtn" title="Assigned Tasks">
           <span class="th-icon">◈</span>
           <div class="th-badge" id="taskBadge">3</div>
         </div>
-        <div class="top-icon-btn" id="calendarBtn" onclick="toggleCalendarPanel()" title="Calendar">
+        <div class="top-icon-btn" id="calendarBtn" title="Calendar">
           <span class="th-icon">▦</span>
         </div>
-        <div class="top-icon-btn" id="usageBtn" onclick="toggleUsagePanel()" title="Usage">
+        <div class="top-icon-btn" id="usageBtn" title="Usage">
           <svg viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="11"><path d="M1 11 A7 7 0 0 1 15 11"/><line x1="8" y1="11" x2="10.5" y2="4" stroke-width="2" stroke-linecap="square"/><rect x="6.5" y="9.5" width="3" height="3" fill="currentColor" stroke="none"/></svg>
         </div>
         <div class="th-divider"></div>
-        <div class="top-profile" onclick="toggleProfileMenu()">
+        <div class="top-profile">
           <div class="top-profile-avatar">E</div>
           <span class="top-profile-name">Eliot Puplett</span>
         </div>
         <div class="th-dropdown th-dropdown-profile" id="profilePanel" style="display:none;">
-          <div class="profile-menu-theme" onclick="event.stopPropagation(); toggleTheme()">
+          <div class="profile-menu-theme">
             <span class="profile-menu-theme-label">Dark mode</span>
             <div class="profile-menu-toggle" id="themeToggleSwitch">
               <div class="profile-menu-toggle-track" id="themeToggleTrack">
@@ -171,7 +171,7 @@
               </div>
             </div>
           </div>
-          <div class="profile-menu-contrast" onclick="event.stopPropagation()">
+          <div class="profile-menu-contrast">
             <div class="profile-menu-contrast-header">
               <span class="profile-menu-theme-label">Purple intensity</span>
               <span class="profile-menu-contrast-value" id="contrastValue">100%</span>
@@ -187,7 +187,7 @@
           <div class="profile-menu-section-label">Accessibility</div>
 
           <!-- Font size slider -->
-          <div class="profile-menu-contrast" onclick="event.stopPropagation()">
+          <div class="profile-menu-contrast">
             <div class="profile-menu-contrast-header">
               <span class="profile-menu-theme-label">Text size</span>
               <span class="profile-menu-contrast-value" id="fontSizeValue">100%</span>
@@ -201,7 +201,7 @@
           </div>
 
           <!-- Dyslexia-friendly font -->
-          <div class="profile-menu-theme" onclick="event.stopPropagation(); toggleDyslexiaFont()">
+          <div class="profile-menu-theme">
             <span class="profile-menu-theme-label">Dyslexia-friendly font</span>
             <div class="profile-menu-toggle">
               <div class="profile-menu-toggle-track" id="dyslexiaToggleTrack">
@@ -211,7 +211,7 @@
           </div>
 
           <!-- Reduced motion -->
-          <div class="profile-menu-theme" onclick="event.stopPropagation(); toggleReducedMotion()">
+          <div class="profile-menu-theme">
             <span class="profile-menu-theme-label">Reduced motion</span>
             <div class="profile-menu-toggle">
               <div class="profile-menu-toggle-track" id="motionToggleTrack">
@@ -221,7 +221,7 @@
           </div>
 
           <!-- High contrast + focus -->
-          <div class="profile-menu-theme" onclick="event.stopPropagation(); toggleHighContrast()">
+          <div class="profile-menu-theme">
             <span class="profile-menu-theme-label">High contrast &amp; focus</span>
             <div class="profile-menu-toggle">
               <div class="profile-menu-toggle-track" id="contrastToggleTrack">
@@ -231,7 +231,7 @@
           </div>
 
           <div class="profile-menu-divider"></div>
-          <div class="profile-menu-item profile-menu-signout" onclick="window.location.href='login.html'">Sign Out</div>
+          <div class="profile-menu-item profile-menu-signout">Sign Out</div>
         </div>
       </div>
     </div>
@@ -253,9 +253,9 @@
       <div class="main-header" id="chatHeader">
         <span class="header-title" id="chatHeaderTitle">Fund III — Allocation Drift</span>
         <div class="header-actions">
-          <button class="header-btn icon-btn disabled" id="filesBtn" disabled onclick="openFilePanel('folder')" title="Files"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M1.5 3.5v9h13v-7h-7l-2-2z"/></svg></button>
-          <button class="header-btn icon-btn" onclick="exportThread()" title="Export"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M8 1.5v9M4.5 7L8 10.5 11.5 7"/><path d="M2.5 11.5v3h11v-3"/></svg></button>
-          <button class="header-btn icon-btn" onclick="shareThread()" title="Share"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><circle cx="12" cy="3" r="2"/><circle cx="4" cy="8" r="2"/><circle cx="12" cy="13" r="2"/><line x1="5.8" y1="7" x2="10.2" y2="4"/><line x1="5.8" y1="9" x2="10.2" y2="12"/></svg></button>
+          <button class="header-btn icon-btn disabled" id="filesBtn" disabled title="Files"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M1.5 3.5v9h13v-7h-7l-2-2z"/></svg></button>
+          <button class="header-btn icon-btn" id="exportBtn" title="Export"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M8 1.5v9M4.5 7L8 10.5 11.5 7"/><path d="M2.5 11.5v3h11v-3"/></svg></button>
+          <button class="header-btn icon-btn" id="shareBtn" title="Share"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><circle cx="12" cy="3" r="2"/><circle cx="4" cy="8" r="2"/><circle cx="12" cy="13" r="2"/><line x1="5.8" y1="7" x2="10.2" y2="4"/><line x1="5.8" y1="9" x2="10.2" y2="12"/></svg></button>
         </div>
       </div>
 
@@ -357,8 +357,8 @@
               <p><strong>Recommendation:</strong> Paired trade — trim the S&P 500 position and rotate into the EAFE sleeve. I've drafted the rebalancing memo for the IC. Want me to pull it up, or look at tax implications first?</p>
             </div>
             <div class="msg-feedback">
-              <button class="feedback-btn up" onclick="giveFeedback(this,'up')" title="Good response"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 22V11l3-8 2 1-1 5h7a2 2 0 0 1 2 2.2l-1.2 7A2 2 0 0 1 16.8 20H7z"/><rect x="1" y="11" width="5" height="11"/></svg></button>
-              <button class="feedback-btn down" onclick="giveFeedback(this,'down')" title="Poor response"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2v11l-3 8-2-1 1-5H6a2 2 0 0 1-2-2.2l1.2-7A2 2 0 0 1 7.2 4H17z"/><rect x="18" y="2" width="5" height="11"/></svg></button>
+              <button class="feedback-btn up" title="Good response"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 22V11l3-8 2 1-1 5h7a2 2 0 0 1 2 2.2l-1.2 7A2 2 0 0 1 16.8 20H7z"/><rect x="1" y="11" width="5" height="11"/></svg></button>
+              <button class="feedback-btn down" title="Poor response"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2v11l-3 8-2-1 1-5H6a2 2 0 0 1-2-2.2l1.2-7A2 2 0 0 1 7.2 4H17z"/><rect x="18" y="2" width="5" height="11"/></svg></button>
             </div>
           </div>
         </div>
@@ -429,8 +429,8 @@
               </div>
             </div>
             <div class="msg-feedback">
-              <button class="feedback-btn up" onclick="giveFeedback(this,'up')" title="Good response"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 22V11l3-8 2 1-1 5h7a2 2 0 0 1 2 2.2l-1.2 7A2 2 0 0 1 16.8 20H7z"/><rect x="1" y="11" width="5" height="11"/></svg></button>
-              <button class="feedback-btn down" onclick="giveFeedback(this,'down')" title="Poor response"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2v11l-3 8-2-1 1-5H6a2 2 0 0 1-2-2.2l1.2-7A2 2 0 0 1 7.2 4H17z"/><rect x="18" y="2" width="5" height="11"/></svg></button>
+              <button class="feedback-btn up" title="Good response"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 22V11l3-8 2 1-1 5h7a2 2 0 0 1 2 2.2l-1.2 7A2 2 0 0 1 16.8 20H7z"/><rect x="1" y="11" width="5" height="11"/></svg></button>
+              <button class="feedback-btn down" title="Poor response"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2v11l-3 8-2-1 1-5H6a2 2 0 0 1-2-2.2l1.2-7A2 2 0 0 1 7.2 4H17z"/><rect x="18" y="2" width="5" height="11"/></svg></button>
             </div>
           </div>
         </div>
@@ -442,10 +442,10 @@
           <div class="attach-wrapper">
             <button class="cmd-btn" title="Attach file"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M8.5 3.5v7a2 2 0 0 1-4 0v-7a3 3 0 0 1 6 0v7.5a4 4 0 0 1-8 0V5"/></svg></button>
             <div class="attach-menu">
-              <button class="attach-option" onclick="attachFromComputer(this)" title="From computer">
+              <button class="attach-option" title="From computer">
                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><rect x="1.5" y="1.5" width="13" height="9"/><line x1="6" y1="10.5" x2="6" y2="13"/><line x1="10" y1="10.5" x2="10" y2="13"/><line x1="4" y1="13" x2="12" y2="13"/></svg>
               </button>
-              <button class="attach-option" onclick="attachFromDrive(this)" title="From cloud drive">
+              <button class="attach-option" title="From cloud drive">
                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M4 13.5H3.5a3 3 0 0 1-.4-5.97 4 4 0 0 1 7.8-1.53A3.5 3.5 0 0 1 13 12.5H4z"/></svg>
               </button>
             </div>
@@ -454,20 +454,20 @@
         </div>
         <div class="input-footer">
           <div class="model-selector">
-            <button class="model-selector-btn" onclick="toggleModelDropdown(this)">
+            <button class="model-selector-btn">
               <span class="model-selector-label">Analyst</span>
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>
             </button>
             <div class="model-dropdown">
-              <button class="model-option" data-model="assistant" onclick="selectModel(this)">
+              <button class="model-option" data-model="assistant">
                 <span class="model-option-name">Assistant</span>
                 <span class="model-option-desc">Quick questions and lookups</span>
               </button>
-              <button class="model-option selected" data-model="analyst" onclick="selectModel(this)">
+              <button class="model-option selected" data-model="analyst">
                 <span class="model-option-name">Analyst</span>
                 <span class="model-option-desc">Drafts, summaries, and document review</span>
               </button>
-              <button class="model-option" data-model="expert" onclick="selectModel(this)">
+              <button class="model-option" data-model="expert">
                 <span class="model-option-name">Expert</span>
                 <span class="model-option-desc">Complex analysis and long-form deliverables</span>
               </button>
@@ -513,7 +513,7 @@
               <p><strong>Offset provisions:</strong> Q2 and Q3 2025 have portfolio company monitoring fees of $42,000 and $18,500 respectively that should offset against the management fee per the LPA. Net fees adjusted in the output.</p>
             </div>
 
-            <div class="file-attachment" onclick="openFilePanel('viewer')">
+            <div class="file-attachment">
               <div class="file-attachment-icon">▦</div>
               <div class="file-attachment-info">
                 <div class="file-attachment-name">Hilgard_Fund_II_Fee_Analysis.xlsx</div>
@@ -561,10 +561,10 @@
           <div class="attach-wrapper">
             <button class="cmd-btn" title="Attach file"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M8.5 3.5v7a2 2 0 0 1-4 0v-7a3 3 0 0 1 6 0v7.5a4 4 0 0 1-8 0V5"/></svg></button>
             <div class="attach-menu">
-              <button class="attach-option" onclick="attachFromComputer(this)" title="From computer">
+              <button class="attach-option" title="From computer">
                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><rect x="1.5" y="1.5" width="13" height="9"/><line x1="6" y1="10.5" x2="6" y2="13"/><line x1="10" y1="10.5" x2="10" y2="13"/><line x1="4" y1="13" x2="12" y2="13"/></svg>
               </button>
-              <button class="attach-option" onclick="attachFromDrive(this)" title="From cloud drive">
+              <button class="attach-option" title="From cloud drive">
                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M4 13.5H3.5a3 3 0 0 1-.4-5.97 4 4 0 0 1 7.8-1.53A3.5 3.5 0 0 1 13 12.5H4z"/></svg>
               </button>
             </div>
@@ -573,20 +573,20 @@
         </div>
         <div class="input-footer">
           <div class="model-selector">
-            <button class="model-selector-btn" onclick="toggleModelDropdown(this)">
+            <button class="model-selector-btn">
               <span class="model-selector-label">Analyst</span>
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>
             </button>
             <div class="model-dropdown">
-              <button class="model-option" data-model="assistant" onclick="selectModel(this)">
+              <button class="model-option" data-model="assistant">
                 <span class="model-option-name">Assistant</span>
                 <span class="model-option-desc">Quick questions and lookups</span>
               </button>
-              <button class="model-option selected" data-model="analyst" onclick="selectModel(this)">
+              <button class="model-option selected" data-model="analyst">
                 <span class="model-option-name">Analyst</span>
                 <span class="model-option-desc">Drafts, summaries, and document review</span>
               </button>
-              <button class="model-option" data-model="expert" onclick="selectModel(this)">
+              <button class="model-option" data-model="expert">
                 <span class="model-option-name">Expert</span>
                 <span class="model-option-desc">Complex analysis and long-form deliverables</span>
               </button>
@@ -640,10 +640,10 @@
           <div class="attach-wrapper">
             <button class="cmd-btn" title="Attach file"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M8.5 3.5v7a2 2 0 0 1-4 0v-7a3 3 0 0 1 6 0v7.5a4 4 0 0 1-8 0V5"/></svg></button>
             <div class="attach-menu">
-              <button class="attach-option" onclick="attachFromComputer(this)" title="From computer">
+              <button class="attach-option" title="From computer">
                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><rect x="1.5" y="1.5" width="13" height="9"/><line x1="6" y1="10.5" x2="6" y2="13"/><line x1="10" y1="10.5" x2="10" y2="13"/><line x1="4" y1="13" x2="12" y2="13"/></svg>
               </button>
-              <button class="attach-option" onclick="attachFromDrive(this)" title="From cloud drive">
+              <button class="attach-option" title="From cloud drive">
                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M4 13.5H3.5a3 3 0 0 1-.4-5.97 4 4 0 0 1 7.8-1.53A3.5 3.5 0 0 1 13 12.5H4z"/></svg>
               </button>
             </div>
@@ -652,20 +652,20 @@
         </div>
         <div class="input-footer">
           <div class="model-selector">
-            <button class="model-selector-btn" onclick="toggleModelDropdown(this)">
+            <button class="model-selector-btn">
               <span class="model-selector-label">Analyst</span>
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>
             </button>
             <div class="model-dropdown">
-              <button class="model-option" data-model="assistant" onclick="selectModel(this)">
+              <button class="model-option" data-model="assistant">
                 <span class="model-option-name">Assistant</span>
                 <span class="model-option-desc">Quick questions and lookups</span>
               </button>
-              <button class="model-option selected" data-model="analyst" onclick="selectModel(this)">
+              <button class="model-option selected" data-model="analyst">
                 <span class="model-option-name">Analyst</span>
                 <span class="model-option-desc">Drafts, summaries, and document review</span>
               </button>
-              <button class="model-option" data-model="expert" onclick="selectModel(this)">
+              <button class="model-option" data-model="expert">
                 <span class="model-option-name">Expert</span>
                 <span class="model-option-desc">Complex analysis and long-form deliverables</span>
               </button>
@@ -684,10 +684,10 @@
           <div class="empty-thread-title">What can Cosimo help with?</div>
           <div class="empty-thread-sub">Ask about fund performance, document analysis, compliance checks, or anything across your portfolio.</div>
           <div class="empty-thread-suggestions">
-            <button class="empty-thread-chip" onclick="fillSuggestion('Compare Q3 and Q4 distributions across all active funds')">Distribution comparison</button>
-            <button class="empty-thread-chip" onclick="fillSuggestion('Pull the latest NAV report for Fund IV and flag any valuation changes above 10%')">NAV review</button>
-            <button class="empty-thread-chip" onclick="fillSuggestion('Summarize all outstanding covenant violations across the loan book')">Covenant check</button>
-            <button class="empty-thread-chip" onclick="fillSuggestion('Generate a capital call notice for the next tranche')">Capital call</button>
+            <button class="empty-thread-chip" data-suggestion="Compare Q3 and Q4 distributions across all active funds">Distribution comparison</button>
+            <button class="empty-thread-chip" data-suggestion="Pull the latest NAV report for Fund IV and flag any valuation changes above 10%">NAV review</button>
+            <button class="empty-thread-chip" data-suggestion="Summarize all outstanding covenant violations across the loan book">Covenant check</button>
+            <button class="empty-thread-chip" data-suggestion="Generate a capital call notice for the next tranche">Capital call</button>
           </div>
         </div>
       </div>
@@ -697,10 +697,10 @@
           <div class="attach-wrapper">
             <button class="cmd-btn" title="Attach file"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M8.5 3.5v7a2 2 0 0 1-4 0v-7a3 3 0 0 1 6 0v7.5a4 4 0 0 1-8 0V5"/></svg></button>
             <div class="attach-menu">
-              <button class="attach-option" onclick="attachFromComputer(this)" title="From computer">
+              <button class="attach-option" title="From computer">
                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><rect x="1.5" y="1.5" width="13" height="9"/><line x1="6" y1="10.5" x2="6" y2="13"/><line x1="10" y1="10.5" x2="10" y2="13"/><line x1="4" y1="13" x2="12" y2="13"/></svg>
               </button>
-              <button class="attach-option" onclick="attachFromDrive(this)" title="From cloud drive">
+              <button class="attach-option" title="From cloud drive">
                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M4 13.5H3.5a3 3 0 0 1-.4-5.97 4 4 0 0 1 7.8-1.53A3.5 3.5 0 0 1 13 12.5H4z"/></svg>
               </button>
             </div>
@@ -709,20 +709,20 @@
         </div>
         <div class="input-footer">
           <div class="model-selector">
-            <button class="model-selector-btn" onclick="toggleModelDropdown(this)">
+            <button class="model-selector-btn">
               <span class="model-selector-label">Analyst</span>
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>
             </button>
             <div class="model-dropdown">
-              <button class="model-option" data-model="assistant" onclick="selectModel(this)">
+              <button class="model-option" data-model="assistant">
                 <span class="model-option-name">Assistant</span>
                 <span class="model-option-desc">Quick questions and lookups</span>
               </button>
-              <button class="model-option selected" data-model="analyst" onclick="selectModel(this)">
+              <button class="model-option selected" data-model="analyst">
                 <span class="model-option-name">Analyst</span>
                 <span class="model-option-desc">Drafts, summaries, and document review</span>
               </button>
-              <button class="model-option" data-model="expert" onclick="selectModel(this)">
+              <button class="model-option" data-model="expert">
                 <span class="model-option-name">Expert</span>
                 <span class="model-option-desc">Complex analysis and long-form deliverables</span>
               </button>
@@ -766,7 +766,7 @@
                   <div class="cosimo-error-detail">Connection to Ridgeline Capital document vault timed out after 30s. The K-1 extraction pipeline could not retrieve the source documents. This may be due to an expired API token or a temporary outage on the custodian's end.</div>
                   <div class="cosimo-error-meta">Error 504 · Gateway Timeout · Vault Integration · Feb 20, 9:46 AM</div>
                 </div>
-                <button class="cosimo-error-retry" onclick="retryK1()">
+                <button class="cosimo-error-retry" id="k1RetryBtn">
                   <svg class="retry-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M13.65 2.35A7.96 7.96 0 0 0 8 0C3.58 0 0 3.58 0 8s3.58 8 8 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 8 14 6 6 0 1 1 8 2c1.66 0 3.14.69 4.22 1.78L9 7h7V0l-2.35 2.35z" fill="currentColor"/>
                   </svg>
@@ -784,10 +784,10 @@
           <div class="attach-wrapper">
             <button class="cmd-btn" title="Attach file"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M8.5 3.5v7a2 2 0 0 1-4 0v-7a3 3 0 0 1 6 0v7.5a4 4 0 0 1-8 0V5"/></svg></button>
             <div class="attach-menu">
-              <button class="attach-option" onclick="attachFromComputer(this)" title="From computer">
+              <button class="attach-option" title="From computer">
                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><rect x="1.5" y="1.5" width="13" height="9"/><line x1="6" y1="10.5" x2="6" y2="13"/><line x1="10" y1="10.5" x2="10" y2="13"/><line x1="4" y1="13" x2="12" y2="13"/></svg>
               </button>
-              <button class="attach-option" onclick="attachFromDrive(this)" title="From cloud drive">
+              <button class="attach-option" title="From cloud drive">
                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M4 13.5H3.5a3 3 0 0 1-.4-5.97 4 4 0 0 1 7.8-1.53A3.5 3.5 0 0 1 13 12.5H4z"/></svg>
               </button>
             </div>
@@ -796,20 +796,20 @@
         </div>
         <div class="input-footer">
           <div class="model-selector">
-            <button class="model-selector-btn" onclick="toggleModelDropdown(this)">
+            <button class="model-selector-btn">
               <span class="model-selector-label">Analyst</span>
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>
             </button>
             <div class="model-dropdown">
-              <button class="model-option" data-model="assistant" onclick="selectModel(this)">
+              <button class="model-option" data-model="assistant">
                 <span class="model-option-name">Assistant</span>
                 <span class="model-option-desc">Quick questions and lookups</span>
               </button>
-              <button class="model-option selected" data-model="analyst" onclick="selectModel(this)">
+              <button class="model-option selected" data-model="analyst">
                 <span class="model-option-name">Analyst</span>
                 <span class="model-option-desc">Drafts, summaries, and document review</span>
               </button>
-              <button class="model-option" data-model="expert" onclick="selectModel(this)">
+              <button class="model-option" data-model="expert">
                 <span class="model-option-name">Expert</span>
                 <span class="model-option-desc">Complex analysis and long-form deliverables</span>
               </button>
@@ -1002,27 +1002,27 @@
           <div class="text-input" id="erabor-input" contenteditable="true" data-placeholder="Continue this thread..."></div>
           <button class="cmd-btn">Attach</button>
           <button class="cmd-btn cmd-primary" id="erabor-send-btn" title="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M1.5 8h11M8.5 4L12.5 8 8.5 12"/></svg></button>
-          <button class="cmd-btn cmd-stop" id="erabor-stop-btn" style="display:none;" onclick="cancelErabor()" title="Stop">
+          <button class="cmd-btn cmd-stop" id="erabor-stop-btn" style="display:none;" title="Stop">
             <svg class="stop-icon" viewBox="0 0 12 12" fill="currentColor"><rect x="1" y="1" width="10" height="10" rx="0"/></svg>
           </button>
         </div>
         <div class="input-footer">
           <span>⌘B bold · ⌘I italic · ⌘U underline · **markdown**</span>
           <div class="model-selector">
-            <button class="model-selector-btn" onclick="toggleModelDropdown(this)">
+            <button class="model-selector-btn">
               <span class="model-selector-label">Analyst</span>
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>
             </button>
             <div class="model-dropdown">
-              <button class="model-option" data-model="assistant" onclick="selectModel(this)">
+              <button class="model-option" data-model="assistant">
                 <span class="model-option-name">Assistant</span>
                 <span class="model-option-desc">Quick questions and lookups</span>
               </button>
-              <button class="model-option selected" data-model="analyst" onclick="selectModel(this)">
+              <button class="model-option selected" data-model="analyst">
                 <span class="model-option-name">Analyst</span>
                 <span class="model-option-desc">Drafts, summaries, and document review</span>
               </button>
-              <button class="model-option" data-model="expert" onclick="selectModel(this)">
+              <button class="model-option" data-model="expert">
                 <span class="model-option-name">Expert</span>
                 <span class="model-option-desc">Complex analysis and long-form deliverables</span>
               </button>
@@ -1039,10 +1039,10 @@
       <div class="file-panel" id="filePanel">
         <div class="file-panel-header">
           <div class="file-panel-tabs">
-            <button class="file-panel-tab active" id="fpTabViewer" onclick="switchFilePanelTab('viewer')">Viewer</button>
-            <button class="file-panel-tab" id="fpTabFolder" onclick="switchFilePanelTab('folder')">Files</button>
+            <button class="file-panel-tab active" id="fpTabViewer">Viewer</button>
+            <button class="file-panel-tab" id="fpTabFolder">Files</button>
           </div>
-          <button class="file-panel-close" onclick="closeFilePanel()">✕</button>
+          <button class="file-panel-close" id="fpCloseBtn">✕</button>
         </div>
 
         <!-- File Viewer -->
@@ -1076,7 +1076,7 @@
             <span class="fp-folder-count">1 file</span>
           </div>
           <div class="fp-file-list">
-            <div class="fp-file-item active" onclick="switchFilePanelTab('viewer')">
+            <div class="fp-file-item active">
               <div class="fp-file-item-icon">▦</div>
               <div class="fp-file-item-info">
                 <div class="fp-file-item-name">Hilgard_Fund_II_Fee_Analysis.xlsx</div>
@@ -1098,7 +1098,7 @@
         <div class="main-header">
           <span class="header-title">Workflows</span>
           <div class="header-actions">
-            <button class="header-btn primary" onclick="handleNew()">+ New Workflow</button>
+            <button class="header-btn primary" id="newWorkflowBtn">+ New Workflow</button>
           </div>
         </div>
 
@@ -1122,7 +1122,7 @@
           </div>
 
           <!-- Cards -->
-          <div class="wf-card" onclick="showWorkflowDetail('rent-roll', this)">
+          <div class="wf-card" data-wf-id="rent-roll">
             <div class="wf-card-header">
               <span class="wf-card-title">Rent Roll Extraction</span>
               <span class="wf-card-status status-active">Active</span>
@@ -1146,7 +1146,7 @@
             </div>
           </div>
 
-          <div class="wf-card" onclick="showWorkflowDetail('k1-extract', this)">
+          <div class="wf-card" data-wf-id="k1-extract">
             <div class="wf-card-header">
               <span class="wf-card-title">K-1 Document Processing</span>
               <span class="wf-card-status status-active">Active</span>
@@ -1170,7 +1170,7 @@
             </div>
           </div>
 
-          <div class="wf-card" onclick="showWorkflowDetail('lp-waterfall', this)">
+          <div class="wf-card" data-wf-id="lp-waterfall">
             <div class="wf-card-header">
               <span class="wf-card-title">LP Distribution Waterfall</span>
               <span class="wf-card-status status-draft">Draft</span>
@@ -1194,7 +1194,7 @@
             </div>
           </div>
 
-          <div class="wf-card" onclick="showWorkflowDetail('fee-calc', this)">
+          <div class="wf-card" data-wf-id="fee-calc">
             <div class="wf-card-header">
               <span class="wf-card-title">Management Fee Calculator</span>
               <span class="wf-card-status status-active">Active</span>
@@ -1218,7 +1218,7 @@
             </div>
           </div>
 
-          <div class="wf-card" onclick="showWorkflowDetail('covenant', this)">
+          <div class="wf-card" data-wf-id="covenant">
             <div class="wf-card-header">
               <span class="wf-card-title">Loan Covenant Monitor</span>
               <span class="wf-card-status status-paused">Paused</span>
@@ -1248,20 +1248,20 @@
       <div id="wfDetail" style="display:none; flex:1; flex-direction:column; overflow:hidden;">
         <div class="main-header">
           <div style="display:flex; align-items:center; gap:10px;">
-            <button class="back-btn" onclick="showWorkflowListing()">← Back</button>
+            <button class="back-btn" id="wfBackBtn">← Back</button>
             <span class="header-title" id="wfDetailTitle">Rent Roll Extraction</span>
           </div>
           <div class="header-actions">
             <div class="dropdown-wrapper">
-              <button class="header-btn" onclick="toggleDropdown(event)">Actions ▾</button>
+              <button class="header-btn" id="wfActionsBtn">Actions ▾</button>
               <div class="dropdown-menu" id="actionDropdown">
-                <button class="dropdown-item" onclick="alert('Run triggered')">▶ Run Now</button>
-                <button class="dropdown-item" onclick="alert('Duplicated')">⧉ Duplicate</button>
-                <button class="dropdown-item violet" onclick="openCosimoPanel()">◆ Edit with Cosimo</button>
-                <button class="dropdown-item" style="color:var(--red)" onclick="alert('Deleted')">✕ Delete Workflow</button>
+                <button class="dropdown-item" data-action="run-now">▶ Run Now</button>
+                <button class="dropdown-item" data-action="duplicate">⧉ Duplicate</button>
+                <button class="dropdown-item violet" data-action="edit-cosimo">◆ Edit with Cosimo</button>
+                <button class="dropdown-item" data-action="delete" style="color:var(--red)">✕ Delete Workflow</button>
               </div>
             </div>
-            <button class="header-btn primary" onclick="alert('Running workflow...')">▶ Run</button>
+            <button class="header-btn primary" id="wfRunBtn">▶ Run</button>
           </div>
         </div>
 
@@ -1270,10 +1270,10 @@
             <div class="wf-detail-desc" id="wfDetailDesc">Extracts and standardizes rent roll data from uploaded PDFs into clean xlsx format.</div>
 
             <div class="tab-bar">
-              <button class="tab-btn active" onclick="switchTab('overview', this)">Overview</button>
-              <button class="tab-btn" onclick="switchTab('config', this)">Configuration</button>
-              <button class="tab-btn" onclick="switchTab('steps', this)">Steps</button>
-              <button class="tab-btn" onclick="switchTab('runs', this)">Runs</button>
+              <button class="tab-btn active" data-tab="overview">Overview</button>
+              <button class="tab-btn" data-tab="config">Configuration</button>
+              <button class="tab-btn" data-tab="steps">Steps</button>
+              <button class="tab-btn" data-tab="runs">Runs</button>
             </div>
           </div>
 
@@ -1399,7 +1399,7 @@
                     </div>
                     <span class="source-count">1 file</span>
                   </div>
-                  <button class="add-source-btn" onclick="alert('Add source dialog would open here')">+ Add File or Folder</button>
+                  <button class="add-source-btn" id="addSourceBtn">+ Add File or Folder</button>
                 </div>
               </div>
 
@@ -1608,7 +1608,7 @@
             <div class="main-header">
               <span class="header-title">Memory</span>
               <div class="header-actions">
-                <button class="header-btn primary" onclick="toggleAddMemory()">+ Add Memory</button>
+                <button class="header-btn primary" id="addMemoryBtn">+ Add Memory</button>
               </div>
             </div>
             <div class="brain-scroll" id="memoryScroll">
@@ -1629,7 +1629,7 @@
                   <div class="mem-trait-presets" id="traitPresets"></div>
                   <div class="mem-trait-custom">
                     <input type="text" class="mem-trait-input" id="traitInput" placeholder="Add a custom trait..." onkeydown="if(event.key==='Enter'){addCustomTrait(); event.preventDefault();}" />
-                    <button class="mem-trait-add-btn" onclick="addCustomTrait()">Add</button>
+                    <button class="mem-trait-add-btn" id="traitAddBtn">Add</button>
                   </div>
                 </div>
               </div>
@@ -1643,12 +1643,12 @@
                     <input type="text" class="mem-search-input" id="memSearchInput" placeholder="Search memories..." oninput="filterMemories()" />
                   </div>
                   <div class="mem-category-filters" id="memCategoryFilters">
-                    <button class="mem-cat-pill active" onclick="filterByCategory('all', this)">All</button>
-                    <button class="mem-cat-pill" onclick="filterByCategory('preference', this)">Preferences</button>
-                    <button class="mem-cat-pill" onclick="filterByCategory('workflow', this)">Workflows</button>
-                    <button class="mem-cat-pill" onclick="filterByCategory('contact', this)">Contacts</button>
-                    <button class="mem-cat-pill" onclick="filterByCategory('fund', this)">Funds</button>
-                    <button class="mem-cat-pill" onclick="filterByCategory('style', this)">Style</button>
+                    <button class="mem-cat-pill active">All</button>
+                    <button class="mem-cat-pill">Preferences</button>
+                    <button class="mem-cat-pill">Workflows</button>
+                    <button class="mem-cat-pill">Contacts</button>
+                    <button class="mem-cat-pill">Funds</button>
+                    <button class="mem-cat-pill">Style</button>
                   </div>
                 </div>
 
@@ -1666,8 +1666,8 @@
                         <option value="context">Context</option>
                       </select>
                       <div class="mem-add-actions">
-                        <button class="header-btn" onclick="cancelAddMemory()">Cancel</button>
-                        <button class="header-btn primary" onclick="submitNewMemory()">Save</button>
+                        <button class="header-btn" id="memCancelBtn">Cancel</button>
+                        <button class="header-btn primary" id="memSaveBtn">Save</button>
                       </div>
                     </div>
                   </div>
@@ -1698,7 +1698,7 @@
               <div class="main-header">
                 <span class="header-title">Lessons</span>
                 <div class="header-actions">
-                  <button class="header-btn primary" onclick="createNewLesson()">+ New Lesson</button>
+                  <button class="header-btn primary" id="newLessonBtn">+ New Lesson</button>
                 </div>
               </div>
               <div class="brain-scroll">
@@ -1711,11 +1711,11 @@
 
                 <!-- Scope Filter -->
                 <div class="mem-category-filters" style="margin-bottom:14px;" id="lessonScopeFilters">
-                  <button class="mem-cat-pill active" onclick="filterLessonScope('all', this)">All</button>
-                  <button class="mem-cat-pill" onclick="filterLessonScope('user', this)">
+                  <button class="mem-cat-pill active">All</button>
+                  <button class="mem-cat-pill">
                     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" width="11" height="11" style="vertical-align:-1px;margin-right:3px;"><circle cx="8" cy="5" r="3"/><path d="M2.5 14c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/></svg>Personal
                   </button>
-                  <button class="mem-cat-pill" onclick="filterLessonScope('company', this)">
+                  <button class="mem-cat-pill">
                     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" width="11" height="11" style="vertical-align:-1px;margin-right:3px;"><rect x="2" y="4" width="12" height="10"/><rect x="5" y="1" width="6" height="5"/><line x1="8" y1="8" x2="8" y2="10"/></svg>Company
                   </button>
                 </div>
@@ -1739,13 +1739,13 @@
             <div id="lessonDetailView" class="brain-subview" style="display:none;">
               <div class="main-header">
                 <span class="header-title">
-                  <button class="lesson-back-btn" onclick="closeLessonDetail()">&larr;</button>
+                  <button class="lesson-back-btn" id="lessonBackBtn">&larr;</button>
                   <span id="lessonDetailTitle">Lesson Title</span>
                 </span>
                 <div class="header-actions">
-                  <button class="header-btn icon-btn" id="lessonEditBtn" onclick="toggleLessonEdit()" title="Edit Directly"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M11.5 1.5l3 3-9 9H2.5v-3l9-9z"/></svg></button>
-                  <button class="header-btn icon-btn" onclick="openCosimoForLesson()" title="Edit with Cosimo"><svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><path d="M8 2l1.5 3.5L13 7l-3.5 1.5L8 12l-1.5-3.5L3 7l3.5-1.5z"/></svg></button>
-                  <button class="header-btn icon-btn" onclick="deleteLesson()" title="Delete Lesson"><svg viewBox="0 0 16 16" fill="none" stroke="var(--red)" stroke-width="1.5" width="14" height="14"><line x1="3" y1="4" x2="13" y2="4"/><path d="M5.5 4V2.5h5V4"/><path d="M4.5 4v9.5h7V4"/><line x1="7" y1="6.5" x2="7" y2="11"/><line x1="9" y1="6.5" x2="9" y2="11"/></svg></button>
+                  <button class="header-btn icon-btn" id="lessonEditBtn" title="Edit Directly"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M11.5 1.5l3 3-9 9H2.5v-3l9-9z"/></svg></button>
+                  <button class="header-btn icon-btn" id="lessonCosimoBtn" title="Edit with Cosimo"><svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><path d="M8 2l1.5 3.5L13 7l-3.5 1.5L8 12l-1.5-3.5L3 7l3.5-1.5z"/></svg></button>
+                  <button class="header-btn icon-btn" id="lessonDeleteBtn" title="Delete Lesson"><svg viewBox="0 0 16 16" fill="none" stroke="var(--red)" stroke-width="1.5" width="14" height="14"><line x1="3" y1="4" x2="13" y2="4"/><path d="M5.5 4V2.5h5V4"/><path d="M4.5 4v9.5h7V4"/><line x1="7" y1="6.5" x2="7" y2="11"/><line x1="9" y1="6.5" x2="9" y2="11"/></svg></button>
                 </div>
               </div>
 
@@ -1757,7 +1757,7 @@
                   <span class="lesson-detail-stat">Referenced 23 times</span>
                   <span class="lesson-detail-stat">Last used 2d ago</span>
                   <span class="lesson-detail-stat">Updated Feb 28 by Sarah Chen</span>
-                  <button class="header-btn lesson-scope-btn" id="lessonScopeToggle" onclick="toggleLessonScope()">
+                  <button class="header-btn lesson-scope-btn" id="lessonScopeToggle">
                     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="11" height="11" style="vertical-align:-1px;margin-right:3px;"><path d="M1 8h14M11 4l4 4-4 4"/></svg>
                     <span id="lessonScopeToggleText">Change to Personal</span>
                   </button>
@@ -1857,7 +1857,7 @@
               <span class="header-title">Data Graphs</span>
               <div class="header-actions">
                 <div class="graph-breadcrumb" id="graphBreadcrumb">
-                  <button class="graph-crumb active" onclick="graphNavigate('root')">You</button>
+                  <button class="graph-crumb active" id="graphRootCrumb">You</button>
                 </div>
               </div>
             </div>
@@ -1880,9 +1880,9 @@
                     </div>
                   </div>
                   <div class="graph-detail-actions">
-                    <button class="header-btn icon-btn" onclick="editGraphEntity()" title="Edit"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M11.5 1.5l3 3-9 9H2.5v-3l9-9z"/></svg></button>
-                    <button class="header-btn icon-btn" onclick="openCosimoForEntity()" title="Edit with Cosimo"><svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><path d="M8 2l1.5 3.5L13 7l-3.5 1.5L8 12l-1.5-3.5L3 7l3.5-1.5z"/></svg></button>
-                    <button class="header-btn icon-btn" onclick="closeGraphDetail()" title="Close"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg></button>
+                    <button class="header-btn icon-btn" id="graphEditBtn" title="Edit"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M11.5 1.5l3 3-9 9H2.5v-3l9-9z"/></svg></button>
+                    <button class="header-btn icon-btn" id="graphCosimoBtn" title="Edit with Cosimo"><svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><path d="M8 2l1.5 3.5L13 7l-3.5 1.5L8 12l-1.5-3.5L3 7l3.5-1.5z"/></svg></button>
+                    <button class="header-btn icon-btn" id="graphCloseBtn" title="Close"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg></button>
                   </div>
                 </div>
                 <div class="graph-detail-body" id="graphDetailBody">
@@ -1901,7 +1901,7 @@
 </div>
 
 <!-- Cosimo Panel Overlay -->
-<div class="panel-overlay" id="panelOverlay" onclick="closeCosimoPanel()"></div>
+<div class="panel-overlay" id="panelOverlay"></div>
 
 <!-- Cosimo Chat Panel -->
 <div class="cosimo-panel" id="cosimoPanel">
@@ -1910,7 +1910,7 @@
       <div class="logo-mark"><div class="logo-spheres"><div class="logo-sphere dark"></div><div class="logo-sphere light"></div><div class="logo-sphere dark"></div><div class="logo-sphere dark"></div><div class="logo-sphere dark"></div><div class="logo-sphere dark"></div></div></div>
       <span class="cosimo-panel-name">Edit with Cosimo</span>
     </div>
-    <button class="panel-close-btn" onclick="closeCosimoPanel()">✕ Close</button>
+    <button class="panel-close-btn" id="cosimoPanelClose">✕ Close</button>
   </div>
 
   <div class="cosimo-panel-chat" id="panelChat">
@@ -1931,7 +1931,7 @@
   <div class="cosimo-panel-input">
     <div class="panel-input-row">
       <div class="panel-text-input" id="panelInput" contenteditable="true" data-placeholder="Describe a change..." onkeydown="handlePanelKey(event)"></div>
-      <button class="panel-send-btn" onclick="sendPanelMessage()" title="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="12" height="12"><path d="M1.5 8h11M8.5 4L12.5 8 8.5 12"/></svg></button>
+      <button class="panel-send-btn" id="cosimoPanelSend" title="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="12" height="12"><path d="M1.5 8h11M8.5 4L12.5 8 8.5 12"/></svg></button>
     </div>
   </div>
 </div>

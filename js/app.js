@@ -302,7 +302,7 @@ function runGlobalSearchEnhanced(q) {
 
     if (matches.length) {
       results.innerHTML = matches.map(m =>
-        '<div class="search-result-item" onclick="selectThread(\'' + m.id + '\',null);closeSearch()">' +
+        '<div class="search-result-item" data-thread-id="' + m.id + '">' +
         m.title + '</div>'
       ).join('');
     } else {
@@ -1626,7 +1626,7 @@ function renderMemoryFromData() {
   var traitSelected = document.getElementById('traitSelected');
   if (traitSelected) {
     traitSelected.innerHTML = MOCK_MEMORY.selectedTraits.map(function(t) {
-      return '<span class="mem-trait-tag active" onclick="removeTrait(this)">' + escapeHtml(t) + ' <span class="trait-x">&times;</span></span>';
+      return '<span class="mem-trait-tag active">' + escapeHtml(t) + ' <span class="trait-x">&times;</span></span>';
     }).join('');
   }
 
@@ -1635,7 +1635,7 @@ function renderMemoryFromData() {
   if (traitPresets) {
     traitPresets.innerHTML = MOCK_MEMORY.presetTraits.map(function(t) {
       var isSelected = MOCK_MEMORY.selectedTraits.indexOf(t) !== -1;
-      return '<span class="mem-trait-tag' + (isSelected ? ' disabled' : '') + '" onclick="toggleTrait(this)">' + escapeHtml(t) + '</span>';
+      return '<span class="mem-trait-tag' + (isSelected ? ' disabled' : '') + '">' + escapeHtml(t) + '</span>';
     }).join('');
   }
 
@@ -1646,12 +1646,12 @@ function renderMemoryFromData() {
       return '<div class="mem-fact-card" data-category="' + f.category + '">' +
         '<div class="mem-fact-top">' +
           '<span class="mem-fact-cat cat-' + f.category + '">' + f.category.charAt(0).toUpperCase() + f.category.slice(1) + '</span>' +
-          '<button class="mem-fact-menu-btn" onclick="toggleFactMenu(this)">' +
+          '<button class="mem-fact-menu-btn">' +
             '<svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/></svg>' +
           '</button>' +
           '<div class="mem-fact-menu">' +
-            '<button onclick="editFact(this)">Edit</button>' +
-            '<button onclick="deleteFact(this)">Delete</button>' +
+            '<button class="mem-fact-edit">Edit</button>' +
+            '<button class="mem-fact-delete">Delete</button>' +
           '</div>' +
         '</div>' +
         '<div class="mem-fact-text">' + escapeHtml(f.text) + '</div>' +
@@ -1697,12 +1697,12 @@ function submitNewMemory() {
   card.innerHTML =
     '<div class="mem-fact-top">' +
       '<span class="mem-fact-cat cat-' + category + '">' + category.charAt(0).toUpperCase() + category.slice(1) + '</span>' +
-      '<button class="mem-fact-menu-btn" onclick="toggleFactMenu(this)">' +
+      '<button class="mem-fact-menu-btn">' +
         '<svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14"><circle cx="8" cy="3" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="8" cy="13" r="1.2"/></svg>' +
       '</button>' +
       '<div class="mem-fact-menu">' +
-        '<button onclick="editFact(this)">Edit</button>' +
-        '<button onclick="deleteFact(this)">Delete</button>' +
+        '<button class="mem-fact-edit">Edit</button>' +
+        '<button class="mem-fact-delete">Delete</button>' +
       '</div>' +
     '</div>' +
     '<div class="mem-fact-text">' + escapeHtml(text) + '</div>' +
@@ -1811,8 +1811,8 @@ function deleteFact(btn) {
   confirm.className = 'mem-delete-confirm';
   confirm.innerHTML =
     '<span>Delete this memory?</span>' +
-    '<button class="mem-delete-yes" onclick="confirmDelete(this)">Yes</button>' +
-    '<button class="mem-delete-no" onclick="cancelDelete(this)">No</button>';
+    '<button class="mem-delete-yes">Yes</button>' +
+    '<button class="mem-delete-no">No</button>';
 
   card.appendChild(confirm);
 }
@@ -1917,12 +1917,12 @@ function renderLessonList() {
     var d = MOCK_LESSONS[id];
     var scopeClass = d.scope === 'company' ? 'scope-company' : 'scope-user';
     var scopeLabel = d.scope === 'company' ? 'Company' : 'Personal';
-    return '<div class="lesson-card" data-scope="' + d.scope + '" data-lesson="' + id + '" onclick="openLesson(\'' + id + '\')">' +
+    return '<div class="lesson-card" data-scope="' + d.scope + '" data-lesson="' + id + '">' +
       '<div class="lesson-card-top">' +
         '<span class="lesson-scope-badge ' + scopeClass + '">' + scopeLabel + '</span>' +
         '<div class="lesson-card-top-right">' +
           '<span class="lesson-usage">Referenced ' + d.usage + ' times</span>' +
-          '<button class="lesson-card-scope-btn" onclick="toggleCardScope(this, event)" title="Change scope">' + scopeArrowSvg + '</button>' +
+          '<button class="lesson-card-scope-btn" title="Change scope">' + scopeArrowSvg + '</button>' +
         '</div>' +
       '</div>' +
       '<div class="lesson-card-title">' + escapeHtml(d.title) + '</div>' +
@@ -2753,7 +2753,7 @@ function openGraphEntity(entityId, categoryId) {
   for (var i = 0; i < node.related.length; i++) {
     var rel = findEntity(node.related[i]);
     if (rel) {
-      relHtml += '<button class="graph-related-pill" onclick="navigateToRelated(\'' + rel.node.id + '\', \'' + rel.category + '\')">' + escapeHtml(rel.node.label) + '</button>';
+      relHtml += '<button class="graph-related-pill" data-entity-id="' + rel.node.id + '" data-entity-cat="' + rel.category + '">' + escapeHtml(rel.node.label) + '</button>';
     }
   }
   document.getElementById('graphDetailRelated').innerHTML = relHtml;
@@ -2805,12 +2805,12 @@ function navigateToRelated(entityId, categoryId) {
 
 function updateBreadcrumb() {
   var bc = document.getElementById('graphBreadcrumb');
-  var html = '<button class="graph-crumb' + (graphState.level === 'root' ? ' active' : '') + '" onclick="graphNavigate(\'root\')">You</button>';
+  var html = '<button class="graph-crumb' + (graphState.level === 'root' ? ' active' : '') + '" data-nav="root">You</button>';
 
   if (graphState.currentCategory) {
     var cat = MOCK_GRAPH_DATA.categories.find(function(c) { return c.id === graphState.currentCategory; });
     html += '<span class="graph-crumb-sep">&rsaquo;</span>';
-    html += '<button class="graph-crumb' + (!graphState.currentEntity ? ' active' : '') + '" onclick="graphNavigate(\'' + graphState.currentCategory + '\')">' + (cat ? cat.label : '') + '</button>';
+    html += '<button class="graph-crumb' + (!graphState.currentEntity ? ' active' : '') + '" data-nav="' + graphState.currentCategory + '">' + (cat ? cat.label : '') + '</button>';
   }
 
   if (graphState.currentEntity) {
@@ -3026,3 +3026,352 @@ function toggleCardScope(btn, e) {
   // Re-apply filters in case scope filter is active
   filterLessons();
 }
+
+// ============================================
+// EVENT LISTENERS (replaces all inline onclick handlers)
+// ============================================
+(function initEventListeners() {
+
+  // --- Sidebar: Thread list (delegation) ---
+  var threadList = document.querySelector('.thread-list');
+  if (threadList) {
+    threadList.addEventListener('click', function(e) {
+      var item = e.target.closest('.thread-item');
+      if (item) selectThread(item.dataset.threadId, item);
+    });
+  }
+
+  // --- Sidebar: Workflow list (delegation) ---
+  var wfSidebarList = document.querySelector('.workflow-sidebar-list');
+  if (wfSidebarList) {
+    wfSidebarList.addEventListener('click', function(e) {
+      var item = e.target.closest('.wf-side-item');
+      if (item) showWorkflowDetail(item.dataset.wfId, item);
+    });
+  }
+
+  // --- Brain nav (delegation) ---
+  var brainNav = document.getElementById('brainNav');
+  if (brainNav) {
+    brainNav.addEventListener('click', function(e) {
+      var btn = e.target.closest('.brain-nav-btn');
+      if (btn) switchBrainSection(btn.dataset.section, btn);
+    });
+  }
+
+  // --- Top tabs ---
+  var tabChat = document.getElementById('tabChat');
+  var tabWorkflows = document.getElementById('tabWorkflows');
+  if (tabChat) tabChat.addEventListener('click', function() { switchMode('chat', tabChat); });
+  if (tabWorkflows) tabWorkflows.addEventListener('click', function() { switchMode('workflows', tabWorkflows); });
+
+  // --- Header buttons ---
+  var taskAlertBtn = document.getElementById('taskAlertBtn');
+  var calendarBtn = document.getElementById('calendarBtn');
+  var usageBtn = document.getElementById('usageBtn');
+  var topProfile = document.querySelector('.top-profile');
+  if (taskAlertBtn) taskAlertBtn.addEventListener('click', function() { toggleTaskPanel(); });
+  if (calendarBtn) calendarBtn.addEventListener('click', function() { toggleCalendarPanel(); });
+  if (usageBtn) usageBtn.addEventListener('click', function() { toggleUsagePanel(); });
+  if (topProfile) topProfile.addEventListener('click', function() { toggleProfileMenu(); });
+
+  // --- Profile menu (delegation) ---
+  var profilePanel = document.getElementById('profilePanel');
+  if (profilePanel) {
+    profilePanel.addEventListener('click', function(e) {
+      var themeToggle = e.target.closest('.profile-menu-theme');
+      var signOut = e.target.closest('.profile-menu-signout');
+
+      // Sign out
+      if (signOut) { window.location.href = 'login.html'; return; }
+
+      // Theme toggle (dark mode)
+      if (themeToggle && themeToggle.querySelector('#themeToggleTrack')) {
+        e.stopPropagation();
+        toggleTheme();
+        return;
+      }
+
+      // Dyslexia font toggle
+      if (themeToggle && themeToggle.querySelector('#dyslexiaToggleTrack')) {
+        e.stopPropagation();
+        toggleDyslexiaFont();
+        return;
+      }
+
+      // Reduced motion toggle
+      if (themeToggle && themeToggle.querySelector('#motionToggleTrack')) {
+        e.stopPropagation();
+        toggleReducedMotion();
+        return;
+      }
+
+      // High contrast toggle
+      if (themeToggle && themeToggle.querySelector('#contrastToggleTrack')) {
+        e.stopPropagation();
+        toggleHighContrast();
+        return;
+      }
+
+      // Contrast sections (stop propagation for sliders)
+      if (e.target.closest('.profile-menu-contrast')) {
+        e.stopPropagation();
+        return;
+      }
+    });
+  }
+
+  // --- New button ---
+  var newBtn = document.getElementById('newBtn');
+  if (newBtn) newBtn.addEventListener('click', function() { handleNew(); });
+
+  // --- Chat header buttons ---
+  var filesBtn = document.getElementById('filesBtn');
+  var exportBtn = document.getElementById('exportBtn');
+  var shareBtn = document.getElementById('shareBtn');
+  if (filesBtn) filesBtn.addEventListener('click', function() { openFilePanel('folder'); });
+  if (exportBtn) exportBtn.addEventListener('click', function() { exportThread(); });
+  if (shareBtn) shareBtn.addEventListener('click', function() { shareThread(); });
+
+  // --- Feedback buttons (delegation on chat area) ---
+  document.addEventListener('click', function(e) {
+    var fbBtn = e.target.closest('.feedback-btn');
+    if (fbBtn) {
+      var type = fbBtn.classList.contains('up') ? 'up' : 'down';
+      giveFeedback(fbBtn, type);
+    }
+  });
+
+  // --- Attach options (delegation) ---
+  document.addEventListener('click', function(e) {
+    var attachOpt = e.target.closest('.attach-option');
+    if (attachOpt) {
+      if (attachOpt.title === 'From computer') attachFromComputer(attachOpt);
+      else if (attachOpt.title === 'From cloud drive') attachFromDrive(attachOpt);
+    }
+  });
+
+  // --- Model selector/options (delegation) ---
+  document.addEventListener('click', function(e) {
+    var modelBtn = e.target.closest('.model-selector-btn');
+    if (modelBtn) { toggleModelDropdown(modelBtn); return; }
+    var modelOpt = e.target.closest('.model-option');
+    if (modelOpt) { selectModel(modelOpt); }
+  });
+
+  // --- Empty thread suggestion chips (delegation) ---
+  var suggestions = document.querySelector('.empty-thread-suggestions');
+  if (suggestions) {
+    suggestions.addEventListener('click', function(e) {
+      var chip = e.target.closest('.empty-thread-chip');
+      if (chip) fillSuggestion(chip.dataset.suggestion);
+    });
+  }
+
+  // --- Error retry button ---
+  var k1RetryBtn = document.getElementById('k1RetryBtn');
+  if (k1RetryBtn) k1RetryBtn.addEventListener('click', function() { retryK1(); });
+
+  // --- Stop/cancel button ---
+  var stopBtn = document.getElementById('erabor-stop-btn');
+  if (stopBtn) stopBtn.addEventListener('click', function() { cancelErabor(); });
+
+  // --- File panel ---
+  var fpTabViewer = document.getElementById('fpTabViewer');
+  var fpTabFolder = document.getElementById('fpTabFolder');
+  var fpCloseBtn = document.getElementById('fpCloseBtn');
+  if (fpTabViewer) fpTabViewer.addEventListener('click', function() { switchFilePanelTab('viewer'); });
+  if (fpTabFolder) fpTabFolder.addEventListener('click', function() { switchFilePanelTab('folder'); });
+  if (fpCloseBtn) fpCloseBtn.addEventListener('click', function() { closeFilePanel(); });
+
+  // File item click (open viewer)
+  var fpFileItem = document.querySelector('.fp-file-item');
+  if (fpFileItem) fpFileItem.addEventListener('click', function() { switchFilePanelTab('viewer'); });
+
+  // --- Workflow listing cards (delegation) ---
+  var wfListing = document.getElementById('wfListing');
+  if (wfListing) {
+    wfListing.addEventListener('click', function(e) {
+      var card = e.target.closest('.wf-card');
+      if (card && card.dataset.wfId) showWorkflowDetail(card.dataset.wfId, card);
+    });
+  }
+
+  // --- Workflow detail buttons ---
+  var newWorkflowBtn = document.getElementById('newWorkflowBtn');
+  var wfBackBtn = document.getElementById('wfBackBtn');
+  var wfActionsBtn = document.getElementById('wfActionsBtn');
+  var wfRunBtn = document.getElementById('wfRunBtn');
+  if (newWorkflowBtn) newWorkflowBtn.addEventListener('click', function() { handleNew(); });
+  if (wfBackBtn) wfBackBtn.addEventListener('click', function() { showWorkflowListing(); });
+  if (wfActionsBtn) wfActionsBtn.addEventListener('click', function(e) { toggleDropdown(e); });
+  if (wfRunBtn) wfRunBtn.addEventListener('click', function() { alert('Running workflow...'); });
+
+  // --- Action dropdown (delegation) ---
+  var actionDropdown = document.getElementById('actionDropdown');
+  if (actionDropdown) {
+    actionDropdown.addEventListener('click', function(e) {
+      var item = e.target.closest('.dropdown-item');
+      if (!item) return;
+      var action = item.dataset.action;
+      if (action === 'run-now') alert('Run triggered');
+      else if (action === 'duplicate') alert('Duplicated');
+      else if (action === 'edit-cosimo') openCosimoPanel();
+      else if (action === 'delete') alert('Deleted');
+    });
+  }
+
+  // --- Workflow detail tabs (delegation) ---
+  var tabBar = document.querySelector('.tab-bar');
+  if (tabBar) {
+    tabBar.addEventListener('click', function(e) {
+      var btn = e.target.closest('.tab-btn');
+      if (btn && btn.dataset.tab) switchTab(btn.dataset.tab, btn);
+    });
+  }
+
+  // --- Add source button ---
+  var addSourceBtn = document.getElementById('addSourceBtn');
+  if (addSourceBtn) addSourceBtn.addEventListener('click', function() { alert('Add source dialog would open here'); });
+
+  // --- Brain Memory section ---
+  var addMemoryBtn = document.getElementById('addMemoryBtn');
+  var memCancelBtn = document.getElementById('memCancelBtn');
+  var memSaveBtn = document.getElementById('memSaveBtn');
+  var traitAddBtn = document.getElementById('traitAddBtn');
+  if (addMemoryBtn) addMemoryBtn.addEventListener('click', function() { toggleAddMemory(); });
+  if (memCancelBtn) memCancelBtn.addEventListener('click', function() { cancelAddMemory(); });
+  if (memSaveBtn) memSaveBtn.addEventListener('click', function() { submitNewMemory(); });
+  if (traitAddBtn) traitAddBtn.addEventListener('click', function() { addCustomTrait(); });
+
+  // Memory category filters (delegation)
+  var memCatFilters = document.getElementById('memCategoryFilters');
+  if (memCatFilters) {
+    memCatFilters.addEventListener('click', function(e) {
+      var pill = e.target.closest('.mem-cat-pill');
+      if (!pill) return;
+      var categories = ['all', 'preference', 'workflow', 'contact', 'fund', 'style'];
+      var idx = Array.from(memCatFilters.querySelectorAll('.mem-cat-pill')).indexOf(pill);
+      if (idx >= 0 && idx < categories.length) filterByCategory(categories[idx], pill);
+    });
+  }
+
+  // Memory fact list (delegation for menu, edit, delete, confirm/cancel)
+  var memFactList = document.getElementById('memFactList');
+  if (memFactList) {
+    memFactList.addEventListener('click', function(e) {
+      var menuBtn = e.target.closest('.mem-fact-menu-btn');
+      if (menuBtn) { toggleFactMenu(menuBtn); return; }
+      var editBtn = e.target.closest('.mem-fact-edit');
+      if (editBtn) { editFact(editBtn); return; }
+      var deleteBtn = e.target.closest('.mem-fact-delete');
+      if (deleteBtn) { deleteFact(deleteBtn); return; }
+      var yesBtn = e.target.closest('.mem-delete-yes');
+      if (yesBtn) { confirmDelete(yesBtn); return; }
+      var noBtn = e.target.closest('.mem-delete-no');
+      if (noBtn) { cancelDelete(noBtn); return; }
+    });
+  }
+
+  // Trait selected (delegation for removeTrait)
+  var traitSelected = document.getElementById('traitSelected');
+  if (traitSelected) {
+    traitSelected.addEventListener('click', function(e) {
+      var tag = e.target.closest('.mem-trait-tag');
+      if (tag) removeTrait(tag);
+    });
+  }
+
+  // Trait presets (delegation for toggleTrait)
+  var traitPresets = document.getElementById('traitPresets');
+  if (traitPresets) {
+    traitPresets.addEventListener('click', function(e) {
+      var tag = e.target.closest('.mem-trait-tag');
+      if (tag) toggleTrait(tag);
+    });
+  }
+
+  // --- Brain Lessons section ---
+  var newLessonBtn = document.getElementById('newLessonBtn');
+  var lessonBackBtn = document.getElementById('lessonBackBtn');
+  var lessonEditBtn = document.getElementById('lessonEditBtn');
+  var lessonCosimoBtn = document.getElementById('lessonCosimoBtn');
+  var lessonDeleteBtn = document.getElementById('lessonDeleteBtn');
+  var lessonScopeToggle = document.getElementById('lessonScopeToggle');
+  if (newLessonBtn) newLessonBtn.addEventListener('click', function() { createNewLesson(); });
+  if (lessonBackBtn) lessonBackBtn.addEventListener('click', function() { closeLessonDetail(); });
+  if (lessonEditBtn) lessonEditBtn.addEventListener('click', function() { toggleLessonEdit(); });
+  if (lessonCosimoBtn) lessonCosimoBtn.addEventListener('click', function() { openCosimoForLesson(); });
+  if (lessonDeleteBtn) lessonDeleteBtn.addEventListener('click', function() { deleteLesson(); });
+  if (lessonScopeToggle) lessonScopeToggle.addEventListener('click', function() { toggleLessonScope(); });
+
+  // Lesson scope filters (delegation)
+  var lessonScopeFilters = document.getElementById('lessonScopeFilters');
+  if (lessonScopeFilters) {
+    lessonScopeFilters.addEventListener('click', function(e) {
+      var pill = e.target.closest('.mem-cat-pill');
+      if (!pill) return;
+      var scopes = ['all', 'user', 'company'];
+      var idx = Array.from(lessonScopeFilters.querySelectorAll('.mem-cat-pill')).indexOf(pill);
+      if (idx >= 0 && idx < scopes.length) filterLessonScope(scopes[idx], pill);
+    });
+  }
+
+  // Lesson list (delegation for card clicks and scope toggle)
+  var lessonList = document.getElementById('lessonList');
+  if (lessonList) {
+    lessonList.addEventListener('click', function(e) {
+      var scopeBtn = e.target.closest('.lesson-card-scope-btn');
+      if (scopeBtn) { toggleCardScope(scopeBtn, e); return; }
+      var card = e.target.closest('.lesson-card');
+      if (card) openLesson(card.dataset.lesson);
+    });
+  }
+
+  // --- Brain Graphs section ---
+  var graphEditBtn = document.getElementById('graphEditBtn');
+  var graphCosimoBtn = document.getElementById('graphCosimoBtn');
+  var graphCloseBtn = document.getElementById('graphCloseBtn');
+  if (graphEditBtn) graphEditBtn.addEventListener('click', function() { editGraphEntity(); });
+  if (graphCosimoBtn) graphCosimoBtn.addEventListener('click', function() { openCosimoForEntity(); });
+  if (graphCloseBtn) graphCloseBtn.addEventListener('click', function() { closeGraphDetail(); });
+
+  // Graph breadcrumbs (delegation)
+  var graphBreadcrumb = document.querySelector('.graph-breadcrumb');
+  if (graphBreadcrumb) {
+    graphBreadcrumb.addEventListener('click', function(e) {
+      var crumb = e.target.closest('.graph-crumb');
+      if (crumb && crumb.dataset.nav) graphNavigate(crumb.dataset.nav);
+    });
+  }
+
+  // Graph related pills (delegation)
+  var graphDetailBody = document.getElementById('graphDetailBody');
+  if (graphDetailBody) {
+    graphDetailBody.addEventListener('click', function(e) {
+      var pill = e.target.closest('.graph-related-pill');
+      if (pill) navigateToRelated(pill.dataset.entityId, pill.dataset.entityCat);
+    });
+  }
+
+  // --- Search results (delegation) ---
+  var searchResults = document.getElementById('searchResults');
+  if (searchResults) {
+    searchResults.addEventListener('click', function(e) {
+      var item = e.target.closest('.search-result-item');
+      if (item && item.dataset.threadId) {
+        selectThread(item.dataset.threadId, null);
+        closeSearch();
+      }
+    });
+  }
+
+  // --- Cosimo panel ---
+  var panelOverlay = document.getElementById('panelOverlay');
+  var cosimoPanelClose = document.getElementById('cosimoPanelClose');
+  var cosimoPanelSend = document.getElementById('cosimoPanelSend');
+  if (panelOverlay) panelOverlay.addEventListener('click', function() { closeCosimoPanel(); });
+  if (cosimoPanelClose) cosimoPanelClose.addEventListener('click', function() { closeCosimoPanel(); });
+  if (cosimoPanelSend) cosimoPanelSend.addEventListener('click', function() { sendPanelMessage(); });
+
+})();
