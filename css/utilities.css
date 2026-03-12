@@ -138,25 +138,6 @@
 }
 ::-webkit-scrollbar-thumb:hover { background: var(--taupe-4); }
 
-/* Overlay for panel */
-.panel-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.2);
-  z-index: 90;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-}
-
-.panel-overlay.show {
-  opacity: 1;
-  pointer-events: auto;
-}
-
 /* ============================================
    DARK MODE OVERRIDES
    ============================================ */
@@ -173,10 +154,6 @@
 
 [data-theme="dark"] .dropdown-item.violet:hover {
   background: rgba(var(--violet-3-rgb),0.15);
-}
-
-[data-theme="dark"] .panel-overlay {
-  background: rgba(0,0,0,0.4);
 }
 
 [data-theme="dark"] ::-webkit-scrollbar-thumb {

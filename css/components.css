@@ -1423,6 +1423,503 @@
 }
 
 /* ============================================
+   COSIMO THINKING / REASONING / ERROR
+   ============================================ */
+
+.cosimo-thinking {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+}
+
+.thinking-cube {
+  width: 8px;
+  height: 8px;
+  background: var(--violet-2);
+  border: 1px solid;
+  border-color: var(--violet-1) var(--violet-4) var(--violet-4) var(--violet-1);
+  animation: cube-wave 1.8s ease-in-out infinite;
+}
+
+.thinking-cube:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.thinking-cube:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes cube-wave {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  20% {
+    transform: translateY(-10px) rotate(0deg);
+  }
+  40%, 100% {
+    transform: translateY(0) rotate(360deg);
+  }
+}
+
+/* ============================================
+   COSIMO REASONING (Train of Thought)
+   ============================================ */
+.cosimo-reasoning {
+  margin: 4px 0 4px 30px;
+  border: 2px solid;
+  border-color: var(--taupe-2) var(--taupe-4) var(--taupe-4) var(--taupe-2);
+  background: var(--off-white);
+  overflow: hidden;
+  border-radius: var(--r-md);
+}
+
+.reasoning-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--taupe-5);
+  border-bottom: 1px solid var(--taupe-4);
+  border-radius: var(--r-sm) var(--r-sm) 0 0;
+}
+
+.reasoning-header-icon {
+  font-size: 10px;
+  color: var(--violet-2);
+}
+
+.reasoning-header-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--taupe-1);
+  letter-spacing: 0.05em;
+}
+
+.reasoning-pulse {
+  width: 6px;
+  height: 6px;
+  background: var(--violet-2);
+  border: 1px solid var(--violet-3);
+  animation: reason-pulse 1.5s ease-in-out infinite;
+  margin-left: auto;
+}
+
+@keyframes reason-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+.reasoning-steps {
+  padding: 8px 12px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.reasoning-step-item {
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--taupe-4);
+  padding: 3px 0;
+  border-bottom: 1px solid var(--taupe-1);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.reasoning-step-item:last-child { border-bottom: none; }
+
+.reasoning-step-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reasoning-flag {
+  color: var(--amber);
+  font-weight: 600;
+}
+
+/* Reasoning collapse transition */
+.cosimo-reasoning.collapsing {
+  max-height: 300px;
+  transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
+}
+
+.cosimo-reasoning.collapsed {
+  max-height: 38px;
+  overflow: hidden;
+}
+
+.cosimo-reasoning.collapsed .reasoning-steps {
+  display: none;
+}
+
+.cosimo-reasoning.collapsed .reasoning-header-label {
+  color: var(--taupe-3);
+}
+
+.cosimo-reasoning.collapsed .reasoning-pulse {
+  animation: none;
+  opacity: 0.3;
+}
+
+/* ============================================
+   COSIMO ERROR STATE
+   ============================================ */
+.cosimo-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  margin: 4px 0;
+  background: rgba(192,72,72,0.05);
+  border: 2px solid;
+  border-color: var(--taupe-2) var(--taupe-4) var(--taupe-4) var(--taupe-2);
+  border-left: 3px solid var(--red);
+  border-radius: var(--r-md);
+}
+
+.cosimo-error-icon {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--white);
+  background: var(--red);
+  border: 1px solid;
+  border-color: #e06060 #802020 #802020 #e06060;
+  flex-shrink: 0;
+  border-radius: var(--r-md);
+}
+
+.cosimo-error-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.cosimo-error-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--red);
+  margin-bottom: 6px;
+}
+
+.cosimo-error-detail {
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--taupe-4);
+  margin-bottom: 8px;
+}
+
+.cosimo-error-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--taupe-3);
+  letter-spacing: 0.05em;
+}
+
+.cosimo-error-retry {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--taupe-5);
+  background: var(--taupe-1);
+  border: 1px solid;
+  border-color: var(--white) var(--taupe-3) var(--taupe-3) var(--white);
+  cursor: pointer;
+  flex-shrink: 0;
+  align-self: center;
+  transition: all 0.15s;
+  border-radius: var(--r-md);
+}
+
+.cosimo-error-retry:hover {
+  background: var(--berry-1);
+  color: var(--berry-5);
+  border-color: var(--berry-2) var(--berry-4) var(--berry-4) var(--berry-2);
+}
+
+.cosimo-error-retry:active {
+  border-color: var(--taupe-3) var(--white) var(--white) var(--taupe-3);
+}
+
+.retry-icon {
+  width: 12px;
+  height: 12px;
+}
+
+.cosimo-error-retry.retrying .retry-icon {
+  animation: spin-retry 0.8s linear infinite;
+}
+
+@keyframes spin-retry {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Thinking cubes fade-out */
+.cosimo-thinking.fading {
+  transition: opacity 0.5s ease;
+  opacity: 0;
+}
+
+/* ============================================
+   BRAIN VIEW
+   ============================================ */
+.brain-section {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.brain-section.active {
+  display: flex;
+}
+
+.brain-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.brain-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 60px 40px;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.brain-empty-icon {
+  color: var(--taupe-2);
+  margin-bottom: 16px;
+}
+
+.brain-empty-title {
+  font-family: var(--pixel);
+  font-size: 20px;
+  color: var(--taupe-5);
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.brain-empty-desc {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--taupe-3);
+  line-height: 1.6;
+}
+
+/* Implementation Notes Banner — remove when building */
+.brain-notes-banner {
+  margin: 16px 24px;
+  border: 2px dashed var(--chinese-3);
+  background: rgba(194,59,34,0.06);
+  padding: 0;
+  font-family: var(--mono);
+}
+
+.brain-notes-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: rgba(194,59,34,0.10);
+  border-bottom: 1px solid rgba(194,59,34,0.15);
+}
+
+.brain-notes-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--chinese-3);
+  text-transform: uppercase;
+}
+
+.brain-notes-dismiss {
+  background: none;
+  border: none;
+  color: var(--chinese-3);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0 2px;
+  line-height: 1;
+}
+
+.brain-notes-list {
+  padding: 12px 14px 12px 32px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.brain-notes-list li {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--taupe-5);
+}
+
+.brain-notes-list strong {
+  color: var(--chinese-3);
+}
+
+.brain-notes-list em {
+  font-style: normal;
+  border-bottom: 1px dashed var(--taupe-3);
+}
+
+/* ============================================
+   BRAIN NAV (sidebar bottom section)
+   ============================================ */
+.brain-nav {
+  margin-top: auto;
+  padding: 0 6px 6px;
+  border-top: 1px solid var(--taupe-4);
+}
+
+.brain-nav .side-label {
+  padding: 8px 8px 4px;
+}
+
+.brain-nav-items {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.brain-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--taupe-2);
+  background: transparent;
+  border: none;
+  border-radius: var(--r-md);
+  cursor: pointer;
+  text-align: left;
+}
+
+.brain-nav-btn:hover {
+  background: rgba(255,255,255,0.06);
+  color: var(--taupe-1);
+}
+
+.brain-nav-btn.active {
+  background: var(--berry-5);
+  color: var(--berry-1);
+}
+
+.brain-nav-btn svg {
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.brain-nav-btn.active svg {
+  opacity: 1;
+}
+
+/* ============================================
+   LESSON APPLIED COMPONENT
+   ============================================ */
+
+.lesson-applied {
+  border: 2px solid;
+  border-color: var(--violet-2) var(--violet-4) var(--violet-4) var(--violet-2);
+  background: var(--white);
+  margin-top: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  border-radius: var(--r-md);
+}
+
+.lesson-applied:hover {
+  border-color: var(--violet-1) var(--violet-3) var(--violet-3) var(--violet-1);
+}
+
+.lesson-applied-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--violet-3);
+  border-bottom: 1px solid var(--violet-4);
+  border-radius: var(--r-sm) var(--r-sm) 0 0;
+}
+
+.lesson-applied-icon {
+  color: var(--berry-1);
+  font-size: 12px;
+}
+
+.lesson-applied-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--white);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.lesson-applied-body {
+  padding: 10px 12px;
+}
+
+.lesson-applied-name {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--violet-3);
+  margin-bottom: 4px;
+}
+
+.lesson-applied-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--taupe-3);
+}
+
+/* ============================================
+   PANEL OVERLAY
+   ============================================ */
+
+.panel-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.2);
+  z-index: 90;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.panel-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ============================================
    DARK MODE OVERRIDES
    ============================================ */
 
@@ -1596,4 +2093,68 @@
 
 [data-theme="dark"] .graph-detail-resize:hover::after {
   background: var(--violet-2);
+}
+
+/* Cosimo reasoning — dark mode */
+[data-theme="dark"] .cosimo-reasoning {
+  border-color: var(--taupe-2);
+}
+
+[data-theme="dark"] .reasoning-header {
+  background: #28282d;
+}
+
+[data-theme="dark"] .reasoning-header-label {
+  color: var(--taupe-4);
+}
+
+[data-theme="dark"] .reasoning-step-item {
+  border-bottom-color: #2a2a2f;
+}
+
+[data-theme="dark"] .cosimo-reasoning.collapsed .reasoning-header-label {
+  color: var(--taupe-2);
+}
+
+/* Cosimo error — dark mode */
+[data-theme="dark"] .cosimo-error {
+  background: rgba(192,72,72,0.08);
+  border-color: var(--taupe-2);
+  border-left-color: var(--red);
+}
+
+[data-theme="dark"] .cosimo-error-icon {
+  color: #f0eef4;
+}
+
+[data-theme="dark"] .cosimo-error-retry {
+  color: var(--taupe-4);
+}
+
+[data-theme="dark"] .cosimo-error-retry:hover {
+  color: var(--berry-3);
+}
+
+/* Brain nav — dark mode */
+[data-theme="dark"] .brain-nav {
+  border-top-color: #2a2a2f;
+}
+
+[data-theme="dark"] .brain-nav-btn:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+[data-theme="dark"] .brain-nav-btn.active {
+  background: rgba(var(--violet-3-rgb),0.2);
+  color: var(--violet-2);
+}
+
+/* Lesson applied — dark mode */
+[data-theme="dark"] .lesson-applied-label {
+  color: #f0eef4;
+}
+
+/* Panel overlay — dark mode */
+[data-theme="dark"] .panel-overlay {
+  background: rgba(0,0,0,0.4);
 }

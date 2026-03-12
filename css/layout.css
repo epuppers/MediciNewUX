@@ -1207,58 +1207,6 @@
   min-height: 0;
 }
 
-/* Brain nav — permanent bottom section */
-.brain-nav {
-  margin-top: auto;
-  padding: 0 6px 6px;
-  border-top: 1px solid var(--taupe-4);
-}
-
-.brain-nav .side-label {
-  padding: 8px 8px 4px;
-}
-
-.brain-nav-items {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.brain-nav-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: 100%;
-  padding: 7px 10px;
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--taupe-2);
-  background: transparent;
-  border: none;
-  border-radius: var(--r-md);
-  cursor: pointer;
-  text-align: left;
-}
-
-.brain-nav-btn:hover {
-  background: rgba(255,255,255,0.06);
-  color: var(--taupe-1);
-}
-
-.brain-nav-btn.active {
-  background: var(--berry-5);
-  color: var(--berry-1);
-}
-
-.brain-nav-btn svg {
-  flex-shrink: 0;
-  opacity: 0.7;
-}
-
-.brain-nav-btn.active svg {
-  opacity: 1;
-}
-
 /* Sidebar user footer */
 .sidebar-footer {
   padding: 10px 12px;
@@ -1411,116 +1359,6 @@ main {
 }
 
 /* ============================================
-   BRAIN VIEW
-   ============================================ */
-.brain-section {
-  display: none;
-  flex-direction: column;
-  flex: 1;
-  overflow: hidden;
-}
-
-.brain-section.active {
-  display: flex;
-}
-
-.brain-scroll {
-  flex: 1;
-  overflow-y: auto;
-  padding: 24px;
-}
-
-.brain-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 60px 40px;
-  max-width: 420px;
-  margin: 0 auto;
-}
-
-.brain-empty-icon {
-  color: var(--taupe-2);
-  margin-bottom: 16px;
-}
-
-.brain-empty-title {
-  font-family: var(--pixel);
-  font-size: 20px;
-  color: var(--taupe-5);
-  letter-spacing: 0.5px;
-  margin-bottom: 10px;
-}
-
-.brain-empty-desc {
-  font-family: var(--mono);
-  font-size: 12px;
-  color: var(--taupe-3);
-  line-height: 1.6;
-}
-
-/* Implementation Notes Banner — remove when building */
-.brain-notes-banner {
-  margin: 16px 24px;
-  border: 2px dashed var(--chinese-3);
-  background: rgba(194,59,34,0.06);
-  padding: 0;
-  font-family: var(--mono);
-}
-
-.brain-notes-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 14px;
-  background: rgba(194,59,34,0.10);
-  border-bottom: 1px solid rgba(194,59,34,0.15);
-}
-
-.brain-notes-title {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: var(--chinese-3);
-  text-transform: uppercase;
-}
-
-.brain-notes-dismiss {
-  background: none;
-  border: none;
-  color: var(--chinese-3);
-  cursor: pointer;
-  font-size: 14px;
-  padding: 0 2px;
-  line-height: 1;
-}
-
-.brain-notes-list {
-  padding: 12px 14px 12px 32px;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.brain-notes-list li {
-  font-size: 12px;
-  line-height: 1.6;
-  color: var(--taupe-5);
-}
-
-.brain-notes-list strong {
-  color: var(--chinese-3);
-}
-
-.brain-notes-list em {
-  font-style: normal;
-  border-bottom: 1px dashed var(--taupe-3);
-}
-
-/* ============================================
    DARK MODE OVERRIDES
    ============================================ */
 
@@ -1539,18 +1377,6 @@ main {
   border-top-color: #2a2a2f;
 }
 
-[data-theme="dark"] .brain-nav {
-  border-top-color: #2a2a2f;
-}
-
-[data-theme="dark"] .brain-nav-btn:hover {
-  background: rgba(255,255,255,0.08);
-}
-
-[data-theme="dark"] .brain-nav-btn.active {
-  background: rgba(var(--violet-3-rgb),0.2);
-  color: var(--violet-2);
-}
 
 /* Sidebar text — uses light tones in light mode, must stay readable */
 [data-theme="dark"] .logo-title {

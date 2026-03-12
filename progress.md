@@ -54,6 +54,9 @@
 - [x] **3.2 — Extract repeated patterns into utility classes**
   Created `.bevel`, `.bevel-inset`, and `.label-mono` utility classes in utilities.css. Applied `.bevel` to ~47 elements in index.html using `border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2)` and removed redundant CSS from 8 selectors (`.th-dropdown`, `.header-btn`, `.wf-card`, `.detail-section`, `.wf-stats-section`, `.empty-thread-chip`, `.step-marker`, `.step-card`). Applied `.bevel-inset` to ~11 elements using the inset pattern and cleaned 5 selectors (`.panel-text-input`, `.mem-trait-input`, `.mem-add-input`, `.fp-cell-ref`, `.text-input`). Applied `.label-mono` to ~90+ elements using exact `font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.05em;` and cleaned 16 selectors. Skipped JS-generated elements and selectors with non-matching letter-spacing values (0.08em, 0.1em, 0.12em, 0.18em).
 
+- [x] **3.3 — Move misplaced CSS to correct files**
+  Moved 4 groups of misplaced CSS rules to components.css: (1) Cosimo thinking/reasoning/error styles + dark mode overrides from chat.css (~330 lines), (2) Brain view/nav/empty/notes-banner styles from layout.css (~110 lines), (3) Lesson-applied component + dark mode override from workflows.css (~55 lines), (4) Panel overlay + dark mode override from utilities.css (~20 lines). All dark mode overrides moved alongside their base styles. Model selector correctly stays in chat.css, accessibility modes correctly stay in layout.css.
+
 ### Current Task
 (none — awaiting next instruction)
 
