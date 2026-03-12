@@ -282,11 +282,11 @@ function runGlobalSearchEnhanced(q) {
 
   // Empty query — close
   if (!q.trim()) {
-    results.style.display = 'none';
+    results.classList.add('hidden');
     return;
   }
 
-  results.style.display = 'block';
+  results.classList.remove('hidden');
   results.innerHTML = '<div class="search-status">Searching...</div>';
 
   // Debounce 200ms then search
@@ -313,7 +313,7 @@ function runGlobalSearchEnhanced(q) {
 
 function closeSearch() {
   const results = document.getElementById('searchResults');
-  if (results) results.style.display = 'none';
+  if (results) results.classList.add('hidden');
 }
 
 // ============================================
@@ -621,22 +621,22 @@ function switchMode(mode, btn) {
   brainView.classList.remove('active');
 
   // Hide sidebars
-  chatSidebar.style.display = 'none';
-  workflowSidebar.style.display = 'none';
+  chatSidebar.classList.add('hidden');
+  workflowSidebar.classList.add('hidden');
 
   // Clear brain nav active state when switching modes
   document.querySelectorAll('.brain-nav-btn').forEach(b => b.classList.remove('active'));
 
   if (mode === 'chat') {
     chatView.classList.add('active');
-    chatSidebar.style.display = 'flex';
+    chatSidebar.classList.remove('hidden');
     newBtn.textContent = '+ New Thread';
-    newBtn.style.display = '';
+    newBtn.classList.remove('hidden');
   } else if (mode === 'workflows') {
     workflowsView.classList.add('active');
-    workflowSidebar.style.display = 'flex';
+    workflowSidebar.classList.remove('hidden');
     newBtn.textContent = '+ New Workflow';
-    newBtn.style.display = '';
+    newBtn.classList.remove('hidden');
     showWorkflowListing();
   }
 }
@@ -657,9 +657,9 @@ function switchBrainSection(section, el) {
   document.querySelectorAll('.top-tab').forEach(function(b) { b.classList.remove('active'); });
 
   // Hide mode-specific sidebars, hide new button
-  document.getElementById('chatSidebar').style.display = 'none';
-  document.getElementById('workflowSidebar').style.display = 'none';
-  document.getElementById('newBtn').style.display = 'none';
+  document.getElementById('chatSidebar').classList.add('hidden');
+  document.getElementById('workflowSidebar').classList.add('hidden');
+  document.getElementById('newBtn').classList.add('hidden');
 
   // Switch brain content section
   document.querySelectorAll('.brain-section').forEach(function(s) { s.classList.remove('active'); });
@@ -934,33 +934,33 @@ function closeAllPanels() {
   var tp = document.getElementById('taskPanel');
   var cp = document.getElementById('calendarPanel');
   var up = document.getElementById('usagePanel');
-  if (tp) tp.style.display = 'none';
-  if (cp) cp.style.display = 'none';
-  if (up) up.style.display = 'none';
+  if (tp) tp.classList.add('hidden');
+  if (cp) cp.classList.add('hidden');
+  if (up) up.classList.add('hidden');
 }
 
 function toggleTaskPanel() {
   const tp = document.getElementById('taskPanel');
-  const wasOpen = tp && tp.style.display !== 'none';
+  const wasOpen = tp && !tp.classList.contains('hidden');
   closeAllPanels();
-  if (!wasOpen && tp) tp.style.display = 'block';
+  if (!wasOpen && tp) tp.classList.remove('hidden');
 }
 
 function toggleCalendarPanel() {
   const cp = document.getElementById('calendarPanel');
-  const wasOpen = cp && cp.style.display !== 'none';
+  const wasOpen = cp && !cp.classList.contains('hidden');
   closeAllPanels();
   if (!wasOpen && cp) {
     buildMiniCalendar();
-    cp.style.display = 'block';
+    cp.classList.remove('hidden');
   }
 }
 
 function toggleUsagePanel() {
   const up = document.getElementById('usagePanel');
-  const wasOpen = up && up.style.display !== 'none';
+  const wasOpen = up && !up.classList.contains('hidden');
   closeAllPanels();
-  if (!wasOpen && up) up.style.display = 'block';
+  if (!wasOpen && up) up.classList.remove('hidden');
 }
 
 // Close top-bar dropdowns when clicking outside
@@ -968,16 +968,16 @@ document.addEventListener('click', function(e) {
   if (!e.target.closest('.top-icon-btn') && !e.target.closest('.th-dropdown') && !e.target.closest('.top-profile')) {
     closeAllPanels();
     var pp = document.getElementById('profilePanel');
-    if (pp) pp.style.display = 'none';
+    if (pp) pp.classList.add('hidden');
   }
 });
 
 function toggleProfileMenu() {
   const pp = document.getElementById('profilePanel');
-  const wasOpen = pp && pp.style.display !== 'none';
+  const wasOpen = pp && !pp.classList.contains('hidden');
   closeAllPanels();
-  if (pp) pp.style.display = 'none';
-  if (!wasOpen && pp) pp.style.display = 'block';
+  if (pp) pp.classList.add('hidden');
+  if (!wasOpen && pp) pp.classList.remove('hidden');
 }
 
 function buildMiniCalendar() {
@@ -997,11 +997,11 @@ function buildMiniCalendar() {
 document.addEventListener('click', function(e) {
   if (!e.target.closest('#taskAlertBtn') && !e.target.closest('#taskPanel')) {
     const tp = document.getElementById('taskPanel');
-    if (tp) tp.style.display = 'none';
+    if (tp) tp.classList.add('hidden');
   }
   if (!e.target.closest('#calendarBtn') && !e.target.closest('#calendarPanel')) {
     const cp = document.getElementById('calendarPanel');
-    if (cp) cp.style.display = 'none';
+    if (cp) cp.classList.add('hidden');
   }
   if (!e.target.closest('.sidebar-search')) {
     closeSearch();
@@ -1078,9 +1078,9 @@ function showWorkflowDetail(id, el) {
   document.getElementById('wfDetailTitle').textContent = data.title;
   document.getElementById('wfDetailDesc').textContent = data.desc;
 
-  document.getElementById('wfListing').style.display = 'none';
+  document.getElementById('wfListing').classList.add('hidden');
   const detail = document.getElementById('wfDetail');
-  detail.style.display = 'flex';
+  detail.classList.remove('hidden');
 
   // Reset to overview tab
   switchTab('overview', document.querySelector('.tab-btn'));
@@ -1100,8 +1100,8 @@ function showWorkflowDetail(id, el) {
 }
 
 function showWorkflowListing() {
-  document.getElementById('wfListing').style.display = 'flex';
-  document.getElementById('wfDetail').style.display = 'none';
+  document.getElementById('wfListing').classList.remove('hidden');
+  document.getElementById('wfDetail').classList.add('hidden');
   document.querySelectorAll('.wf-side-item').forEach(item => item.classList.remove('active'));
   closeCosimoPanel();
 }
@@ -1256,8 +1256,8 @@ function eraborTimer(fn, ms) {
 function showEraborStopBtn(show) {
   const sendBtn = document.getElementById('erabor-send-btn');
   const stopBtn = document.getElementById('erabor-stop-btn');
-  if (sendBtn) sendBtn.style.display = show ? 'none' : '';
-  if (stopBtn) stopBtn.style.display = show ? '' : 'none';
+  if (sendBtn) sendBtn.classList.toggle('hidden', show);
+  if (stopBtn) stopBtn.classList.toggle('hidden', !show);
 }
 
 function runEraborSequence() {
@@ -1280,8 +1280,8 @@ function runEraborSequence() {
     thinkingCubes.classList.add('fading');
 
     eraborTimer(() => {
-      thinking.style.display = 'none';
-      reasoning.style.display = 'block';
+      thinking.classList.add('hidden');
+      reasoning.classList.remove('hidden');
 
       // State 2: Reveal reasoning steps one by one
       steps.forEach((step, i) => {
@@ -1294,11 +1294,11 @@ function runEraborSequence() {
       // Collapse reasoning and start streaming
       const totalStepTime = steps.length * 550 + 1000;
       eraborTimer(() => {
-        reasoning.style.display = 'none';
-        document.getElementById('erabor-latency').style.display = '';
+        reasoning.classList.add('hidden');
+        document.getElementById('erabor-latency').classList.remove('hidden');
 
         eraborTimer(() => {
-          reply.style.display = 'block';
+          reply.classList.remove('hidden');
           streamReply(scroll);
         }, 500);
       }, totalStepTime);
@@ -1324,7 +1324,7 @@ function cancelErabor() {
 
   // Hide the entire Cosimo response block
   const response = document.getElementById('erabor-response');
-  if (response) response.style.display = 'none';
+  if (response) response.classList.add('hidden');
 
   // Swap stop → send, re-enable input
   showEraborStopBtn(false);
@@ -1669,16 +1669,16 @@ function renderMemoryFromData() {
 
 function toggleAddMemory() {
   var form = document.getElementById('memAddForm');
-  if (form.style.display === 'none') {
-    form.style.display = 'block';
+  if (form.classList.contains('hidden')) {
+    form.classList.remove('hidden');
     document.getElementById('memAddInput').focus();
   } else {
-    form.style.display = 'none';
+    form.classList.add('hidden');
   }
 }
 
 function cancelAddMemory() {
-  document.getElementById('memAddForm').style.display = 'none';
+  document.getElementById('memAddForm').classList.add('hidden');
   document.getElementById('memAddInput').value = '';
 }
 
@@ -1715,7 +1715,7 @@ function submitNewMemory() {
   list.insertBefore(card, list.firstChild);
 
   input.value = '';
-  document.getElementById('memAddForm').style.display = 'none';
+  document.getElementById('memAddForm').classList.add('hidden');
   showToast('Memory saved');
 }
 
@@ -1738,7 +1738,7 @@ function filterMemories() {
     }
   });
 
-  document.getElementById('memNoResults').style.display = visibleCount === 0 ? 'flex' : 'none';
+  document.getElementById('memNoResults').classList.toggle('hidden', visibleCount > 0);
 }
 
 function filterByCategory(cat, el) {
@@ -1960,7 +1960,7 @@ function filterLessons() {
     }
   });
 
-  document.getElementById('lessonNoResults').style.display = visibleCount === 0 ? 'flex' : 'none';
+  document.getElementById('lessonNoResults').classList.toggle('hidden', visibleCount > 0);
 }
 
 function filterLessonScope(scope, el) {
@@ -1987,8 +1987,8 @@ function openLesson(id) {
   document.getElementById('lessonScopeToggleText').textContent = data.scope === 'company' ? 'Change to Personal' : 'Promote to Company';
 
   // Switch views
-  document.getElementById('lessonsListView').style.display = 'none';
-  document.getElementById('lessonDetailView').style.display = '';
+  document.getElementById('lessonsListView').classList.add('hidden');
+  document.getElementById('lessonDetailView').classList.remove('hidden');
 
   // Reset edit state
   lessonIsEditing = false;
@@ -2000,8 +2000,8 @@ function openLesson(id) {
 }
 
 function closeLessonDetail() {
-  document.getElementById('lessonDetailView').style.display = 'none';
-  document.getElementById('lessonsListView').style.display = '';
+  document.getElementById('lessonDetailView').classList.add('hidden');
+  document.getElementById('lessonsListView').classList.remove('hidden');
 
   // Reset edit state
   if (lessonIsEditing) {

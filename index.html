@@ -33,7 +33,7 @@
 
       <div class="sidebar-search">
         <input type="text" class="sidebar-search-input" placeholder="Search..." />
-        <div class="search-results" id="searchResults" style="display:none;"></div>
+        <div class="search-results hidden" id="searchResults"></div>
       </div>
     </div>
 
@@ -67,7 +67,7 @@
     </div>
 
     <!-- Workflow sidebar items -->
-    <div id="workflowSidebar" style="display:none;">
+    <div id="workflowSidebar" class="hidden">
       <div class="side-label">Workflows</div>
       <div class="workflow-sidebar-list">
         <div class="wf-side-item" data-wf-id="rent-roll">
@@ -162,7 +162,7 @@
           <div class="top-profile-avatar">E</div>
           <span class="top-profile-name">Eliot Puplett</span>
         </div>
-        <div class="th-dropdown th-dropdown-profile" id="profilePanel" style="display:none;">
+        <div class="th-dropdown th-dropdown-profile hidden" id="profilePanel">
           <div class="profile-menu-theme">
             <span class="profile-menu-theme-label">Dark mode</span>
             <div class="profile-menu-toggle" id="themeToggleSwitch">
@@ -238,13 +238,13 @@
 
     <!-- Task Panel Dropdown -->
     <!-- Task Panel (rendered from MOCK_TASKS by renderHeaderPanels()) -->
-    <div class="th-dropdown" id="taskPanel" style="display:none;"></div>
+    <div class="th-dropdown hidden" id="taskPanel"></div>
 
     <!-- Calendar Panel (rendered from MOCK_CALENDAR by renderHeaderPanels()) -->
-    <div class="th-dropdown th-dropdown-calendar" id="calendarPanel" style="display:none;"></div>
+    <div class="th-dropdown th-dropdown-calendar hidden" id="calendarPanel"></div>
 
     <!-- Usage Panel (rendered from MOCK_USAGE by renderHeaderPanels()) -->
-    <div class="th-dropdown th-dropdown-usage" id="usagePanel" style="display:none;"></div>
+    <div class="th-dropdown th-dropdown-usage hidden" id="usagePanel"></div>
 
     <!-- ======== CHAT VIEW ======== -->
     <div class="view-container active" id="chatView">
@@ -678,7 +678,7 @@
 
       <!-- Erabor Partnership Terms thread -->
       <div class="chat-thread" id="thread-new">
-      <div class="chat-scroll" style="display:flex; flex:1;">
+      <div class="chat-scroll flex-fill">
         <div class="empty-thread">
           <div class="empty-thread-icon">◆</div>
           <div class="empty-thread-title">What can Cosimo help with?</div>
@@ -843,7 +843,7 @@
               <div class="badge badge-ai">◆</div>
               <span class="sender">Cosimo</span>
               <span class="timestamp">3:30 PM</span>
-              <span class="latency-chip" id="erabor-latency" style="display:none;">4.2s</span>
+              <span class="latency-chip hidden" id="erabor-latency">4.2s</span>
               <span class="model-badge">Expert</span>
             </div>
 
@@ -857,7 +857,7 @@
             </div>
 
             <!-- State 2: Train of thought -->
-            <div class="cosimo-reasoning" id="erabor-reasoning" style="display:none;">
+            <div class="cosimo-reasoning hidden" id="erabor-reasoning">
               <div class="reasoning-header">
                 <div class="reasoning-header-icon">◆</div>
                 <span class="reasoning-header-label">Cosimo is thinking...</span>
@@ -879,7 +879,7 @@
             </div>
 
             <!-- State 3: Full response (streamed in) -->
-            <div class="msg-body" id="erabor-reply" style="display:none;">
+            <div class="msg-body hidden" id="erabor-reply">
               <div class="erabor-stream-block" data-stream="0">
                 <p>I've pulled the executed Erabor Partners LP Agreement dated December 14, 2024 and cross-referenced all economic terms against our Fund III standard template. The agreement covers a $200M closed-end vehicle with a 7-year investment period and two 1-year extensions at GP discretion, subject to advisory committee consent.</p>
               </div>
@@ -1002,7 +1002,7 @@
           <div class="text-input" id="erabor-input" contenteditable="true" data-placeholder="Continue this thread..."></div>
           <button class="cmd-btn">Attach</button>
           <button class="cmd-btn cmd-primary" id="erabor-send-btn" title="Send"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M1.5 8h11M8.5 4L12.5 8 8.5 12"/></svg></button>
-          <button class="cmd-btn cmd-stop" id="erabor-stop-btn" style="display:none;" title="Stop">
+          <button class="cmd-btn cmd-stop hidden" id="erabor-stop-btn" title="Stop">
             <svg class="stop-icon" viewBox="0 0 12 12" fill="currentColor"><rect x="1" y="1" width="10" height="10" rx="0"/></svg>
           </button>
         </div>
@@ -1094,7 +1094,7 @@
     <div class="view-container" id="workflowsView">
 
       <!-- Workflow Listing -->
-      <div id="wfListing" style="display:flex; flex-direction:column; flex:1; overflow:hidden;">
+      <div id="wfListing" class="wf-listing-layout">
         <div class="main-header">
           <span class="header-title">Workflows</span>
           <div class="header-actions">
@@ -1245,9 +1245,9 @@
       </div>
 
       <!-- Workflow Detail -->
-      <div id="wfDetail" style="display:none; flex:1; flex-direction:column; overflow:hidden;">
+      <div id="wfDetail" class="hidden wf-detail-layout">
         <div class="main-header">
-          <div style="display:flex; align-items:center; gap:10px;">
+          <div class="wf-detail-header-row">
             <button class="back-btn" id="wfBackBtn">← Back</button>
             <span class="header-title" id="wfDetailTitle">Rent Roll Extraction</span>
           </div>
@@ -1258,7 +1258,7 @@
                 <button class="dropdown-item" data-action="run-now">▶ Run Now</button>
                 <button class="dropdown-item" data-action="duplicate">⧉ Duplicate</button>
                 <button class="dropdown-item violet" data-action="edit-cosimo">◆ Edit with Cosimo</button>
-                <button class="dropdown-item" data-action="delete" style="color:var(--red)">✕ Delete Workflow</button>
+                <button class="dropdown-item text-red" data-action="delete">✕ Delete Workflow</button>
               </div>
             </div>
             <button class="header-btn primary" id="wfRunBtn">▶ Run</button>
@@ -1290,7 +1290,7 @@
                   <div class="detail-section-body">
                     <div class="kv-row">
                       <span class="kv-key">State</span>
-                      <span class="kv-val" style="color:var(--green)">● Active</span>
+                      <span class="kv-val text-green">● Active</span>
                     </div>
                     <div class="kv-row">
                       <span class="kv-key">Last Run</span>
@@ -1298,7 +1298,7 @@
                     </div>
                     <div class="kv-row">
                       <span class="kv-key">Last Result</span>
-                      <span class="kv-val" style="color:var(--green)">Success</span>
+                      <span class="kv-val text-green">Success</span>
                     </div>
                     <div class="kv-row">
                       <span class="kv-key">Avg Duration</span>
@@ -1320,7 +1320,7 @@
                     </div>
                     <div class="kv-row">
                       <span class="kv-key">Success Rate</span>
-                      <span class="kv-val" style="color:var(--green)">95.7%</span>
+                      <span class="kv-val text-green">95.7%</span>
                     </div>
                     <div class="kv-row">
                       <span class="kv-key">Files Processed</span>
@@ -1340,21 +1340,21 @@
                     <div class="art-stripe"></div>
                   </div>
                   <div class="detail-section-body">
-                    <div class="run-row" style="cursor:default">
+                    <div class="run-row cursor-default">
                       <div class="run-status-dot success"></div>
                       <span class="run-id">#047</span>
                       <span class="run-trigger">Manual — 3 files</span>
                       <span class="run-time">Today, 12:15 PM</span>
                       <span class="run-duration">11.2s</span>
                     </div>
-                    <div class="run-row" style="cursor:default">
+                    <div class="run-row cursor-default">
                       <div class="run-status-dot success"></div>
                       <span class="run-id">#046</span>
                       <span class="run-trigger">Folder watch — 1 file</span>
                       <span class="run-time">Today, 9:04 AM</span>
                       <span class="run-duration">8.7s</span>
                     </div>
-                    <div class="run-row" style="cursor:default">
+                    <div class="run-row cursor-default">
                       <div class="run-status-dot failed"></div>
                       <span class="run-id">#045</span>
                       <span class="run-trigger">Manual — 2 files</span>
@@ -1653,7 +1653,7 @@
                 </div>
 
                 <!-- Add Memory Inline Form (hidden by default) -->
-                <div class="mem-add-form" id="memAddForm" style="display:none;">
+                <div class="mem-add-form hidden" id="memAddForm">
                   <div class="mem-add-form-inner">
                     <input type="text" class="mem-add-input" id="memAddInput" placeholder="Type a fact Cosimo should remember..." />
                     <div class="mem-add-form-row">
@@ -1677,11 +1677,11 @@
                 <div class="mem-fact-list" id="memFactList"></div>
 
                 <!-- No results state -->
-                <div class="mem-no-results" id="memNoResults" style="display:none;">
+                <div class="mem-no-results hidden" id="memNoResults">
                   <div class="brain-empty-icon">
                     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/></svg>
                   </div>
-                  <div class="brain-empty-title" style="font-size:16px;">No memories found</div>
+                  <div class="brain-empty-title brain-empty-title-lg">No memories found</div>
                   <div class="brain-empty-desc">Try a different search or category filter.</div>
                 </div>
 
@@ -1704,19 +1704,19 @@
               <div class="brain-scroll">
 
                 <!-- Search -->
-                <div class="mem-search-wrap" style="margin-bottom:12px;">
+                <div class="mem-search-wrap mb-12">
                   <svg class="mem-search-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/></svg>
                   <input type="text" class="mem-search-input" id="lessonSearchInput" placeholder="Search lessons..." />
                 </div>
 
                 <!-- Scope Filter -->
-                <div class="mem-category-filters" style="margin-bottom:14px;" id="lessonScopeFilters">
+                <div class="mem-category-filters mb-14" id="lessonScopeFilters">
                   <button class="mem-cat-pill active">All</button>
                   <button class="mem-cat-pill">
-                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" width="11" height="11" style="vertical-align:-1px;margin-right:3px;"><circle cx="8" cy="5" r="3"/><path d="M2.5 14c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/></svg>Personal
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" width="11" height="11" class="inline-icon"><circle cx="8" cy="5" r="3"/><path d="M2.5 14c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/></svg>Personal
                   </button>
                   <button class="mem-cat-pill">
-                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" width="11" height="11" style="vertical-align:-1px;margin-right:3px;"><rect x="2" y="4" width="12" height="10"/><rect x="5" y="1" width="6" height="5"/><line x1="8" y1="8" x2="8" y2="10"/></svg>Company
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" width="11" height="11" class="inline-icon"><rect x="2" y="4" width="12" height="10"/><rect x="5" y="1" width="6" height="5"/><line x1="8" y1="8" x2="8" y2="10"/></svg>Company
                   </button>
                 </div>
 
@@ -1724,11 +1724,11 @@
                 <div class="lesson-list" id="lessonList"></div>
 
                 <!-- No results -->
-                <div class="lesson-no-results" id="lessonNoResults" style="display:none;">
+                <div class="lesson-no-results hidden" id="lessonNoResults">
                   <div class="brain-empty-icon">
                     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/></svg>
                   </div>
-                  <div class="brain-empty-title" style="font-size:16px;">No lessons found</div>
+                  <div class="brain-empty-title brain-empty-title-lg">No lessons found</div>
                   <div class="brain-empty-desc">Try a different search term or filter.</div>
                 </div>
 
@@ -1736,7 +1736,7 @@
             </div>
 
             <!-- Lesson Detail View (hidden by default) -->
-            <div id="lessonDetailView" class="brain-subview" style="display:none;">
+            <div id="lessonDetailView" class="brain-subview hidden">
               <div class="main-header">
                 <span class="header-title">
                   <button class="lesson-back-btn" id="lessonBackBtn">&larr;</button>
@@ -1758,7 +1758,7 @@
                   <span class="lesson-detail-stat">Last used 2d ago</span>
                   <span class="lesson-detail-stat">Updated Feb 28 by Sarah Chen</span>
                   <button class="header-btn lesson-scope-btn" id="lessonScopeToggle">
-                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="11" height="11" style="vertical-align:-1px;margin-right:3px;"><path d="M1 8h14M11 4l4 4-4 4"/></svg>
+                    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="11" height="11" class="inline-icon"><path d="M1 8h14M11 4l4 4-4 4"/></svg>
                     <span id="lessonScopeToggleText">Change to Personal</span>
                   </button>
                 </div>
@@ -1797,22 +1797,22 @@
                     <h3>Status Color Coding</h3>
                     <div class="lesson-color-grid">
                       <div class="lesson-color-swatch">
-                        <div class="swatch-box" style="background:#3D8B40;"></div>
+                        <div class="swatch-box swatch-green"></div>
                         <div class="swatch-label">Current</div>
                         <div class="swatch-value">#3D8B40</div>
                       </div>
                       <div class="lesson-color-swatch">
-                        <div class="swatch-box" style="background:#B8862B;"></div>
+                        <div class="swatch-box swatch-gold"></div>
                         <div class="swatch-label">Notice</div>
                         <div class="swatch-value">#B8862B</div>
                       </div>
                       <div class="lesson-color-swatch">
-                        <div class="swatch-box" style="background:#C04848;"></div>
+                        <div class="swatch-box swatch-red"></div>
                         <div class="swatch-label">Vacant</div>
                         <div class="swatch-value">#C04848</div>
                       </div>
                       <div class="lesson-color-swatch">
-                        <div class="swatch-box" style="background:#749CB5;"></div>
+                        <div class="swatch-box swatch-blue"></div>
                         <div class="swatch-label">Renewal Pending</div>
                         <div class="swatch-value">#749CB5</div>
                       </div>
@@ -1916,7 +1916,7 @@
   <div class="cosimo-panel-chat" id="panelChat">
     <div class="panel-msg panel-msg-ai">
       <div class="panel-msg-header">
-        <div class="badge badge-ai" style="width:16px;height:16px;font-size:9px;">◆</div>
+        <div class="badge badge-ai badge-sm">◆</div>
         <span class="panel-msg-sender">Cosimo</span>
       </div>
       I can help you modify this workflow. Try things like:

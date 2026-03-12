@@ -42,6 +42,9 @@
 - [x] **2.3 — Remove inline onclick handlers from login.html**
   Removed 3 `onclick="window.location.href='index.html'"` from SSO buttons. Added `addEventListener` in the existing `<script>` block using `querySelectorAll('.sso-btn')`.
 
+- [x] **2.4 — Remove all inline style attributes from index.html**
+  Removed all 37 inline `style="..."` attributes from index.html. Created utility classes in utilities.css: `.text-green`, `.text-red`, `.cursor-default`, `.inline-icon`, `.brain-empty-title-lg`, `.swatch-green/gold/red/blue`, `.badge-sm`, `.flex-fill`, `.wf-listing-layout`, `.wf-detail-layout`, `.wf-detail-header-row`, `.mb-12`, `.mb-14`. Replaced `style="display:none"` with `.hidden` class on 13 elements and updated all corresponding JS toggle code to use `classList.add/remove('hidden')` instead of `style.display`.
+
 ### Current Task
 (none — awaiting next instruction)
 

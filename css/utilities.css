@@ -187,3 +187,59 @@
 [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
   background: var(--taupe-3);
 }
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.hidden { display: none; }
+
+.text-green { color: var(--green); }
+.text-red { color: var(--red); }
+.cursor-default { cursor: default; }
+
+.inline-icon {
+  vertical-align: -1px;
+  margin-right: 3px;
+}
+
+.brain-empty-title-lg { font-size: 16px; }
+
+.swatch-green { background: #3D8B40; }
+.swatch-gold { background: #B8862B; }
+.swatch-red { background: #C04848; }
+.swatch-blue { background: #749CB5; }
+
+.badge-sm {
+  width: 16px;
+  height: 16px;
+  font-size: 9px;
+}
+
+.flex-fill {
+  display: flex;
+  flex: 1;
+}
+
+.wf-listing-layout {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+.wf-detail-layout {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.wf-detail-header-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mb-12 { margin-bottom: 12px; }
+.mb-14 { margin-bottom: 14px; }
