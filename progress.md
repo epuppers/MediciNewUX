@@ -60,6 +60,9 @@
 - [x] **3.4 — Normalize dark mode override structure**
   Audited all 6 CSS files for scattered `[data-theme="dark"]` rules. Found 3 scattered rules in layout.css mixed into the profile toggle section: `#themeToggleTrack`, `#themeToggleThumb`, and `.profile-menu-slider`. Moved all 3 to the dark mode overrides section at the end of layout.css near other theme-toggle overrides. All other files (tokens.css, chat.css, workflows.css, components.css, utilities.css) were already properly organized. No cross-file dark mode duplicates found.
 
+- [x] **3.5 — Audit border-radius consistency**
+  Searched all CSS files for raw `border-radius: Npx` and `border-radius: N%` values. Found 3 raw px values (`9px`, `2px`, `2px`) and 5 `50%` values — all are intentional special cases for pill shapes (toggle track, slider track, resize handle) and circles (avatars, slider thumbs), not standard corner radii. No raw px values need converting to `var(--r-sm/md/lg)` tokens. All compound border-radius values already use tokens.
+
 ### Current Task
 (none — awaiting next instruction)
 
