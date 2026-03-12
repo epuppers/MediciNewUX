@@ -450,7 +450,7 @@
   width: 32px;
   height: 18px;
   background: var(--taupe-2);
-  border-radius: 9px;
+  border-radius: var(--r-pill);
   position: relative;
   transition: background 0.2s;
 }
@@ -492,7 +492,7 @@
   width: 100%;
   height: 4px;
   background: var(--taupe-1);
-  border-radius: 2px;
+  border-radius: var(--r-xs);
   outline: none;
   cursor: pointer;
 }

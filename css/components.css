@@ -1302,7 +1302,7 @@
   content: '';
   width: 36px;
   height: 4px;
-  border-radius: 2px;
+  border-radius: var(--r-xs);
   background: var(--taupe-2);
   transition: background 0.15s;
 }

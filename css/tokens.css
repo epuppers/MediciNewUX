@@ -86,9 +86,11 @@
   --sans: 'DM Sans', sans-serif;
 
   /* Border radii */
+  --r-xs: 2px;
   --r-sm: 3px;
   --r-md: 4px;
   --r-lg: 6px;
+  --r-pill: 9px;
 }
 
 /* ============================================

@@ -129,8 +129,11 @@
 - [x] **7.4 — Replace all raw rgba() values in CSS with RGB triplet tokens**
   Replaced ~90 raw rgba(R,G,B,A) calls across all 6 CSS files with the `rgba(var(--token-rgb), A)` pattern. Added 5 new RGB triplet tokens: `--taupe-3-rgb` (135,134,139 / dark: 118,117,124), `--black-rgb` (0,0,0), `--white-pure-rgb` (255,255,255), `--surface-tooltip-rgb` (45,45,46 — non-flipping for always-dark graph tooltips), `--cosimo-error-rgb` (194,59,34 — error accent). Corrected one near-match typo (rgba(138,137,144) → --taupe-3-rgb). No CSS file outside tokens.css now contains raw RGB numbers inside rgba().
 
+- [x] **7.5 — Add missing border-radius tokens**
+  Added `--r-xs: 2px` and `--r-pill: 9px` to tokens.css. Replaced 3 raw border-radius values: `2px` → `var(--r-xs)` in layout.css (slider track) and components.css (graph drag handle), `9px` → `var(--r-pill)` in layout.css (toggle track). 5 remaining `50%` values are intentional circles (avatars, dots, thumbs) — left as-is. No raw `border-radius: Npx` values remain outside tokens.css.
+
 ### Current Task
-Phase 7 — task 7.4 complete
+Phase 7 — task 7.5 complete
 
 ### Blocked / Notes
 (none)
