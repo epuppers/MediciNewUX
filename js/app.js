@@ -365,6 +365,7 @@ A11y.toggleTheme = function() {
   // Re-apply purple intensity for new theme
   const saved = localStorage.getItem('purpleIntensity');
   if (saved) A11y.applyPurpleIntensity(saved);
+  A11y.syncA11yToggles();
 };
 
 // ============================================
@@ -580,6 +581,18 @@ A11y.syncA11yToggles = function() {
   if (mh) mh.classList.toggle('active', motionOn);
   if (ct) ct.classList.toggle('active', contrastOn);
   if (ch) ch.classList.toggle('active', contrastOn);
+
+  // Sync aria-checked on toggle switches
+  var dyslexiaSwitch = dt ? dt.closest('[role="switch"]') : null;
+  var motionSwitch = mt ? mt.closest('[role="switch"]') : null;
+  var contrastSwitch = ct ? ct.closest('[role="switch"]') : null;
+  if (dyslexiaSwitch) dyslexiaSwitch.setAttribute('aria-checked', String(dyslexiaOn));
+  if (motionSwitch) motionSwitch.setAttribute('aria-checked', String(motionOn));
+  if (contrastSwitch) contrastSwitch.setAttribute('aria-checked', String(contrastOn));
+
+  // Sync theme toggle
+  var themeSwitch = document.getElementById('themeToggleSwitch');
+  if (themeSwitch) themeSwitch.setAttribute('aria-checked', String(root.getAttribute('data-theme') === 'dark'));
 };
 
 // --- Restore all a11y settings on load ---

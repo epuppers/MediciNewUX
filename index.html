@@ -147,25 +147,25 @@
       </button>
       <div class="top-tab-spacer"></div>
       <div class="top-header-right">
-        <div class="top-icon-btn" id="taskAlertBtn" title="Assigned Tasks">
+        <button class="top-icon-btn" id="taskAlertBtn" title="Assigned Tasks" aria-label="Assigned Tasks">
           <span class="th-icon">◈</span>
           <div class="th-badge" id="taskBadge">3</div>
-        </div>
-        <div class="top-icon-btn" id="calendarBtn" title="Calendar">
+        </button>
+        <button class="top-icon-btn" id="calendarBtn" title="Calendar" aria-label="Calendar">
           <span class="th-icon">▦</span>
-        </div>
-        <div class="top-icon-btn" id="usageBtn" title="Usage">
+        </button>
+        <button class="top-icon-btn" id="usageBtn" title="Usage" aria-label="Usage">
           <span data-icon="gauge"></span>
-        </div>
+        </button>
         <div class="th-divider"></div>
         <div class="top-profile">
           <div class="top-profile-avatar">E</div>
           <span class="top-profile-name">Eliot Puplett</span>
         </div>
-        <div class="th-dropdown th-dropdown-profile bevel hidden" id="profilePanel">
+        <div class="th-dropdown th-dropdown-profile bevel hidden" id="profilePanel" aria-label="Profile settings">
           <div class="profile-menu-theme">
             <span class="profile-menu-theme-label">Dark mode</span>
-            <div class="profile-menu-toggle" id="themeToggleSwitch">
+            <div class="profile-menu-toggle" id="themeToggleSwitch" role="switch" aria-checked="false" aria-label="Dark mode">
               <div class="profile-menu-toggle-track" id="themeToggleTrack">
                 <div class="profile-menu-toggle-thumb" id="themeToggleThumb"></div>
               </div>
@@ -203,7 +203,7 @@
           <!-- Dyslexia-friendly font -->
           <div class="profile-menu-theme">
             <span class="profile-menu-theme-label">Dyslexia-friendly font</span>
-            <div class="profile-menu-toggle">
+            <div class="profile-menu-toggle" role="switch" aria-checked="false" aria-label="Dyslexia-friendly font">
               <div class="profile-menu-toggle-track" id="dyslexiaToggleTrack">
                 <div class="profile-menu-toggle-thumb" id="dyslexiaToggleThumb"></div>
               </div>
@@ -213,7 +213,7 @@
           <!-- Reduced motion -->
           <div class="profile-menu-theme">
             <span class="profile-menu-theme-label">Reduced motion</span>
-            <div class="profile-menu-toggle">
+            <div class="profile-menu-toggle" role="switch" aria-checked="false" aria-label="Reduced motion">
               <div class="profile-menu-toggle-track" id="motionToggleTrack">
                 <div class="profile-menu-toggle-thumb" id="motionToggleThumb"></div>
               </div>
@@ -223,7 +223,7 @@
           <!-- High contrast + focus -->
           <div class="profile-menu-theme">
             <span class="profile-menu-theme-label">High contrast &amp; focus</span>
-            <div class="profile-menu-toggle">
+            <div class="profile-menu-toggle" role="switch" aria-checked="false" aria-label="High contrast and focus">
               <div class="profile-menu-toggle-track" id="contrastToggleTrack">
                 <div class="profile-menu-toggle-thumb" id="contrastToggleThumb"></div>
               </div>
@@ -238,13 +238,13 @@
 
     <!-- Task Panel Dropdown -->
     <!-- Task Panel (rendered from MOCK_TASKS by renderHeaderPanels()) -->
-    <div class="th-dropdown bevel hidden" id="taskPanel"></div>
+    <div class="th-dropdown bevel hidden" id="taskPanel" aria-label="Assigned tasks"></div>
 
     <!-- Calendar Panel (rendered from MOCK_CALENDAR by renderHeaderPanels()) -->
-    <div class="th-dropdown th-dropdown-calendar bevel hidden" id="calendarPanel"></div>
+    <div class="th-dropdown th-dropdown-calendar bevel hidden" id="calendarPanel" aria-label="Calendar"></div>
 
     <!-- Usage Panel (rendered from MOCK_USAGE by renderHeaderPanels()) -->
-    <div class="th-dropdown th-dropdown-usage bevel hidden" id="usagePanel"></div>
+    <div class="th-dropdown th-dropdown-usage bevel hidden" id="usagePanel" aria-label="Usage"></div>
 
     <!-- ======== CHAT VIEW ======== -->
     <div class="view-container active" id="chatView">
@@ -253,9 +253,9 @@
       <div class="main-header" id="chatHeader">
         <span class="header-title" id="chatHeaderTitle">Fund III — Allocation Drift</span>
         <div class="header-actions">
-          <button class="header-btn bevel label-mono icon-btn disabled" id="filesBtn" disabled title="Files"><span data-icon="folder"></span></button>
-          <button class="header-btn bevel label-mono icon-btn" id="exportBtn" title="Export"><span data-icon="export"></span></button>
-          <button class="header-btn bevel label-mono icon-btn" id="shareBtn" title="Share"><span data-icon="share"></span></button>
+          <button class="header-btn bevel label-mono icon-btn disabled" id="filesBtn" disabled title="Files" aria-label="Files"><span data-icon="folder"></span></button>
+          <button class="header-btn bevel label-mono icon-btn" id="exportBtn" title="Export" aria-label="Export"><span data-icon="export"></span></button>
+          <button class="header-btn bevel label-mono icon-btn" id="shareBtn" title="Share" aria-label="Share"><span data-icon="share"></span></button>
         </div>
       </div>
 
@@ -438,7 +438,7 @@
 
       <div class="input-area">
         <div class="input-row">
-          <div class="text-input bevel-inset" contenteditable="true" data-placeholder="Continue this thread..."></div>
+          <div class="text-input bevel-inset" contenteditable="true" role="textbox" aria-label="Message input" data-placeholder="Continue this thread..."></div>
           <div class="attach-wrapper">
             <button class="cmd-btn label-mono" title="Attach file"><span data-icon="attach"></span></button>
             <div class="attach-menu">
@@ -557,7 +557,7 @@
 
       <div class="input-area">
         <div class="input-row">
-          <div class="text-input bevel-inset" contenteditable="true" data-placeholder="Continue this thread..."></div>
+          <div class="text-input bevel-inset" contenteditable="true" role="textbox" aria-label="Message input" data-placeholder="Continue this thread..."></div>
           <div class="attach-wrapper">
             <button class="cmd-btn label-mono" title="Attach file"><span data-icon="attach"></span></button>
             <div class="attach-menu">
@@ -636,7 +636,7 @@
 
       <div class="input-area">
         <div class="input-row">
-          <div class="text-input bevel-inset" contenteditable="true" data-placeholder="Continue this thread..."></div>
+          <div class="text-input bevel-inset" contenteditable="true" role="textbox" aria-label="Message input" data-placeholder="Continue this thread..."></div>
           <div class="attach-wrapper">
             <button class="cmd-btn label-mono" title="Attach file"><span data-icon="attach"></span></button>
             <div class="attach-menu">
@@ -693,7 +693,7 @@
       </div>
       <div class="input-area">
         <div class="input-row">
-          <div class="text-input bevel-inset" id="new-thread-input" contenteditable="true" data-placeholder="Ask Cosimo anything..."></div>
+          <div class="text-input bevel-inset" id="new-thread-input" contenteditable="true" role="textbox" aria-label="Ask Cosimo anything" data-placeholder="Ask Cosimo anything..."></div>
           <div class="attach-wrapper">
             <button class="cmd-btn label-mono" title="Attach file"><span data-icon="attach"></span></button>
             <div class="attach-menu">
@@ -778,7 +778,7 @@
 
       <div class="input-area">
         <div class="input-row">
-          <div class="text-input bevel-inset" contenteditable="true" data-placeholder="Continue this thread..."></div>
+          <div class="text-input bevel-inset" contenteditable="true" role="textbox" aria-label="Message input" data-placeholder="Continue this thread..."></div>
           <div class="attach-wrapper">
             <button class="cmd-btn label-mono" title="Attach file"><span data-icon="attach"></span></button>
             <div class="attach-menu">
@@ -997,7 +997,7 @@
 
       <div class="input-area" id="erabor-input-area">
         <div class="input-row">
-          <div class="text-input bevel-inset" id="erabor-input" contenteditable="true" data-placeholder="Continue this thread..."></div>
+          <div class="text-input bevel-inset" id="erabor-input" contenteditable="true" role="textbox" aria-label="Message input" data-placeholder="Continue this thread..."></div>
           <button class="cmd-btn label-mono">Attach</button>
           <button class="cmd-btn label-mono cmd-primary" id="erabor-send-btn" title="Send"><span data-icon="send"></span></button>
           <button class="cmd-btn label-mono cmd-stop hidden" id="erabor-stop-btn" title="Stop">
@@ -1034,7 +1034,7 @@
 
       <!-- ======== RIGHT PANEL (file viewer / folder) ======== -->
       <div class="resize-handle resize-handle-filepanel" id="filePanelResizeHandle"></div>
-      <div class="file-panel" id="filePanel">
+      <div class="file-panel" id="filePanel" aria-label="File panel">
         <div class="file-panel-header">
           <div class="file-panel-tabs">
             <button class="file-panel-tab label-mono active" id="fpTabViewer">Viewer</button>
@@ -1624,7 +1624,7 @@
               <div class="mem-section">
                 <div class="mem-section-label">What Describes Your Work</div>
                 <div class="mem-role-card">
-                  <div class="mem-role-text" contenteditable="true" id="roleField" data-placeholder="Describe what you do, your role, your firm..."></div>
+                  <div class="mem-role-text" contenteditable="true" id="roleField" role="textbox" aria-label="Role description" data-placeholder="Describe what you do, your role, your firm..."></div>
                 </div>
               </div>
 
@@ -1750,9 +1750,9 @@
                   <span id="lessonDetailTitle">Lesson Title</span>
                 </span>
                 <div class="header-actions">
-                  <button class="header-btn bevel label-mono icon-btn" id="lessonEditBtn" title="Edit Directly"><span data-icon="edit"></span></button>
-                  <button class="header-btn bevel label-mono icon-btn" id="lessonCosimoBtn" title="Edit with Cosimo"><span data-icon="cosimo"></span></button>
-                  <button class="header-btn bevel label-mono icon-btn" id="lessonDeleteBtn" title="Delete Lesson"><span data-icon="trashRed"></span></button>
+                  <button class="header-btn bevel label-mono icon-btn" id="lessonEditBtn" title="Edit Directly" aria-label="Edit Directly"><span data-icon="edit"></span></button>
+                  <button class="header-btn bevel label-mono icon-btn" id="lessonCosimoBtn" title="Edit with Cosimo" aria-label="Edit with Cosimo"><span data-icon="cosimo"></span></button>
+                  <button class="header-btn bevel label-mono icon-btn" id="lessonDeleteBtn" title="Delete Lesson" aria-label="Delete Lesson"><span data-icon="trashRed"></span></button>
                 </div>
               </div>
 
@@ -1887,9 +1887,9 @@
                     </div>
                   </div>
                   <div class="graph-detail-actions">
-                    <button class="header-btn bevel label-mono icon-btn" id="graphEditBtn" title="Edit"><span data-icon="edit"></span></button>
-                    <button class="header-btn bevel label-mono icon-btn" id="graphCosimoBtn" title="Edit with Cosimo"><span data-icon="cosimo"></span></button>
-                    <button class="header-btn bevel label-mono icon-btn" id="graphCloseBtn" title="Close"><span data-icon="close"></span></button>
+                    <button class="header-btn bevel label-mono icon-btn" id="graphEditBtn" title="Edit" aria-label="Edit"><span data-icon="edit"></span></button>
+                    <button class="header-btn bevel label-mono icon-btn" id="graphCosimoBtn" title="Edit with Cosimo" aria-label="Edit with Cosimo"><span data-icon="cosimo"></span></button>
+                    <button class="header-btn bevel label-mono icon-btn" id="graphCloseBtn" title="Close" aria-label="Close"><span data-icon="close"></span></button>
                   </div>
                 </div>
                 <div class="graph-detail-body" id="graphDetailBody">
@@ -1908,10 +1908,10 @@
 </div>
 
 <!-- Cosimo Panel Overlay -->
-<div class="panel-overlay" id="panelOverlay"></div>
+<div class="panel-overlay" id="panelOverlay" aria-hidden="true"></div>
 
 <!-- Cosimo Chat Panel -->
-<div class="cosimo-panel" id="cosimoPanel">
+<div class="cosimo-panel" id="cosimoPanel" aria-label="Cosimo assistant panel">
   <div class="cosimo-panel-header">
     <div class="cosimo-panel-title">
       <div class="logo-mark"><div class="logo-spheres"><div class="logo-sphere dark"></div><div class="logo-sphere light"></div><div class="logo-sphere dark"></div><div class="logo-sphere dark"></div><div class="logo-sphere dark"></div><div class="logo-sphere dark"></div></div></div>
@@ -1937,7 +1937,7 @@
 
   <div class="cosimo-panel-input">
     <div class="panel-input-row">
-      <div class="panel-text-input bevel-inset" id="panelInput" contenteditable="true" data-placeholder="Describe a change..."></div>
+      <div class="panel-text-input bevel-inset" id="panelInput" contenteditable="true" role="textbox" aria-label="Cosimo message input" data-placeholder="Describe a change..."></div>
       <button class="panel-send-btn label-mono" id="cosimoPanelSend" title="Send"><span data-icon="send" data-icon-w="12" data-icon-h="12"></span></button>
     </div>
   </div>

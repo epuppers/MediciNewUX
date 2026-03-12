@@ -111,6 +111,9 @@
 - [x] **6.2 — Check console for errors**
   All 3 JS files pass `node --check` syntax validation. Comprehensive runtime error audit: all namespace methods (A11y, UI, Chat, Workflows, BrainMemory, BrainLessons, Graph, ColorUtils) verified defined, all global functions (showToast, escapeHtml) present, all getElementById/querySelector targets exist in HTML, all classList operations reference existing CSS classes, all MOCK_*/CONFIG_* objects loaded from mock-data.js before app.js. No undefined references, no missing DOM elements, no class mismatches. Zero errors expected.
 
+- [x] **6.3 — Validate HTML**
+  Comprehensive HTML validation audit. Fixed: (1) Converted 3 `<div class="top-icon-btn">` to `<button>` for proper semantics, added button reset CSS (padding, font, color). (2) Added `aria-label` to 9 icon-only buttons (filesBtn, exportBtn, shareBtn, lessonEditBtn, lessonCosimoBtn, lessonDeleteBtn, graphEditBtn, graphCosimoBtn, graphCloseBtn). (3) Added `aria-label` to 7 panels (profilePanel, taskPanel, calendarPanel, usagePanel, filePanel, cosimoPanel) and `aria-hidden` to panelOverlay. (4) Added `role="switch"` and `aria-checked="false"` to 4 toggle switches (theme, dyslexia, motion, contrast). Updated `syncA11yToggles()` and `toggleTheme()` to sync `aria-checked` state. (5) Added `role="textbox"` and `aria-label` to 8 contenteditable div inputs. No duplicate IDs found (workflow items use data-wf-id, not id). No unclosed tags (654 opening divs match 654 closing). No images needing alt text.
+
 ### Current Task
 (none — awaiting next instruction)
 
