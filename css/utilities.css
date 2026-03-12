@@ -192,7 +192,7 @@
    UTILITY CLASSES
    ============================================ */
 
-.hidden { display: none; }
+.hidden { display: none !important; }
 
 .text-green { color: var(--green); }
 .text-red { color: var(--red); }
