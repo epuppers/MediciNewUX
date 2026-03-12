@@ -75,6 +75,9 @@
 - [x] **4.2 — Remove dead code**
   Searched all functions and variables in app.js for unused definitions. Found and removed 1 dead function: `renderGraph()` (line 2933) — a backward-compat wrapper around `buildGraph()` that was never called anywhere; `buildGraph()` is called directly instead. All other functions are actively called from the event listeners IIFE or other code paths. All mock-data.js exports and icons.js icons are actively used. No inline event handlers remain in HTML.
 
+- [x] **4.3 — Fix the dual search function issue**
+  Removed the `runGlobalSearch()` wrapper that just called `runGlobalSearchEnhanced()`. Renamed `runGlobalSearchEnhanced` to `runGlobalSearch` across all references (function definition, section comment, event listener call). Net removal of 3 lines.
+
 ### Current Task
 (none — awaiting next instruction)
 

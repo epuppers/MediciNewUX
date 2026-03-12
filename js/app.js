@@ -632,9 +632,6 @@ function switchBrainSection(section, el) {
   if (target) target.classList.add('active');
 }
 
-function runGlobalSearch(q) {
-  runGlobalSearchEnhanced(q);
-}
 
 // ============================================
 // TASK & CALENDAR PANELS
@@ -893,7 +890,7 @@ document.addEventListener('click', () => {
 // SEARCH STATES (#5)
 // ============================================
 let searchTimer = null;
-function runGlobalSearchEnhanced(q) {
+function runGlobalSearch(q) {
   const results = document.getElementById('searchResults');
   if (!results) return;
 
