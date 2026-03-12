@@ -52,6 +52,25 @@
   --red: #C04848;
   --amber: #B8862B;
 
+  /* Bevel highlight/shadow pairs for semantic colors */
+  --green-hi: #5aad5c;
+  --green-lo: #2a6b2c;
+  --red-hi: #e06060;
+  --red-lo: #802020;
+
+  /* Dark surface depth scale (used in dark mode overrides) */
+  --surface-0: #0e0e10;
+  --surface-1: #1a1a1d;
+  --surface-2: #28282d;
+  --surface-3: #2a2a2f;
+  --surface-graph: #0a0a0e;
+
+  /* Light text for dark backgrounds */
+  --text-light: #f0eef4;
+
+  /* Red hover/pressed shade */
+  --red-dark: #b84040;
+
   --pixel: 'ChicagoFLF', sans-serif;
   --mono: 'IBM Plex Mono', monospace;
   --sans: 'DM Sans', sans-serif;
@@ -112,6 +131,25 @@
   --green: #4caf50;
   --red: #e05555;
   --amber: #d4a030;
+
+  /* Bevel pairs — brightened for dark mode */
+  --green-hi: #5cb85e;
+  --green-lo: #2d7a2f;
+  --red-hi: #e06868;
+  --red-lo: #901818;
+
+  /* Dark surface depth — same values, tokens just resolve to themselves */
+  --surface-0: #0e0e10;
+  --surface-1: #1a1a1d;
+  --surface-2: #28282d;
+  --surface-3: #2a2a2f;
+  --surface-graph: #0a0a0e;
+
+  /* Light text */
+  --text-light: #f0eef4;
+
+  /* Red hover/pressed shade */
+  --red-dark: #a03838;
 }
 
 /* Body background override (taupe-4 flips to light, body must stay dark) */

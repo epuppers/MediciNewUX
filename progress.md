@@ -3,7 +3,7 @@
 **Started:** 2026-03-11
 **Last updated:** 2026-03-11
 
-## Status: COMPLETE — Phase 6 (ALL PHASES DONE)
+## Status: IN PROGRESS — Phase 7
 
 ### Completed Tasks
 - [x] **1.1 — Extract thread data to data object**
@@ -117,8 +117,11 @@
 - [x] **6.4 — Update CLAUDE.md**
   Updated Project Structure section: added js/mock-data.js (~710 lines), js/icons.js (~94 lines), updated all line counts to current values (index.html ~1955, app.js ~3710, layout.css ~1585, chat.css ~1649, workflows.css ~592, components.css ~2183, utilities.css ~245, tokens.css ~133). Replaced "Key JS Sections" list with "JS Namespace Modules" documenting all 9 namespace objects and their function counts. Added "Key JS Sections" ordered list showing the 10 logical section groups. Updated Code Conventions to reflect namespace pattern (Namespace.camelCase), data attributes for event delegation, MOCK_/CONFIG_ prefixes, no inline handlers rule, and JSDoc convention.
 
+- [x] **7.1 — Add missing color tokens to tokens.css**
+  Audited all CSS files for raw hex colors not covered by existing tokens. Added 11 new tokens to both `:root` (light) and `[data-theme="dark"]` sections: bevel highlight/shadow pairs (`--green-hi`, `--green-lo`, `--red-hi`, `--red-lo`), dark surface depth scale (`--surface-0` through `--surface-3`, `--surface-graph`), light text for dark backgrounds (`--text-light`), and red hover shade (`--red-dark`). All new tokens resolve to the exact same hex colors currently hardcoded — no visual change.
+
 ### Current Task
-ALL PHASES COMPLETE
+Phase 7 — task 7.1 complete
 
 ### Blocked / Notes
 (none)
