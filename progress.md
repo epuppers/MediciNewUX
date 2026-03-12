@@ -99,6 +99,9 @@
 - [x] **5.4 — Check streaming/generation states**
   Audited the Erabor streaming sequence: thinking cubes (`cube-wave` animation), reasoning step reveal (CSS transition), stream cursor blink (`blink-cursor`), stop/send button toggle, and character-by-character text streaming. CSS-based animations (thinking cubes, cursor blink, reasoning transitions) were already handled by reduced-motion via the global `animation-duration/transition-duration: 0.01ms !important` override. **Fixed**: JS-driven streaming was NOT respecting reduced-motion — added `reducedMotion` check at the top of `runEraborSequence()` and `streamReply()`. When reduced-motion is active, the entire Erabor sequence now skips staged animation and reveals final content instantly. Stop button, completion, and input re-enable all verified working.
 
+- [x] **5.5 — Verify all panel open/close transitions**
+  Audited all 7 panel types. Panels with CSS transitions: file panel (width 0.2s ease), Cosimo panel (translateX 0.3s ease), graph detail pane (translateY 0.4s cubic-bezier), panel overlay (opacity 0.2s ease) — all properly disabled by the `[data-a11y-motion="reduced"]` and `@media (prefers-reduced-motion)` rules via `transition-duration: 0.01ms !important`. Panels using display toggling (no animation): sidebar collapse, header dropdowns (tasks/calendar/usage), profile menu — instant appear/disappear by design, no reduced-motion issue. No JS-driven panel animations found. No artifacts, no leaking transitions. No code changes needed.
+
 ### Current Task
 (none — awaiting next instruction)
 
