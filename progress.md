@@ -78,6 +78,9 @@
 - [x] **4.3 — Fix the dual search function issue**
   Removed the `runGlobalSearch()` wrapper that just called `runGlobalSearchEnhanced()`. Renamed `runGlobalSearchEnhanced` to `runGlobalSearch` across all references (function definition, section comment, event listener call). Net removal of 3 lines.
 
+- [x] **4.4 — Consolidate color utility functions**
+  Grouped `hexToHsl()`, `hslToHex()`, and `hexToRgbString()` into a `ColorUtils` namespace object in a new "COLOR UTILITIES" section header. Updated all 3 call sites in `applyPurpleIntensity()` to use `ColorUtils.hexToHsl()`, `ColorUtils.hslToHex()`, `ColorUtils.hexToRgbString()`. Functions are now clearly separated from the purple intensity logic and reusable.
+
 ### Current Task
 (none — awaiting next instruction)
 

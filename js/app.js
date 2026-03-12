@@ -354,57 +354,62 @@ function toggleTheme() {
 }
 
 // ============================================
+// COLOR UTILITIES
+// ============================================
+var ColorUtils = {
+  hexToHsl: function(hex) {
+    var r = parseInt(hex.slice(1, 3), 16) / 255;
+    var g = parseInt(hex.slice(3, 5), 16) / 255;
+    var b = parseInt(hex.slice(5, 7), 16) / 255;
+    var max = Math.max(r, g, b), min = Math.min(r, g, b);
+    var h, s, l = (max + min) / 2;
+    if (max === min) { h = s = 0; }
+    else {
+      var d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+      switch (max) {
+        case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+        case g: h = ((b - r) / d + 2) / 6; break;
+        case b: h = ((r - g) / d + 4) / 6; break;
+      }
+    }
+    return [h * 360, s * 100, l * 100];
+  },
+
+  hslToHex: function(h, s, l) {
+    h /= 360; s /= 100; l /= 100;
+    var r, g, b;
+    if (s === 0) { r = g = b = l; }
+    else {
+      function hue2rgb(p, q, t) {
+        if (t < 0) t += 1; if (t > 1) t -= 1;
+        if (t < 1/6) return p + (q - p) * 6 * t;
+        if (t < 1/2) return q;
+        if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+        return p;
+      }
+      var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+      var p = 2 * l - q;
+      r = hue2rgb(p, q, h + 1/3);
+      g = hue2rgb(p, q, h);
+      b = hue2rgb(p, q, h - 1/3);
+    }
+    return '#' + [r, g, b].map(function(x) {
+      var hex = Math.round(x * 255).toString(16);
+      return hex.length === 1 ? '0' + hex : hex;
+    }).join('');
+  },
+
+  hexToRgbString: function(hex) {
+    return parseInt(hex.slice(1,3),16) + ',' +
+           parseInt(hex.slice(3,5),16) + ',' +
+           parseInt(hex.slice(5,7),16);
+  }
+};
+
+// ============================================
 // PURPLE INTENSITY
 // ============================================
-function hexToHsl(hex) {
-  var r = parseInt(hex.slice(1, 3), 16) / 255;
-  var g = parseInt(hex.slice(3, 5), 16) / 255;
-  var b = parseInt(hex.slice(5, 7), 16) / 255;
-  var max = Math.max(r, g, b), min = Math.min(r, g, b);
-  var h, s, l = (max + min) / 2;
-  if (max === min) { h = s = 0; }
-  else {
-    var d = max - min;
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-    switch (max) {
-      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
-      case g: h = ((b - r) / d + 2) / 6; break;
-      case b: h = ((r - g) / d + 4) / 6; break;
-    }
-  }
-  return [h * 360, s * 100, l * 100];
-}
-
-function hslToHex(h, s, l) {
-  h /= 360; s /= 100; l /= 100;
-  var r, g, b;
-  if (s === 0) { r = g = b = l; }
-  else {
-    function hue2rgb(p, q, t) {
-      if (t < 0) t += 1; if (t > 1) t -= 1;
-      if (t < 1/6) return p + (q - p) * 6 * t;
-      if (t < 1/2) return q;
-      if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-      return p;
-    }
-    var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-    var p = 2 * l - q;
-    r = hue2rgb(p, q, h + 1/3);
-    g = hue2rgb(p, q, h);
-    b = hue2rgb(p, q, h - 1/3);
-  }
-  return '#' + [r, g, b].map(function(x) {
-    var hex = Math.round(x * 255).toString(16);
-    return hex.length === 1 ? '0' + hex : hex;
-  }).join('');
-}
-
-function hexToRgbString(hex) {
-  return parseInt(hex.slice(1,3),16) + ',' +
-         parseInt(hex.slice(3,5),16) + ',' +
-         parseInt(hex.slice(5,7),16);
-}
-
 function applyPurpleIntensity(value) {
   var intensity = parseInt(value, 10);
   var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
@@ -412,14 +417,14 @@ function applyPurpleIntensity(value) {
   var root = document.documentElement;
 
   Object.keys(bases).forEach(function(prop) {
-    var hsl = hexToHsl(bases[prop]);
+    var hsl = ColorUtils.hexToHsl(bases[prop]);
     var newSat = Math.min(100, hsl[1] * (intensity / 100));
-    var newHex = hslToHex(hsl[0], newSat, hsl[2]);
+    var newHex = ColorUtils.hslToHex(hsl[0], newSat, hsl[2]);
     root.style.setProperty(prop, newHex);
 
     // Also update RGB triplet if this token has one
     if (CONFIG_RGB_COMPANIONS[prop]) {
-      root.style.setProperty(CONFIG_RGB_COMPANIONS[prop], hexToRgbString(newHex));
+      root.style.setProperty(CONFIG_RGB_COMPANIONS[prop], ColorUtils.hexToRgbString(newHex));
     }
   });
 
