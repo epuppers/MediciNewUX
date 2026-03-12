@@ -1531,6 +1531,14 @@
   background: var(--violet-2);
 }
 
+[data-theme="dark"] .fp-folder-header {
+  border-bottom-color: #2a2a2f;
+}
+
+[data-theme="dark"] .fp-file-item.active {
+  border-color: var(--taupe-2);
+}
+
 [data-theme="dark"] .fp-file-bar {
   background: #28282d;
 }

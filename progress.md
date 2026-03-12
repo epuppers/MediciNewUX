@@ -3,7 +3,7 @@
 **Started:** 2026-03-11
 **Last updated:** 2026-03-11
 
-## Status: IN PROGRESS — Phase 3
+## Status: COMPLETE — Phase 3
 
 ### Completed Tasks
 - [x] **1.1 — Extract thread data to data object**
@@ -65,6 +65,9 @@
 
 - [x] **3.6 — Audit rgba() color consistency**
   Searched all CSS files for hardcoded rgba() values matching violet-3 (`116,65,143` / `136,85,168`) and berry-3 (`139,79,141` / `168,96,170`) in both light and dark mode variants. Found zero hardcoded values — all 34 violet/berry rgba calls already use the `rgba(var(--violet-3-rgb), alpha)` / `rgba(var(--berry-3-rgb), alpha)` token pattern, so the purple intensity slider correctly affects them all.
+
+- [x] **3.7 — Add missing dark mode support**
+  Audited all components in dark mode. Added missing overrides: (1) `.bevel` and `.bevel-inset` utilities — flatten to `var(--taupe-2)` in dark mode to prevent 3D inversion since taupe scale flips; (2) `.profile-menu-item:hover` and `.th-dropdown-footer:hover` — use `var(--berry-3)` text for readability; (3) `.profile-menu-theme:hover` — subtle berry tint; (4) `.profile-menu-divider` — use `var(--taupe-2)` for visibility; (5) `.profile-menu-toggle-thumb` — use `var(--taupe-4)` background for contrast against dark track; (6) `.fp-folder-header` — darken border; (7) `.fp-file-item.active` — flatten border in dark mode. Accessibility toggles and folder-tab styles were already properly handled.
 
 ### Current Task
 (none — awaiting next instruction)

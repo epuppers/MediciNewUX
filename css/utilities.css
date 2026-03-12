@@ -156,6 +156,12 @@
   background: rgba(var(--violet-3-rgb),0.15);
 }
 
+/* Flatten bevels in dark mode — 3D effect is subtle on dark surfaces */
+[data-theme="dark"] .bevel,
+[data-theme="dark"] .bevel-inset {
+  border-color: var(--taupe-2);
+}
+
 [data-theme="dark"] ::-webkit-scrollbar-thumb {
   background: var(--taupe-2);
   border-color: var(--taupe-1);
