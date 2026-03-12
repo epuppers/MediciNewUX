@@ -2323,7 +2323,7 @@ var graphColors = {
   you:       { core: '#b478d8', mid: '#8855a8', dim: '#5a3070', glow: 'rgba(180,120,216,0.6)' }
 };
 
-var graphData = {
+var MOCK_GRAPH_DATA = {
   categories: [
     { id: 'funds', label: 'Funds', icon: '\u25C8', count: 11 },
     { id: 'contacts', label: 'Contacts', icon: '\u25CB', count: 18 },
@@ -2762,8 +2762,8 @@ var graphData = {
 
 // Find an entity across all categories
 function findEntity(entityId) {
-  for (var cat in graphData.nodes) {
-    var nodes = graphData.nodes[cat];
+  for (var cat in MOCK_GRAPH_DATA.nodes) {
+    var nodes = MOCK_GRAPH_DATA.nodes[cat];
     for (var i = 0; i < nodes.length; i++) {
       if (nodes[i].id === entityId) return { node: nodes[i], category: cat };
     }
@@ -2873,7 +2873,7 @@ function buildGraph() {
   // --- Orbital rings ---
   var orbitG = document.createElementNS(SVG_NS, 'g');
   orbitG.setAttribute('id', 'graphOrbits');
-  var cats = graphData.categories;
+  var cats = MOCK_GRAPH_DATA.categories;
   var rootRadius = Math.min(graphCX, graphCY) * 0.52;
 
   var orbit = document.createElementNS(SVG_NS, 'circle');
@@ -2937,7 +2937,7 @@ function buildGraph() {
     graphNodeEls[cat.id] = { g: cn.g, homeX: pos.x, homeY: pos.y, homeR: nodeR, catId: cat.id, type: 'category' };
 
     // --- Child entity nodes (initially hidden, positioned at parent) ---
-    var childNodes = graphData.nodes[cat.id] || [];
+    var childNodes = MOCK_GRAPH_DATA.nodes[cat.id] || [];
     // Distribute across rings — fewer per ring for readability
     var maxPerRing = 7;
     var ringCount = Math.ceil(childNodes.length / maxPerRing);
@@ -2984,7 +2984,7 @@ function buildGraph() {
 
   // --- Inter-entity edges (connections between child nodes within a category) ---
   for (var ci = 0; ci < cats.length; ci++) {
-    var catChildren = graphData.nodes[cats[ci].id] || [];
+    var catChildren = MOCK_GRAPH_DATA.nodes[cats[ci].id] || [];
     var catChildIds = {};
     catChildren.forEach(function(cn) { catChildIds[cn.id] = true; });
 
@@ -3011,7 +3011,7 @@ function buildGraph() {
 
   // --- Cross-category related edges (dimmer, show in cluster view) ---
   for (var ci2 = 0; ci2 < cats.length; ci2++) {
-    var catNodes2 = graphData.nodes[cats[ci2].id] || [];
+    var catNodes2 = MOCK_GRAPH_DATA.nodes[cats[ci2].id] || [];
     for (var cn2 = 0; cn2 < catNodes2.length; cn2++) {
       var cNode2 = catNodes2[cn2];
       if (!cNode2.related) continue;
@@ -3187,7 +3187,7 @@ function animateNode(nodeData, toX, toY, toR, toOpacity, delay) {
 }
 
 function applyRootState(animated) {
-  var cats = graphData.categories;
+  var cats = MOCK_GRAPH_DATA.categories;
   var d = animated ? 0 : -1; // -1 means instant
 
   // Edges
@@ -3241,7 +3241,7 @@ function applyRootState(animated) {
 }
 
 function applyClusterState(catId) {
-  var cats = graphData.categories;
+  var cats = MOCK_GRAPH_DATA.categories;
   var col = graphColors[catId];
 
   // Edges — hide root edges, show child + inter-entity edges for this category
@@ -3291,7 +3291,7 @@ function applyClusterState(catId) {
   });
 
   // Entity nodes for this category — expand from center to orbital positions
-  var childNodes = graphData.nodes[catId] || [];
+  var childNodes = MOCK_GRAPH_DATA.nodes[catId] || [];
   childNodes.forEach(function(cNode, i) {
     var nd = graphNodeEls[cNode.id];
     if (nd) {
@@ -3414,7 +3414,7 @@ function updateBreadcrumb() {
   var html = '<button class="graph-crumb' + (graphState.level === 'root' ? ' active' : '') + '" onclick="graphNavigate(\'root\')">You</button>';
 
   if (graphState.currentCategory) {
-    var cat = graphData.categories.find(function(c) { return c.id === graphState.currentCategory; });
+    var cat = MOCK_GRAPH_DATA.categories.find(function(c) { return c.id === graphState.currentCategory; });
     html += '<span class="graph-crumb-sep">&rsaquo;</span>';
     html += '<button class="graph-crumb' + (!graphState.currentEntity ? ' active' : '') + '" onclick="graphNavigate(\'' + graphState.currentCategory + '\')">' + (cat ? cat.label : '') + '</button>';
   }

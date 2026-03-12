@@ -21,6 +21,9 @@
 - [x] **1.5 — Extract Brain Lessons data to data object**
   Created `MOCK_LESSONS` at top of app.js consolidating old `lessonData` with card-level preview text from HTML. Added `renderLessonList()` function that generates lesson cards from data. Old `lessonData` now references `MOCK_LESSONS`. Removed all 6 hardcoded lesson cards from index.html.
 
+- [x] **1.6 — Extract Graph data to data object**
+  Renamed `graphData` to `MOCK_GRAPH_DATA` across all 12 references in app.js. Verified no hardcoded graph content exists in HTML — all graph nodes/categories are already rendered from JS.
+
 ### Current Task
 (none — awaiting next instruction)
 
