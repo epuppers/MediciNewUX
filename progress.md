@@ -3,7 +3,7 @@
 **Started:** 2026-03-11
 **Last updated:** 2026-03-11
 
-## Status: IN PROGRESS — Phase 7
+## Status: COMPLETE — Phase 7 (ALL PHASES DONE)
 
 ### Completed Tasks
 - [x] **1.1 — Extract thread data to data object**
@@ -132,8 +132,11 @@
 - [x] **7.5 — Add missing border-radius tokens**
   Added `--r-xs: 2px` and `--r-pill: 9px` to tokens.css. Replaced 3 raw border-radius values: `2px` → `var(--r-xs)` in layout.css (slider track) and components.css (graph drag handle), `9px` → `var(--r-pill)` in layout.css (toggle track). 5 remaining `50%` values are intentional circles (avatars, dots, thumbs) — left as-is. No raw `border-radius: Npx` values remain outside tokens.css.
 
+- [x] **7.6 — Fix icons.js logic bug**
+  Fixed the `icon()` function condition from `w != null || h != null` to `w != null && h != null`. The `||` caused width/height replacement when only one dimension was passed, defaulting the other to 14 and potentially distorting icons. With `&&`, both dimensions must be explicitly provided for any sizing override.
+
 ### Current Task
-Phase 7 — task 7.5 complete
+ALL PHASE 7 TASKS COMPLETE
 
 ### Blocked / Notes
 (none)

@@ -73,7 +73,7 @@ var ICONS = {
 function icon(name, w, h) {
   var svg = ICONS[name];
   if (!svg) return '';
-  if (w != null || h != null) {
+  if (w != null && h != null) {
     // Replace or insert width/height attributes
     svg = svg.replace(/width="[^"]*"/, 'width="' + (w || 14) + '"');
     svg = svg.replace(/height="[^"]*"/, 'height="' + (h || 14) + '"');
