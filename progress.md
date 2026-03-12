@@ -27,6 +27,9 @@
 - [x] **1.7 — Extract header panel data (tasks, calendar, usage)**
   Created `MOCK_TASKS`, `MOCK_CALENDAR`, and `MOCK_USAGE` data objects at top of app.js. Added `renderHeaderPanels()` function that populates all three header dropdown panels (task items, calendar events, usage gauge + stats) from data. Removed all hardcoded panel content from index.html — panels are now empty containers populated on load.
 
+- [x] **1.8 — Extract purple intensity base colors to data object**
+  Renamed `purpleBaseColors` to `CONFIG_PURPLE_BASE_COLORS` and `rgbCompanions` to `CONFIG_RGB_COMPANIONS` across all references in app.js. Both objects use the CONFIG_ prefix since they are configuration, not mock data.
+
 ### Current Task
 (none — awaiting next instruction)
 

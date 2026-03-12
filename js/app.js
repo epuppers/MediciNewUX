@@ -635,7 +635,7 @@ function toggleTheme() {
 // ============================================
 // PURPLE INTENSITY
 // ============================================
-const purpleBaseColors = {
+const CONFIG_PURPLE_BASE_COLORS = {
   light: {
     '--berry-1': '#E0D0E1', '--berry-2': '#C4A6C5', '--berry-3': '#8B4F8D',
     '--berry-4': '#5D355E', '--berry-5': '#2E1A2F',
@@ -704,7 +704,7 @@ function hexToRgbString(hex) {
 }
 
 // Map: which tokens also need an RGB triplet companion
-var rgbCompanions = {
+var CONFIG_RGB_COMPANIONS = {
   '--violet-3': '--violet-3-rgb',
   '--berry-3': '--berry-3-rgb'
 };
@@ -712,7 +712,7 @@ var rgbCompanions = {
 function applyPurpleIntensity(value) {
   var intensity = parseInt(value, 10);
   var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  var bases = isDark ? purpleBaseColors.dark : purpleBaseColors.light;
+  var bases = isDark ? CONFIG_PURPLE_BASE_COLORS.dark : CONFIG_PURPLE_BASE_COLORS.light;
   var root = document.documentElement;
 
   Object.keys(bases).forEach(function(prop) {
@@ -722,8 +722,8 @@ function applyPurpleIntensity(value) {
     root.style.setProperty(prop, newHex);
 
     // Also update RGB triplet if this token has one
-    if (rgbCompanions[prop]) {
-      root.style.setProperty(rgbCompanions[prop], hexToRgbString(newHex));
+    if (CONFIG_RGB_COMPANIONS[prop]) {
+      root.style.setProperty(CONFIG_RGB_COMPANIONS[prop], hexToRgbString(newHex));
     }
   });
 
