@@ -343,6 +343,9 @@ injectIcons();
   );
 })();
 
+/** Toggles between light and dark theme and re-applies purple intensity.
+ * Modifies DOM (data-theme attribute) and localStorage.
+ */
 function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme');
   const next = current === 'dark' ? 'light' : 'dark';
@@ -356,7 +359,11 @@ function toggleTheme() {
 // ============================================
 // COLOR UTILITIES
 // ============================================
+/** Color conversion utilities for the purple intensity slider.
+ * Methods: hexToHsl, hslToHex, hexToRgbString.
+ */
 var ColorUtils = {
+  /** Converts a hex color string to HSL array [h, s, l]. */
   hexToHsl: function(hex) {
     var r = parseInt(hex.slice(1, 3), 16) / 255;
     var g = parseInt(hex.slice(3, 5), 16) / 255;
@@ -376,6 +383,7 @@ var ColorUtils = {
     return [h * 360, s * 100, l * 100];
   },
 
+  /** Converts HSL values to a hex color string. */
   hslToHex: function(h, s, l) {
     h /= 360; s /= 100; l /= 100;
     var r, g, b;
@@ -400,6 +408,7 @@ var ColorUtils = {
     }).join('');
   },
 
+  /** Converts a hex color to an "r,g,b" string for use in rgba(). */
   hexToRgbString: function(hex) {
     return parseInt(hex.slice(1,3),16) + ',' +
            parseInt(hex.slice(3,5),16) + ',' +
@@ -410,6 +419,10 @@ var ColorUtils = {
 // ============================================
 // PURPLE INTENSITY
 // ============================================
+/** Adjusts purple/violet/berry color token saturation based on slider value.
+ * @param {string|number} value - Intensity percentage (0-100)
+ * Modifies DOM CSS custom properties and localStorage.
+ */
 function applyPurpleIntensity(value) {
   var intensity = parseInt(value, 10);
   var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
@@ -455,6 +468,10 @@ function applyPurpleIntensity(value) {
 // We compensate the frame dimensions so it still fills the viewport.
 var fontSizeZoomLevels = [1, 1.05, 1.1, 1.15, 1.2];
 
+/** Applies CSS zoom to the app frame for font size accessibility scaling.
+ * @param {string|number} value - Step index (0-4) into fontSizeZoomLevels
+ * Modifies DOM (CSS zoom) and localStorage.
+ */
 function applyFontSizeBoost(value) {
   var step = parseInt(value, 10);
   var zoom = fontSizeZoomLevels[step] || 1;
@@ -480,6 +497,9 @@ function applyFontSizeBoost(value) {
 }
 
 // --- Dyslexia font ---
+/** Toggles the dyslexia-friendly font mode on/off.
+ * Modifies DOM (data-a11y-font attribute) and localStorage.
+ */
 function toggleDyslexiaFont() {
   var root = document.documentElement;
   var active = root.getAttribute('data-a11y-font') === 'dyslexia';
@@ -494,6 +514,9 @@ function toggleDyslexiaFont() {
 }
 
 // --- Reduced motion ---
+/** Toggles reduced motion accessibility mode on/off.
+ * Modifies DOM (data-a11y-motion attribute) and localStorage.
+ */
 function toggleReducedMotion() {
   var root = document.documentElement;
   var active = root.getAttribute('data-a11y-motion') === 'reduced';
@@ -508,6 +531,9 @@ function toggleReducedMotion() {
 }
 
 // --- High contrast + focus ---
+/** Toggles high contrast accessibility mode on/off.
+ * Modifies DOM (data-a11y-contrast attribute) and localStorage.
+ */
 function toggleHighContrast() {
   var root = document.documentElement;
   var active = root.getAttribute('data-a11y-contrast') === 'high';
@@ -522,6 +548,7 @@ function toggleHighContrast() {
 }
 
 // --- Sync toggle visuals to current state ---
+/** Synchronizes all accessibility toggle UI elements to match current DOM state. */
 function syncA11yToggles() {
   var root = document.documentElement;
 
@@ -573,6 +600,11 @@ function syncA11yToggles() {
 // ============================================
 let currentMode = 'chat';
 
+/** Switches the main view between chat, workflows, and brain modes.
+ * @param {string} mode - Target mode ('chat' | 'workflows')
+ * @param {HTMLElement} [btn] - The tab button element to mark active
+ * Modifies DOM visibility of views and sidebars.
+ */
 function switchMode(mode, btn) {
   currentMode = mode;
   document.querySelectorAll('.top-tab').forEach(b => b.classList.remove('active'));
@@ -611,6 +643,11 @@ function switchMode(mode, btn) {
   }
 }
 
+/** Switches to a specific Brain sub-section (memory, lessons, or graphs).
+ * @param {string} section - Target section ('memory' | 'lessons' | 'graphs')
+ * @param {HTMLElement} [el] - The nav button element to mark active
+ * Modifies DOM visibility of views and sidebars.
+ */
 function switchBrainSection(section, el) {
   currentMode = 'brain';
 
@@ -641,6 +678,9 @@ function switchBrainSection(section, el) {
 // ============================================
 // TASK & CALENDAR PANELS
 // ============================================
+/** Renders tasks, calendar, and usage header dropdown panels from mock data.
+ * Modifies DOM (innerHTML of taskPanel, calendarPanel, usagePanel).
+ */
 function renderHeaderPanels() {
   // Render tasks
   var taskPanel = document.getElementById('taskPanel');
@@ -713,6 +753,7 @@ function renderHeaderPanels() {
 // Render header panels on load
 (function() { renderHeaderPanels(); })();
 
+/** Closes all header dropdown panels (tasks, calendar, usage). */
 function closeAllPanels() {
   var tp = document.getElementById('taskPanel');
   var cp = document.getElementById('calendarPanel');
@@ -722,6 +763,7 @@ function closeAllPanels() {
   if (up) up.classList.add('hidden');
 }
 
+/** Toggles the task dropdown panel open/closed. */
 function toggleTaskPanel() {
   const tp = document.getElementById('taskPanel');
   const wasOpen = tp && !tp.classList.contains('hidden');
@@ -729,6 +771,7 @@ function toggleTaskPanel() {
   if (!wasOpen && tp) tp.classList.remove('hidden');
 }
 
+/** Toggles the calendar dropdown panel open/closed, building the mini-calendar if needed. */
 function toggleCalendarPanel() {
   const cp = document.getElementById('calendarPanel');
   const wasOpen = cp && !cp.classList.contains('hidden');
@@ -739,6 +782,7 @@ function toggleCalendarPanel() {
   }
 }
 
+/** Toggles the usage/credits dropdown panel open/closed. */
 function toggleUsagePanel() {
   const up = document.getElementById('usagePanel');
   const wasOpen = up && !up.classList.contains('hidden');
@@ -755,6 +799,7 @@ document.addEventListener('click', function(e) {
   }
 });
 
+/** Toggles the profile dropdown menu open/closed. */
 function toggleProfileMenu() {
   const pp = document.getElementById('profilePanel');
   const wasOpen = pp && !pp.classList.contains('hidden');
@@ -763,6 +808,7 @@ function toggleProfileMenu() {
   if (!wasOpen && pp) pp.classList.remove('hidden');
 }
 
+/** Builds the mini calendar day grid inside the calendar dropdown. */
 function buildMiniCalendar() {
   const grid = document.getElementById('miniCalGrid');
   if (!grid || grid.children.length > 0) return;
@@ -791,6 +837,7 @@ document.addEventListener('click', function(e) {
   }
 });
 
+/** Handles the "+ New" button click, creating a new thread or workflow depending on current mode. */
 function handleNew() {
   if (currentMode === 'chat') {
     selectThread('new', null);
@@ -807,6 +854,7 @@ function handleNew() {
 // ============================================
 // COSIMO PANEL
 // ============================================
+/** Opens the Cosimo AI assistant slide-in panel and collapses the sidebar. */
 function openCosimoPanel() {
   document.getElementById('actionDropdown').classList.remove('show');
   document.getElementById('cosimoPanel').classList.add('open');
@@ -815,12 +863,16 @@ function openCosimoPanel() {
   document.getElementById('panelInput').focus();
 }
 
+/** Closes the Cosimo panel and restores the sidebar. */
 function closeCosimoPanel() {
   document.getElementById('cosimoPanel').classList.remove('open');
   document.getElementById('panelOverlay').classList.remove('show');
   document.getElementById('sidebar').classList.remove('collapsed');
 }
 
+/** Handles keydown in the Cosimo panel input; sends on Enter.
+ * @param {KeyboardEvent} e - The keydown event
+ */
 function handlePanelKey(e) {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
@@ -828,6 +880,7 @@ function handlePanelKey(e) {
   }
 }
 
+/** Sends a user message in the Cosimo panel and simulates an AI response. */
 function sendPanelMessage() {
   const input = document.getElementById('panelInput');
   const html = input.innerHTML.trim();
@@ -881,6 +934,9 @@ function sendPanelMessage() {
 // ============================================
 // DROPDOWN
 // ============================================
+/** Toggles the workflow actions dropdown menu.
+ * @param {Event} e - The click event (propagation is stopped)
+ */
 function toggleDropdown(e) {
   e.stopPropagation();
   const menu = document.getElementById('actionDropdown');
@@ -895,6 +951,10 @@ document.addEventListener('click', () => {
 // SEARCH STATES (#5)
 // ============================================
 let searchTimer = null;
+/** Runs a debounced global search across thread titles and keywords.
+ * @param {string} q - The search query string
+ * Modifies DOM (search results panel).
+ */
 function runGlobalSearch(q) {
   const results = document.getElementById('searchResults');
   if (!results) return;
@@ -933,6 +993,7 @@ function runGlobalSearch(q) {
   }, 200);
 }
 
+/** Hides the search results dropdown. */
 function closeSearch() {
   const results = document.getElementById('searchResults');
   if (results) results.classList.add('hidden');
@@ -941,6 +1002,10 @@ function closeSearch() {
 // ============================================
 // INPUT DISABLED DURING GENERATION (#6)
 // ============================================
+/** Enables or disables the chat input for a given thread during AI generation.
+ * @param {string} threadId - The thread identifier
+ * @param {boolean} disable - Whether to disable (true) or enable (false) the input
+ */
 function disableInput(threadId, disable) {
   const thread = document.getElementById('thread-' + threadId);
   if (!thread) return;
@@ -958,6 +1023,10 @@ function disableInput(threadId, disable) {
 // ============================================
 // FEEDBACK BUTTONS (#9)
 // ============================================
+/** Handles thumbs up/down feedback on an AI message.
+ * @param {HTMLElement} btn - The clicked feedback button
+ * @param {string} type - Feedback type ('up' | 'down')
+ */
 function giveFeedback(btn, type) {
   const container = btn.closest('.msg-feedback');
   container.querySelectorAll('.feedback-btn').forEach(b => b.classList.remove('active'));
@@ -971,6 +1040,10 @@ function giveFeedback(btn, type) {
 
 let activeThread = 'fund3';
 
+/** Switches the active chat thread and updates sidebar, header, and file panel state.
+ * @param {string} id - Thread identifier (e.g. 'fund3', 'erabor', 'new')
+ * @param {HTMLElement|null} el - The sidebar thread-item element, or null
+ */
 function selectThread(id, el) {
   activeThread = id;
 
@@ -999,6 +1072,7 @@ function selectThread(id, el) {
   if (id === 'erabor') runEraborSequence();
 }
 
+/** Updates the Files button enabled/disabled state based on the active thread. */
 function updateFilesButton() {
   const btn = document.getElementById('filesBtn');
   if (!btn) return;
@@ -1014,6 +1088,9 @@ function updateFilesButton() {
 // ============================================
 // FILE PANEL
 // ============================================
+/** Opens the right-side file panel to a specific tab.
+ * @param {string} [tab='viewer'] - Tab to show ('viewer' | 'folder')
+ */
 function openFilePanel(tab) {
   if (!MOCK_THREADS[activeThread].hasFiles) return;
   const panel = document.getElementById('filePanel');
@@ -1023,6 +1100,7 @@ function openFilePanel(tab) {
   if (tab === 'viewer') buildSpreadsheet();
 }
 
+/** Closes the right-side file panel and resets its width. */
 function closeFilePanel() {
   const panel = document.getElementById('filePanel');
   panel.classList.remove('open');
@@ -1030,6 +1108,9 @@ function closeFilePanel() {
   document.getElementById('filePanelResizeHandle').classList.remove('visible');
 }
 
+/** Switches between viewer and folder tabs in the file panel.
+ * @param {string} tab - Target tab ('viewer' | 'folder')
+ */
 function switchFilePanelTab(tab) {
   document.querySelectorAll('.file-panel-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.file-panel-view').forEach(v => v.classList.remove('active'));
@@ -1051,6 +1132,7 @@ const sheetData = MOCK_SPREADSHEET.rows;
 const colLetters = MOCK_SPREADSHEET.columns;
 let sheetBuilt = false;
 
+/** Builds the interactive spreadsheet table from mock data (runs once). */
 function buildSpreadsheet() {
   if (sheetBuilt) return;
   sheetBuilt = true;
@@ -1094,6 +1176,7 @@ function buildSpreadsheet() {
 // ============================================
 // EXPORT & SHARE (#13)
 // ============================================
+/** Exports the active chat thread as a downloadable Markdown file. */
 function exportThread() {
   const thread = document.getElementById('thread-' + activeThread);
   if (!thread) return;
@@ -1118,11 +1201,15 @@ function exportThread() {
   showToast('Exported as Markdown');
 }
 
+/** Copies a shareable URL for the active thread to the clipboard. */
 function shareThread() {
   const url = window.location.origin + '/thread/' + activeThread;
   navigator.clipboard.writeText(url).then(() => showToast('Share link copied'));
 }
 
+/** Fills the new-thread input with a suggestion chip's text and focuses it.
+ * @param {string} text - The suggestion text to insert
+ */
 function fillSuggestion(text) {
   const input = document.getElementById('new-thread-input');
   if (input) {
@@ -1141,6 +1228,7 @@ function fillSuggestion(text) {
 // ============================================
 // K-1 ERROR RETRY
 // ============================================
+/** Simulates retrying the K-1 document processing after an error. */
 function retryK1() {
   const btn = document.querySelector('.cosimo-error-retry');
   if (!btn || btn.classList.contains('retrying')) return;
@@ -1163,24 +1251,37 @@ let eraborTimers = [];
 let eraborIntervals = [];
 const eraborUserMsg = 'Pull the Erabor partnership agreement and summarize the key economic terms. I need to understand the GP commit, fee structure, clawback provisions, and any side letter concessions before the Thursday call with Marcus. Cross-reference against our standard Fund III terms and flag anything non-standard.';
 
-// Check if user is scrolled near the bottom (within 80px)
+/** Checks if the user is scrolled near the bottom of a scrollable element.
+ * @param {HTMLElement} el - The scrollable container
+ * @returns {boolean} True if within 80px of the bottom
+ */
 function isNearBottom(el) {
   return (el.scrollHeight - el.scrollTop - el.clientHeight) < 80;
 }
 
-// Only auto-scroll if the user is already near the bottom
+/** Auto-scrolls to the bottom only if the user is already near the bottom.
+ * @param {HTMLElement} el - The scrollable container
+ */
 function softScroll(el) {
   if (isNearBottom(el)) {
     el.scrollTop = el.scrollHeight;
   }
 }
 
+/** Schedules a timeout and tracks it for cancellation during Erabor animation.
+ * @param {Function} fn - Callback to execute
+ * @param {number} ms - Delay in milliseconds
+ * @returns {number} The timeout ID
+ */
 function eraborTimer(fn, ms) {
   const id = setTimeout(fn, ms);
   eraborTimers.push(id);
   return id;
 }
 
+/** Toggles visibility of the stop/send buttons during Erabor streaming.
+ * @param {boolean} show - If true, show stop button and hide send; vice versa
+ */
 function showEraborStopBtn(show) {
   const sendBtn = document.getElementById('erabor-send-btn');
   const stopBtn = document.getElementById('erabor-stop-btn');
@@ -1188,6 +1289,7 @@ function showEraborStopBtn(show) {
   if (stopBtn) stopBtn.classList.toggle('hidden', !show);
 }
 
+/** Runs the Erabor thread demo animation: thinking, reasoning steps, then streamed reply. */
 function runEraborSequence() {
   if (eraborPlayed || eraborRunning) return;
   eraborRunning = true;
@@ -1235,6 +1337,7 @@ function runEraborSequence() {
   }, 2000);
 }
 
+/** Marks the Erabor animation as complete and re-enables the input. */
 function markEraborDone() {
   eraborRunning = false;
   eraborPlayed = true;
@@ -1242,6 +1345,7 @@ function markEraborDone() {
   disableInput('erabor', false);
 }
 
+/** Cancels the Erabor animation, kills timers, hides response, and restores input. */
 function cancelErabor() {
   // Kill all pending timers/intervals
   eraborTimers.forEach(id => clearTimeout(id));
@@ -1276,6 +1380,9 @@ function cancelErabor() {
 // ============================================
 // CHARACTER-BY-CHARACTER STREAMING
 // ============================================
+/** Orchestrates character-by-character streaming of the Erabor AI reply.
+ * @param {HTMLElement} scroll - The scrollable container for auto-scroll
+ */
 function streamReply(scroll) {
   const blocks = document.querySelectorAll('#erabor-reply .erabor-stream-block');
 
@@ -1336,6 +1443,12 @@ function streamReply(scroll) {
   processNextBlock();
 }
 
+/** Types out a text block's paragraphs character-by-character with a blinking cursor.
+ * @param {Object} bd - Block data with paragraphs array
+ * @param {HTMLElement} cursor - The blinking cursor element
+ * @param {HTMLElement} scroll - The scrollable container
+ * @param {Function} onDone - Callback when typing is complete
+ */
 function typeTextBlock(bd, cursor, scroll, onDone) {
   let pIdx = 0;
 
@@ -1393,6 +1506,12 @@ function typeTextBlock(bd, cursor, scroll, onDone) {
   typeNextParagraph();
 }
 
+/** Streams a structured section block by revealing rows one at a time.
+ * @param {Object} bd - Block data with section and rows
+ * @param {HTMLElement} cursor - The blinking cursor element
+ * @param {HTMLElement} scroll - The scrollable container
+ * @param {Function} onDone - Callback when streaming is complete
+ */
 function streamSectionBlock(bd, cursor, scroll, onDone) {
   // Section title appears instantly, then rows stream in one at a time
   bd.section.querySelector('.erabor-section-title').appendChild(cursor);
@@ -1423,7 +1542,10 @@ function streamSectionBlock(bd, cursor, scroll, onDone) {
   eraborTimer(showNextRow, 200);
 }
 
-// Break HTML string into tokens: { type: 'tag'|'char', value }
+/** Breaks an HTML string into tokens for character-by-character streaming.
+ * @param {string} html - The HTML string to tokenize
+ * @returns {Array<{type: string, value: string}>} Array of {type: 'tag'|'char', value} tokens
+ */
 function tokenizeHTML(html) {
   const tokens = [];
   let i = 0;
@@ -1459,6 +1581,9 @@ function tokenizeHTML(html) {
 // ============================================
 // ATTACH FILE ACTIONS
 // ============================================
+/** Opens a native file picker to attach files from the user's computer.
+ * @param {HTMLElement} btn - The attach option button
+ */
 function attachFromComputer(btn) {
   const input = document.createElement('input');
   input.type = 'file';
@@ -1472,6 +1597,9 @@ function attachFromComputer(btn) {
   input.click();
 }
 
+/** Simulates opening a cloud drive file picker.
+ * @param {HTMLElement} btn - The attach option button
+ */
 function attachFromDrive(btn) {
   showToast('Cloud drive picker opening\u2026');
 }
@@ -1479,6 +1607,9 @@ function attachFromDrive(btn) {
 // ============================================
 // MODEL SELECTOR
 // ============================================
+/** Toggles the AI model selector dropdown with viewport-aware positioning.
+ * @param {HTMLElement} btn - The model selector button
+ */
 function toggleModelDropdown(btn) {
   const selector = btn.closest('.model-selector');
   const wasOpen = selector.classList.contains('open');
@@ -1513,6 +1644,9 @@ function toggleModelDropdown(btn) {
   }
 }
 
+/** Selects an AI model from the dropdown and updates the button label.
+ * @param {HTMLElement} option - The clicked model option element
+ */
 function selectModel(option) {
   const selector = option.closest('.model-selector');
   const label = selector.querySelector('.model-selector-label');
@@ -1542,6 +1676,10 @@ document.addEventListener('click', function(e) {
 // ============================================
 // WORKFLOW DETAIL
 // ============================================
+/** Shows the detail view for a specific workflow and hides the listing.
+ * @param {string} id - Workflow identifier
+ * @param {HTMLElement} [el] - The clicked element (card or sidebar item)
+ */
 function showWorkflowDetail(id, el) {
   const data = MOCK_WORKFLOWS[id];
   if (!data) return;
@@ -1570,6 +1708,7 @@ function showWorkflowDetail(id, el) {
   }
 }
 
+/** Returns to the workflow listing view from the detail view. */
 function showWorkflowListing() {
   document.getElementById('wfListing').classList.remove('hidden');
   document.getElementById('wfDetail').classList.add('hidden');
@@ -1580,6 +1719,10 @@ function showWorkflowListing() {
 // ============================================
 // TABS
 // ============================================
+/** Switches the active tab in the workflow detail view.
+ * @param {string} tabId - Tab identifier ('overview' | 'steps' | 'runs' | 'outputs')
+ * @param {HTMLElement} btn - The tab button element to mark active
+ */
 function switchTab(tabId, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
@@ -1594,6 +1737,7 @@ function switchTab(tabId, btn) {
 
 var activeCategory = 'all';
 
+/** Renders the Brain Memory section (role profile, traits, fact cards) from mock data. */
 function renderMemoryFromData() {
   // Render role profile
   var roleField = document.getElementById('roleField');
@@ -1644,6 +1788,7 @@ function renderMemoryFromData() {
 // Render memory data on load
 (function() { renderMemoryFromData(); })();
 
+/** Toggles the add-memory form visibility and focuses the input. */
 function toggleAddMemory() {
   var form = document.getElementById('memAddForm');
   if (form.classList.contains('hidden')) {
@@ -1654,11 +1799,13 @@ function toggleAddMemory() {
   }
 }
 
+/** Hides the add-memory form and clears the input. */
 function cancelAddMemory() {
   document.getElementById('memAddForm').classList.add('hidden');
   document.getElementById('memAddInput').value = '';
 }
 
+/** Creates a new memory fact card from the add-memory form and prepends it to the list. */
 function submitNewMemory() {
   var input = document.getElementById('memAddInput');
   var text = input.value.trim();
@@ -1696,6 +1843,7 @@ function submitNewMemory() {
   showToast('Memory saved');
 }
 
+/** Filters memory fact cards by search query and active category. */
 function filterMemories() {
   var query = document.getElementById('memSearchInput').value.toLowerCase();
   var cards = document.querySelectorAll('.mem-fact-card');
@@ -1718,6 +1866,10 @@ function filterMemories() {
   document.getElementById('memNoResults').classList.toggle('hidden', visibleCount > 0);
 }
 
+/** Sets the active memory category filter and re-filters the list.
+ * @param {string} cat - Category name ('all' | 'preference' | 'workflow' | etc.)
+ * @param {HTMLElement} el - The clicked category pill element
+ */
 function filterByCategory(cat, el) {
   activeCategory = cat;
 
@@ -1727,6 +1879,9 @@ function filterByCategory(cat, el) {
   filterMemories();
 }
 
+/** Toggles the edit/delete context menu on a memory fact card.
+ * @param {HTMLElement} btn - The menu trigger button
+ */
 function toggleFactMenu(btn) {
   // Close all other menus first
   document.querySelectorAll('.mem-fact-menu.open').forEach(function(m) { m.classList.remove('open'); });
@@ -1735,6 +1890,9 @@ function toggleFactMenu(btn) {
   menu.classList.toggle('open');
 }
 
+/** Makes a memory fact card's text editable inline; saves on blur or Enter.
+ * @param {HTMLElement} btn - The edit button inside the fact menu
+ */
 function editFact(btn) {
   var card = btn.closest('.mem-fact-card');
   var textEl = card.querySelector('.mem-fact-text');
@@ -1776,6 +1934,9 @@ function editFact(btn) {
   textEl.addEventListener('keydown', handleKey);
 }
 
+/** Shows a delete confirmation prompt on a memory fact card.
+ * @param {HTMLElement} btn - The delete button inside the fact menu
+ */
 function deleteFact(btn) {
   var card = btn.closest('.mem-fact-card');
   var menu = btn.closest('.mem-fact-menu');
@@ -1794,6 +1955,9 @@ function deleteFact(btn) {
   card.appendChild(confirm);
 }
 
+/** Confirms deletion and removes a memory fact card with animation.
+ * @param {HTMLElement} btn - The "Yes" confirmation button
+ */
 function confirmDelete(btn) {
   var card = btn.closest('.mem-fact-card');
   card.style.transition = 'opacity 0.2s, max-height 0.2s';
@@ -1814,12 +1978,18 @@ function confirmDelete(btn) {
   }, 300);
 }
 
+/** Cancels a pending memory fact deletion and removes the confirmation prompt.
+ * @param {HTMLElement} btn - The "No" cancellation button
+ */
 function cancelDelete(btn) {
   var confirm = btn.closest('.mem-delete-confirm');
   confirm.remove();
 }
 
 // Personality trait functions
+/** Adds a preset personality trait to the selected list.
+ * @param {HTMLElement} el - The preset trait tag element
+ */
 function toggleTrait(el) {
   if (el.classList.contains('disabled')) return;
 
@@ -1839,6 +2009,9 @@ function toggleTrait(el) {
   showToast(traitName + ' added');
 }
 
+/** Removes a selected personality trait and re-enables it in presets.
+ * @param {HTMLElement} el - The selected trait tag element to remove
+ */
 function removeTrait(el) {
   var traitName = el.textContent.replace('\u00d7', '').trim();
 
@@ -1854,6 +2027,7 @@ function removeTrait(el) {
   showToast(traitName + ' removed');
 }
 
+/** Adds a custom personality trait from the text input to the selected list. */
 function addCustomTrait() {
   var input = document.getElementById('traitInput');
   var text = input.value.trim();
@@ -1886,6 +2060,7 @@ var lessonIsEditing = false;
 
 var lessonData = MOCK_LESSONS;
 
+/** Renders the lesson card list from mock data into the lessons list view. */
 function renderLessonList() {
   var list = document.getElementById('lessonList');
   if (!list) return;
@@ -1917,6 +2092,7 @@ function renderLessonList() {
 
 var currentLessonId = null;
 
+/** Filters lesson cards by search query and active scope filter. */
 function filterLessons() {
   var query = document.getElementById('lessonSearchInput').value.toLowerCase();
   var cards = document.querySelectorAll('.lesson-card');
@@ -1940,6 +2116,10 @@ function filterLessons() {
   document.getElementById('lessonNoResults').classList.toggle('hidden', visibleCount > 0);
 }
 
+/** Sets the active lesson scope filter and re-filters the list.
+ * @param {string} scope - Scope value ('all' | 'user' | 'company')
+ * @param {HTMLElement} el - The clicked scope pill element
+ */
 function filterLessonScope(scope, el) {
   activeLessonScope = scope;
   document.querySelectorAll('#lessonScopeFilters .mem-cat-pill').forEach(function(p) { p.classList.remove('active'); });
@@ -1947,6 +2127,9 @@ function filterLessonScope(scope, el) {
   filterLessons();
 }
 
+/** Opens the detail view for a specific lesson.
+ * @param {string} id - Lesson identifier key in lessonData
+ */
 function openLesson(id) {
   currentLessonId = id;
   var data = lessonData[id];
@@ -1976,6 +2159,7 @@ function openLesson(id) {
   document.getElementById('lessonDetailBody').removeAttribute('contenteditable');
 }
 
+/** Closes the lesson detail view and returns to the lesson list. */
 function closeLessonDetail() {
   document.getElementById('lessonDetailView').classList.add('hidden');
   document.getElementById('lessonsListView').classList.remove('hidden');
@@ -1989,6 +2173,7 @@ function closeLessonDetail() {
   currentLessonId = null;
 }
 
+/** Toggles inline editing mode for the current lesson's body text. */
 function toggleLessonEdit() {
   var body = document.getElementById('lessonDetailBody');
   var editBtn = document.getElementById('lessonEditBtn');
@@ -2011,6 +2196,7 @@ function toggleLessonEdit() {
   }
 }
 
+/** Opens the Cosimo panel pre-loaded with context for editing the current lesson. */
 function openCosimoForLesson() {
   // Update Cosimo panel context for this lesson
   var data = lessonData[currentLessonId];
@@ -2035,6 +2221,7 @@ function openCosimoForLesson() {
   openCosimoPanel();
 }
 
+/** Toggles the current lesson's scope between 'company' and 'user' (personal). */
 function toggleLessonScope() {
   var data = lessonData[currentLessonId];
   if (!data) return;
@@ -2059,6 +2246,7 @@ function toggleLessonScope() {
   showToast('Scope changed to ' + (data.scope === 'company' ? 'Company' : 'Personal'));
 }
 
+/** Deletes the current lesson and removes its card from the list with animation. */
 function deleteLesson() {
   if (!currentLessonId) return;
 
@@ -2088,6 +2276,7 @@ function deleteLesson() {
   showToast('Lesson deleted');
 }
 
+/** Opens the Cosimo panel with a prompt to create a new lesson. */
 function createNewLesson() {
   var panelName = document.querySelector('.cosimo-panel-name');
   panelName.textContent = 'Create New Lesson';
@@ -2110,6 +2299,10 @@ function createNewLesson() {
   openCosimoPanel();
 }
 
+/** Toggles a lesson card's scope directly from the list view.
+ * @param {HTMLElement} btn - The scope toggle button on the card
+ * @param {Event} e - The click event (propagation is stopped)
+ */
 function toggleCardScope(btn, e) {
   e.stopPropagation(); // Don't open the lesson detail
 
@@ -2152,7 +2345,10 @@ var graphColors = {
 };
 
 
-// Find an entity across all categories
+/** Finds an entity node across all graph categories by ID.
+ * @param {string} entityId - The entity identifier
+ * @returns {{node: Object, category: string}|null} The entity node and its category, or null
+ */
 function findEntity(entityId) {
   for (var cat in MOCK_GRAPH_DATA.nodes) {
     var nodes = MOCK_GRAPH_DATA.nodes[cat];
@@ -2177,6 +2373,7 @@ var driftRAF = null;
 var driftItems = [];
 var ANIM = 500; // ms for transitions
 
+/** Builds the full SVG data graph with nodes, edges, gradients, and filters. */
 function buildGraph() {
   var container = document.getElementById('graphContainer');
   var svg = document.getElementById('graphSvg');
@@ -2432,6 +2629,15 @@ function buildGraph() {
   startDriftLoop(svg);
 }
 
+/** Creates a curved SVG path element representing an edge between two points.
+ * @param {number} x1 - Start X coordinate
+ * @param {number} y1 - Start Y coordinate
+ * @param {number} x2 - End X coordinate
+ * @param {number} y2 - End Y coordinate
+ * @param {string} color - Stroke color
+ * @param {number} opacity - Initial opacity (0-1)
+ * @returns {SVGPathElement} The edge path element
+ */
 function makeEdge(x1, y1, x2, y2, color, opacity) {
   var mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
   var dx = x2 - x1, dy = y2 - y1;
@@ -2448,6 +2654,18 @@ function makeEdge(x1, y1, x2, y2, color, opacity) {
   return path;
 }
 
+/** Creates an SVG node group with glow, body circle, labels, and tooltip.
+ * @param {string} id - Node identifier
+ * @param {string} label - Primary label text
+ * @param {string} sub - Secondary label text
+ * @param {number} x - Initial X position
+ * @param {number} y - Initial Y position
+ * @param {number} r - Circle radius
+ * @param {string} colorId - Key into graphColors for styling
+ * @param {boolean} isCenter - Whether this is the center "YOU" node
+ * @param {string|number} [innerText] - Text displayed inside the circle
+ * @returns {{g: SVGGElement}} Object containing the group element
+ */
 function makeNode(id, label, sub, x, y, r, colorId, isCenter, innerText) {
   var col = graphColors[colorId];
   var g = document.createElementNS(SVG_NS, 'g');
@@ -2539,6 +2757,14 @@ function makeNode(id, label, sub, x, y, r, colorId, isCenter, innerText) {
   return { g: g };
 }
 
+/** Animates a graph node to a new position, radius, and opacity.
+ * @param {Object} nodeData - Node data from graphNodeEls with g, _posG, _circles
+ * @param {number} toX - Target X position
+ * @param {number} toY - Target Y position
+ * @param {number} toR - Target circle radius
+ * @param {number} toOpacity - Target opacity (0-1)
+ * @param {number} [delay=0] - Delay in ms before animation starts
+ */
 function animateNode(nodeData, toX, toY, toR, toOpacity, delay) {
   var g = nodeData.g;
   var posG = g._posG;
@@ -2578,6 +2804,9 @@ function animateNode(nodeData, toX, toY, toR, toOpacity, delay) {
   }, delay || 0);
 }
 
+/** Transitions the graph to root state: YOU at center, categories in orbit, entities hidden.
+ * @param {boolean} animated - Whether to animate the transition or apply instantly
+ */
 function applyRootState(animated) {
   var cats = MOCK_GRAPH_DATA.categories;
   var d = animated ? 0 : -1; // -1 means instant
@@ -2632,6 +2861,9 @@ function applyRootState(animated) {
   document.querySelector('#graphSvg rect').style.cursor = 'default';
 }
 
+/** Transitions the graph to cluster state: selected category at center with entity children expanded.
+ * @param {string} catId - Category identifier to drill into
+ */
 function applyClusterState(catId) {
   var cats = MOCK_GRAPH_DATA.categories;
   var col = graphColors[catId];
@@ -2703,6 +2935,9 @@ function applyClusterState(catId) {
   document.querySelector('#graphSvg rect').style.cursor = 'pointer';
 }
 
+/** Navigates the graph to root view or drills into a category cluster.
+ * @param {string} target - 'root' or a category ID
+ */
 function graphNavigate(target) {
   closeGraphDetail();
   hideGraphTooltip();
@@ -2722,6 +2957,10 @@ function graphNavigate(target) {
   }
 }
 
+/** Opens the detail pane for a specific entity in the data graph.
+ * @param {string} entityId - Entity identifier
+ * @param {string} categoryId - Category the entity belongs to
+ */
 function openGraphEntity(entityId, categoryId) {
   graphState.currentEntity = entityId;
   var found = findEntity(entityId);
@@ -2766,6 +3005,7 @@ function openGraphEntity(entityId, categoryId) {
   document.getElementById('graphDetailPane').classList.add('open');
 }
 
+/** Closes the graph entity detail pane and un-highlights the selected node. */
 function closeGraphDetail() {
   document.getElementById('graphDetailPane').classList.remove('open');
 
@@ -2782,6 +3022,10 @@ function closeGraphDetail() {
   updateBreadcrumb();
 }
 
+/** Navigates to a related entity, switching categories if needed.
+ * @param {string} entityId - Target entity identifier
+ * @param {string} categoryId - Target entity's category
+ */
 function navigateToRelated(entityId, categoryId) {
   // Un-highlight current
   closeGraphDetail();
@@ -2801,6 +3045,7 @@ function navigateToRelated(entityId, categoryId) {
   }
 }
 
+/** Updates the graph breadcrumb navigation to reflect the current graph state. */
 function updateBreadcrumb() {
   var bc = document.getElementById('graphBreadcrumb');
   var html = '<button class="graph-crumb' + (graphState.level === 'root' ? ' active' : '') + '" data-nav="root">You</button>';
@@ -2822,6 +3067,10 @@ function updateBreadcrumb() {
   bc.innerHTML = html;
 }
 
+/** Shows a tooltip positioned above a graph node.
+ * @param {SVGGElement} nodeG - The node's SVG group element
+ * @param {string} text - Tooltip text to display
+ */
 function showGraphTooltip(nodeG, text) {
   var tip = document.getElementById('graphTooltip');
   var container = document.getElementById('graphContainer');
@@ -2852,11 +3101,14 @@ function showGraphTooltip(nodeG, text) {
   }
 }
 
+/** Hides the graph tooltip. */
 function hideGraphTooltip() {
   document.getElementById('graphTooltip').classList.remove('show');
 }
 
-// Drift animation
+/** Initializes the subtle drift animation loop for graph nodes (currently disabled).
+ * @param {SVGElement} svg - The graph SVG element
+ */
 function startDriftLoop(svg) {
   if (driftRAF) cancelAnimationFrame(driftRAF);
   driftItems = [];
@@ -2898,6 +3150,7 @@ function startDriftLoop(svg) {
   // driftRAF = requestAnimationFrame(tick);
 }
 
+/** Placeholder for editing the currently selected graph entity. */
 function editGraphEntity() {
   if (!graphState.currentEntity) return;
   var found = findEntity(graphState.currentEntity);
@@ -2905,6 +3158,7 @@ function editGraphEntity() {
   showToast('Editing ' + found.node.label + ' — coming soon');
 }
 
+/** Opens the Cosimo panel pre-loaded with context for editing the current graph entity. */
 function openCosimoForEntity() {
   if (!graphState.currentEntity) return;
   var found = findEntity(graphState.currentEntity);
@@ -2996,6 +3250,10 @@ window.addEventListener('resize', function() {
 // ============================================
 // TOAST NOTIFICATIONS (#8)
 // ============================================
+/** Displays a toast notification message that auto-dismisses.
+ * @param {string} text - Message to display
+ * @param {number} [duration=2000] - Display duration in ms
+ */
 function showToast(text, duration) {
   const container = document.getElementById('toastContainer');
   if (!container) return;
@@ -3012,6 +3270,10 @@ function showToast(text, duration) {
   }, duration || 2000);
 }
 
+/** Escapes HTML special characters in a string to prevent XSS.
+ * @param {string} text - Raw text to escape
+ * @returns {string} HTML-safe string
+ */
 function escapeHtml(text) {
   const div = document.createElement('div');
   div.textContent = text;

@@ -81,6 +81,9 @@
 - [x] **4.4 — Consolidate color utility functions**
   Grouped `hexToHsl()`, `hslToHex()`, and `hexToRgbString()` into a `ColorUtils` namespace object in a new "COLOR UTILITIES" section header. Updated all 3 call sites in `applyPurpleIntensity()` to use `ColorUtils.hexToHsl()`, `ColorUtils.hslToHex()`, `ColorUtils.hexToRgbString()`. Functions are now clearly separated from the purple intensity logic and reusable.
 
+- [x] **4.5 — Add JSDoc comments to all public functions**
+  Added JSDoc comments to all 95 top-level public functions in app.js. Each includes a one-line description, `@param` tags with types, `@returns` where applicable, and side-effect notes (DOM modifications, localStorage updates). Also added JSDoc to the `ColorUtils` namespace object and its 3 methods. Skipped internal functions within IIFEs (rich text, theme init, drag-drop, hover actions, drag-resize, a11y restore, event listeners). All existing section headers preserved, no code changes.
+
 ### Current Task
 (none — awaiting next instruction)
 
