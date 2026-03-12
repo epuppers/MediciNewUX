@@ -126,8 +126,11 @@
 - [x] **7.3 — Replace all raw hex colors in CSS with tokens**
   Replaced ~80 raw hex color values across 5 CSS files (chat.css, layout.css, components.css, workflows.css, utilities.css) with `var(--token)` references. Key mappings: dark surfaces (#0e0e10→surface-0, #1a1a1d→surface-1, #28282d→surface-2, #2a2a2f→surface-3), bevel pairs (#e06060/#802020→red-hi/red-lo, #5aad5c/#2a6b2c→green-hi/green-lo), text (#f0eef4→text-light), hover (#b84040→red-dark), semantic (#3D8B40→green, #C04848→red, #B8862B→amber, #749CB5→blue-3). Added `--surface-graph-bg: #0e0d12` token for graph canvas. Moved high-contrast token overrides from layout.css to tokens.css. Fixed 3 near-miss typos (#5aad5d→#5aad5c, #2a6a2c→#2a6b2c, #1a1a1c→#1a1a1d). `grep -rn '#[0-9a-fA-F]' css/` now returns zero results outside tokens.css.
 
+- [x] **7.4 — Replace all raw rgba() values in CSS with RGB triplet tokens**
+  Replaced ~90 raw rgba(R,G,B,A) calls across all 6 CSS files with the `rgba(var(--token-rgb), A)` pattern. Added 5 new RGB triplet tokens: `--taupe-3-rgb` (135,134,139 / dark: 118,117,124), `--black-rgb` (0,0,0), `--white-pure-rgb` (255,255,255), `--surface-tooltip-rgb` (45,45,46 — non-flipping for always-dark graph tooltips), `--cosimo-error-rgb` (194,59,34 — error accent). Corrected one near-match typo (rgba(138,137,144) → --taupe-3-rgb). No CSS file outside tokens.css now contains raw RGB numbers inside rgba().
+
 ### Current Task
-Phase 7 — task 7.3 complete
+Phase 7 — task 7.4 complete
 
 ### Blocked / Notes
 (none)

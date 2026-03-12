@@ -148,12 +148,12 @@
 
 .logo-sphere.dark {
   background: radial-gradient(circle at 35% 30%, var(--violet-3), var(--violet-4));
-  box-shadow: inset 0 -1px 2px rgba(0,0,0,0.25), inset 0 1px 1px rgba(255,255,255,0.08);
+  box-shadow: inset 0 -1px 2px rgba(var(--black-rgb),0.25), inset 0 1px 1px rgba(var(--white-pure-rgb),0.08);
 }
 
 .logo-sphere.light {
   background: radial-gradient(circle at 35% 30%, var(--white), var(--berry-1));
-  box-shadow: inset 0 -1px 2px rgba(0,0,0,0.06), inset 0 1px 1px rgba(255,255,255,0.3);
+  box-shadow: inset 0 -1px 2px rgba(var(--black-rgb),0.06), inset 0 1px 1px rgba(var(--white-pure-rgb),0.3);
 }
 
 /* Row 1 — top */
@@ -172,7 +172,7 @@
   color: var(--taupe-1);
   line-height: 1;
   letter-spacing: 1px;
-  text-shadow: 1px 1px 0 rgba(0,0,0,0.4);
+  text-shadow: 1px 1px 0 rgba(var(--black-rgb),0.4);
 }
 
 .logo-sub {
@@ -423,7 +423,7 @@
 }
 
 .profile-menu-signout:hover {
-  background: rgba(192,72,72,0.08);
+  background: rgba(var(--red-rgb),0.08);
   color: var(--red);
 }
 
@@ -464,7 +464,7 @@
   top: 2px;
   left: 2px;
   transition: transform 0.2s;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  box-shadow: 0 1px 2px rgba(var(--black-rgb),0.15);
 }
 
 /* Purple intensity slider */
@@ -505,7 +505,7 @@
   background: var(--violet-3);
   border: 2px solid var(--white);
   border-radius: 50%;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 3px rgba(var(--black-rgb),0.2);
   cursor: pointer;
 }
 
@@ -515,7 +515,7 @@
   background: var(--violet-3);
   border: 2px solid var(--white);
   border-radius: 50%;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  box-shadow: 0 1px 3px rgba(var(--black-rgb),0.2);
   cursor: pointer;
 }
 
@@ -899,7 +899,7 @@
   height: 7px;
   flex-shrink: 0;
   margin-top: 4px;
-  border: 1px solid rgba(0,0,0,0.15);
+  border: 1px solid rgba(var(--black-rgb),0.15);
   border-radius: var(--r-md);
 }
 
@@ -954,7 +954,7 @@
   font-family: var(--mono);
   font-size: 12px;
   color: var(--taupe-1);
-  background: rgba(0,0,0,0.25);
+  background: rgba(var(--black-rgb),0.25);
   border: 1px solid;
   border-color: var(--surface-1) var(--taupe-4) var(--taupe-4) var(--surface-1);
   outline: none;
@@ -968,7 +968,7 @@
 .sidebar-search-input:focus {
   border-color: var(--violet-3);
   box-shadow: 0 0 0 1px var(--violet-3);
-  background: rgba(0,0,0,0.35);
+  background: rgba(var(--black-rgb),0.35);
 }
 
 .search-results {
@@ -980,7 +980,7 @@
   border: 2px solid;
   border-color: var(--taupe-2) var(--taupe-4) var(--taupe-4) var(--taupe-2);
   z-index: 60;
-  box-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+  box-shadow: 3px 3px 0 rgba(var(--black-rgb),0.15);
   margin-top: 2px;
   border-radius: var(--r-md);
 }
@@ -1094,8 +1094,8 @@
 }
 
 .thread-item:hover, .wf-side-item:hover {
-  background: rgba(255,255,255,0.04);
-  border-color: rgba(255,255,255,0.06);
+  background: rgba(var(--white-pure-rgb),0.04);
+  border-color: rgba(var(--white-pure-rgb),0.06);
 }
 
 .thread-item.active, .wf-side-item.active {
@@ -1124,19 +1124,19 @@
 .wf-side-status.active-status {
   color: var(--green);
   border-color: var(--green);
-  background: rgba(61,139,64,0.1);
+  background: rgba(var(--green-rgb),0.1);
 }
 
 .wf-side-status.draft-status {
   color: var(--amber);
   border-color: var(--amber);
-  background: rgba(184,134,43,0.1);
+  background: rgba(var(--amber-rgb),0.1);
 }
 
 .wf-side-status.paused-status {
   color: var(--taupe-3);
   border-color: var(--taupe-3);
-  background: rgba(135,134,139,0.1);
+  background: rgba(var(--taupe-3-rgb),0.1);
 }
 
 /* Thread indicators */
@@ -1153,19 +1153,19 @@
 .thread-indicator.ready {
   color: var(--green);
   border-color: var(--green);
-  background: rgba(61,139,64,0.15);
+  background: rgba(var(--green-rgb),0.15);
 }
 
 .thread-indicator.needs-input {
   color: var(--amber);
   border-color: var(--amber);
-  background: rgba(184,134,43,0.15);
+  background: rgba(var(--amber-rgb),0.15);
 }
 
 .thread-indicator.error {
   color: var(--red);
   border-color: var(--red);
-  background: rgba(192,72,72,0.15);
+  background: rgba(var(--red-rgb),0.15);
 }
 
 /* Workflow notification dot */
@@ -1367,7 +1367,7 @@ main {
 /* Sidebar text — uses light tones in light mode, must stay readable */
 [data-theme="dark"] .logo-title {
   color: var(--taupe-5);
-  text-shadow: 1px 1px 0 rgba(0,0,0,0.6);
+  text-shadow: 1px 1px 0 rgba(var(--black-rgb),0.6);
 }
 
 [data-theme="dark"] .thread-item,
@@ -1390,7 +1390,7 @@ main {
 }
 
 [data-theme="dark"] .top-tab {
-  background: rgba(0,0,0,0.25);
+  background: rgba(var(--black-rgb),0.25);
   border-color: var(--surface-3);
   color: var(--taupe-3);
 }
@@ -1411,17 +1411,17 @@ main {
 }
 
 [data-theme="dark"] .sidebar-search-input {
-  background: rgba(0,0,0,0.4);
+  background: rgba(var(--black-rgb),0.4);
   border-color: var(--surface-0) var(--surface-3) var(--surface-3) var(--surface-0);
 }
 
 [data-theme="dark"] .sidebar-search-input:focus {
-  background: rgba(0,0,0,0.5);
+  background: rgba(var(--black-rgb),0.5);
 }
 
 [data-theme="dark"] .search-results {
   border-color: var(--taupe-2);
-  box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+  box-shadow: 3px 3px 0 rgba(var(--black-rgb),0.3);
 }
 
 [data-theme="dark"] .search-result-item {
@@ -1471,7 +1471,7 @@ main {
 
 [data-theme="dark"] .profile-menu-toggle-thumb {
   background: var(--taupe-4);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  box-shadow: 0 1px 2px rgba(var(--black-rgb),0.3);
 }
 
 [data-theme="dark"] .th-divider {
@@ -1514,8 +1514,8 @@ main {
 /* Hover states */
 [data-theme="dark"] .thread-item:hover,
 [data-theme="dark"] .wf-side-item:hover {
-  background: rgba(255,255,255,0.06);
-  border-color: rgba(255,255,255,0.08);
+  background: rgba(var(--white-pure-rgb),0.06);
+  border-color: rgba(var(--white-pure-rgb),0.08);
 }
 
 /* Main content — flat border on dark */
@@ -1557,15 +1557,15 @@ main {
 
 /* Thread indicators */
 [data-theme="dark"] .thread-indicator.ready {
-  background: rgba(76,175,80,0.2);
+  background: rgba(var(--green-rgb),0.2);
 }
 
 [data-theme="dark"] .thread-indicator.needs-input {
-  background: rgba(212,160,48,0.2);
+  background: rgba(var(--amber-rgb),0.2);
 }
 
 [data-theme="dark"] .thread-indicator.error {
-  background: rgba(224,85,85,0.2);
+  background: rgba(var(--red-rgb),0.2);
 }
 
 [data-theme="dark"] .wf-notif-dot {

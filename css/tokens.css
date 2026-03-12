@@ -49,6 +49,11 @@
   --red-rgb: 192,72,72;
   --amber-rgb: 184,134,43;
   --blue-3-rgb: 116,156,181;
+  --taupe-3-rgb: 135,134,139;
+  --black-rgb: 0,0,0;
+  --white-pure-rgb: 255,255,255;
+  --surface-tooltip-rgb: 45,45,46;
+  --cosimo-error-rgb: 194,59,34;
 
   --white: #FFFFFF;
   --off-white: #F8F6FA;
@@ -135,6 +140,7 @@
   --red-rgb: 224,85,85;
   --amber-rgb: 212,160,48;
   --blue-3-rgb: 140,184,212;
+  --taupe-3-rgb: 118,117,124;
 
   /* Semantic — brightened for dark-bg legibility */
   --green: #4caf50;

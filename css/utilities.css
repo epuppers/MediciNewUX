@@ -18,7 +18,7 @@
   border: 2px solid;
   border-color: var(--taupe-2) var(--taupe-4) var(--taupe-4) var(--taupe-2);
   z-index: 50;
-  box-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+  box-shadow: 3px 3px 0 rgba(var(--black-rgb),0.15);
   border-radius: var(--r-md);
 }
 
@@ -144,7 +144,7 @@
 
 [data-theme="dark"] .dropdown-menu {
   border-color: var(--taupe-2);
-  box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+  box-shadow: 3px 3px 0 rgba(var(--black-rgb),0.3);
 }
 
 /* berry-5 stays dark for bevels — use berry-3 for hover text */

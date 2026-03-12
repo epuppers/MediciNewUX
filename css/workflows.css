@@ -107,7 +107,7 @@
   justify-content: space-between;
   padding: 10px 14px;
   border-bottom: 1px solid var(--taupe-1);
-  background: rgba(0,0,0,0.01);
+  background: rgba(var(--black-rgb),0.01);
 }
 
 .wf-card-title {
@@ -128,19 +128,19 @@
 .status-active {
   color: var(--green);
   border-color: var(--green);
-  background: rgba(61,139,64,0.08);
+  background: rgba(var(--green-rgb),0.08);
 }
 
 .status-draft {
   color: var(--amber);
   border-color: var(--amber);
-  background: rgba(184,134,43,0.08);
+  background: rgba(var(--amber-rgb),0.08);
 }
 
 .status-paused {
   color: var(--taupe-3);
   border-color: var(--taupe-3);
-  background: rgba(135,134,139,0.08);
+  background: rgba(var(--taupe-3-rgb),0.08);
 }
 
 .wf-card-body {
@@ -483,9 +483,9 @@
   border-radius: var(--r-sm);
 }
 
-.file-chip.pdf { color: var(--red); border-color: var(--red); background: rgba(192,72,72,0.08); }
-.file-chip.xlsx { color: var(--green); border-color: var(--green); background: rgba(61,139,64,0.08); }
-.file-chip.csv { color: var(--blue-3); border-color: var(--blue-3); background: rgba(116,156,181,0.08); }
+.file-chip.pdf { color: var(--red); border-color: var(--red); background: rgba(var(--red-rgb),0.08); }
+.file-chip.xlsx { color: var(--green); border-color: var(--green); background: rgba(var(--green-rgb),0.08); }
+.file-chip.csv { color: var(--blue-3); border-color: var(--blue-3); background: rgba(var(--blue-3-rgb),0.08); }
 .file-chip.docx { color: var(--violet-3); border-color: var(--violet-3); background: rgba(var(--violet-3-rgb),0.08); }
 
 /* ============================================
@@ -522,26 +522,26 @@
 }
 
 [data-theme="dark"] .wf-card-header {
-  background: rgba(255,255,255,0.02);
+  background: rgba(var(--white-pure-rgb),0.02);
 }
 
 /* Status badges */
 [data-theme="dark"] .status-active {
-  background: rgba(76,175,80,0.12);
+  background: rgba(var(--green-rgb),0.12);
 }
 
 [data-theme="dark"] .status-draft {
-  background: rgba(212,160,48,0.12);
+  background: rgba(var(--amber-rgb),0.12);
 }
 
 [data-theme="dark"] .status-paused {
-  background: rgba(138,137,144,0.12);
+  background: rgba(var(--taupe-3-rgb),0.12);
 }
 
 /* File chips */
-[data-theme="dark"] .file-chip.pdf { background: rgba(224,85,85,0.12); }
-[data-theme="dark"] .file-chip.xlsx { background: rgba(76,175,80,0.12); }
-[data-theme="dark"] .file-chip.csv { background: rgba(140,184,212,0.12); }
+[data-theme="dark"] .file-chip.pdf { background: rgba(var(--red-rgb),0.12); }
+[data-theme="dark"] .file-chip.xlsx { background: rgba(var(--green-rgb),0.12); }
+[data-theme="dark"] .file-chip.csv { background: rgba(var(--blue-3-rgb),0.12); }
 [data-theme="dark"] .file-chip.docx { background: rgba(var(--violet-3-rgb),0.12); }
 
 /* Source items */
@@ -563,7 +563,7 @@
 }
 
 [data-theme="dark"] .tab-btn {
-  background: rgba(0,0,0,0.25);
+  background: rgba(var(--black-rgb),0.25);
   border-color: var(--surface-3);
 }
 
