@@ -3,7 +3,7 @@
 **Started:** 2026-03-11
 **Last updated:** 2026-03-11
 
-## Status: IN PROGRESS — Phase 4
+## Status: COMPLETE — Phase 4
 
 ### Completed Tasks
 - [x] **1.1 — Extract thread data to data object**
@@ -83,6 +83,9 @@
 
 - [x] **4.5 — Add JSDoc comments to all public functions**
   Added JSDoc comments to all 95 top-level public functions in app.js. Each includes a one-line description, `@param` tags with types, `@returns` where applicable, and side-effect notes (DOM modifications, localStorage updates). Also added JSDoc to the `ColorUtils` namespace object and its 3 methods. Skipped internal functions within IIFEs (rich text, theme init, drag-drop, hover actions, drag-resize, a11y restore, event listeners). All existing section headers preserved, no code changes.
+
+- [x] **4.6 — Wrap global functions into namespace objects**
+  Created 7 namespace objects: `A11y` (7 functions — toggleTheme, applyPurpleIntensity, applyFontSizeBoost, toggleDyslexiaFont, toggleReducedMotion, toggleHighContrast, syncA11yToggles), `UI` (15 functions + currentMode state — switchMode, switchBrainSection, renderHeaderPanels, closeAllPanels, toggleTaskPanel, toggleCalendarPanel, toggleUsagePanel, toggleProfileMenu, buildMiniCalendar, handleNew, openCosimoPanel, closeCosimoPanel, handlePanelKey, sendPanelMessage, toggleDropdown), `Chat` (30 functions + state — runGlobalSearch, closeSearch, disableInput, giveFeedback, selectThread, updateFilesButton, openFilePanel, closeFilePanel, switchFilePanelTab, buildSpreadsheet, exportThread, shareThread, fillSuggestion, retryK1, isNearBottom, softScroll, eraborTimer, showEraborStopBtn, runEraborSequence, markEraborDone, cancelErabor, streamReply, typeTextBlock, streamSectionBlock, tokenizeHTML, attachFromComputer, attachFromDrive, toggleModelDropdown, selectModel + searchTimer/activeThread/sheetData/colLetters/sheetBuilt/erabor* state), `Workflows` (3 functions — showWorkflowDetail, showWorkflowListing, switchTab), `BrainMemory` (13 functions — renderMemoryFromData, toggleAddMemory, cancelAddMemory, submitNewMemory, filterMemories, filterByCategory, toggleFactMenu, editFact, deleteFact, confirmDelete, cancelDelete, toggleTrait, removeTrait, addCustomTrait), `BrainLessons` (11 functions + currentLessonId — renderLessonList, filterLessons, filterLessonScope, openLesson, closeLessonDetail, toggleLessonEdit, openCosimoForLesson, toggleLessonScope, deleteLesson, createNewLesson, toggleCardScope), `Graph` (18 functions + all graph state — findEntity, buildGraph, makeEdge, makeNode, animateNode, applyRootState, applyClusterState, graphNavigate, openGraphEntity, closeGraphDetail, navigateToRelated, updateBreadcrumb, showGraphTooltip, hideGraphTooltip, startDriftLoop, editGraphEntity, openCosimoForEntity + graphState/graphColors/graphNodeEls/graphEdgeEls/graphBuilt/driftRAF/driftItems/ANIM). Kept `showToast` and `escapeHtml` global. Updated all 97 function definitions, all internal cross-references, and all call sites in the event listeners IIFE. Wrapped the `switchBrainSection` override in an IIFE. Syntax verified with `node --check`.
 
 ### Current Task
 (none — awaiting next instruction)

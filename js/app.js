@@ -113,6 +113,17 @@ injectIcons();
 })();
 
 // ============================================
+// NAMESPACE DECLARATIONS
+// ============================================
+var A11y = {};
+var UI = {};
+var Chat = {};
+var Workflows = {};
+var BrainMemory = {};
+var BrainLessons = {};
+var Graph = {};
+
+// ============================================
 // THEME TOGGLE
 // ============================================
 (function() {
@@ -346,15 +357,15 @@ injectIcons();
 /** Toggles between light and dark theme and re-applies purple intensity.
  * Modifies DOM (data-theme attribute) and localStorage.
  */
-function toggleTheme() {
+A11y.toggleTheme = function() {
   const current = document.documentElement.getAttribute('data-theme');
   const next = current === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', next);
   localStorage.setItem('theme', next);
   // Re-apply purple intensity for new theme
   const saved = localStorage.getItem('purpleIntensity');
-  if (saved) applyPurpleIntensity(saved);
-}
+  if (saved) A11y.applyPurpleIntensity(saved);
+};
 
 // ============================================
 // COLOR UTILITIES
@@ -423,7 +434,7 @@ var ColorUtils = {
  * @param {string|number} value - Intensity percentage (0-100)
  * Modifies DOM CSS custom properties and localStorage.
  */
-function applyPurpleIntensity(value) {
+A11y.applyPurpleIntensity = function(value) {
   var intensity = parseInt(value, 10);
   var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
   var bases = isDark ? CONFIG_PURPLE_BASE_COLORS.dark : CONFIG_PURPLE_BASE_COLORS.light;
@@ -446,13 +457,13 @@ function applyPurpleIntensity(value) {
   if (label) label.textContent = intensity + '%';
 
   localStorage.setItem('purpleIntensity', intensity);
-}
+};
 
 // Restore saved intensity on load
 (function() {
   var saved = localStorage.getItem('purpleIntensity');
   if (saved) {
-    applyPurpleIntensity(saved);
+    A11y.applyPurpleIntensity(saved);
     var slider = document.getElementById('purpleIntensitySlider');
     if (slider) slider.value = saved;
   }
@@ -472,7 +483,7 @@ var fontSizeZoomLevels = [1, 1.05, 1.1, 1.15, 1.2];
  * @param {string|number} value - Step index (0-4) into fontSizeZoomLevels
  * Modifies DOM (CSS zoom) and localStorage.
  */
-function applyFontSizeBoost(value) {
+A11y.applyFontSizeBoost = function(value) {
   var step = parseInt(value, 10);
   var zoom = fontSizeZoomLevels[step] || 1;
   var frame = document.querySelector('.app-frame');
@@ -494,13 +505,13 @@ function applyFontSizeBoost(value) {
     else label.textContent = Math.round(zoom * 100) + '%';
   }
   localStorage.setItem('a11yFontSize', step);
-}
+};
 
 // --- Dyslexia font ---
 /** Toggles the dyslexia-friendly font mode on/off.
  * Modifies DOM (data-a11y-font attribute) and localStorage.
  */
-function toggleDyslexiaFont() {
+A11y.toggleDyslexiaFont = function() {
   var root = document.documentElement;
   var active = root.getAttribute('data-a11y-font') === 'dyslexia';
   if (active) {
@@ -510,14 +521,14 @@ function toggleDyslexiaFont() {
     root.setAttribute('data-a11y-font', 'dyslexia');
     localStorage.setItem('a11yDyslexia', 'on');
   }
-  syncA11yToggles();
-}
+  A11y.syncA11yToggles();
+};
 
 // --- Reduced motion ---
 /** Toggles reduced motion accessibility mode on/off.
  * Modifies DOM (data-a11y-motion attribute) and localStorage.
  */
-function toggleReducedMotion() {
+A11y.toggleReducedMotion = function() {
   var root = document.documentElement;
   var active = root.getAttribute('data-a11y-motion') === 'reduced';
   if (active) {
@@ -527,14 +538,14 @@ function toggleReducedMotion() {
     root.setAttribute('data-a11y-motion', 'reduced');
     localStorage.setItem('a11yMotion', 'on');
   }
-  syncA11yToggles();
-}
+  A11y.syncA11yToggles();
+};
 
 // --- High contrast + focus ---
 /** Toggles high contrast accessibility mode on/off.
  * Modifies DOM (data-a11y-contrast attribute) and localStorage.
  */
-function toggleHighContrast() {
+A11y.toggleHighContrast = function() {
   var root = document.documentElement;
   var active = root.getAttribute('data-a11y-contrast') === 'high';
   if (active) {
@@ -544,12 +555,12 @@ function toggleHighContrast() {
     root.setAttribute('data-a11y-contrast', 'high');
     localStorage.setItem('a11yContrast', 'on');
   }
-  syncA11yToggles();
-}
+  A11y.syncA11yToggles();
+};
 
 // --- Sync toggle visuals to current state ---
 /** Synchronizes all accessibility toggle UI elements to match current DOM state. */
-function syncA11yToggles() {
+A11y.syncA11yToggles = function() {
   var root = document.documentElement;
 
   var dyslexiaOn = root.getAttribute('data-a11y-font') === 'dyslexia';
@@ -569,13 +580,13 @@ function syncA11yToggles() {
   if (mh) mh.classList.toggle('active', motionOn);
   if (ct) ct.classList.toggle('active', contrastOn);
   if (ch) ch.classList.toggle('active', contrastOn);
-}
+};
 
 // --- Restore all a11y settings on load ---
 (function() {
   var fontSize = localStorage.getItem('a11yFontSize');
   if (fontSize && parseInt(fontSize, 10) > 0) {
-    applyFontSizeBoost(fontSize);
+    A11y.applyFontSizeBoost(fontSize);
     var slider = document.getElementById('fontSizeSlider');
     if (slider) slider.value = fontSize;
   }
@@ -592,21 +603,21 @@ function syncA11yToggles() {
     document.documentElement.setAttribute('data-a11y-contrast', 'high');
   }
 
-  syncA11yToggles();
+  A11y.syncA11yToggles();
 })();
 
 // ============================================
 // MODE SWITCHING
 // ============================================
-let currentMode = 'chat';
+UI.currentMode = 'chat';
 
 /** Switches the main view between chat, workflows, and brain modes.
  * @param {string} mode - Target mode ('chat' | 'workflows')
  * @param {HTMLElement} [btn] - The tab button element to mark active
  * Modifies DOM visibility of views and sidebars.
  */
-function switchMode(mode, btn) {
-  currentMode = mode;
+UI.switchMode = function(mode, btn) {
+  UI.currentMode = mode;
   document.querySelectorAll('.top-tab').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
 
@@ -639,17 +650,17 @@ function switchMode(mode, btn) {
     workflowSidebar.classList.remove('hidden');
     newBtn.textContent = '+ New Workflow';
     newBtn.classList.remove('hidden');
-    showWorkflowListing();
+    Workflows.showWorkflowListing();
   }
-}
+};
 
 /** Switches to a specific Brain sub-section (memory, lessons, or graphs).
  * @param {string} section - Target section ('memory' | 'lessons' | 'graphs')
  * @param {HTMLElement} [el] - The nav button element to mark active
  * Modifies DOM visibility of views and sidebars.
  */
-function switchBrainSection(section, el) {
-  currentMode = 'brain';
+UI.switchBrainSection = function(section, el) {
+  UI.currentMode = 'brain';
 
   // Update brain nav active state
   document.querySelectorAll('.brain-nav-btn').forEach(function(b) { b.classList.remove('active'); });
@@ -672,7 +683,7 @@ function switchBrainSection(section, el) {
   document.querySelectorAll('.brain-section').forEach(function(s) { s.classList.remove('active'); });
   var target = document.getElementById('brain-' + section);
   if (target) target.classList.add('active');
-}
+};
 
 
 // ============================================
@@ -681,7 +692,7 @@ function switchBrainSection(section, el) {
 /** Renders tasks, calendar, and usage header dropdown panels from mock data.
  * Modifies DOM (innerHTML of taskPanel, calendarPanel, usagePanel).
  */
-function renderHeaderPanels() {
+UI.renderHeaderPanels = function() {
   // Render tasks
   var taskPanel = document.getElementById('taskPanel');
   if (taskPanel) {
@@ -748,68 +759,68 @@ function renderHeaderPanels() {
         '</div>' +
       '</div>';
   }
-}
+};
 
 // Render header panels on load
-(function() { renderHeaderPanels(); })();
+(function() { UI.renderHeaderPanels(); })();
 
 /** Closes all header dropdown panels (tasks, calendar, usage). */
-function closeAllPanels() {
+UI.closeAllPanels = function() {
   var tp = document.getElementById('taskPanel');
   var cp = document.getElementById('calendarPanel');
   var up = document.getElementById('usagePanel');
   if (tp) tp.classList.add('hidden');
   if (cp) cp.classList.add('hidden');
   if (up) up.classList.add('hidden');
-}
+};
 
 /** Toggles the task dropdown panel open/closed. */
-function toggleTaskPanel() {
+UI.toggleTaskPanel = function() {
   const tp = document.getElementById('taskPanel');
   const wasOpen = tp && !tp.classList.contains('hidden');
-  closeAllPanels();
+  UI.closeAllPanels();
   if (!wasOpen && tp) tp.classList.remove('hidden');
-}
+};
 
 /** Toggles the calendar dropdown panel open/closed, building the mini-calendar if needed. */
-function toggleCalendarPanel() {
+UI.toggleCalendarPanel = function() {
   const cp = document.getElementById('calendarPanel');
   const wasOpen = cp && !cp.classList.contains('hidden');
-  closeAllPanels();
+  UI.closeAllPanels();
   if (!wasOpen && cp) {
-    buildMiniCalendar();
+    UI.buildMiniCalendar();
     cp.classList.remove('hidden');
   }
-}
+};
 
 /** Toggles the usage/credits dropdown panel open/closed. */
-function toggleUsagePanel() {
+UI.toggleUsagePanel = function() {
   const up = document.getElementById('usagePanel');
   const wasOpen = up && !up.classList.contains('hidden');
-  closeAllPanels();
+  UI.closeAllPanels();
   if (!wasOpen && up) up.classList.remove('hidden');
-}
+};
 
 // Close top-bar dropdowns when clicking outside
 document.addEventListener('click', function(e) {
   if (!e.target.closest('.top-icon-btn') && !e.target.closest('.th-dropdown') && !e.target.closest('.top-profile')) {
-    closeAllPanels();
+    UI.closeAllPanels();
     var pp = document.getElementById('profilePanel');
     if (pp) pp.classList.add('hidden');
   }
 });
 
 /** Toggles the profile dropdown menu open/closed. */
-function toggleProfileMenu() {
+UI.toggleProfileMenu = function() {
   const pp = document.getElementById('profilePanel');
   const wasOpen = pp && !pp.classList.contains('hidden');
-  closeAllPanels();
+  UI.closeAllPanels();
   if (pp) pp.classList.add('hidden');
   if (!wasOpen && pp) pp.classList.remove('hidden');
-}
+};
 
 /** Builds the mini calendar day grid inside the calendar dropdown. */
-function buildMiniCalendar() {
+UI.buildMiniCalendar = function() {
   const grid = document.getElementById('miniCalGrid');
   if (!grid || grid.children.length > 0) return;
   const days = ['','','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'];
@@ -820,7 +831,7 @@ function buildMiniCalendar() {
     div.textContent = d;
     grid.appendChild(div);
   });
-}
+};
 
 // Close panels on outside click
 document.addEventListener('click', function(e) {
@@ -833,14 +844,14 @@ document.addEventListener('click', function(e) {
     if (cp) cp.classList.add('hidden');
   }
   if (!e.target.closest('.sidebar-search')) {
-    closeSearch();
+    Chat.closeSearch();
   }
 });
 
 /** Handles the "+ New" button click, creating a new thread or workflow depending on current mode. */
-function handleNew() {
-  if (currentMode === 'chat') {
-    selectThread('new', null);
+UI.handleNew = function() {
+  if (UI.currentMode === 'chat') {
+    Chat.selectThread('new', null);
     // Deselect all sidebar items
     document.querySelectorAll('.thread-item').forEach(t => t.classList.remove('active'));
     // Focus the input
@@ -849,39 +860,39 @@ function handleNew() {
   } else {
     alert('New workflow creation dialog would open here');
   }
-}
+};
 
 // ============================================
 // COSIMO PANEL
 // ============================================
 /** Opens the Cosimo AI assistant slide-in panel and collapses the sidebar. */
-function openCosimoPanel() {
+UI.openCosimoPanel = function() {
   document.getElementById('actionDropdown').classList.remove('show');
   document.getElementById('cosimoPanel').classList.add('open');
   document.getElementById('panelOverlay').classList.add('show');
   document.getElementById('sidebar').classList.add('collapsed');
   document.getElementById('panelInput').focus();
-}
+};
 
 /** Closes the Cosimo panel and restores the sidebar. */
-function closeCosimoPanel() {
+UI.closeCosimoPanel = function() {
   document.getElementById('cosimoPanel').classList.remove('open');
   document.getElementById('panelOverlay').classList.remove('show');
   document.getElementById('sidebar').classList.remove('collapsed');
-}
+};
 
 /** Handles keydown in the Cosimo panel input; sends on Enter.
  * @param {KeyboardEvent} e - The keydown event
  */
-function handlePanelKey(e) {
+UI.handlePanelKey = function(e) {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
-    sendPanelMessage();
+    UI.sendPanelMessage();
   }
-}
+};
 
 /** Sends a user message in the Cosimo panel and simulates an AI response. */
-function sendPanelMessage() {
+UI.sendPanelMessage = function() {
   const input = document.getElementById('panelInput');
   const html = input.innerHTML.trim();
   if (!html || input.textContent.trim() === '') return;
@@ -929,7 +940,7 @@ function sendPanelMessage() {
     `;
     chat.scrollTop = chat.scrollHeight;
   }, 1800);
-}
+};
 
 // ============================================
 // DROPDOWN
@@ -937,11 +948,11 @@ function sendPanelMessage() {
 /** Toggles the workflow actions dropdown menu.
  * @param {Event} e - The click event (propagation is stopped)
  */
-function toggleDropdown(e) {
+UI.toggleDropdown = function(e) {
   e.stopPropagation();
   const menu = document.getElementById('actionDropdown');
   menu.classList.toggle('show');
-}
+};
 
 document.addEventListener('click', () => {
   document.getElementById('actionDropdown')?.classList.remove('show');
@@ -950,17 +961,17 @@ document.addEventListener('click', () => {
 // ============================================
 // SEARCH STATES (#5)
 // ============================================
-let searchTimer = null;
+Chat.searchTimer = null;
 /** Runs a debounced global search across thread titles and keywords.
  * @param {string} q - The search query string
  * Modifies DOM (search results panel).
  */
-function runGlobalSearch(q) {
+Chat.runGlobalSearch = function(q) {
   const results = document.getElementById('searchResults');
   if (!results) return;
 
   // Clear previous debounce
-  if (searchTimer) clearTimeout(searchTimer);
+  if (Chat.searchTimer) clearTimeout(Chat.searchTimer);
 
   // Empty query — close
   if (!q.trim()) {
@@ -972,7 +983,7 @@ function runGlobalSearch(q) {
   results.innerHTML = '<div class="search-status">Searching...</div>';
 
   // Debounce 200ms then search
-  searchTimer = setTimeout(() => {
+  Chat.searchTimer = setTimeout(() => {
     const ql = q.toLowerCase();
     // Search all threads by keyword using MOCK_THREADS
     const searchable = Object.keys(MOCK_THREADS)
@@ -991,13 +1002,13 @@ function runGlobalSearch(q) {
       results.innerHTML = '<div class="search-no-results">No results for "' + escapeHtml(q) + '"</div>';
     }
   }, 200);
-}
+};
 
 /** Hides the search results dropdown. */
-function closeSearch() {
+Chat.closeSearch = function() {
   const results = document.getElementById('searchResults');
   if (results) results.classList.add('hidden');
-}
+};
 
 // ============================================
 // INPUT DISABLED DURING GENERATION (#6)
@@ -1006,7 +1017,7 @@ function closeSearch() {
  * @param {string} threadId - The thread identifier
  * @param {boolean} disable - Whether to disable (true) or enable (false) the input
  */
-function disableInput(threadId, disable) {
+Chat.disableInput = function(threadId, disable) {
   const thread = document.getElementById('thread-' + threadId);
   if (!thread) return;
   const input = thread.querySelector('.text-input');
@@ -1018,7 +1029,7 @@ function disableInput(threadId, disable) {
     input.classList.remove('disabled');
     input.setAttribute('contenteditable', 'true');
   }
-}
+};
 
 // ============================================
 // FEEDBACK BUTTONS (#9)
@@ -1027,25 +1038,25 @@ function disableInput(threadId, disable) {
  * @param {HTMLElement} btn - The clicked feedback button
  * @param {string} type - Feedback type ('up' | 'down')
  */
-function giveFeedback(btn, type) {
+Chat.giveFeedback = function(btn, type) {
   const container = btn.closest('.msg-feedback');
   container.querySelectorAll('.feedback-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   showToast(type === 'up' ? 'Thanks for the feedback' : 'Feedback noted — we\'ll improve');
-}
+};
 
 // ============================================
 // THREAD SWITCHING
 // ============================================
 
-let activeThread = 'fund3';
+Chat.activeThread = 'fund3';
 
 /** Switches the active chat thread and updates sidebar, header, and file panel state.
  * @param {string} id - Thread identifier (e.g. 'fund3', 'erabor', 'new')
  * @param {HTMLElement|null} el - The sidebar thread-item element, or null
  */
-function selectThread(id, el) {
-  activeThread = id;
+Chat.selectThread = function(id, el) {
+  Chat.activeThread = id;
 
   // Update sidebar
   document.querySelectorAll('.thread-item').forEach(t => t.classList.remove('active'));
@@ -1063,27 +1074,27 @@ function selectThread(id, el) {
   if (title && MOCK_THREADS[id]) title.textContent = MOCK_THREADS[id].title;
 
   // Update Files button state
-  updateFilesButton();
+  Chat.updateFilesButton();
 
   // Close file panel when switching threads
-  closeFilePanel();
+  Chat.closeFilePanel();
 
   // Trigger Erabor animation when that thread is selected
-  if (id === 'erabor') runEraborSequence();
-}
+  if (id === 'erabor') Chat.runEraborSequence();
+};
 
 /** Updates the Files button enabled/disabled state based on the active thread. */
-function updateFilesButton() {
+Chat.updateFilesButton = function() {
   const btn = document.getElementById('filesBtn');
   if (!btn) return;
-  if (MOCK_THREADS[activeThread].hasFiles) {
+  if (MOCK_THREADS[Chat.activeThread].hasFiles) {
     btn.classList.remove('disabled');
     btn.disabled = false;
   } else {
     btn.classList.add('disabled');
     btn.disabled = true;
   }
-}
+};
 
 // ============================================
 // FILE PANEL
@@ -1091,56 +1102,56 @@ function updateFilesButton() {
 /** Opens the right-side file panel to a specific tab.
  * @param {string} [tab='viewer'] - Tab to show ('viewer' | 'folder')
  */
-function openFilePanel(tab) {
-  if (!MOCK_THREADS[activeThread].hasFiles) return;
+Chat.openFilePanel = function(tab) {
+  if (!MOCK_THREADS[Chat.activeThread].hasFiles) return;
   const panel = document.getElementById('filePanel');
   panel.classList.add('open');
   document.getElementById('filePanelResizeHandle').classList.add('visible');
-  switchFilePanelTab(tab || 'viewer');
-  if (tab === 'viewer') buildSpreadsheet();
-}
+  Chat.switchFilePanelTab(tab || 'viewer');
+  if (tab === 'viewer') Chat.buildSpreadsheet();
+};
 
 /** Closes the right-side file panel and resets its width. */
-function closeFilePanel() {
+Chat.closeFilePanel = function() {
   const panel = document.getElementById('filePanel');
   panel.classList.remove('open');
   panel.style.width = '';
   document.getElementById('filePanelResizeHandle').classList.remove('visible');
-}
+};
 
 /** Switches between viewer and folder tabs in the file panel.
  * @param {string} tab - Target tab ('viewer' | 'folder')
  */
-function switchFilePanelTab(tab) {
+Chat.switchFilePanelTab = function(tab) {
   document.querySelectorAll('.file-panel-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.file-panel-view').forEach(v => v.classList.remove('active'));
 
   if (tab === 'viewer') {
     document.getElementById('fpTabViewer').classList.add('active');
     document.getElementById('fpViewer').classList.add('active');
-    buildSpreadsheet();
+    Chat.buildSpreadsheet();
   } else {
     document.getElementById('fpTabFolder').classList.add('active');
     document.getElementById('fpFolder').classList.add('active');
   }
-}
+};
 
 // ============================================
 // INTERACTIVE SPREADSHEET
 // ============================================
-const sheetData = MOCK_SPREADSHEET.rows;
-const colLetters = MOCK_SPREADSHEET.columns;
-let sheetBuilt = false;
+Chat.sheetData = MOCK_SPREADSHEET.rows;
+Chat.colLetters = MOCK_SPREADSHEET.columns;
+Chat.sheetBuilt = false;
 
 /** Builds the interactive spreadsheet table from mock data (runs once). */
-function buildSpreadsheet() {
-  if (sheetBuilt) return;
-  sheetBuilt = true;
+Chat.buildSpreadsheet = function() {
+  if (Chat.sheetBuilt) return;
+  Chat.sheetBuilt = true;
 
   const tbody = document.getElementById('fpSheetBody');
   tbody.innerHTML = '';
 
-  sheetData.forEach((row) => {
+  Chat.sheetData.forEach((row) => {
     const tr = document.createElement('tr');
     // Row number
     const rowTd = document.createElement('td');
@@ -1154,7 +1165,7 @@ function buildSpreadsheet() {
       if (isNum) td.classList.add('fp-cell-number');
 
       const formula = row.formulas && row.formulas[ci];
-      td.dataset.cellRef = colLetters[ci] + row.row;
+      td.dataset.cellRef = Chat.colLetters[ci] + row.row;
       td.dataset.formula = formula || val;
       td.dataset.value = val;
 
@@ -1171,17 +1182,17 @@ function buildSpreadsheet() {
 
     tbody.appendChild(tr);
   });
-}
+};
 
 // ============================================
 // EXPORT & SHARE (#13)
 // ============================================
 /** Exports the active chat thread as a downloadable Markdown file. */
-function exportThread() {
-  const thread = document.getElementById('thread-' + activeThread);
+Chat.exportThread = function() {
+  const thread = document.getElementById('thread-' + Chat.activeThread);
   if (!thread) return;
   const messages = thread.querySelectorAll('.msg-block');
-  let md = '# ' + (MOCK_THREADS[activeThread].title || 'Thread') + '\n\n';
+  let md = '# ' + (MOCK_THREADS[Chat.activeThread].title || 'Thread') + '\n\n';
   messages.forEach(msg => {
     const sender = msg.querySelector('.sender');
     const time = msg.querySelector('.timestamp');
@@ -1195,22 +1206,22 @@ function exportThread() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = (MOCK_THREADS[activeThread].title || 'thread').replace(/[^a-z0-9]/gi, '-').toLowerCase() + '.md';
+  a.download = (MOCK_THREADS[Chat.activeThread].title || 'thread').replace(/[^a-z0-9]/gi, '-').toLowerCase() + '.md';
   a.click();
   URL.revokeObjectURL(url);
   showToast('Exported as Markdown');
-}
+};
 
 /** Copies a shareable URL for the active thread to the clipboard. */
-function shareThread() {
-  const url = window.location.origin + '/thread/' + activeThread;
+Chat.shareThread = function() {
+  const url = window.location.origin + '/thread/' + Chat.activeThread;
   navigator.clipboard.writeText(url).then(() => showToast('Share link copied'));
-}
+};
 
 /** Fills the new-thread input with a suggestion chip's text and focuses it.
  * @param {string} text - The suggestion text to insert
  */
-function fillSuggestion(text) {
+Chat.fillSuggestion = function(text) {
   const input = document.getElementById('new-thread-input');
   if (input) {
     input.textContent = text;
@@ -1223,13 +1234,13 @@ function fillSuggestion(text) {
     sel.removeAllRanges();
     sel.addRange(range);
   }
-}
+};
 
 // ============================================
 // K-1 ERROR RETRY
 // ============================================
 /** Simulates retrying the K-1 document processing after an error. */
-function retryK1() {
+Chat.retryK1 = function() {
   const btn = document.querySelector('.cosimo-error-retry');
   if (!btn || btn.classList.contains('retrying')) return;
   btn.classList.add('retrying');
@@ -1240,59 +1251,59 @@ function retryK1() {
     btn.classList.remove('retrying');
     alert('Retry failed — Ridgeline Capital vault is still unreachable. Contact integrations team or try again later.');
   }, 2500);
-}
+};
 
 // ============================================
 // ERABOR THREAD ANIMATION
 // ============================================
-let eraborPlayed = false;
-let eraborRunning = false;
-let eraborTimers = [];
-let eraborIntervals = [];
-const eraborUserMsg = 'Pull the Erabor partnership agreement and summarize the key economic terms. I need to understand the GP commit, fee structure, clawback provisions, and any side letter concessions before the Thursday call with Marcus. Cross-reference against our standard Fund III terms and flag anything non-standard.';
+Chat.eraborPlayed = false;
+Chat.eraborRunning = false;
+Chat.eraborTimers = [];
+Chat.eraborIntervals = [];
+Chat.eraborUserMsg = 'Pull the Erabor partnership agreement and summarize the key economic terms. I need to understand the GP commit, fee structure, clawback provisions, and any side letter concessions before the Thursday call with Marcus. Cross-reference against our standard Fund III terms and flag anything non-standard.';
 
 /** Checks if the user is scrolled near the bottom of a scrollable element.
  * @param {HTMLElement} el - The scrollable container
  * @returns {boolean} True if within 80px of the bottom
  */
-function isNearBottom(el) {
+Chat.isNearBottom = function(el) {
   return (el.scrollHeight - el.scrollTop - el.clientHeight) < 80;
-}
+};
 
 /** Auto-scrolls to the bottom only if the user is already near the bottom.
  * @param {HTMLElement} el - The scrollable container
  */
-function softScroll(el) {
-  if (isNearBottom(el)) {
+Chat.softScroll = function(el) {
+  if (Chat.isNearBottom(el)) {
     el.scrollTop = el.scrollHeight;
   }
-}
+};
 
 /** Schedules a timeout and tracks it for cancellation during Erabor animation.
  * @param {Function} fn - Callback to execute
  * @param {number} ms - Delay in milliseconds
  * @returns {number} The timeout ID
  */
-function eraborTimer(fn, ms) {
+Chat.eraborTimer = function(fn, ms) {
   const id = setTimeout(fn, ms);
-  eraborTimers.push(id);
+  Chat.eraborTimers.push(id);
   return id;
-}
+};
 
 /** Toggles visibility of the stop/send buttons during Erabor streaming.
  * @param {boolean} show - If true, show stop button and hide send; vice versa
  */
-function showEraborStopBtn(show) {
+Chat.showEraborStopBtn = function(show) {
   const sendBtn = document.getElementById('erabor-send-btn');
   const stopBtn = document.getElementById('erabor-stop-btn');
   if (sendBtn) sendBtn.classList.toggle('hidden', show);
   if (stopBtn) stopBtn.classList.toggle('hidden', !show);
-}
+};
 
 /** Runs the Erabor thread demo animation: thinking, reasoning steps, then streamed reply. */
-function runEraborSequence() {
-  if (eraborPlayed || eraborRunning) return;
-  eraborRunning = true;
+Chat.runEraborSequence = function() {
+  if (Chat.eraborPlayed || Chat.eraborRunning) return;
+  Chat.eraborRunning = true;
 
   const thinking = document.getElementById('erabor-thinking');
   const reasoning = document.getElementById('erabor-reasoning');
@@ -1302,70 +1313,70 @@ function runEraborSequence() {
   const thinkingCubes = thinking.querySelector('.cosimo-thinking');
 
   // Show stop button, hide send, disable input
-  showEraborStopBtn(true);
-  disableInput('erabor', true);
+  Chat.showEraborStopBtn(true);
+  Chat.disableInput('erabor', true);
 
   // State 1: Thinking cubes for 2s
-  eraborTimer(() => {
+  Chat.eraborTimer(() => {
     thinkingCubes.classList.add('fading');
 
-    eraborTimer(() => {
+    Chat.eraborTimer(() => {
       thinking.classList.add('hidden');
       reasoning.classList.remove('hidden');
 
       // State 2: Reveal reasoning steps one by one
       steps.forEach((step, i) => {
-        eraborTimer(() => {
+        Chat.eraborTimer(() => {
           step.classList.add('visible');
-          softScroll(scroll);
+          Chat.softScroll(scroll);
         }, i * 550);
       });
 
       // Collapse reasoning and start streaming
       const totalStepTime = steps.length * 550 + 1000;
-      eraborTimer(() => {
+      Chat.eraborTimer(() => {
         reasoning.classList.add('hidden');
         document.getElementById('erabor-latency').classList.remove('hidden');
 
-        eraborTimer(() => {
+        Chat.eraborTimer(() => {
           reply.classList.remove('hidden');
-          streamReply(scroll);
+          Chat.streamReply(scroll);
         }, 500);
       }, totalStepTime);
 
     }, 500);
   }, 2000);
-}
+};
 
 /** Marks the Erabor animation as complete and re-enables the input. */
-function markEraborDone() {
-  eraborRunning = false;
-  eraborPlayed = true;
-  showEraborStopBtn(false);
-  disableInput('erabor', false);
-}
+Chat.markEraborDone = function() {
+  Chat.eraborRunning = false;
+  Chat.eraborPlayed = true;
+  Chat.showEraborStopBtn(false);
+  Chat.disableInput('erabor', false);
+};
 
 /** Cancels the Erabor animation, kills timers, hides response, and restores input. */
-function cancelErabor() {
+Chat.cancelErabor = function() {
   // Kill all pending timers/intervals
-  eraborTimers.forEach(id => clearTimeout(id));
-  eraborIntervals.forEach(id => clearInterval(id));
-  eraborTimers = [];
-  eraborIntervals = [];
-  eraborRunning = false;
+  Chat.eraborTimers.forEach(id => clearTimeout(id));
+  Chat.eraborIntervals.forEach(id => clearInterval(id));
+  Chat.eraborTimers = [];
+  Chat.eraborIntervals = [];
+  Chat.eraborRunning = false;
 
   // Hide the entire Cosimo response block
   const response = document.getElementById('erabor-response');
   if (response) response.classList.add('hidden');
 
   // Swap stop → send, re-enable input
-  showEraborStopBtn(false);
-  disableInput('erabor', false);
+  Chat.showEraborStopBtn(false);
+  Chat.disableInput('erabor', false);
 
   // Put user's message back in the input for editing
   const input = document.getElementById('erabor-input');
   if (input) {
-    input.textContent = eraborUserMsg;
+    input.textContent = Chat.eraborUserMsg;
     input.focus();
     // Place cursor at end
     const sel = window.getSelection();
@@ -1375,7 +1386,7 @@ function cancelErabor() {
     sel.removeAllRanges();
     sel.addRange(range);
   }
-}
+};
 
 // ============================================
 // CHARACTER-BY-CHARACTER STREAMING
@@ -1383,7 +1394,7 @@ function cancelErabor() {
 /** Orchestrates character-by-character streaming of the Erabor AI reply.
  * @param {HTMLElement} scroll - The scrollable container for auto-scroll
  */
-function streamReply(scroll) {
+Chat.streamReply = function(scroll) {
   const blocks = document.querySelectorAll('#erabor-reply .erabor-stream-block');
 
   // Pre-process: capture each block's original HTML, then hide content
@@ -1418,22 +1429,22 @@ function streamReply(scroll) {
   function processNextBlock() {
     if (blockIdx >= blockData.length) {
       cursor.remove();
-      markEraborDone();
+      Chat.markEraborDone();
       return;
     }
 
     const bd = blockData[blockIdx];
     bd.el.style.display = '';
     bd.el.classList.add('streamed');
-    softScroll(scroll);
+    Chat.softScroll(scroll);
 
     if (bd.type === 'text') {
-      typeTextBlock(bd, cursor, scroll, () => {
+      Chat.typeTextBlock(bd, cursor, scroll, () => {
         blockIdx++;
         processNextBlock();
       });
     } else {
-      streamSectionBlock(bd, cursor, scroll, () => {
+      Chat.streamSectionBlock(bd, cursor, scroll, () => {
         blockIdx++;
         processNextBlock();
       });
@@ -1441,7 +1452,7 @@ function streamReply(scroll) {
   }
 
   processNextBlock();
-}
+};
 
 /** Types out a text block's paragraphs character-by-character with a blinking cursor.
  * @param {Object} bd - Block data with paragraphs array
@@ -1449,7 +1460,7 @@ function streamReply(scroll) {
  * @param {HTMLElement} scroll - The scrollable container
  * @param {Function} onDone - Callback when typing is complete
  */
-function typeTextBlock(bd, cursor, scroll, onDone) {
+Chat.typeTextBlock = function(bd, cursor, scroll, onDone) {
   let pIdx = 0;
 
   function typeNextParagraph() {
@@ -1463,7 +1474,7 @@ function typeTextBlock(bd, cursor, scroll, onDone) {
 
     // Parse out text and HTML tags so we can type text chars
     // but insert tags instantly
-    const tokens = tokenizeHTML(fullHTML);
+    const tokens = Chat.tokenizeHTML(fullHTML);
     let tokenIdx = 0;
     let builtHTML = '';
 
@@ -1491,20 +1502,20 @@ function typeTextBlock(bd, cursor, scroll, onDone) {
 
       pInfo.el.innerHTML = builtHTML;
       pInfo.el.appendChild(cursor);
-      softScroll(scroll);
+      Chat.softScroll(scroll);
 
       if (tokenIdx >= tokens.length) {
         clearInterval(timer);
         cursor.remove();
         pIdx++;
-        eraborTimer(typeNextParagraph, 120);
+        Chat.eraborTimer(typeNextParagraph, 120);
       }
     }, tickInterval);
-    eraborIntervals.push(timer);
+    Chat.eraborIntervals.push(timer);
   }
 
   typeNextParagraph();
-}
+};
 
 /** Streams a structured section block by revealing rows one at a time.
  * @param {Object} bd - Block data with section and rows
@@ -1512,10 +1523,10 @@ function typeTextBlock(bd, cursor, scroll, onDone) {
  * @param {HTMLElement} scroll - The scrollable container
  * @param {Function} onDone - Callback when streaming is complete
  */
-function streamSectionBlock(bd, cursor, scroll, onDone) {
+Chat.streamSectionBlock = function(bd, cursor, scroll, onDone) {
   // Section title appears instantly, then rows stream in one at a time
   bd.section.querySelector('.erabor-section-title').appendChild(cursor);
-  softScroll(scroll);
+  Chat.softScroll(scroll);
 
   let rowIdx = 0;
 
@@ -1533,20 +1544,20 @@ function streamSectionBlock(bd, cursor, scroll, onDone) {
 
     // Move cursor after the row
     row.appendChild(cursor);
-    softScroll(scroll);
+    Chat.softScroll(scroll);
 
     rowIdx++;
-    eraborTimer(showNextRow, 180);
+    Chat.eraborTimer(showNextRow, 180);
   }
 
-  eraborTimer(showNextRow, 200);
-}
+  Chat.eraborTimer(showNextRow, 200);
+};
 
 /** Breaks an HTML string into tokens for character-by-character streaming.
  * @param {string} html - The HTML string to tokenize
  * @returns {Array<{type: string, value: string}>} Array of {type: 'tag'|'char', value} tokens
  */
-function tokenizeHTML(html) {
+Chat.tokenizeHTML = function(html) {
   const tokens = [];
   let i = 0;
   while (i < html.length) {
@@ -1576,7 +1587,7 @@ function tokenizeHTML(html) {
     }
   }
   return tokens;
-}
+};
 
 // ============================================
 // ATTACH FILE ACTIONS
@@ -1584,7 +1595,7 @@ function tokenizeHTML(html) {
 /** Opens a native file picker to attach files from the user's computer.
  * @param {HTMLElement} btn - The attach option button
  */
-function attachFromComputer(btn) {
+Chat.attachFromComputer = function(btn) {
   const input = document.createElement('input');
   input.type = 'file';
   input.multiple = true;
@@ -1595,14 +1606,14 @@ function attachFromComputer(btn) {
     }
   };
   input.click();
-}
+};
 
 /** Simulates opening a cloud drive file picker.
  * @param {HTMLElement} btn - The attach option button
  */
-function attachFromDrive(btn) {
+Chat.attachFromDrive = function(btn) {
   showToast('Cloud drive picker opening\u2026');
-}
+};
 
 // ============================================
 // MODEL SELECTOR
@@ -1610,7 +1621,7 @@ function attachFromDrive(btn) {
 /** Toggles the AI model selector dropdown with viewport-aware positioning.
  * @param {HTMLElement} btn - The model selector button
  */
-function toggleModelDropdown(btn) {
+Chat.toggleModelDropdown = function(btn) {
   const selector = btn.closest('.model-selector');
   const wasOpen = selector.classList.contains('open');
   // Close all open dropdowns first
@@ -1642,12 +1653,12 @@ function toggleModelDropdown(btn) {
     dropdown.style.left = left + 'px';
     dropdown.style.bottom = 'auto';
   }
-}
+};
 
 /** Selects an AI model from the dropdown and updates the button label.
  * @param {HTMLElement} option - The clicked model option element
  */
-function selectModel(option) {
+Chat.selectModel = function(option) {
   const selector = option.closest('.model-selector');
   const label = selector.querySelector('.model-selector-label');
   const model = option.dataset.model;
@@ -1664,7 +1675,7 @@ function selectModel(option) {
   selector.classList.remove('open');
 
   showToast('Switched to ' + name);
-}
+};
 
 // Close model dropdown when clicking outside
 document.addEventListener('click', function(e) {
@@ -1680,7 +1691,7 @@ document.addEventListener('click', function(e) {
  * @param {string} id - Workflow identifier
  * @param {HTMLElement} [el] - The clicked element (card or sidebar item)
  */
-function showWorkflowDetail(id, el) {
+Workflows.showWorkflowDetail = function(id, el) {
   const data = MOCK_WORKFLOWS[id];
   if (!data) return;
 
@@ -1692,7 +1703,7 @@ function showWorkflowDetail(id, el) {
   detail.classList.remove('hidden');
 
   // Reset to overview tab
-  switchTab('overview', document.querySelector('.tab-btn'));
+  Workflows.switchTab('overview', document.querySelector('.tab-btn'));
 
   // Update sidebar active — match by data-wf-id attribute
   document.querySelectorAll('.wf-side-item').forEach(item => item.classList.remove('active'));
@@ -1706,15 +1717,15 @@ function showWorkflowDetail(id, el) {
     document.querySelectorAll('.wf-side-item').forEach(item => item.classList.remove('active'));
     sideTarget.classList.add('active');
   }
-}
+};
 
 /** Returns to the workflow listing view from the detail view. */
-function showWorkflowListing() {
+Workflows.showWorkflowListing = function() {
   document.getElementById('wfListing').classList.remove('hidden');
   document.getElementById('wfDetail').classList.add('hidden');
   document.querySelectorAll('.wf-side-item').forEach(item => item.classList.remove('active'));
-  closeCosimoPanel();
-}
+  UI.closeCosimoPanel();
+};
 
 // ============================================
 // TABS
@@ -1723,13 +1734,13 @@ function showWorkflowListing() {
  * @param {string} tabId - Tab identifier ('overview' | 'steps' | 'runs' | 'outputs')
  * @param {HTMLElement} btn - The tab button element to mark active
  */
-function switchTab(tabId, btn) {
+Workflows.switchTab = function(tabId, btn) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
 
   btn.classList.add('active');
   document.getElementById('tab-' + tabId).classList.add('active');
-}
+};
 
 // ============================================
 // BRAIN — MEMORY SECTION
@@ -1738,7 +1749,7 @@ function switchTab(tabId, btn) {
 var activeCategory = 'all';
 
 /** Renders the Brain Memory section (role profile, traits, fact cards) from mock data. */
-function renderMemoryFromData() {
+BrainMemory.renderMemoryFromData = function() {
   // Render role profile
   var roleField = document.getElementById('roleField');
   if (roleField) roleField.textContent = MOCK_MEMORY.roleProfile;
@@ -1783,13 +1794,13 @@ function renderMemoryFromData() {
       '</div>';
     }).join('');
   }
-}
+};
 
 // Render memory data on load
-(function() { renderMemoryFromData(); })();
+(function() { BrainMemory.renderMemoryFromData(); })();
 
 /** Toggles the add-memory form visibility and focuses the input. */
-function toggleAddMemory() {
+BrainMemory.toggleAddMemory = function() {
   var form = document.getElementById('memAddForm');
   if (form.classList.contains('hidden')) {
     form.classList.remove('hidden');
@@ -1797,16 +1808,16 @@ function toggleAddMemory() {
   } else {
     form.classList.add('hidden');
   }
-}
+};
 
 /** Hides the add-memory form and clears the input. */
-function cancelAddMemory() {
+BrainMemory.cancelAddMemory = function() {
   document.getElementById('memAddForm').classList.add('hidden');
   document.getElementById('memAddInput').value = '';
-}
+};
 
 /** Creates a new memory fact card from the add-memory form and prepends it to the list. */
-function submitNewMemory() {
+BrainMemory.submitNewMemory = function() {
   var input = document.getElementById('memAddInput');
   var text = input.value.trim();
   if (!text) return;
@@ -1841,10 +1852,10 @@ function submitNewMemory() {
   input.value = '';
   document.getElementById('memAddForm').classList.add('hidden');
   showToast('Memory saved');
-}
+};
 
 /** Filters memory fact cards by search query and active category. */
-function filterMemories() {
+BrainMemory.filterMemories = function() {
   var query = document.getElementById('memSearchInput').value.toLowerCase();
   var cards = document.querySelectorAll('.mem-fact-card');
   var visibleCount = 0;
@@ -1864,36 +1875,36 @@ function filterMemories() {
   });
 
   document.getElementById('memNoResults').classList.toggle('hidden', visibleCount > 0);
-}
+};
 
 /** Sets the active memory category filter and re-filters the list.
  * @param {string} cat - Category name ('all' | 'preference' | 'workflow' | etc.)
  * @param {HTMLElement} el - The clicked category pill element
  */
-function filterByCategory(cat, el) {
+BrainMemory.filterByCategory = function(cat, el) {
   activeCategory = cat;
 
   document.querySelectorAll('.mem-cat-pill').forEach(function(p) { p.classList.remove('active'); });
   el.classList.add('active');
 
-  filterMemories();
-}
+  BrainMemory.filterMemories();
+};
 
 /** Toggles the edit/delete context menu on a memory fact card.
  * @param {HTMLElement} btn - The menu trigger button
  */
-function toggleFactMenu(btn) {
+BrainMemory.toggleFactMenu = function(btn) {
   // Close all other menus first
   document.querySelectorAll('.mem-fact-menu.open').forEach(function(m) { m.classList.remove('open'); });
 
   var menu = btn.nextElementSibling;
   menu.classList.toggle('open');
-}
+};
 
 /** Makes a memory fact card's text editable inline; saves on blur or Enter.
  * @param {HTMLElement} btn - The edit button inside the fact menu
  */
-function editFact(btn) {
+BrainMemory.editFact = function(btn) {
   var card = btn.closest('.mem-fact-card');
   var textEl = card.querySelector('.mem-fact-text');
   var menu = btn.closest('.mem-fact-menu');
@@ -1932,12 +1943,12 @@ function editFact(btn) {
 
   textEl.addEventListener('blur', saveEdit);
   textEl.addEventListener('keydown', handleKey);
-}
+};
 
 /** Shows a delete confirmation prompt on a memory fact card.
  * @param {HTMLElement} btn - The delete button inside the fact menu
  */
-function deleteFact(btn) {
+BrainMemory.deleteFact = function(btn) {
   var card = btn.closest('.mem-fact-card');
   var menu = btn.closest('.mem-fact-menu');
   menu.classList.remove('open');
@@ -1953,12 +1964,12 @@ function deleteFact(btn) {
     '<button class="mem-delete-no">No</button>';
 
   card.appendChild(confirm);
-}
+};
 
 /** Confirms deletion and removes a memory fact card with animation.
  * @param {HTMLElement} btn - The "Yes" confirmation button
  */
-function confirmDelete(btn) {
+BrainMemory.confirmDelete = function(btn) {
   var card = btn.closest('.mem-fact-card');
   card.style.transition = 'opacity 0.2s, max-height 0.2s';
   card.style.opacity = '0';
@@ -1973,24 +1984,24 @@ function confirmDelete(btn) {
 
   setTimeout(function() {
     card.remove();
-    filterMemories(); // Update no-results state
+    BrainMemory.filterMemories(); // Update no-results state
     showToast('Memory deleted');
   }, 300);
-}
+};
 
 /** Cancels a pending memory fact deletion and removes the confirmation prompt.
  * @param {HTMLElement} btn - The "No" cancellation button
  */
-function cancelDelete(btn) {
+BrainMemory.cancelDelete = function(btn) {
   var confirm = btn.closest('.mem-delete-confirm');
   confirm.remove();
-}
+};
 
 // Personality trait functions
 /** Adds a preset personality trait to the selected list.
  * @param {HTMLElement} el - The preset trait tag element
  */
-function toggleTrait(el) {
+BrainMemory.toggleTrait = function(el) {
   if (el.classList.contains('disabled')) return;
 
   var traitName = el.textContent.trim();
@@ -1999,7 +2010,7 @@ function toggleTrait(el) {
   var selected = document.getElementById('traitSelected');
   var tag = document.createElement('span');
   tag.className = 'mem-trait-tag active';
-  tag.onclick = function() { removeTrait(tag); };
+  tag.onclick = function() { BrainMemory.removeTrait(tag); };
   tag.innerHTML = escapeHtml(traitName) + ' <span class="trait-x">&times;</span>';
   selected.appendChild(tag);
 
@@ -2007,12 +2018,12 @@ function toggleTrait(el) {
   el.classList.add('disabled');
 
   showToast(traitName + ' added');
-}
+};
 
 /** Removes a selected personality trait and re-enables it in presets.
  * @param {HTMLElement} el - The selected trait tag element to remove
  */
-function removeTrait(el) {
+BrainMemory.removeTrait = function(el) {
   var traitName = el.textContent.replace('\u00d7', '').trim();
 
   // Re-enable in presets
@@ -2025,10 +2036,10 @@ function removeTrait(el) {
 
   el.remove();
   showToast(traitName + ' removed');
-}
+};
 
 /** Adds a custom personality trait from the text input to the selected list. */
-function addCustomTrait() {
+BrainMemory.addCustomTrait = function() {
   var input = document.getElementById('traitInput');
   var text = input.value.trim();
   if (!text) return;
@@ -2036,13 +2047,13 @@ function addCustomTrait() {
   var selected = document.getElementById('traitSelected');
   var tag = document.createElement('span');
   tag.className = 'mem-trait-tag active';
-  tag.onclick = function() { removeTrait(tag); };
+  tag.onclick = function() { BrainMemory.removeTrait(tag); };
   tag.innerHTML = escapeHtml(text) + ' <span class="trait-x">&times;</span>';
   selected.appendChild(tag);
 
   input.value = '';
   showToast(text + ' added');
-}
+};
 
 // Close fact menus when clicking outside
 document.addEventListener('click', function(e) {
@@ -2061,7 +2072,7 @@ var lessonIsEditing = false;
 var lessonData = MOCK_LESSONS;
 
 /** Renders the lesson card list from mock data into the lessons list view. */
-function renderLessonList() {
+BrainLessons.renderLessonList = function() {
   var list = document.getElementById('lessonList');
   if (!list) return;
   var scopeArrowSvg = ICONS.arrowRight;
@@ -2085,15 +2096,15 @@ function renderLessonList() {
       '</div>' +
     '</div>';
   }).join('');
-}
+};
 
 // Render lesson list on load
-(function() { renderLessonList(); })();
+(function() { BrainLessons.renderLessonList(); })();
 
-var currentLessonId = null;
+BrainLessons.currentLessonId = null;
 
 /** Filters lesson cards by search query and active scope filter. */
-function filterLessons() {
+BrainLessons.filterLessons = function() {
   var query = document.getElementById('lessonSearchInput').value.toLowerCase();
   var cards = document.querySelectorAll('.lesson-card');
   var visibleCount = 0;
@@ -2114,24 +2125,24 @@ function filterLessons() {
   });
 
   document.getElementById('lessonNoResults').classList.toggle('hidden', visibleCount > 0);
-}
+};
 
 /** Sets the active lesson scope filter and re-filters the list.
  * @param {string} scope - Scope value ('all' | 'user' | 'company')
  * @param {HTMLElement} el - The clicked scope pill element
  */
-function filterLessonScope(scope, el) {
+BrainLessons.filterLessonScope = function(scope, el) {
   activeLessonScope = scope;
   document.querySelectorAll('#lessonScopeFilters .mem-cat-pill').forEach(function(p) { p.classList.remove('active'); });
   el.classList.add('active');
-  filterLessons();
-}
+  BrainLessons.filterLessons();
+};
 
 /** Opens the detail view for a specific lesson.
  * @param {string} id - Lesson identifier key in lessonData
  */
-function openLesson(id) {
-  currentLessonId = id;
+BrainLessons.openLesson = function(id) {
+  BrainLessons.currentLessonId = id;
   var data = lessonData[id];
   if (!data) return;
 
@@ -2157,10 +2168,10 @@ function openLesson(id) {
   editBtn.title = 'Edit Directly';
   editBtn.classList.remove('primary');
   document.getElementById('lessonDetailBody').removeAttribute('contenteditable');
-}
+};
 
 /** Closes the lesson detail view and returns to the lesson list. */
-function closeLessonDetail() {
+BrainLessons.closeLessonDetail = function() {
   document.getElementById('lessonDetailView').classList.add('hidden');
   document.getElementById('lessonsListView').classList.remove('hidden');
 
@@ -2170,11 +2181,11 @@ function closeLessonDetail() {
     document.getElementById('lessonDetailBody').removeAttribute('contenteditable');
   }
 
-  currentLessonId = null;
-}
+  BrainLessons.currentLessonId = null;
+};
 
 /** Toggles inline editing mode for the current lesson's body text. */
-function toggleLessonEdit() {
+BrainLessons.toggleLessonEdit = function() {
   var body = document.getElementById('lessonDetailBody');
   var editBtn = document.getElementById('lessonEditBtn');
 
@@ -2194,12 +2205,12 @@ function toggleLessonEdit() {
     editBtn.classList.remove('primary');
     showToast('Lesson saved');
   }
-}
+};
 
 /** Opens the Cosimo panel pre-loaded with context for editing the current lesson. */
-function openCosimoForLesson() {
+BrainLessons.openCosimoForLesson = function() {
   // Update Cosimo panel context for this lesson
-  var data = lessonData[currentLessonId];
+  var data = lessonData[BrainLessons.currentLessonId];
   var panelName = document.querySelector('.cosimo-panel-name');
   panelName.textContent = 'Edit: ' + (data ? data.title : 'Lesson');
 
@@ -2218,12 +2229,12 @@ function openCosimoForLesson() {
       '<strong>"Rewrite the overview section to be more concise"</strong>' +
     '</div>';
 
-  openCosimoPanel();
-}
+  UI.openCosimoPanel();
+};
 
 /** Toggles the current lesson's scope between 'company' and 'user' (personal). */
-function toggleLessonScope() {
-  var data = lessonData[currentLessonId];
+BrainLessons.toggleLessonScope = function() {
+  var data = lessonData[BrainLessons.currentLessonId];
   if (!data) return;
 
   data.scope = data.scope === 'company' ? 'user' : 'company';
@@ -2235,7 +2246,7 @@ function toggleLessonScope() {
   document.getElementById('lessonScopeToggleText').textContent = data.scope === 'company' ? 'Change to Personal' : 'Promote to Company';
 
   // Update the card in list view too
-  var card = document.querySelector('.lesson-card[data-lesson="' + currentLessonId + '"]');
+  var card = document.querySelector('.lesson-card[data-lesson="' + BrainLessons.currentLessonId + '"]');
   if (card) {
     card.setAttribute('data-scope', data.scope);
     var cardBadge = card.querySelector('.lesson-scope-badge');
@@ -2244,16 +2255,16 @@ function toggleLessonScope() {
   }
 
   showToast('Scope changed to ' + (data.scope === 'company' ? 'Company' : 'Personal'));
-}
+};
 
 /** Deletes the current lesson and removes its card from the list with animation. */
-function deleteLesson() {
-  if (!currentLessonId) return;
+BrainLessons.deleteLesson = function() {
+  if (!BrainLessons.currentLessonId) return;
 
-  var card = document.querySelector('.lesson-card[data-lesson="' + currentLessonId + '"]');
+  var card = document.querySelector('.lesson-card[data-lesson="' + BrainLessons.currentLessonId + '"]');
 
   // Close detail view first
-  closeLessonDetail();
+  BrainLessons.closeLessonDetail();
 
   // Remove card with animation
   if (card) {
@@ -2269,15 +2280,15 @@ function deleteLesson() {
 
     setTimeout(function() {
       card.remove();
-      filterLessons();
+      BrainLessons.filterLessons();
     }, 300);
   }
 
   showToast('Lesson deleted');
-}
+};
 
 /** Opens the Cosimo panel with a prompt to create a new lesson. */
-function createNewLesson() {
+BrainLessons.createNewLesson = function() {
   var panelName = document.querySelector('.cosimo-panel-name');
   panelName.textContent = 'Create New Lesson';
 
@@ -2296,14 +2307,14 @@ function createNewLesson() {
       '<strong>"How to reconcile Yardi exports with GL"</strong>' +
     '</div>';
 
-  openCosimoPanel();
-}
+  UI.openCosimoPanel();
+};
 
 /** Toggles a lesson card's scope directly from the list view.
  * @param {HTMLElement} btn - The scope toggle button on the card
  * @param {Event} e - The click event (propagation is stopped)
  */
-function toggleCardScope(btn, e) {
+BrainLessons.toggleCardScope = function(btn, e) {
   e.stopPropagation(); // Don't open the lesson detail
 
   var card = btn.closest('.lesson-card');
@@ -2321,20 +2332,20 @@ function toggleCardScope(btn, e) {
   showToast('Scope changed to ' + (data.scope === 'company' ? 'Company' : 'Personal'));
 
   // Re-apply filters in case scope filter is active
-  filterLessons();
-}
+  BrainLessons.filterLessons();
+};
 
 // ============================================
 // BRAIN — DATA GRAPHS
 // ============================================
 
-var graphState = {
+Graph.graphState = {
   level: 'root',        // 'root', 'cluster', 'entity'
   currentCategory: null,
   currentEntity: null
 };
 
-var graphColors = {
+Graph.graphColors = {
   funds:     { core: '#9b6bc2', mid: '#74418F', dim: '#4D2B5F', glow: 'rgba(155,107,194,0.5)' },
   contacts:  { core: '#c278c4', mid: '#8B4F8D', dim: '#5D355E', glow: 'rgba(194,120,196,0.5)' },
   documents: { core: '#7bb8d9', mid: '#5a9fc2', dim: '#3a7a9e', glow: 'rgba(123,184,217,0.5)' },
@@ -2349,7 +2360,7 @@ var graphColors = {
  * @param {string} entityId - The entity identifier
  * @returns {{node: Object, category: string}|null} The entity node and its category, or null
  */
-function findEntity(entityId) {
+Graph.findEntity = function(entityId) {
   for (var cat in MOCK_GRAPH_DATA.nodes) {
     var nodes = MOCK_GRAPH_DATA.nodes[cat];
     for (var i = 0; i < nodes.length; i++) {
@@ -2357,7 +2368,7 @@ function findEntity(entityId) {
     }
   }
   return null;
-}
+};
 
 // SVG namespace
 var SVG_NS = 'http://www.w3.org/2000/svg';
@@ -2365,39 +2376,39 @@ var SVG_NS = 'http://www.w3.org/2000/svg';
 // ---- PERSISTENT SVG GRAPH ENGINE ----
 // All nodes are rendered once. Navigation = animating transforms/opacity.
 
-var graphBuilt = false;
-var graphW = 0, graphH = 0, graphCX = 0, graphCY = 0;
-var graphNodeEls = {};   // id -> { g, homeX, homeY, homeR }
-var graphEdgeEls = [];
-var driftRAF = null;
-var driftItems = [];
-var ANIM = 500; // ms for transitions
+Graph.graphBuilt = false;
+Graph.graphW = 0; Graph.graphH = 0; Graph.graphCX = 0; Graph.graphCY = 0;
+Graph.graphNodeEls = {};   // id -> { g, homeX, homeY, homeR }
+Graph.graphEdgeEls = [];
+Graph.driftRAF = null;
+Graph.driftItems = [];
+Graph.ANIM = 500; // ms for transitions
 
 /** Builds the full SVG data graph with nodes, edges, gradients, and filters. */
-function buildGraph() {
+Graph.buildGraph = function() {
   var container = document.getElementById('graphContainer');
   var svg = document.getElementById('graphSvg');
-  graphW = container.offsetWidth;
-  graphH = container.offsetHeight;
+  Graph.graphW = container.offsetWidth;
+  Graph.graphH = container.offsetHeight;
 
-  if (graphW < 10 || graphH < 10) {
-    setTimeout(buildGraph, 100);
+  if (Graph.graphW < 10 || Graph.graphH < 10) {
+    setTimeout(Graph.buildGraph, 100);
     return;
   }
 
-  graphCX = graphW / 2;
-  graphCY = graphH / 2;
-  svg.setAttribute('viewBox', '0 0 ' + graphW + ' ' + graphH);
+  Graph.graphCX = Graph.graphW / 2;
+  Graph.graphCY = Graph.graphH / 2;
+  svg.setAttribute('viewBox', '0 0 ' + Graph.graphW + ' ' + Graph.graphH);
 
   // Clear
   svg.innerHTML = '';
-  graphNodeEls = {};
-  graphEdgeEls = [];
+  Graph.graphNodeEls = {};
+  Graph.graphEdgeEls = [];
 
   // --- Defs ---
   var defs = document.createElementNS(SVG_NS, 'defs');
-  for (var cid in graphColors) {
-    var gc = graphColors[cid];
+  for (var cid in Graph.graphColors) {
+    var gc = Graph.graphColors[cid];
     // Glow filter
     var f = document.createElementNS(SVG_NS, 'filter');
     f.setAttribute('id', 'glow-' + cid);
@@ -2434,11 +2445,11 @@ function buildGraph() {
 
   // --- Background click layer ---
   var bgRect = document.createElementNS(SVG_NS, 'rect');
-  bgRect.setAttribute('width', graphW); bgRect.setAttribute('height', graphH);
+  bgRect.setAttribute('width', Graph.graphW); bgRect.setAttribute('height', Graph.graphH);
   bgRect.setAttribute('fill', 'transparent');
   bgRect.style.cursor = 'default';
   bgRect.addEventListener('click', function() {
-    if (graphState.level === 'cluster') graphNavigate('root');
+    if (Graph.graphState.level === 'cluster') Graph.graphNavigate('root');
   });
   svg.appendChild(bgRect);
 
@@ -2450,23 +2461,23 @@ function buildGraph() {
   // --- Tether line (YOU → active category, shown in cluster view) ---
   var tether = document.createElementNS(SVG_NS, 'line');
   tether.setAttribute('id', 'graphTether');
-  tether.setAttribute('x1', graphCX); tether.setAttribute('y1', graphCY);
-  tether.setAttribute('x2', graphCX); tether.setAttribute('y2', graphCY);
+  tether.setAttribute('x1', Graph.graphCX); tether.setAttribute('y1', Graph.graphCY);
+  tether.setAttribute('x2', Graph.graphCX); tether.setAttribute('y2', Graph.graphCY);
   tether.setAttribute('stroke', 'rgba(180,120,216,0.5)');
   tether.setAttribute('stroke-width', '1.5');
   tether.setAttribute('stroke-dasharray', '6,4');
   tether.style.opacity = '0';
-  tether.style.transition = 'opacity ' + ANIM + 'ms ease';
+  tether.style.transition = 'opacity ' + Graph.ANIM + 'ms ease';
   edgesG.appendChild(tether);
 
   // --- Orbital rings ---
   var orbitG = document.createElementNS(SVG_NS, 'g');
   orbitG.setAttribute('id', 'graphOrbits');
   var cats = MOCK_GRAPH_DATA.categories;
-  var rootRadius = Math.min(graphCX, graphCY) * 0.52;
+  var rootRadius = Math.min(Graph.graphCX, Graph.graphCY) * 0.52;
 
   var orbit = document.createElementNS(SVG_NS, 'circle');
-  orbit.setAttribute('cx', graphCX); orbit.setAttribute('cy', graphCY);
+  orbit.setAttribute('cx', Graph.graphCX); orbit.setAttribute('cy', Graph.graphCY);
   orbit.setAttribute('r', rootRadius); orbit.setAttribute('fill', 'none');
   orbit.setAttribute('stroke', 'rgba(255,255,255,0.04)'); orbit.setAttribute('stroke-width', '1');
   orbit.setAttribute('stroke-dasharray', '4,8');
@@ -2478,15 +2489,15 @@ function buildGraph() {
   for (var i = 0; i < cats.length; i++) {
     var angle = (i / cats.length) * Math.PI * 2 - Math.PI / 2;
     catPositions[cats[i].id] = {
-      x: graphCX + Math.cos(angle) * rootRadius,
-      y: graphCY + Math.sin(angle) * rootRadius
+      x: Graph.graphCX + Math.cos(angle) * rootRadius,
+      y: Graph.graphCY + Math.sin(angle) * rootRadius
     };
 
-    var edge = makeEdge(graphCX, graphCY, catPositions[cats[i].id].x, catPositions[cats[i].id].y, graphColors[cats[i].id].core, 0.2);
+    var edge = Graph.makeEdge(Graph.graphCX, Graph.graphCY, catPositions[cats[i].id].x, catPositions[cats[i].id].y, Graph.graphColors[cats[i].id].core, 0.2);
     edge.dataset.type = 'root-edge';
     edge.dataset.cat = cats[i].id;
     edgesG.appendChild(edge);
-    graphEdgeEls.push(edge);
+    Graph.graphEdgeEls.push(edge);
   }
 
   // Cross-connections
@@ -2494,10 +2505,10 @@ function buildGraph() {
   for (var c = 0; c < crossLinks.length; c++) {
     var aId = cats[crossLinks[c][0]].id, bId = cats[crossLinks[c][1]].id;
     var a = catPositions[aId], b = catPositions[bId];
-    var xedge = makeEdge(a.x, a.y, b.x, b.y, 'rgba(255,255,255,0.06)', 0.06);
+    var xedge = Graph.makeEdge(a.x, a.y, b.x, b.y, 'rgba(255,255,255,0.06)', 0.06);
     xedge.dataset.type = 'cross-edge';
     edgesG.appendChild(xedge);
-    graphEdgeEls.push(xedge);
+    Graph.graphEdgeEls.push(xedge);
   }
 
   // --- Nodes layer ---
@@ -2506,10 +2517,10 @@ function buildGraph() {
   svg.appendChild(nodesG);
 
   // --- Center YOU node ---
-  var youNode = makeNode('you', 'YOU', '', graphCX, graphCY, 28, 'you', true);
-  youNode.g.addEventListener('click', function() { graphNavigate('root'); });
+  var youNode = Graph.makeNode('you', 'YOU', '', Graph.graphCX, Graph.graphCY, 28, 'you', true);
+  youNode.g.addEventListener('click', function() { Graph.graphNavigate('root'); });
   nodesG.appendChild(youNode.g);
-  graphNodeEls['you'] = { g: youNode.g, homeX: graphCX, homeY: graphCY, homeR: 28, catId: null, type: 'center' };
+  Graph.graphNodeEls['you'] = { g: youNode.g, homeX: Graph.graphCX, homeY: Graph.graphCY, homeR: 28, catId: null, type: 'center' };
 
   // --- Category nodes ---
   for (var i = 0; i < cats.length; i++) {
@@ -2517,20 +2528,20 @@ function buildGraph() {
     var pos = catPositions[cat.id];
     var nodeR = 20 + Math.min(cat.count, 20) * 0.6;
 
-    var cn = makeNode(cat.id, cat.label, cat.count + ' items', pos.x, pos.y, nodeR, cat.id, false, cat.count);
+    var cn = Graph.makeNode(cat.id, cat.label, cat.count + ' items', pos.x, pos.y, nodeR, cat.id, false, cat.count);
     (function(catId) {
-      cn.g.addEventListener('click', function() { graphNavigate(catId); });
+      cn.g.addEventListener('click', function() { Graph.graphNavigate(catId); });
     })(cat.id);
 
     nodesG.appendChild(cn.g);
-    graphNodeEls[cat.id] = { g: cn.g, homeX: pos.x, homeY: pos.y, homeR: nodeR, catId: cat.id, type: 'category' };
+    Graph.graphNodeEls[cat.id] = { g: cn.g, homeX: pos.x, homeY: pos.y, homeR: nodeR, catId: cat.id, type: 'category' };
 
     // --- Child entity nodes (initially hidden, positioned at parent) ---
     var childNodes = MOCK_GRAPH_DATA.nodes[cat.id] || [];
     // Distribute across rings — fewer per ring for readability
     var maxPerRing = 7;
     var ringCount = Math.ceil(childNodes.length / maxPerRing);
-    var minDim = Math.min(graphCX, graphCY);
+    var minDim = Math.min(Graph.graphCX, Graph.graphCY);
     var baseChildR = minDim * 0.45;
     var ringSpacing = minDim * 0.22;
 
@@ -2541,33 +2552,33 @@ function buildGraph() {
       var nodesInThisRing = Math.min(maxPerRing, childNodes.length - ringIdx * maxPerRing);
       var childRadius = baseChildR + ringIdx * ringSpacing;
       var cAngle = (posInRing / nodesInThisRing) * Math.PI * 2 - Math.PI / 2 + ringIdx * 0.35;
-      var childTargetX = graphCX + Math.cos(cAngle) * childRadius;
-      var childTargetY = graphCY + Math.sin(cAngle) * childRadius;
+      var childTargetX = Graph.graphCX + Math.cos(cAngle) * childRadius;
+      var childTargetY = Graph.graphCY + Math.sin(cAngle) * childRadius;
       var abbr = cNode.label.split(' ').map(function(w) { return w[0]; }).join('').substring(0, 3);
       var childNodeR = ringIdx === 0 ? 16 : 13;
 
-      var en = makeNode(cNode.id, cNode.label, cNode.sub, pos.x, pos.y, 0, cat.id, false, abbr);
+      var en = Graph.makeNode(cNode.id, cNode.label, cNode.sub, pos.x, pos.y, 0, cat.id, false, abbr);
       en.g.style.opacity = '0';
       en.g.style.pointerEvents = 'none';
 
       (function(entityId, catId) {
-        en.g.addEventListener('click', function() { openGraphEntity(entityId, catId); });
+        en.g.addEventListener('click', function() { Graph.openGraphEntity(entityId, catId); });
       })(cNode.id, cat.id);
 
       nodesG.appendChild(en.g);
-      graphNodeEls[cNode.id] = {
+      Graph.graphNodeEls[cNode.id] = {
         g: en.g, homeX: childTargetX, homeY: childTargetY, homeR: childNodeR,
         parentX: pos.x, parentY: pos.y,
         catId: cat.id, type: 'entity'
       };
 
       // Edges from category center to child (hidden initially)
-      var cEdge = makeEdge(graphCX, graphCY, childTargetX, childTargetY, graphColors[cat.id].core, 0.3);
+      var cEdge = Graph.makeEdge(Graph.graphCX, Graph.graphCY, childTargetX, childTargetY, Graph.graphColors[cat.id].core, 0.3);
       cEdge.style.opacity = '0';
       cEdge.dataset.type = 'child-edge';
       cEdge.dataset.cat = cat.id;
       edgesG.appendChild(cEdge);
-      graphEdgeEls.push(cEdge);
+      Graph.graphEdgeEls.push(cEdge);
     }
   }
 
@@ -2585,15 +2596,15 @@ function buildGraph() {
         // Only draw if the related node is in the SAME category and avoid duplicates (only draw a→b where a < b)
         if (!catChildIds[relId]) continue;
         if (child.id >= relId) continue;
-        var ndA = graphNodeEls[child.id];
-        var ndB = graphNodeEls[relId];
+        var ndA = Graph.graphNodeEls[child.id];
+        var ndB = Graph.graphNodeEls[relId];
         if (!ndA || !ndB) continue;
-        var ie = makeEdge(ndA.homeX, ndA.homeY, ndB.homeX, ndB.homeY, graphColors[cats[ci].id].core, 0.15);
+        var ie = Graph.makeEdge(ndA.homeX, ndA.homeY, ndB.homeX, ndB.homeY, Graph.graphColors[cats[ci].id].core, 0.15);
         ie.style.opacity = '0';
         ie.dataset.type = 'inter-edge';
         ie.dataset.cat = cats[ci].id;
         edgesG.appendChild(ie);
-        graphEdgeEls.push(ie);
+        Graph.graphEdgeEls.push(ie);
       }
     }
   }
@@ -2607,27 +2618,27 @@ function buildGraph() {
       for (var ri2 = 0; ri2 < cNode2.related.length; ri2++) {
         var rId2 = cNode2.related[ri2];
         // Check if this related entity is in a DIFFERENT category
-        var relFound = findEntity(rId2);
+        var relFound = Graph.findEntity(rId2);
         if (!relFound || relFound.category === cats[ci2].id) continue;
         if (cNode2.id >= rId2) continue; // avoid duplicates
-        var ndC = graphNodeEls[cNode2.id];
-        var ndD = graphNodeEls[rId2];
+        var ndC = Graph.graphNodeEls[cNode2.id];
+        var ndD = Graph.graphNodeEls[rId2];
         if (!ndC || !ndD) continue;
-        var xe = makeEdge(ndC.homeX, ndC.homeY, ndD.homeX, ndD.homeY, 'rgba(255,255,255,0.08)', 0.08);
+        var xe = Graph.makeEdge(ndC.homeX, ndC.homeY, ndD.homeX, ndD.homeY, 'rgba(255,255,255,0.08)', 0.08);
         xe.style.opacity = '0';
         xe.dataset.type = 'cross-entity-edge';
         xe.dataset.srcCat = cats[ci2].id;
         xe.dataset.dstCat = relFound.category;
         edgesG.appendChild(xe);
-        graphEdgeEls.push(xe);
+        Graph.graphEdgeEls.push(xe);
       }
     }
   }
 
-  graphBuilt = true;
-  applyRootState(false);
-  startDriftLoop(svg);
-}
+  Graph.graphBuilt = true;
+  Graph.applyRootState(false);
+  Graph.startDriftLoop(svg);
+};
 
 /** Creates a curved SVG path element representing an edge between two points.
  * @param {number} x1 - Start X coordinate
@@ -2638,7 +2649,7 @@ function buildGraph() {
  * @param {number} opacity - Initial opacity (0-1)
  * @returns {SVGPathElement} The edge path element
  */
-function makeEdge(x1, y1, x2, y2, color, opacity) {
+Graph.makeEdge = function(x1, y1, x2, y2, color, opacity) {
   var mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
   var dx = x2 - x1, dy = y2 - y1;
   var nx = -dy * 0.08, ny = dx * 0.08;
@@ -2650,9 +2661,9 @@ function makeEdge(x1, y1, x2, y2, color, opacity) {
   path.setAttribute('stroke', color);
   path.setAttribute('stroke-width', '1');
   path.style.opacity = opacity;
-  path.style.transition = 'opacity ' + ANIM + 'ms ease';
+  path.style.transition = 'opacity ' + Graph.ANIM + 'ms ease';
   return path;
-}
+};
 
 /** Creates an SVG node group with glow, body circle, labels, and tooltip.
  * @param {string} id - Node identifier
@@ -2666,12 +2677,12 @@ function makeEdge(x1, y1, x2, y2, color, opacity) {
  * @param {string|number} [innerText] - Text displayed inside the circle
  * @returns {{g: SVGGElement}} Object containing the group element
  */
-function makeNode(id, label, sub, x, y, r, colorId, isCenter, innerText) {
-  var col = graphColors[colorId];
+Graph.makeNode = function(id, label, sub, x, y, r, colorId, isCenter, innerText) {
+  var col = Graph.graphColors[colorId];
   var g = document.createElementNS(SVG_NS, 'g');
   g.setAttribute('data-node-id', id);
   g.style.cursor = 'pointer';
-  g.style.transition = 'opacity ' + ANIM + 'ms ease';
+  g.style.transition = 'opacity ' + Graph.ANIM + 'ms ease';
 
   // We use a nested <g> for position so we can animate it
   var posG = document.createElementNS(SVG_NS, 'g');
@@ -2750,12 +2761,12 @@ function makeNode(id, label, sub, x, y, r, colorId, isCenter, innerText) {
   // Hover tooltip
   g.addEventListener('mouseenter', function(e) {
     var tip = label + (sub ? ' \u00b7 ' + sub : '');
-    showGraphTooltip(g, tip);
+    Graph.showGraphTooltip(g, tip);
   });
-  g.addEventListener('mouseleave', hideGraphTooltip);
+  g.addEventListener('mouseleave', Graph.hideGraphTooltip);
 
   return { g: g };
-}
+};
 
 /** Animates a graph node to a new position, radius, and opacity.
  * @param {Object} nodeData - Node data from graphNodeEls with g, _posG, _circles
@@ -2765,7 +2776,7 @@ function makeNode(id, label, sub, x, y, r, colorId, isCenter, innerText) {
  * @param {number} toOpacity - Target opacity (0-1)
  * @param {number} [delay=0] - Delay in ms before animation starts
  */
-function animateNode(nodeData, toX, toY, toR, toOpacity, delay) {
+Graph.animateNode = function(nodeData, toX, toY, toR, toOpacity, delay) {
   var g = nodeData.g;
   var posG = g._posG;
   var circles = g._circles;
@@ -2773,12 +2784,12 @@ function animateNode(nodeData, toX, toY, toR, toOpacity, delay) {
 
   setTimeout(function() {
     // Animate position via CSS transform (animatable)
-    posG.style.transition = 'transform ' + ANIM + 'ms ' + easing;
+    posG.style.transition = 'transform ' + Graph.ANIM + 'ms ' + easing;
     posG.style.transform = 'translate(' + toX + 'px,' + toY + 'px)';
 
     // Animate radius via CSS r property (animatable)
     circles.forEach(function(c) {
-      c.style.transition = 'r ' + ANIM + 'ms ' + easing;
+      c.style.transition = 'r ' + Graph.ANIM + 'ms ' + easing;
       c.style.r = toR + 'px';
     });
 
@@ -2802,19 +2813,19 @@ function animateNode(nodeData, toX, toY, toR, toOpacity, delay) {
     // Pointer events
     g.style.pointerEvents = toOpacity > 0.1 ? 'auto' : 'none';
   }, delay || 0);
-}
+};
 
 /** Transitions the graph to root state: YOU at center, categories in orbit, entities hidden.
  * @param {boolean} animated - Whether to animate the transition or apply instantly
  */
-function applyRootState(animated) {
+Graph.applyRootState = function(animated) {
   var cats = MOCK_GRAPH_DATA.categories;
   var d = animated ? 0 : -1; // -1 means instant
 
   // Edges
-  graphEdgeEls.forEach(function(edge) {
+  Graph.graphEdgeEls.forEach(function(edge) {
     if (!animated) edge.style.transition = 'none';
-    else edge.style.transition = 'opacity ' + ANIM + 'ms ease';
+    else edge.style.transition = 'opacity ' + Graph.ANIM + 'ms ease';
 
     if (edge.dataset.type === 'root-edge' || edge.dataset.type === 'cross-edge') {
       edge.style.opacity = edge.dataset.type === 'root-edge' ? '0.2' : '0.06';
@@ -2831,46 +2842,46 @@ function applyRootState(animated) {
   }
 
   // YOU node — center, full size
-  var youD = graphNodeEls['you'];
+  var youD = Graph.graphNodeEls['you'];
   if (!animated) setInstant(youD);
-  animateNode(youD, graphCX, graphCY, 28, 1, 0);
+  Graph.animateNode(youD, Graph.graphCX, Graph.graphCY, 28, 1, 0);
   youD.g.classList.remove('is-home');
 
   // Hide tether
   var tether = document.getElementById('graphTether');
   if (!animated) tether.style.transition = 'none';
-  else tether.style.transition = 'opacity ' + ANIM + 'ms ease';
+  else tether.style.transition = 'opacity ' + Graph.ANIM + 'ms ease';
   tether.style.opacity = '0';
 
   // Category nodes — orbital positions, full size
   cats.forEach(function(cat, i) {
-    var nd = graphNodeEls[cat.id];
+    var nd = Graph.graphNodeEls[cat.id];
     if (!animated) setInstant(nd);
-    animateNode(nd, nd.homeX, nd.homeY, nd.homeR, 1, animated ? i * 40 : 0);
+    Graph.animateNode(nd, nd.homeX, nd.homeY, nd.homeR, 1, animated ? i * 40 : 0);
   });
 
   // Entity nodes — collapse to parent, hidden
-  for (var nid in graphNodeEls) {
-    var nd = graphNodeEls[nid];
+  for (var nid in Graph.graphNodeEls) {
+    var nd = Graph.graphNodeEls[nid];
     if (nd.type !== 'entity') continue;
     if (!animated) setInstant(nd);
-    animateNode(nd, nd.parentX, nd.parentY, 0, 0, 0);
+    Graph.animateNode(nd, nd.parentX, nd.parentY, 0, 0, 0);
   }
 
   // Background cursor
   document.querySelector('#graphSvg rect').style.cursor = 'default';
-}
+};
 
 /** Transitions the graph to cluster state: selected category at center with entity children expanded.
  * @param {string} catId - Category identifier to drill into
  */
-function applyClusterState(catId) {
+Graph.applyClusterState = function(catId) {
   var cats = MOCK_GRAPH_DATA.categories;
-  var col = graphColors[catId];
+  var col = Graph.graphColors[catId];
 
   // Edges — hide root edges, show child + inter-entity edges for this category
-  graphEdgeEls.forEach(function(edge) {
-    edge.style.transition = 'opacity ' + ANIM + 'ms ease';
+  Graph.graphEdgeEls.forEach(function(edge) {
+    edge.style.transition = 'opacity ' + Graph.ANIM + 'ms ease';
     if (edge.dataset.type === 'child-edge' && edge.dataset.cat === catId) {
       edge.style.opacity = '0.2';
     } else if (edge.dataset.type === 'inter-edge' && edge.dataset.cat === catId) {
@@ -2883,33 +2894,33 @@ function applyClusterState(catId) {
   });
 
   // YOU node — move to top-left corner as a small "home" bubble
-  var youD = graphNodeEls['you'];
-  animateNode(youD, 50, 50, 18, 0.85, 0);
+  var youD = Graph.graphNodeEls['you'];
+  Graph.animateNode(youD, 50, 50, 18, 0.85, 0);
   youD.g.classList.add('is-home');
 
   // Tether line from YOU bubble to center category
   var tether = document.getElementById('graphTether');
   tether.setAttribute('stroke', col.glow.replace(/[\d.]+\)$/, '0.6)'));
   tether.setAttribute('x1', 50); tether.setAttribute('y1', 50);
-  tether.setAttribute('x2', graphCX); tether.setAttribute('y2', graphCY);
+  tether.setAttribute('x2', Graph.graphCX); tether.setAttribute('y2', Graph.graphCY);
   tether.style.opacity = '1';
 
   // Category nodes — clicked one moves to center and grows, others shrink to edges
   var otherIdx = 0;
   var otherCats = cats.filter(function(c) { return c.id !== catId; });
-  var edgeR = Math.min(graphCX, graphCY) * 0.85;
+  var edgeR = Math.min(Graph.graphCX, Graph.graphCY) * 0.85;
 
   cats.forEach(function(cat) {
-    var nd = graphNodeEls[cat.id];
+    var nd = Graph.graphNodeEls[cat.id];
     if (cat.id === catId) {
       // Animate to center, slightly smaller so children have room
-      animateNode(nd, graphCX, graphCY, 24, 1, 0);
+      Graph.animateNode(nd, Graph.graphCX, Graph.graphCY, 24, 1, 0);
     } else {
       // Animate to periphery, shrink
       var angle = (otherIdx / otherCats.length) * Math.PI * 2 - Math.PI * 0.3;
-      var ex = graphCX + Math.cos(angle) * edgeR;
-      var ey = graphCY + Math.sin(angle) * edgeR;
-      animateNode(nd, ex, ey, 8, 0.35, 0);
+      var ex = Graph.graphCX + Math.cos(angle) * edgeR;
+      var ey = Graph.graphCY + Math.sin(angle) * edgeR;
+      Graph.animateNode(nd, ex, ey, 8, 0.35, 0);
       otherIdx++;
     }
   });
@@ -2917,59 +2928,59 @@ function applyClusterState(catId) {
   // Entity nodes for this category — expand from center to orbital positions
   var childNodes = MOCK_GRAPH_DATA.nodes[catId] || [];
   childNodes.forEach(function(cNode, i) {
-    var nd = graphNodeEls[cNode.id];
+    var nd = Graph.graphNodeEls[cNode.id];
     if (nd) {
-      animateNode(nd, nd.homeX, nd.homeY, nd.homeR, 1, 80 + i * 35);
+      Graph.animateNode(nd, nd.homeX, nd.homeY, nd.homeR, 1, 80 + i * 35);
     }
   });
 
   // Entity nodes for OTHER categories — ensure hidden
-  for (var nid in graphNodeEls) {
-    var nd = graphNodeEls[nid];
+  for (var nid in Graph.graphNodeEls) {
+    var nd = Graph.graphNodeEls[nid];
     if (nd.type === 'entity' && nd.catId !== catId) {
-      animateNode(nd, nd.parentX, nd.parentY, 0, 0, 0);
+      Graph.animateNode(nd, nd.parentX, nd.parentY, 0, 0, 0);
     }
   }
 
   // Background cursor
   document.querySelector('#graphSvg rect').style.cursor = 'pointer';
-}
+};
 
 /** Navigates the graph to root view or drills into a category cluster.
  * @param {string} target - 'root' or a category ID
  */
-function graphNavigate(target) {
-  closeGraphDetail();
-  hideGraphTooltip();
+Graph.graphNavigate = function(target) {
+  Graph.closeGraphDetail();
+  Graph.hideGraphTooltip();
 
   if (target === 'root') {
-    graphState.level = 'root';
-    graphState.currentCategory = null;
-    graphState.currentEntity = null;
-    updateBreadcrumb();
-    applyRootState(true);
+    Graph.graphState.level = 'root';
+    Graph.graphState.currentCategory = null;
+    Graph.graphState.currentEntity = null;
+    Graph.updateBreadcrumb();
+    Graph.applyRootState(true);
   } else {
-    graphState.level = 'cluster';
-    graphState.currentCategory = target;
-    graphState.currentEntity = null;
-    updateBreadcrumb();
-    applyClusterState(target);
+    Graph.graphState.level = 'cluster';
+    Graph.graphState.currentCategory = target;
+    Graph.graphState.currentEntity = null;
+    Graph.updateBreadcrumb();
+    Graph.applyClusterState(target);
   }
-}
+};
 
 /** Opens the detail pane for a specific entity in the data graph.
  * @param {string} entityId - Entity identifier
  * @param {string} categoryId - Category the entity belongs to
  */
-function openGraphEntity(entityId, categoryId) {
-  graphState.currentEntity = entityId;
-  var found = findEntity(entityId);
+Graph.openGraphEntity = function(entityId, categoryId) {
+  Graph.graphState.currentEntity = entityId;
+  var found = Graph.findEntity(entityId);
   if (!found) return;
 
   var node = found.node;
-  var col = graphColors[found.category];
+  var col = Graph.graphColors[found.category];
 
-  updateBreadcrumb();
+  Graph.updateBreadcrumb();
 
   document.getElementById('graphDetailName').textContent = node.label;
   document.getElementById('graphDetailType').textContent = node.sub;
@@ -2988,7 +2999,7 @@ function openGraphEntity(entityId, categoryId) {
 
   var relHtml = '';
   for (var i = 0; i < node.related.length; i++) {
-    var rel = findEntity(node.related[i]);
+    var rel = Graph.findEntity(node.related[i]);
     if (rel) {
       relHtml += '<button class="graph-related-pill" data-entity-id="' + rel.node.id + '" data-entity-cat="' + rel.category + '">' + escapeHtml(rel.node.label) + '</button>';
     }
@@ -2996,68 +3007,68 @@ function openGraphEntity(entityId, categoryId) {
   document.getElementById('graphDetailRelated').innerHTML = relHtml;
 
   // Highlight the clicked node
-  var nd = graphNodeEls[entityId];
+  var nd = Graph.graphNodeEls[entityId];
   if (nd) {
     nd.g._circles[2].setAttribute('stroke', 'rgba(255,255,255,0.5)');
     nd.g._circles[2].setAttribute('stroke-width', '2');
   }
 
   document.getElementById('graphDetailPane').classList.add('open');
-}
+};
 
 /** Closes the graph entity detail pane and un-highlights the selected node. */
-function closeGraphDetail() {
+Graph.closeGraphDetail = function() {
   document.getElementById('graphDetailPane').classList.remove('open');
 
   // Un-highlight any selected node
-  if (graphState.currentEntity) {
-    var nd = graphNodeEls[graphState.currentEntity];
+  if (Graph.graphState.currentEntity) {
+    var nd = Graph.graphNodeEls[Graph.graphState.currentEntity];
     if (nd) {
       nd.g._circles[2].setAttribute('stroke', 'rgba(255,255,255,0.12)');
       nd.g._circles[2].setAttribute('stroke-width', '1');
     }
   }
 
-  graphState.currentEntity = null;
-  updateBreadcrumb();
-}
+  Graph.graphState.currentEntity = null;
+  Graph.updateBreadcrumb();
+};
 
 /** Navigates to a related entity, switching categories if needed.
  * @param {string} entityId - Target entity identifier
  * @param {string} categoryId - Target entity's category
  */
-function navigateToRelated(entityId, categoryId) {
+Graph.navigateToRelated = function(entityId, categoryId) {
   // Un-highlight current
-  closeGraphDetail();
+  Graph.closeGraphDetail();
 
-  if (categoryId !== graphState.currentCategory) {
-    graphState.level = 'cluster';
-    graphState.currentCategory = categoryId;
-    updateBreadcrumb();
-    applyClusterState(categoryId);
+  if (categoryId !== Graph.graphState.currentCategory) {
+    Graph.graphState.level = 'cluster';
+    Graph.graphState.currentCategory = categoryId;
+    Graph.updateBreadcrumb();
+    Graph.applyClusterState(categoryId);
     setTimeout(function() {
-      openGraphEntity(entityId, categoryId);
-    }, ANIM + 50);
+      Graph.openGraphEntity(entityId, categoryId);
+    }, Graph.ANIM + 50);
   } else {
     setTimeout(function() {
-      openGraphEntity(entityId, categoryId);
+      Graph.openGraphEntity(entityId, categoryId);
     }, 100);
   }
-}
+};
 
 /** Updates the graph breadcrumb navigation to reflect the current graph state. */
-function updateBreadcrumb() {
+Graph.updateBreadcrumb = function() {
   var bc = document.getElementById('graphBreadcrumb');
-  var html = '<button class="graph-crumb' + (graphState.level === 'root' ? ' active' : '') + '" data-nav="root">You</button>';
+  var html = '<button class="graph-crumb' + (Graph.graphState.level === 'root' ? ' active' : '') + '" data-nav="root">You</button>';
 
-  if (graphState.currentCategory) {
-    var cat = MOCK_GRAPH_DATA.categories.find(function(c) { return c.id === graphState.currentCategory; });
+  if (Graph.graphState.currentCategory) {
+    var cat = MOCK_GRAPH_DATA.categories.find(function(c) { return c.id === Graph.graphState.currentCategory; });
     html += '<span class="graph-crumb-sep">&rsaquo;</span>';
-    html += '<button class="graph-crumb' + (!graphState.currentEntity ? ' active' : '') + '" data-nav="' + graphState.currentCategory + '">' + (cat ? cat.label : '') + '</button>';
+    html += '<button class="graph-crumb' + (!Graph.graphState.currentEntity ? ' active' : '') + '" data-nav="' + Graph.graphState.currentCategory + '">' + (cat ? cat.label : '') + '</button>';
   }
 
-  if (graphState.currentEntity) {
-    var found = findEntity(graphState.currentEntity);
+  if (Graph.graphState.currentEntity) {
+    var found = Graph.findEntity(Graph.graphState.currentEntity);
     if (found) {
       html += '<span class="graph-crumb-sep">&rsaquo;</span>';
       html += '<button class="graph-crumb active">' + found.node.label + '</button>';
@@ -3065,13 +3076,13 @@ function updateBreadcrumb() {
   }
 
   bc.innerHTML = html;
-}
+};
 
 /** Shows a tooltip positioned above a graph node.
  * @param {SVGGElement} nodeG - The node's SVG group element
  * @param {string} text - Tooltip text to display
  */
-function showGraphTooltip(nodeG, text) {
+Graph.showGraphTooltip = function(nodeG, text) {
   var tip = document.getElementById('graphTooltip');
   var container = document.getElementById('graphContainer');
   var cr = container.getBoundingClientRect();
@@ -3099,24 +3110,24 @@ function showGraphTooltip(nodeG, text) {
       tip.style.top = (ncy - 40) + 'px';
     }
   }
-}
+};
 
 /** Hides the graph tooltip. */
-function hideGraphTooltip() {
+Graph.hideGraphTooltip = function() {
   document.getElementById('graphTooltip').classList.remove('show');
-}
+};
 
 /** Initializes the subtle drift animation loop for graph nodes (currently disabled).
  * @param {SVGElement} svg - The graph SVG element
  */
-function startDriftLoop(svg) {
-  if (driftRAF) cancelAnimationFrame(driftRAF);
-  driftItems = [];
+Graph.startDriftLoop = function(svg) {
+  if (Graph.driftRAF) cancelAnimationFrame(Graph.driftRAF);
+  Graph.driftItems = [];
 
   // Collect all position groups
   var allPosGs = svg.querySelectorAll('[data-pos]');
   allPosGs.forEach(function(pg, i) {
-    driftItems.push({
+    Graph.driftItems.push({
       el: pg,
       phase: i * 1.1 + Math.random() * 2,
       ampX: 1.5 + Math.random() * 2,
@@ -3129,8 +3140,8 @@ function startDriftLoop(svg) {
   var t0 = performance.now();
   function tick(now) {
     var t = (now - t0) / 1000;
-    for (var i = 0; i < driftItems.length; i++) {
-      var d = driftItems[i];
+    for (var i = 0; i < Graph.driftItems.length; i++) {
+      var d = Graph.driftItems[i];
       // Read the current base transform (set by animations)
       var raw = d.el.style.transform || d.el.getAttribute('transform') || 'translate(0,0)';
       var m = raw.match(/translate\(([\d.\-]+)(?:px)?\s*,\s*([\d.\-]+)(?:px)?\)/);
@@ -3144,24 +3155,24 @@ function startDriftLoop(svg) {
       // Instead we only apply drift when no CSS transition is active.
       // The visual drift is small enough that it works naturally.
     }
-    driftRAF = requestAnimationFrame(tick);
+    Graph.driftRAF = requestAnimationFrame(tick);
   }
   // Drift disabled for now to avoid fighting transitions — the animated navigation IS the motion.
-  // driftRAF = requestAnimationFrame(tick);
-}
+  // Graph.driftRAF = requestAnimationFrame(tick);
+};
 
 /** Placeholder for editing the currently selected graph entity. */
-function editGraphEntity() {
-  if (!graphState.currentEntity) return;
-  var found = findEntity(graphState.currentEntity);
+Graph.editGraphEntity = function() {
+  if (!Graph.graphState.currentEntity) return;
+  var found = Graph.findEntity(Graph.graphState.currentEntity);
   if (!found) return;
   showToast('Editing ' + found.node.label + ' — coming soon');
-}
+};
 
 /** Opens the Cosimo panel pre-loaded with context for editing the current graph entity. */
-function openCosimoForEntity() {
-  if (!graphState.currentEntity) return;
-  var found = findEntity(graphState.currentEntity);
+Graph.openCosimoForEntity = function() {
+  if (!Graph.graphState.currentEntity) return;
+  var found = Graph.findEntity(Graph.graphState.currentEntity);
   if (!found) return;
 
   var panelName = document.querySelector('.cosimo-panel-name');
@@ -3182,19 +3193,21 @@ function openCosimoForEntity() {
       '<strong>"Remove outdated information"</strong>' +
     '</div>';
 
-  openCosimoPanel();
-}
+  UI.openCosimoPanel();
+};
 
 // Render graph when switching to graphs section
-var origSwitchBrainSection = switchBrainSection;
-switchBrainSection = function(section, el) {
-  origSwitchBrainSection(section, el);
-  if (section === 'graphs') {
-    setTimeout(function() {
-      if (!graphBuilt) buildGraph();
+(function() {
+  var origSwitchBrainSection = UI.switchBrainSection;
+  UI.switchBrainSection = function(section, el) {
+    origSwitchBrainSection(section, el);
+    if (section === 'graphs') {
+      setTimeout(function() {
+        if (!Graph.graphBuilt) Graph.buildGraph();
     }, 50);
   }
-};
+  };
+})();
 
 // Re-render on resize
 var graphResizeTimer;
@@ -3202,8 +3215,8 @@ window.addEventListener('resize', function() {
   clearTimeout(graphResizeTimer);
   graphResizeTimer = setTimeout(function() {
     if (document.getElementById('brain-graphs').classList.contains('active')) {
-      graphBuilt = false;
-      buildGraph();
+      Graph.graphBuilt = false;
+      Graph.buildGraph();
     }
   }, 300);
 });
@@ -3290,7 +3303,7 @@ function escapeHtml(text) {
   if (threadList) {
     threadList.addEventListener('click', function(e) {
       var item = e.target.closest('.thread-item');
-      if (item) selectThread(item.dataset.threadId, item);
+      if (item) Chat.selectThread(item.dataset.threadId, item);
     });
   }
 
@@ -3299,7 +3312,7 @@ function escapeHtml(text) {
   if (wfSidebarList) {
     wfSidebarList.addEventListener('click', function(e) {
       var item = e.target.closest('.wf-side-item');
-      if (item) showWorkflowDetail(item.dataset.wfId, item);
+      if (item) Workflows.showWorkflowDetail(item.dataset.wfId, item);
     });
   }
 
@@ -3308,25 +3321,25 @@ function escapeHtml(text) {
   if (brainNav) {
     brainNav.addEventListener('click', function(e) {
       var btn = e.target.closest('.brain-nav-btn');
-      if (btn) switchBrainSection(btn.dataset.section, btn);
+      if (btn) UI.switchBrainSection(btn.dataset.section, btn);
     });
   }
 
   // --- Top tabs ---
   var tabChat = document.getElementById('tabChat');
   var tabWorkflows = document.getElementById('tabWorkflows');
-  if (tabChat) tabChat.addEventListener('click', function() { switchMode('chat', tabChat); });
-  if (tabWorkflows) tabWorkflows.addEventListener('click', function() { switchMode('workflows', tabWorkflows); });
+  if (tabChat) tabChat.addEventListener('click', function() { UI.switchMode('chat', tabChat); });
+  if (tabWorkflows) tabWorkflows.addEventListener('click', function() { UI.switchMode('workflows', tabWorkflows); });
 
   // --- Header buttons ---
   var taskAlertBtn = document.getElementById('taskAlertBtn');
   var calendarBtn = document.getElementById('calendarBtn');
   var usageBtn = document.getElementById('usageBtn');
   var topProfile = document.querySelector('.top-profile');
-  if (taskAlertBtn) taskAlertBtn.addEventListener('click', function() { toggleTaskPanel(); });
-  if (calendarBtn) calendarBtn.addEventListener('click', function() { toggleCalendarPanel(); });
-  if (usageBtn) usageBtn.addEventListener('click', function() { toggleUsagePanel(); });
-  if (topProfile) topProfile.addEventListener('click', function() { toggleProfileMenu(); });
+  if (taskAlertBtn) taskAlertBtn.addEventListener('click', function() { UI.toggleTaskPanel(); });
+  if (calendarBtn) calendarBtn.addEventListener('click', function() { UI.toggleCalendarPanel(); });
+  if (usageBtn) usageBtn.addEventListener('click', function() { UI.toggleUsagePanel(); });
+  if (topProfile) topProfile.addEventListener('click', function() { UI.toggleProfileMenu(); });
 
   // --- Profile menu (delegation) ---
   var profilePanel = document.getElementById('profilePanel');
@@ -3341,28 +3354,28 @@ function escapeHtml(text) {
       // Theme toggle (dark mode)
       if (themeToggle && themeToggle.querySelector('#themeToggleTrack')) {
         e.stopPropagation();
-        toggleTheme();
+        A11y.toggleTheme();
         return;
       }
 
       // Dyslexia font toggle
       if (themeToggle && themeToggle.querySelector('#dyslexiaToggleTrack')) {
         e.stopPropagation();
-        toggleDyslexiaFont();
+        A11y.toggleDyslexiaFont();
         return;
       }
 
       // Reduced motion toggle
       if (themeToggle && themeToggle.querySelector('#motionToggleTrack')) {
         e.stopPropagation();
-        toggleReducedMotion();
+        A11y.toggleReducedMotion();
         return;
       }
 
       // High contrast toggle
       if (themeToggle && themeToggle.querySelector('#contrastToggleTrack')) {
         e.stopPropagation();
-        toggleHighContrast();
+        A11y.toggleHighContrast();
         return;
       }
 
@@ -3376,20 +3389,20 @@ function escapeHtml(text) {
 
   // --- New button ---
   var newBtn = document.getElementById('newBtn');
-  if (newBtn) newBtn.addEventListener('click', function() { handleNew(); });
+  if (newBtn) newBtn.addEventListener('click', function() { UI.handleNew(); });
 
   // --- Chat header buttons ---
   var filesBtn = document.getElementById('filesBtn');
   var exportBtn = document.getElementById('exportBtn');
   var shareBtn = document.getElementById('shareBtn');
-  if (filesBtn) filesBtn.addEventListener('click', function() { openFilePanel('folder'); });
-  if (exportBtn) exportBtn.addEventListener('click', function() { exportThread(); });
-  if (shareBtn) shareBtn.addEventListener('click', function() { shareThread(); });
+  if (filesBtn) filesBtn.addEventListener('click', function() { Chat.openFilePanel('folder'); });
+  if (exportBtn) exportBtn.addEventListener('click', function() { Chat.exportThread(); });
+  if (shareBtn) shareBtn.addEventListener('click', function() { Chat.shareThread(); });
 
   // --- File attachment link in chat body ---
   document.addEventListener('click', function(e) {
     var attachment = e.target.closest('.file-attachment');
-    if (attachment) openFilePanel('viewer');
+    if (attachment) Chat.openFilePanel('viewer');
   });
 
   // --- Feedback buttons (delegation on chat area) ---
@@ -3397,7 +3410,7 @@ function escapeHtml(text) {
     var fbBtn = e.target.closest('.feedback-btn');
     if (fbBtn) {
       var type = fbBtn.classList.contains('up') ? 'up' : 'down';
-      giveFeedback(fbBtn, type);
+      Chat.giveFeedback(fbBtn, type);
     }
   });
 
@@ -3405,17 +3418,17 @@ function escapeHtml(text) {
   document.addEventListener('click', function(e) {
     var attachOpt = e.target.closest('.attach-option');
     if (attachOpt) {
-      if (attachOpt.title === 'From computer') attachFromComputer(attachOpt);
-      else if (attachOpt.title === 'From cloud drive') attachFromDrive(attachOpt);
+      if (attachOpt.title === 'From computer') Chat.attachFromComputer(attachOpt);
+      else if (attachOpt.title === 'From cloud drive') Chat.attachFromDrive(attachOpt);
     }
   });
 
   // --- Model selector/options (delegation) ---
   document.addEventListener('click', function(e) {
     var modelBtn = e.target.closest('.model-selector-btn');
-    if (modelBtn) { toggleModelDropdown(modelBtn); return; }
+    if (modelBtn) { Chat.toggleModelDropdown(modelBtn); return; }
     var modelOpt = e.target.closest('.model-option');
-    if (modelOpt) { selectModel(modelOpt); }
+    if (modelOpt) { Chat.selectModel(modelOpt); }
   });
 
   // --- Empty thread suggestion chips (delegation) ---
@@ -3423,36 +3436,36 @@ function escapeHtml(text) {
   if (suggestions) {
     suggestions.addEventListener('click', function(e) {
       var chip = e.target.closest('.empty-thread-chip');
-      if (chip) fillSuggestion(chip.dataset.suggestion);
+      if (chip) Chat.fillSuggestion(chip.dataset.suggestion);
     });
   }
 
   // --- Error retry button ---
   var k1RetryBtn = document.getElementById('k1RetryBtn');
-  if (k1RetryBtn) k1RetryBtn.addEventListener('click', function() { retryK1(); });
+  if (k1RetryBtn) k1RetryBtn.addEventListener('click', function() { Chat.retryK1(); });
 
   // --- Stop/cancel button ---
   var stopBtn = document.getElementById('erabor-stop-btn');
-  if (stopBtn) stopBtn.addEventListener('click', function() { cancelErabor(); });
+  if (stopBtn) stopBtn.addEventListener('click', function() { Chat.cancelErabor(); });
 
   // --- File panel ---
   var fpTabViewer = document.getElementById('fpTabViewer');
   var fpTabFolder = document.getElementById('fpTabFolder');
   var fpCloseBtn = document.getElementById('fpCloseBtn');
-  if (fpTabViewer) fpTabViewer.addEventListener('click', function() { switchFilePanelTab('viewer'); });
-  if (fpTabFolder) fpTabFolder.addEventListener('click', function() { switchFilePanelTab('folder'); });
-  if (fpCloseBtn) fpCloseBtn.addEventListener('click', function() { closeFilePanel(); });
+  if (fpTabViewer) fpTabViewer.addEventListener('click', function() { Chat.switchFilePanelTab('viewer'); });
+  if (fpTabFolder) fpTabFolder.addEventListener('click', function() { Chat.switchFilePanelTab('folder'); });
+  if (fpCloseBtn) fpCloseBtn.addEventListener('click', function() { Chat.closeFilePanel(); });
 
   // File item click (open viewer)
   var fpFileItem = document.querySelector('.fp-file-item');
-  if (fpFileItem) fpFileItem.addEventListener('click', function() { switchFilePanelTab('viewer'); });
+  if (fpFileItem) fpFileItem.addEventListener('click', function() { Chat.switchFilePanelTab('viewer'); });
 
   // --- Workflow listing cards (delegation) ---
   var wfListing = document.getElementById('wfListing');
   if (wfListing) {
     wfListing.addEventListener('click', function(e) {
       var card = e.target.closest('.wf-card');
-      if (card && card.dataset.wfId) showWorkflowDetail(card.dataset.wfId, card);
+      if (card && card.dataset.wfId) Workflows.showWorkflowDetail(card.dataset.wfId, card);
     });
   }
 
@@ -3461,9 +3474,9 @@ function escapeHtml(text) {
   var wfBackBtn = document.getElementById('wfBackBtn');
   var wfActionsBtn = document.getElementById('wfActionsBtn');
   var wfRunBtn = document.getElementById('wfRunBtn');
-  if (newWorkflowBtn) newWorkflowBtn.addEventListener('click', function() { handleNew(); });
-  if (wfBackBtn) wfBackBtn.addEventListener('click', function() { showWorkflowListing(); });
-  if (wfActionsBtn) wfActionsBtn.addEventListener('click', function(e) { toggleDropdown(e); });
+  if (newWorkflowBtn) newWorkflowBtn.addEventListener('click', function() { UI.handleNew(); });
+  if (wfBackBtn) wfBackBtn.addEventListener('click', function() { Workflows.showWorkflowListing(); });
+  if (wfActionsBtn) wfActionsBtn.addEventListener('click', function(e) { UI.toggleDropdown(e); });
   if (wfRunBtn) wfRunBtn.addEventListener('click', function() { alert('Running workflow...'); });
 
   // --- Action dropdown (delegation) ---
@@ -3475,7 +3488,7 @@ function escapeHtml(text) {
       var action = item.dataset.action;
       if (action === 'run-now') alert('Run triggered');
       else if (action === 'duplicate') alert('Duplicated');
-      else if (action === 'edit-cosimo') openCosimoPanel();
+      else if (action === 'edit-cosimo') UI.openCosimoPanel();
       else if (action === 'delete') alert('Deleted');
     });
   }
@@ -3485,7 +3498,7 @@ function escapeHtml(text) {
   if (tabBar) {
     tabBar.addEventListener('click', function(e) {
       var btn = e.target.closest('.tab-btn');
-      if (btn && btn.dataset.tab) switchTab(btn.dataset.tab, btn);
+      if (btn && btn.dataset.tab) Workflows.switchTab(btn.dataset.tab, btn);
     });
   }
 
@@ -3498,10 +3511,10 @@ function escapeHtml(text) {
   var memCancelBtn = document.getElementById('memCancelBtn');
   var memSaveBtn = document.getElementById('memSaveBtn');
   var traitAddBtn = document.getElementById('traitAddBtn');
-  if (addMemoryBtn) addMemoryBtn.addEventListener('click', function() { toggleAddMemory(); });
-  if (memCancelBtn) memCancelBtn.addEventListener('click', function() { cancelAddMemory(); });
-  if (memSaveBtn) memSaveBtn.addEventListener('click', function() { submitNewMemory(); });
-  if (traitAddBtn) traitAddBtn.addEventListener('click', function() { addCustomTrait(); });
+  if (addMemoryBtn) addMemoryBtn.addEventListener('click', function() { BrainMemory.toggleAddMemory(); });
+  if (memCancelBtn) memCancelBtn.addEventListener('click', function() { BrainMemory.cancelAddMemory(); });
+  if (memSaveBtn) memSaveBtn.addEventListener('click', function() { BrainMemory.submitNewMemory(); });
+  if (traitAddBtn) traitAddBtn.addEventListener('click', function() { BrainMemory.addCustomTrait(); });
 
   // Memory category filters (delegation)
   var memCatFilters = document.getElementById('memCategoryFilters');
@@ -3511,7 +3524,7 @@ function escapeHtml(text) {
       if (!pill) return;
       var categories = ['all', 'preference', 'workflow', 'contact', 'fund', 'style'];
       var idx = Array.from(memCatFilters.querySelectorAll('.mem-cat-pill')).indexOf(pill);
-      if (idx >= 0 && idx < categories.length) filterByCategory(categories[idx], pill);
+      if (idx >= 0 && idx < categories.length) BrainMemory.filterByCategory(categories[idx], pill);
     });
   }
 
@@ -3520,15 +3533,15 @@ function escapeHtml(text) {
   if (memFactList) {
     memFactList.addEventListener('click', function(e) {
       var menuBtn = e.target.closest('.mem-fact-menu-btn');
-      if (menuBtn) { toggleFactMenu(menuBtn); return; }
+      if (menuBtn) { BrainMemory.toggleFactMenu(menuBtn); return; }
       var editBtn = e.target.closest('.mem-fact-edit');
-      if (editBtn) { editFact(editBtn); return; }
+      if (editBtn) { BrainMemory.editFact(editBtn); return; }
       var deleteBtn = e.target.closest('.mem-fact-delete');
-      if (deleteBtn) { deleteFact(deleteBtn); return; }
+      if (deleteBtn) { BrainMemory.deleteFact(deleteBtn); return; }
       var yesBtn = e.target.closest('.mem-delete-yes');
-      if (yesBtn) { confirmDelete(yesBtn); return; }
+      if (yesBtn) { BrainMemory.confirmDelete(yesBtn); return; }
       var noBtn = e.target.closest('.mem-delete-no');
-      if (noBtn) { cancelDelete(noBtn); return; }
+      if (noBtn) { BrainMemory.cancelDelete(noBtn); return; }
     });
   }
 
@@ -3537,7 +3550,7 @@ function escapeHtml(text) {
   if (traitSelected) {
     traitSelected.addEventListener('click', function(e) {
       var tag = e.target.closest('.mem-trait-tag');
-      if (tag) removeTrait(tag);
+      if (tag) BrainMemory.removeTrait(tag);
     });
   }
 
@@ -3546,7 +3559,7 @@ function escapeHtml(text) {
   if (traitPresets) {
     traitPresets.addEventListener('click', function(e) {
       var tag = e.target.closest('.mem-trait-tag');
-      if (tag) toggleTrait(tag);
+      if (tag) BrainMemory.toggleTrait(tag);
     });
   }
 
@@ -3557,12 +3570,12 @@ function escapeHtml(text) {
   var lessonCosimoBtn = document.getElementById('lessonCosimoBtn');
   var lessonDeleteBtn = document.getElementById('lessonDeleteBtn');
   var lessonScopeToggle = document.getElementById('lessonScopeToggle');
-  if (newLessonBtn) newLessonBtn.addEventListener('click', function() { createNewLesson(); });
-  if (lessonBackBtn) lessonBackBtn.addEventListener('click', function() { closeLessonDetail(); });
-  if (lessonEditBtn) lessonEditBtn.addEventListener('click', function() { toggleLessonEdit(); });
-  if (lessonCosimoBtn) lessonCosimoBtn.addEventListener('click', function() { openCosimoForLesson(); });
-  if (lessonDeleteBtn) lessonDeleteBtn.addEventListener('click', function() { deleteLesson(); });
-  if (lessonScopeToggle) lessonScopeToggle.addEventListener('click', function() { toggleLessonScope(); });
+  if (newLessonBtn) newLessonBtn.addEventListener('click', function() { BrainLessons.createNewLesson(); });
+  if (lessonBackBtn) lessonBackBtn.addEventListener('click', function() { BrainLessons.closeLessonDetail(); });
+  if (lessonEditBtn) lessonEditBtn.addEventListener('click', function() { BrainLessons.toggleLessonEdit(); });
+  if (lessonCosimoBtn) lessonCosimoBtn.addEventListener('click', function() { BrainLessons.openCosimoForLesson(); });
+  if (lessonDeleteBtn) lessonDeleteBtn.addEventListener('click', function() { BrainLessons.deleteLesson(); });
+  if (lessonScopeToggle) lessonScopeToggle.addEventListener('click', function() { BrainLessons.toggleLessonScope(); });
 
   // Lesson scope filters (delegation)
   var lessonScopeFilters = document.getElementById('lessonScopeFilters');
@@ -3572,7 +3585,7 @@ function escapeHtml(text) {
       if (!pill) return;
       var scopes = ['all', 'user', 'company'];
       var idx = Array.from(lessonScopeFilters.querySelectorAll('.mem-cat-pill')).indexOf(pill);
-      if (idx >= 0 && idx < scopes.length) filterLessonScope(scopes[idx], pill);
+      if (idx >= 0 && idx < scopes.length) BrainLessons.filterLessonScope(scopes[idx], pill);
     });
   }
 
@@ -3581,9 +3594,9 @@ function escapeHtml(text) {
   if (lessonList) {
     lessonList.addEventListener('click', function(e) {
       var scopeBtn = e.target.closest('.lesson-card-scope-btn');
-      if (scopeBtn) { toggleCardScope(scopeBtn, e); return; }
+      if (scopeBtn) { BrainLessons.toggleCardScope(scopeBtn, e); return; }
       var card = e.target.closest('.lesson-card');
-      if (card) openLesson(card.dataset.lesson);
+      if (card) BrainLessons.openLesson(card.dataset.lesson);
     });
   }
 
@@ -3591,16 +3604,16 @@ function escapeHtml(text) {
   var graphEditBtn = document.getElementById('graphEditBtn');
   var graphCosimoBtn = document.getElementById('graphCosimoBtn');
   var graphCloseBtn = document.getElementById('graphCloseBtn');
-  if (graphEditBtn) graphEditBtn.addEventListener('click', function() { editGraphEntity(); });
-  if (graphCosimoBtn) graphCosimoBtn.addEventListener('click', function() { openCosimoForEntity(); });
-  if (graphCloseBtn) graphCloseBtn.addEventListener('click', function() { closeGraphDetail(); });
+  if (graphEditBtn) graphEditBtn.addEventListener('click', function() { Graph.editGraphEntity(); });
+  if (graphCosimoBtn) graphCosimoBtn.addEventListener('click', function() { Graph.openCosimoForEntity(); });
+  if (graphCloseBtn) graphCloseBtn.addEventListener('click', function() { Graph.closeGraphDetail(); });
 
   // Graph breadcrumbs (delegation)
   var graphBreadcrumb = document.querySelector('.graph-breadcrumb');
   if (graphBreadcrumb) {
     graphBreadcrumb.addEventListener('click', function(e) {
       var crumb = e.target.closest('.graph-crumb');
-      if (crumb && crumb.dataset.nav) graphNavigate(crumb.dataset.nav);
+      if (crumb && crumb.dataset.nav) Graph.graphNavigate(crumb.dataset.nav);
     });
   }
 
@@ -3609,7 +3622,7 @@ function escapeHtml(text) {
   if (graphDetailBody) {
     graphDetailBody.addEventListener('click', function(e) {
       var pill = e.target.closest('.graph-related-pill');
-      if (pill) navigateToRelated(pill.dataset.entityId, pill.dataset.entityCat);
+      if (pill) Graph.navigateToRelated(pill.dataset.entityId, pill.dataset.entityCat);
     });
   }
 
@@ -3619,8 +3632,8 @@ function escapeHtml(text) {
     searchResults.addEventListener('click', function(e) {
       var item = e.target.closest('.search-result-item');
       if (item && item.dataset.threadId) {
-        selectThread(item.dataset.threadId, null);
-        closeSearch();
+        Chat.selectThread(item.dataset.threadId, null);
+        Chat.closeSearch();
       }
     });
   }
@@ -3629,33 +3642,33 @@ function escapeHtml(text) {
   var panelOverlay = document.getElementById('panelOverlay');
   var cosimoPanelClose = document.getElementById('cosimoPanelClose');
   var cosimoPanelSend = document.getElementById('cosimoPanelSend');
-  if (panelOverlay) panelOverlay.addEventListener('click', function() { closeCosimoPanel(); });
-  if (cosimoPanelClose) cosimoPanelClose.addEventListener('click', function() { closeCosimoPanel(); });
-  if (cosimoPanelSend) cosimoPanelSend.addEventListener('click', function() { sendPanelMessage(); });
+  if (panelOverlay) panelOverlay.addEventListener('click', function() { UI.closeCosimoPanel(); });
+  if (cosimoPanelClose) cosimoPanelClose.addEventListener('click', function() { UI.closeCosimoPanel(); });
+  if (cosimoPanelSend) cosimoPanelSend.addEventListener('click', function() { UI.sendPanelMessage(); });
 
   // --- Input handlers (replaces inline oninput/onkeydown) ---
   var sidebarSearch = document.querySelector('.sidebar-search-input');
-  if (sidebarSearch) sidebarSearch.addEventListener('input', function() { runGlobalSearch(this.value); });
+  if (sidebarSearch) sidebarSearch.addEventListener('input', function() { Chat.runGlobalSearch(this.value); });
 
   var purpleSlider = document.getElementById('purpleIntensitySlider');
-  if (purpleSlider) purpleSlider.addEventListener('input', function() { applyPurpleIntensity(this.value); });
+  if (purpleSlider) purpleSlider.addEventListener('input', function() { A11y.applyPurpleIntensity(this.value); });
 
   var fontSizeSlider = document.getElementById('fontSizeSlider');
-  if (fontSizeSlider) fontSizeSlider.addEventListener('input', function() { applyFontSizeBoost(this.value); });
+  if (fontSizeSlider) fontSizeSlider.addEventListener('input', function() { A11y.applyFontSizeBoost(this.value); });
 
   var memSearchInput = document.getElementById('memSearchInput');
-  if (memSearchInput) memSearchInput.addEventListener('input', function() { filterMemories(); });
+  if (memSearchInput) memSearchInput.addEventListener('input', function() { BrainMemory.filterMemories(); });
 
   var lessonSearchInput = document.getElementById('lessonSearchInput');
-  if (lessonSearchInput) lessonSearchInput.addEventListener('input', function() { filterLessons(); });
+  if (lessonSearchInput) lessonSearchInput.addEventListener('input', function() { BrainLessons.filterLessons(); });
 
   var traitInput = document.getElementById('traitInput');
-  if (traitInput) traitInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') { addCustomTrait(); e.preventDefault(); } });
+  if (traitInput) traitInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') { BrainMemory.addCustomTrait(); e.preventDefault(); } });
 
   var memAddInput = document.getElementById('memAddInput');
-  if (memAddInput) memAddInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') { submitNewMemory(); e.preventDefault(); } });
+  if (memAddInput) memAddInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') { BrainMemory.submitNewMemory(); e.preventDefault(); } });
 
   var panelInput = document.getElementById('panelInput');
-  if (panelInput) panelInput.addEventListener('keydown', function(e) { handlePanelKey(e); });
+  if (panelInput) panelInput.addEventListener('keydown', function(e) { UI.handlePanelKey(e); });
 
 })();
