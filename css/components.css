@@ -2582,6 +2582,139 @@
   border-color: var(--taupe-2);
 }
 
+/* ========================================
+   TRIGGERS TAB
+   ======================================== */
+
+.trigger-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid var(--taupe-1);
+  border-radius: var(--r-lg);
+  background: var(--white);
+  margin-bottom: 8px;
+  transition: border-color 0.15s;
+}
+
+.trigger-item:hover {
+  border-color: var(--taupe-2);
+}
+
+.trigger-item-icon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(var(--violet-3-rgb), 0.08);
+  border-radius: var(--r-md);
+  color: var(--violet-3);
+}
+
+.trigger-item-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.trigger-item-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.trigger-item-type {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--taupe-5);
+}
+
+.trigger-item-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 1px 5px;
+  border-radius: var(--r-sm);
+}
+
+.trigger-primary {
+  background: rgba(var(--violet-3-rgb), 0.1);
+  color: var(--violet-3);
+}
+
+.trigger-item-detail {
+  margin-top: 3px;
+}
+
+.trigger-detail-path,
+.trigger-detail-schedule,
+.trigger-detail-text {
+  font-family: var(--sans);
+  font-size: 11px;
+  color: var(--taupe-3);
+}
+
+.trigger-detail-command {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--violet-3);
+  background: rgba(var(--violet-3-rgb), 0.06);
+  padding: 1px 6px;
+  border-radius: var(--r-sm);
+  border: 1px solid rgba(var(--violet-3-rgb), 0.12);
+}
+
+.trigger-empty {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--taupe-3);
+  text-align: center;
+  padding: 16px;
+}
+
+/* Triggers tab — dark mode */
+[data-theme="dark"] .trigger-item {
+  background: var(--surface-1);
+  border-color: var(--taupe-2);
+}
+
+[data-theme="dark"] .trigger-item:hover {
+  border-color: var(--taupe-3);
+}
+
+[data-theme="dark"] .trigger-item-icon {
+  background: rgba(var(--violet-3-rgb), 0.12);
+}
+
+[data-theme="dark"] .trigger-item-type {
+  color: var(--taupe-4);
+}
+
+[data-theme="dark"] .trigger-primary {
+  background: rgba(var(--violet-3-rgb), 0.15);
+}
+
+[data-theme="dark"] .trigger-detail-path,
+[data-theme="dark"] .trigger-detail-schedule,
+[data-theme="dark"] .trigger-detail-text {
+  color: var(--taupe-3);
+}
+
+[data-theme="dark"] .trigger-detail-command {
+  background: rgba(var(--violet-3-rgb), 0.1);
+  border-color: rgba(var(--violet-3-rgb), 0.2);
+}
+
+[data-theme="dark"] .trigger-empty {
+  color: var(--taupe-3);
+}
+
 /* Cosimo panel header — must stay dark */
 [data-theme="dark"] .cosimo-panel-header {
   background: var(--surface-2);

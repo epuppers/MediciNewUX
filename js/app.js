@@ -1934,6 +1934,9 @@ Workflows.showWorkflowDetail = function(id, el) {
   // Build schema tab content
   Workflows._renderSchemaTab(data);
 
+  // Build triggers tab content
+  Workflows._renderTriggersTab(data);
+
   // Render flow graph in the graph column
   Workflows.renderFlowGraph(id, 'flowGraphContainer', { compact: false });
 
@@ -2094,6 +2097,93 @@ Workflows._renderSchemaTab = function(data) {
     }
     html += '</div></div>';
   }
+
+  container.innerHTML = html;
+};
+
+/** Renders the triggers tab content showing trigger configuration.
+ * @param {Object} data - Template data object
+ */
+Workflows._renderTriggersTab = function(data) {
+  var container = document.getElementById('tab-triggers');
+  if (!container) return;
+
+  var html = '';
+  var config = data.triggerConfig || {};
+  var primaryType = data.triggerType;
+  var hasTriggers = false;
+
+  // Build trigger items from triggerConfig fields
+  // Primary trigger type
+  if (primaryType) {
+    var meta = Workflows._triggerMeta[primaryType] || { icon: 'manualTrigger', label: primaryType };
+    var triggerIcon = typeof icon === 'function' ? icon(meta.icon) : '';
+    var detail = '';
+
+    if (primaryType === 'folder-watch' && config.watchPath) {
+      detail = '<span class="trigger-detail-path">' + escapeHtml(config.watchPath) + '</span>';
+    } else if (primaryType === 'schedule' && config.schedule) {
+      detail = '<span class="trigger-detail-schedule">' + escapeHtml(config.schedule) + '</span>';
+    } else if (primaryType === 'manual') {
+      detail = '<span class="trigger-detail-text">Triggered manually via Run button</span>';
+    }
+
+    html += '<div class="trigger-item">' +
+      '<div class="trigger-item-icon">' + triggerIcon + '</div>' +
+      '<div class="trigger-item-body">' +
+        '<div class="trigger-item-header">' +
+          '<span class="trigger-item-type">' + escapeHtml(meta.label) + '</span>' +
+          '<span class="trigger-item-badge trigger-primary">Primary</span>' +
+        '</div>' +
+        (detail ? '<div class="trigger-item-detail">' + detail + '</div>' : '') +
+      '</div>' +
+    '</div>';
+    hasTriggers = true;
+  }
+
+  // Chat command trigger (may be secondary)
+  if (config.chatCommand && primaryType !== 'chat-command') {
+    var cmdMeta = Workflows._triggerMeta['chat-command'];
+    var cmdIcon = typeof icon === 'function' ? icon(cmdMeta.icon) : '';
+    html += '<div class="trigger-item">' +
+      '<div class="trigger-item-icon">' + cmdIcon + '</div>' +
+      '<div class="trigger-item-body">' +
+        '<div class="trigger-item-header">' +
+          '<span class="trigger-item-type">' + escapeHtml(cmdMeta.label) + '</span>' +
+        '</div>' +
+        '<div class="trigger-item-detail">' +
+          '<code class="trigger-detail-command">' + escapeHtml(config.chatCommand) + '</code>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+    hasTriggers = true;
+  } else if (config.chatCommand && primaryType === 'chat-command') {
+    // Primary IS chat-command, show command detail on the primary item
+    // Re-render primary with command detail
+    var chatMeta = Workflows._triggerMeta['chat-command'];
+    var chatIcon = typeof icon === 'function' ? icon(chatMeta.icon) : '';
+    html = '<div class="trigger-item">' +
+      '<div class="trigger-item-icon">' + chatIcon + '</div>' +
+      '<div class="trigger-item-body">' +
+        '<div class="trigger-item-header">' +
+          '<span class="trigger-item-type">' + escapeHtml(chatMeta.label) + '</span>' +
+          '<span class="trigger-item-badge trigger-primary">Primary</span>' +
+        '</div>' +
+        '<div class="trigger-item-detail">' +
+          '<code class="trigger-detail-command">' + escapeHtml(config.chatCommand) + '</code>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+    hasTriggers = true;
+  }
+
+  // If no triggers configured
+  if (!hasTriggers) {
+    html += '<div class="trigger-empty">No triggers configured</div>';
+  }
+
+  // Add Trigger button
+  html += '<button class="add-source-btn" data-action="add-trigger">+ Add Trigger</button>';
 
   container.innerHTML = html;
 };
