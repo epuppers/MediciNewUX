@@ -149,7 +149,7 @@
       "id": "6.3",
       "title": "Wire Cosimo panel integration",
       "description": "Template Detail Edit with Cosimo (actions dropdown) -> open Cosimo panel with template context. Node popover Edit with Cosimo -> open Cosimo panel with node context. Pre-populate the Cosimo panel input with context text.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "6.4",
