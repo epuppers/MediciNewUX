@@ -19,3 +19,13 @@
 
 ---
 
+## Iteration 1 — Task 1.1: Create MOCK_WORKFLOW_TEMPLATES
+- What was done: All 7 templates created in previous iteration (commit 3225950), prd.json was not updated — fixed now.
+- Files modified: js/mock-data.js (previous), scripts/ralph/prd.json (this iteration)
+- Gotchas / learnings: None
+
+## Iteration 2 — Task 1.2: Create MOCK_WORKFLOW_RUNS
+- What was done: Added MOCK_WORKFLOW_RUNS object with two run entries keyed by threadId. wf-run-rentroll-047 (completed, all nodes completed, gate skipped, 1 inference exception at 94% confidence). wf-run-tener-12 (waiting at gate n6, 3 exceptions: conflicting-value, low-confidence at 67%, format-unknown). Node statuses reference actual node IDs from their respective templates.
+- Files modified: js/mock-data.js
+- Gotchas / learnings: MOCK_WORKFLOW_RUNS is keyed by threadId (not runId) for easy lookup when selecting threads. Node IDs must match the template's nodes array exactly.
+

@@ -5,13 +5,13 @@
       "id": "1.1",
       "title": "Create MOCK_WORKFLOW_TEMPLATES",
       "description": "Replace MOCK_WORKFLOWS in mock-data.js with MOCK_WORKFLOW_TEMPLATES. Include all 7 templates (rent-roll, k1-extract, lp-waterfall, fee-calc, covenant, tener-valuation, due-diligence) with full data per CLAUDE.md Template Data Model: id, title, description, status, version, createdBy, createdDate, triggerType, triggerConfig, linkedLessons, linkedEntities, inputSchema, outputSchema, nodes array, edges array, runs summary, recentRuns array. Due-diligence has the most complex graph (branching to parallel paths then merging). Update any code referencing MOCK_WORKFLOWS to use new object. App must load without errors.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "1.2",
       "title": "Create MOCK_WORKFLOW_RUNS",
       "description": "Add MOCK_WORKFLOW_RUNS to mock-data.js with two run objects per CLAUDE.md: wf-run-tener-12 (status: waiting, 3 exceptions) and wf-run-rentroll-047 (status: completed, 1 inference exception). Each run has: templateId, runId, status, triggerType, triggeredBy, startTime, threadId, inputManifest, nodeStatuses (keyed by node ID), exceptions, outputManifest.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "1.3",
