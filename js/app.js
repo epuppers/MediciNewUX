@@ -3284,6 +3284,19 @@ BrainMemory.renderMemoryFromData = function() {
   var factList = document.getElementById('memFactList');
   if (factList) {
     factList.innerHTML = MOCK_MEMORY.facts.map(function(f) {
+      var entityChipsHtml = '';
+      if (f.linkedEntities && f.linkedEntities.length > 0) {
+        var entityTypeIcons = { person: 'person', fund: 'building', property: 'folder', document: 'lessons' };
+        entityChipsHtml = '<div class="mem-entity-chips">' +
+          f.linkedEntities.map(function(ent) {
+            var iconName = entityTypeIcons[ent.type] || 'graphs';
+            return '<button class="mem-entity-chip" data-entity-name="' + escapeHtml(ent.name) + '" data-entity-type="' + escapeHtml(ent.type) + '">' +
+              icon(iconName, 10, 10) +
+              '<span class="mem-entity-chip-label">' + escapeHtml(ent.name) + '</span>' +
+            '</button>';
+          }).join('') +
+        '</div>';
+      }
       return '<div class="mem-fact-card" data-category="' + f.category + '">' +
         '<div class="mem-fact-top">' +
           '<span class="mem-fact-cat cat-' + f.category + '">' + f.category.charAt(0).toUpperCase() + f.category.slice(1) + '</span>' +
@@ -3296,6 +3309,7 @@ BrainMemory.renderMemoryFromData = function() {
           '</div>' +
         '</div>' +
         '<div class="mem-fact-text">' + escapeHtml(f.text) + '</div>' +
+        entityChipsHtml +
         '<div class="mem-fact-meta">' +
           '<span class="mem-fact-source">' + escapeHtml(f.source) + '</span>' +
           '<span class="mem-fact-date">' + escapeHtml(f.date) + '</span>' +
@@ -4705,6 +4719,25 @@ Graph.openCosimoForEntity = function() {
   UI.openCosimoPanel();
 };
 
+/** Finds a graph entity by label name and navigates to it. Shows toast if not found. */
+Graph.selectByName = function(name) {
+  for (var cat in MOCK_GRAPH_DATA.nodes) {
+    var nodes = MOCK_GRAPH_DATA.nodes[cat];
+    for (var i = 0; i < nodes.length; i++) {
+      if (nodes[i].label === name) {
+        var catId = cat;
+        var entityId = nodes[i].id;
+        if (!Graph.graphBuilt) Graph.buildGraph();
+        setTimeout(function() {
+          Graph.openGraphEntity(entityId, catId);
+        }, 150);
+        return;
+      }
+    }
+  }
+  showToast('Entity "' + name + '" not found in graph');
+};
+
 // Render graph when switching to graphs section
 (function() {
   var origSwitchBrainSection = UI.switchBrainSection;
@@ -5195,6 +5228,14 @@ function escapeHtml(text) {
       if (yesBtn) { BrainMemory.confirmDelete(yesBtn); return; }
       var noBtn = e.target.closest('.mem-delete-no');
       if (noBtn) { BrainMemory.cancelDelete(noBtn); return; }
+      var entityChip = e.target.closest('.mem-entity-chip');
+      if (entityChip) {
+        var entityName = entityChip.getAttribute('data-entity-name');
+        var graphBtn = document.querySelector('.brain-nav-btn[data-section="graphs"]');
+        UI.switchBrainSection('graphs', graphBtn);
+        Graph.selectByName(entityName);
+        return;
+      }
     });
   }
 

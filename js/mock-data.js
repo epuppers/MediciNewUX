@@ -606,14 +606,14 @@ const MOCK_MEMORY = {
   selectedTraits: ['Direct', 'Detail-oriented', 'Professional'],
   presetTraits: ['Witty', 'Friendly', 'Formal', 'Direct', 'Cautious', 'Detail-oriented', 'Big-picture', 'Encouraging', 'Professional', 'Concise', 'Thorough'],
   facts: [
-    { category: 'preference', text: 'Prefers IRR over MOIC when comparing fund performance across vintages.', source: 'Learned from conversation', date: 'Feb 14, 2026' },
-    { category: 'contact', text: 'Reports go to Sarah Chen (CFO) and Marcus Webb (COO). Sarah prefers executive summaries; Marcus wants full detail.', source: 'Learned from conversation', date: 'Feb 12, 2026' },
-    { category: 'fund', text: 'Fund III has a 2/20 fee structure with European waterfall. GP commit is 5%. Preferred return is 8%.', source: 'Added by you', date: 'Feb 10, 2026' },
-    { category: 'style', text: 'Always include vintage year when referencing funds. Never abbreviate fund names in reports.', source: 'Learned from conversation', date: 'Feb 8, 2026' },
-    { category: 'workflow', text: 'Uses Yardi Voyager for property management data exports. Prefers CSV format over Excel for data imports.', source: 'Learned from conversation', date: 'Feb 6, 2026' },
-    { category: 'preference', text: 'When building financial models, always start with assumptions tab, then build out to projections.', source: 'Learned from conversation', date: 'Feb 3, 2026' },
-    { category: 'contact', text: 'Primary auditor is Deloitte. Audit partner is James Whitfield. Fiscal year ends March 31.', source: 'Added by you', date: 'Jan 28, 2026' },
-    { category: 'fund', text: 'Hilgard Fund is a 2021 vintage focused on multifamily residential. 14 LP investors. Currently in harvest period.', source: 'Learned from conversation', date: 'Jan 22, 2026' }
+    { category: 'preference', text: 'Prefers IRR over MOIC when comparing fund performance across vintages.', source: 'Learned from conversation', date: 'Feb 14, 2026', linkedEntities: [] },
+    { category: 'contact', text: 'Reports go to Sarah Chen (CFO) and Marcus Webb (COO). Sarah prefers executive summaries; Marcus wants full detail.', source: 'Learned from conversation', date: 'Feb 12, 2026', linkedEntities: [{name: 'Sarah Chen', type: 'person'}, {name: 'Marcus Webb', type: 'person'}] },
+    { category: 'fund', text: 'Fund III has a 2/20 fee structure with European waterfall. GP commit is 5%. Preferred return is 8%.', source: 'Added by you', date: 'Feb 10, 2026', linkedEntities: [{name: 'Fund III', type: 'fund'}] },
+    { category: 'style', text: 'Always include vintage year when referencing funds. Never abbreviate fund names in reports.', source: 'Learned from conversation', date: 'Feb 8, 2026', linkedEntities: [] },
+    { category: 'workflow', text: 'Uses Yardi Voyager for property management data exports. Prefers CSV format over Excel for data imports.', source: 'Learned from conversation', date: 'Feb 6, 2026', linkedEntities: [{name: 'Yardi Voyager', type: 'document'}] },
+    { category: 'preference', text: 'When building financial models, always start with assumptions tab, then build out to projections.', source: 'Learned from conversation', date: 'Feb 3, 2026', linkedEntities: [] },
+    { category: 'contact', text: 'Primary auditor is Deloitte. Audit partner is James Whitfield. Fiscal year ends March 31.', source: 'Added by you', date: 'Jan 28, 2026', linkedEntities: [{name: 'Deloitte', type: 'person'}, {name: 'James Whitfield', type: 'person'}] },
+    { category: 'fund', text: 'Hilgard Fund is a 2021 vintage focused on multifamily residential. 14 LP investors. Currently in harvest period.', source: 'Learned from conversation', date: 'Jan 22, 2026', linkedEntities: [{name: 'Hilgard Fund', type: 'fund'}] }
   ]
 };
 
