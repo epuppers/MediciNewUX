@@ -5021,6 +5021,19 @@ function escapeHtml(text) {
     }
   });
 
+  // --- File chip remove button (delegation) ---
+  document.addEventListener('click', function(e) {
+    var removeBtn = e.target.closest('.input-file-chip-remove');
+    if (removeBtn) {
+      var chip = removeBtn.closest('.input-file-chip');
+      if (chip) {
+        var strip = chip.closest('.input-file-strip');
+        chip.remove();
+        if (strip && !strip.querySelector('.input-file-chip')) strip.remove();
+      }
+    }
+  });
+
   // --- Model selector/options (delegation) ---
   document.addEventListener('click', function(e) {
     var modelBtn = e.target.closest('.model-selector-btn');

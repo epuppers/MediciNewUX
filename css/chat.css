@@ -704,6 +704,24 @@
   flex-shrink: 0;
 }
 
+/* File type icon variants */
+.file-icon-pdf {
+  background: var(--blue-3);
+  border-color: var(--blue-2) var(--blue-3) var(--blue-3) var(--blue-2);
+}
+
+/* User message file attachments container */
+.msg-file-attachments {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.msg-file-attachments .file-attachment {
+  margin: 0;
+}
+
 /* ============================================
    RIGHT FILE PANEL
    ============================================ */
@@ -1613,6 +1631,88 @@
   background: var(--white);
 }
 
+/* ============================================
+   FILE UPLOAD PREVIEW STRIP
+   ============================================ */
+.input-file-strip {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.input-file-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 4px 8px;
+  background: var(--off-white);
+  border: 1px solid;
+  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+  border-radius: var(--r-sm);
+}
+
+.input-file-chip:hover {
+  background: var(--taupe-1);
+}
+
+.input-file-chip-icon {
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.input-file-chip-name {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--taupe-5);
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.input-file-chip-size {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--taupe-3);
+  flex-shrink: 0;
+}
+
+.input-file-chip-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  font-size: 12px;
+  line-height: 1;
+  color: var(--taupe-3);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.input-file-chip-remove:hover {
+  background: rgba(var(--red-rgb), 0.1);
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.input-file-chip-remove:active {
+  background: rgba(var(--red-rgb), 0.2);
+}
+
+.input-file-chip-remove:focus-visible {
+  outline: 2px solid var(--violet-3);
+  outline-offset: 1px;
+}
+
 .input-row {
   display: flex;
   gap: 6px;
@@ -1990,6 +2090,20 @@
 
 [data-theme="dark"] .file-attachment-icon {
   color: var(--text-light);
+}
+
+/* Input file strip */
+[data-theme="dark"] .input-file-chip {
+  background: var(--surface-2);
+  border-color: var(--taupe-3) var(--taupe-4) var(--taupe-4) var(--taupe-3);
+}
+
+[data-theme="dark"] .input-file-chip:hover {
+  background: var(--surface-3);
+}
+
+[data-theme="dark"] .input-file-chip-remove:hover {
+  background: rgba(var(--red-rgb), 0.15);
 }
 
 /* Right panel */
