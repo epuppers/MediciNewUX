@@ -1,0 +1,21 @@
+# Progress Log — Workflows Rebuild
+
+## Codebase Patterns
+- ALL colors must use `var(--token)` from tokens.css — no raw hex/rgb values anywhere
+- For alpha colors use `rgba(var(--violet-3-rgb), 0.1)` pattern (RGB triplet tokens defined in tokens.css)
+- Dark mode overrides go in the SAME CSS file using `[data-theme="dark"]` selector
+- Animation gating: wrap all animations with `[data-a11y-motion="reduce"]` to disable them
+- Event delegation: all handlers go in `initEventListeners()` via event delegation, never inline
+- Mock data: use `MOCK_` prefix, all in `js/mock-data.js`
+- New functions: use `Workflows.*` or `Chat.*` namespace in `app.js`
+- CSS classes: kebab-case (e.g., `.wf-card-trigger-chip`)
+- JS functions: Namespace.camelCase (e.g., `Workflows.renderLibrary()`)
+- HTML IDs: camelCase (e.g., `#workflowPanel`)
+- Beveled borders pattern: `border-color: light dark dark light` for 3D raised effect
+- Font stack: ChicagoFLF (pixel headings), IBM Plex Mono (UI/code), DM Sans (body)
+- Border radii: `var(--r-sm)` (3px), `var(--r-md)` (4px), `var(--r-lg)` (6px) — never raw px
+- Dev server: `python3 -m http.server 8082` serves at http://localhost:8082/index.html
+- Commit format: `workflows [task number]: [brief description]`
+
+---
+

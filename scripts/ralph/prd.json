@@ -1,0 +1,173 @@
+{
+  "branchName": "workflows-rebuild",
+  "userStories": [
+    {
+      "id": "1.1",
+      "title": "Create MOCK_WORKFLOW_TEMPLATES",
+      "description": "Replace MOCK_WORKFLOWS in mock-data.js with MOCK_WORKFLOW_TEMPLATES. Include all 7 templates (rent-roll, k1-extract, lp-waterfall, fee-calc, covenant, tener-valuation, due-diligence) with full data per CLAUDE.md Template Data Model: id, title, description, status, version, createdBy, createdDate, triggerType, triggerConfig, linkedLessons, linkedEntities, inputSchema, outputSchema, nodes array, edges array, runs summary, recentRuns array. Due-diligence has the most complex graph (branching to parallel paths then merging). Update any code referencing MOCK_WORKFLOWS to use new object. App must load without errors.",
+      "passes": false
+    },
+    {
+      "id": "1.2",
+      "title": "Create MOCK_WORKFLOW_RUNS",
+      "description": "Add MOCK_WORKFLOW_RUNS to mock-data.js with two run objects per CLAUDE.md: wf-run-tener-12 (status: waiting, 3 exceptions) and wf-run-rentroll-047 (status: completed, 1 inference exception). Each run has: templateId, runId, status, triggerType, triggeredBy, startTime, threadId, inputManifest, nodeStatuses (keyed by node ID), exceptions, outputManifest.",
+      "passes": false
+    },
+    {
+      "id": "1.3",
+      "title": "Create MOCK_WORKFLOW_COMMANDS and update MOCK_THREADS",
+      "description": "Add MOCK_WORKFLOW_COMMANDS array to mock-data.js with 5 chat commands per CLAUDE.md. Add 3 new workflow-linked entries to MOCK_THREADS: wf-run-rentroll-047 (completed run, indicator: ready), tener-batch-12 (waiting run, indicator: waiting), wf-create-dd (creation flow, no run link). Each new thread has workflowRunId field. Update thread sidebar HTML in index.html for the 3 new threads with appropriate data attributes.",
+      "passes": false
+    },
+    {
+      "id": "1.4",
+      "title": "Add new trigger icons to icons.js",
+      "description": "Add 6 new icon entries to ICONS object: folderWatch (folder with eye), schedule (clock), chatCommand (terminal/prompt >_), emailTrigger (envelope), manualTrigger (play triangle), webhook (chain links). Follow existing icon conventions: SVG with viewBox, fill='none', stroke='currentColor'.",
+      "passes": false
+    },
+    {
+      "id": "2.1",
+      "title": "Rebuild Library HTML and rendering function",
+      "description": "Replace hardcoded cards inside #wfListing > .wf-listing with empty container. Create Workflows.renderLibrary() that reads MOCK_WORKFLOW_TEMPLATES, builds card HTML, injects it. Each card: .wf-card with header (title + status badge + trigger type chip), body (description), footer (linked lesson chip if any, last run status indicator, Run button). Stats bar computes totals from data. Call on init. Wire card click to Workflows.showWorkflowDetail(id) via event delegation.",
+      "passes": false
+    },
+    {
+      "id": "2.2",
+      "title": "Rebuild workflow sidebar",
+      "description": "Replace hardcoded items in #workflowSidebar with dynamic rendering. Create Workflows.renderSidebar(). Add Active Runs section at top populated from MOCK_WORKFLOW_RUNS where status is running or waiting — each item shows template name, thread title, status indicator. Below: template list with trigger type icons. Wire sidebar clicks via event delegation.",
+      "passes": false
+    },
+    {
+      "id": "2.3",
+      "title": "Library CSS",
+      "description": "Add to workflows.css: .wf-card-trigger-chip (icon + label chip, mono 10px), .wf-card-lesson-chip (violet pill with diamond), .wf-card-run-status (dot + text), .wf-card-run-btn (small bevel button, visible on card hover), .wf-active-runs (sidebar section, tinted background), .wf-active-run-item, @keyframes wf-pulse (gated by [data-a11y-motion]). Include full dark mode overrides for all new classes.",
+      "passes": false
+    },
+    {
+      "id": "3.1",
+      "title": "Two-column detail layout",
+      "description": "Replace content inside #wfDetail with new structure: header (back button + title + actions dropdown + Run button), then .wf-detail-columns flex row with .wf-detail-graph-col (60%) and .wf-detail-info-col (40%). Add CSS for two-column layout, graph container (.flow-graph-container — full height, bevel border, overflow hidden), and info column (overflow-y auto). Include dark mode overrides. Update Workflows.showWorkflowDetail() to populate from MOCK_WORKFLOW_TEMPLATES.",
+      "passes": false
+    },
+    {
+      "id": "3.2",
+      "title": "Flow graph SVG renderer",
+      "description": "Create Workflows.renderFlowGraph(templateId, containerId, options). Options: { compact: false, showStatus: false, runId: null }. Read nodes/edges from template data, calculate pixel positions from x/y grid coords (x-spacing 200px, y-spacing 100px), render SVG. Nodes: rounded rect (160x60 full, 100x36 compact), stroke/fill by type per CLAUDE.md node color scheme, title text (mono 11px bold), description (sans 10px, truncated — full mode only), lesson chip if applicable. Gate nodes: dashed stroke. Edges: lines with arrowheads, branch labels at midpoints. All colors via CSS custom properties. Add SVG CSS to components.css.",
+      "passes": false
+    },
+    {
+      "id": "3.3",
+      "title": "Flow graph interaction (zoom, pan, node click)",
+      "description": "Add mouse wheel zoom (scale transform on SVG viewBox or group) and mouse drag pan to flow graph container (full mode only, not compact). Add click handler on nodes calling Workflows.selectNode(nodeId). Respect [data-a11y-motion]. Store current zoom/pan state in Workflows namespace.",
+      "passes": false
+    },
+    {
+      "id": "3.4",
+      "title": "Node detail popover",
+      "description": "Create Workflows.openNodePopover(nodeId, templateId, anchorRect) rendering .node-popover (320px wide, absolutely positioned over graph) with: type label badge, title, full description, linked lesson detail, Edit with Cosimo button, Close button. Click-outside-to-dismiss. Add CSS for .node-popover to components.css with dark mode overrides. Wire Edit with Cosimo to open existing Cosimo panel.",
+      "passes": false
+    },
+    {
+      "id": "4.1",
+      "title": "Schema tab",
+      "description": "Create #tab-schema in info column. Two sections: Input Schema (description text + field table) and Output Schema (format chip + destination + column list). Each input field row: name (mono bold), type badge (small chip), required indicator, description text. Use existing .detail-section pattern. Populate from MOCK_WORKFLOW_TEMPLATES[id].inputSchema and .outputSchema. Add CSS for .schema-field-row, .schema-type-badge, .schema-required to components.css.",
+      "passes": false
+    },
+    {
+      "id": "4.2",
+      "title": "Triggers tab",
+      "description": "Create #tab-triggers panel. List active triggers: icon by type, type label, config detail (folder path / cron / command string). Add Trigger dashed button using existing .add-source-btn pattern. Populate from template triggerConfig. Add CSS for .trigger-item to components.css.",
+      "passes": false
+    },
+    {
+      "id": "4.3",
+      "title": "Runs tab",
+      "description": "Create #tab-runs panel. Run history table using existing .run-row pattern. Each row: status dot, run ID, trigger + detail, timestamp, duration. Rows with threadId get cursor pointer and hover effect — clicking navigates to chat thread (wired in Phase 6). Populate from template recentRuns.",
+      "passes": false
+    },
+    {
+      "id": "4.4",
+      "title": "Lessons tab",
+      "description": "Create #tab-lessons panel. Card for each linked lesson: name, which nodes use it, last updated. Link Lesson dashed button. Populate by cross-referencing template linkedLessons with MOCK_LESSONS data.",
+      "passes": false
+    },
+    {
+      "id": "5.1",
+      "title": "Workflow Context Panel structure",
+      "description": "Add #workflowPanel to chat area in index.html (same side and pattern as #filePanel). Structure: .workflow-panel-header (template name, run ID, status badge, close button), .workflow-panel-graph (container for compact mini flow graph), .workflow-panel-details (scrollable: input manifest, exceptions, output manifest). Create Chat.openWorkflowPanel(runId) and Chat.closeWorkflowPanel(). Panel opens automatically when selecting thread with workflowRunId, closes when selecting thread without one. Resizable via drag handle. Add CSS to chat.css with dark mode overrides.",
+      "passes": false
+    },
+    {
+      "id": "5.2",
+      "title": "Compact flow graph with run status",
+      "description": "Extend Workflows.renderFlowGraph() to handle { compact: true, showStatus: true, runId: '...' }. Compact: nodes 100x36, title only, no description, no zoom/pan, fits ~300px width. Status mode: node fill colors from MOCK_WORKFLOW_RUNS[runId].nodeStatuses — completed (green), running (violet + pulse), waiting (amber), pending (faded taupe), failed (red), skipped (faded + strikethrough). Wire into workflow context panel graph container.",
+      "passes": false
+    },
+    {
+      "id": "5.3",
+      "title": "Workflow chat thread content (completed run)",
+      "description": "Add chat content HTML for wf-run-rentroll-047 thread following mock conversation script Thread A in CLAUDE.md. User message with /rent-roll command chip (.wf-command-chip). Cosimo messages with run summary artifact and spreadsheet preview artifact. Use existing .msg-block, .user-card, .ai-block, .artifact patterns. Add CSS for .wf-command-chip (mono, violet bg, white text, pill shape). Update Chat.selectThread() to show this content.",
+      "passes": false
+    },
+    {
+      "id": "5.4",
+      "title": "Workflow chat thread content (gate run)",
+      "description": "Add chat content HTML for tener-batch-12 thread following mock conversation script Thread B in CLAUDE.md. Gate messages get .msg-gate class on .ai-block — 3px amber left border, light amber background tint, Awaiting Review chip in header. Exception table as .data-tbl artifact. Add CSS for .msg-gate and .msg-gate-chip. Both light and dark mode.",
+      "passes": false
+    },
+    {
+      "id": "5.5",
+      "title": "Workflow chat thread content (creation flow)",
+      "description": "Add chat content HTML for wf-create-dd thread following mock conversation script Thread C in CLAUDE.md. Cosimo shows proposed flow graph as artifact — call Workflows.renderFlowGraph('due-diligence', artBodyDivId, { compact: false, showStatus: false }) after DOM element is visible (use requestAnimationFrame). Show both initial and updated graph artifacts.",
+      "passes": false
+    },
+    {
+      "id": "5.6",
+      "title": "Chat command autocomplete",
+      "description": "When user types / as first character in chat input, show .wf-command-autocomplete dropdown above input. Populate from MOCK_WORKFLOW_COMMANDS. Each item: command (mono bold violet), label, description. Keyboard nav (arrow keys, Enter, Escape). Mouse click to select. Selecting inserts command text. If command expects entity arg, append placeholder. Dismiss on Escape / click-outside / blur. Add CSS to chat.css with dark mode overrides.",
+      "passes": false
+    },
+    {
+      "id": "5.7",
+      "title": "Thread sidebar workflow indicators",
+      "description": "Update sidebar thread rendering to detect workflowRunId on threads. Add small gear icon (.thread-wf-icon) before title text. Add waiting indicator type (amber dot + Waiting). Add running indicator (violet dot + pulse). Pulse animation gated by [data-a11y-motion]. Add CSS to layout.css or chat.css.",
+      "passes": false
+    },
+    {
+      "id": "6.1",
+      "title": "Wire Library to Detail to Chat navigation",
+      "description": "Library card click -> Workflows.showWorkflowDetail(id) (verify smooth). Detail Run button -> switch to Chat view, select mock run thread, open workflow panel. Detail Runs tab row click -> if threadId, switch to Chat, select thread. Back button -> Library. Store last-viewed state in Workflows namespace so tab switching preserves it.",
+      "passes": false
+    },
+    {
+      "id": "6.2",
+      "title": "Wire Chat to Workflows navigation",
+      "description": "Sidebar active run click -> switch to Chat, select thread, open workflow panel. + New Workflow button -> switch to Chat, select wf-create-dd thread. Command autocomplete selection -> select mock run thread for that template, open workflow panel.",
+      "passes": false
+    },
+    {
+      "id": "6.3",
+      "title": "Wire Cosimo panel integration",
+      "description": "Template Detail Edit with Cosimo (actions dropdown) -> open Cosimo panel with template context. Node popover Edit with Cosimo -> open Cosimo panel with node context. Pre-populate the Cosimo panel input with context text.",
+      "passes": false
+    },
+    {
+      "id": "6.4",
+      "title": "Toast notifications and keyboard shortcuts",
+      "description": "Fire showToast() when navigating to completed run (Run #047 completed) or waiting run (Run #012 waiting for review). Verify Escape key dismisses: node popover -> command autocomplete -> workflow panel (priority order). Verify / key in chat input triggers autocomplete.",
+      "passes": false
+    },
+    {
+      "id": "6.5",
+      "title": "Final QA and polish",
+      "description": "Full checklist: all navigation paths work, no console errors, light mode correct, dark mode correct, [data-a11y-motion] disables all pulse animations, [data-a11y-contrast] readable on all new elements, [data-a11y-font] doesn't break flow graph layout, font size slider doesn't break layout, purple intensity slider affects new violet/berry elements, existing chat threads (fund3, hilgard, q4lp, k1, erabor) unchanged, Brain section unchanged, login page unchanged, file panel works alongside workflow panel. Fix any issues found.",
+      "passes": false
+    },
+    {
+      "id": "6.6",
+      "title": "Update CLAUDE.md",
+      "description": "Update Project Structure section with any new files or changed line counts. Update JS Namespace Modules to include new Workflows.* and Chat.* functions. Update Key JS Sections list. Verify all documentation is current.",
+      "passes": false
+    }
+  ]
+}

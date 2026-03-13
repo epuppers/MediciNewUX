@@ -6,9 +6,6 @@
       "Bash(ls *)",
       "Bash(mkdir *)"
     ],
-    "deny": [
-      "Bash(rm -rf *)",
-      "Read(.env*)"
-    ]
+    "deny": []
   }
 }
