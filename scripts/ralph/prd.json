@@ -161,7 +161,7 @@
       "id": "6.5",
       "title": "Final QA and polish",
       "description": "Full checklist: all navigation paths work, no console errors, light mode correct, dark mode correct, [data-a11y-motion] disables all pulse animations, [data-a11y-contrast] readable on all new elements, [data-a11y-font] doesn't break flow graph layout, font size slider doesn't break layout, purple intensity slider affects new violet/berry elements, existing chat threads (fund3, hilgard, q4lp, k1, erabor) unchanged, Brain section unchanged, login page unchanged, file panel works alongside workflow panel. Fix any issues found.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "6.6",
