@@ -1142,146 +1142,20 @@
         </div>
 
         <div class="wf-listing">
-          <!-- Stats -->
-          <div class="wf-stats-section bevel">
+          <!-- Stats (populated by Workflows.renderLibrary) -->
+          <div class="wf-stats-section bevel" id="wfStatsSection">
             <div class="wf-stats-section-bar">
               <div class="art-stripe"></div>
               <span class="detail-section-title">Overview</span>
               <div class="art-stripe"></div>
             </div>
-            <div class="wf-stats-body">
-              <span class="wf-stat-inline"><span class="wf-stat-inline-label">Total</span> <span class="wf-stat-inline-val">5</span></span>
-              <span class="wf-stats-sep"></span>
-              <span class="wf-stat-inline"><span class="wf-stat-inline-label">Active</span> <span class="wf-stat-inline-val green">3</span></span>
-              <span class="wf-stats-sep"></span>
-              <span class="wf-stat-inline"><span class="wf-stat-inline-label">Runs Today</span> <span class="wf-stat-inline-val">12</span></span>
-              <span class="wf-stats-sep"></span>
-              <span class="wf-stat-inline"><span class="wf-stat-inline-label">Failed</span> <span class="wf-stat-inline-val red">1</span></span>
-            </div>
+            <div class="wf-stats-body" id="wfStatsBody"></div>
           </div>
 
-          <!-- Cards -->
-          <div class="wf-card bevel" data-wf-id="rent-roll">
-            <div class="wf-card-header">
-              <span class="wf-card-title">Rent Roll Extraction</span>
-              <span class="wf-card-status label-mono status-active">Active</span>
-            </div>
-            <div class="wf-card-body">
-              <span class="wf-card-desc">Extracts and standardizes rent roll data from uploaded PDFs. Outputs clean xlsx with unit-level detail, floor mapping, and lease terms.</span>
-              <div class="wf-card-meta">
-                <div class="wf-meta-item">
-                  <span class="wf-meta-label">Steps</span>
-                  <span class="wf-meta-value">4</span>
-                </div>
-                <div class="wf-meta-item">
-                  <span class="wf-meta-label">Runs</span>
-                  <span class="wf-meta-value">47</span>
-                </div>
-                <div class="wf-meta-item">
-                  <span class="wf-meta-label">Last</span>
-                  <span class="wf-meta-value">2h</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <!-- Cards (populated by Workflows.renderLibrary) -->
+          <div id="wfCardContainer"></div>
 
-          <div class="wf-card bevel" data-wf-id="k1-extract">
-            <div class="wf-card-header">
-              <span class="wf-card-title">K-1 Document Processing</span>
-              <span class="wf-card-status label-mono status-active">Active</span>
-            </div>
-            <div class="wf-card-body">
-              <span class="wf-card-desc">Parses K-1 tax documents, extracts allocations, and maps to fund accounting structure. Flags discrepancies against capital accounts.</span>
-              <div class="wf-card-meta">
-                <div class="wf-meta-item">
-                  <span class="wf-meta-label">Steps</span>
-                  <span class="wf-meta-value">5</span>
-                </div>
-                <div class="wf-meta-item">
-                  <span class="wf-meta-label">Runs</span>
-                  <span class="wf-meta-value">23</span>
-                </div>
-                <div class="wf-meta-item">
-                  <span class="wf-meta-label">Last</span>
-                  <span class="wf-meta-value">6h</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="wf-card bevel" data-wf-id="lp-waterfall">
-            <div class="wf-card-header">
-              <span class="wf-card-title">LP Distribution Waterfall</span>
-              <span class="wf-card-status label-mono status-draft">Draft</span>
-            </div>
-            <div class="wf-card-body">
-              <span class="wf-card-desc">Calculates LP/GP distribution splits across preferred return, catch-up, and carried interest tiers. Generates allocation schedules.</span>
-              <div class="wf-card-meta">
-                <div class="wf-meta-item">
-                  <span class="wf-meta-label">Steps</span>
-                  <span class="wf-meta-value">6</span>
-                </div>
-                <div class="wf-meta-item">
-                  <span class="wf-meta-label">Runs</span>
-                  <span class="wf-meta-value">0</span>
-                </div>
-                <div class="wf-meta-item">
-                  <span class="wf-meta-label">Last</span>
-                  <span class="wf-meta-value">—</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="wf-card bevel" data-wf-id="fee-calc">
-            <div class="wf-card-header">
-              <span class="wf-card-title">Management Fee Calculator</span>
-              <span class="wf-card-status label-mono status-active">Active</span>
-            </div>
-            <div class="wf-card-body">
-              <span class="wf-card-desc">Computes management fees across fund vehicles using committed/invested capital basis, step-downs, and offset provisions.</span>
-              <div class="wf-card-meta">
-                <div class="wf-meta-item">
-                  <span class="wf-meta-label">Steps</span>
-                  <span class="wf-meta-value">3</span>
-                </div>
-                <div class="wf-meta-item">
-                  <span class="wf-meta-label">Runs</span>
-                  <span class="wf-meta-value">31</span>
-                </div>
-                <div class="wf-meta-item">
-                  <span class="wf-meta-label">Last</span>
-                  <span class="wf-meta-value">1d</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="wf-card bevel" data-wf-id="covenant">
-            <div class="wf-card-header">
-              <span class="wf-card-title">Loan Covenant Monitor</span>
-              <span class="wf-card-status label-mono status-paused">Paused</span>
-            </div>
-            <div class="wf-card-body">
-              <span class="wf-card-desc">Monitors DSCR, LTV, and debt yield covenants across the loan book. Alerts when metrics approach or breach thresholds.</span>
-              <div class="wf-card-meta">
-                <div class="wf-meta-item">
-                  <span class="wf-meta-label">Steps</span>
-                  <span class="wf-meta-value">4</span>
-                </div>
-                <div class="wf-meta-item">
-                  <span class="wf-meta-label">Runs</span>
-                  <span class="wf-meta-value">18</span>
-                </div>
-                <div class="wf-meta-item">
-                  <span class="wf-meta-label">Last</span>
-                  <span class="wf-meta-value">10d</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Empty state (hidden while cards exist) -->
+          <!-- Empty state (shown when no cards) -->
           <div class="wf-no-results hidden" id="wfNoResults">
             <div class="brain-empty-icon">
               <span data-icon="workflows" data-icon-w="32" data-icon-h="32"></span>

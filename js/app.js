@@ -1721,6 +1721,105 @@ document.addEventListener('click', function(e) {
 });
 
 // ============================================
+// WORKFLOW LIBRARY
+// ============================================
+
+/** Map triggerType values to icon names and labels */
+Workflows._triggerMeta = {
+  'folder-watch': { icon: 'folderWatch', label: 'Folder Watch' },
+  'schedule':     { icon: 'schedule',     label: 'Schedule' },
+  'chat-command': { icon: 'chatCommand',  label: 'Chat Command' },
+  'email':        { icon: 'emailTrigger', label: 'Email' },
+  'manual':       { icon: 'manualTrigger', label: 'Manual' },
+  'chained':      { icon: 'webhook',      label: 'Chained' }
+};
+
+/** Renders the workflow library listing: stats bar and template cards.
+ * Reads from MOCK_WORKFLOW_TEMPLATES, populates #wfStatsBody and #wfCardContainer.
+ */
+Workflows.renderLibrary = function() {
+  var templates = Object.values(MOCK_WORKFLOW_TEMPLATES);
+  var statsBody = document.getElementById('wfStatsBody');
+  var cardContainer = document.getElementById('wfCardContainer');
+  var noResults = document.getElementById('wfNoResults');
+  if (!statsBody || !cardContainer) return;
+
+  // Compute stats
+  var total = templates.length;
+  var active = templates.filter(function(t) { return t.status === 'active'; }).length;
+  var totalRuns = templates.reduce(function(sum, t) { return sum + (t.runs ? t.runs.total : 0); }, 0);
+  var failed = templates.reduce(function(sum, t) {
+    if (!t.recentRuns) return sum;
+    return sum + t.recentRuns.filter(function(r) { return r.status === 'failed'; }).length;
+  }, 0);
+
+  statsBody.innerHTML =
+    '<span class="wf-stat-inline"><span class="wf-stat-inline-label">Total</span> <span class="wf-stat-inline-val">' + total + '</span></span>' +
+    '<span class="wf-stats-sep"></span>' +
+    '<span class="wf-stat-inline"><span class="wf-stat-inline-label">Active</span> <span class="wf-stat-inline-val green">' + active + '</span></span>' +
+    '<span class="wf-stats-sep"></span>' +
+    '<span class="wf-stat-inline"><span class="wf-stat-inline-label">Total Runs</span> <span class="wf-stat-inline-val">' + totalRuns + '</span></span>' +
+    '<span class="wf-stats-sep"></span>' +
+    '<span class="wf-stat-inline"><span class="wf-stat-inline-label">Failed</span> <span class="wf-stat-inline-val red">' + failed + '</span></span>';
+
+  if (templates.length === 0) {
+    cardContainer.innerHTML = '';
+    if (noResults) noResults.classList.remove('hidden');
+    return;
+  }
+  if (noResults) noResults.classList.add('hidden');
+
+  // Build cards
+  var html = '';
+  templates.forEach(function(t) {
+    var statusClass = 'status-' + t.status;
+    var statusLabel = t.status.charAt(0).toUpperCase() + t.status.slice(1);
+    var triggerMeta = Workflows._triggerMeta[t.triggerType] || { icon: 'manualTrigger', label: t.triggerType };
+
+    // Footer: linked lesson chip + last run status + Run button
+    var footerParts = '';
+
+    // Linked lesson chip
+    if (t.linkedLessons && t.linkedLessons.length > 0) {
+      var lessonId = t.linkedLessons[0];
+      var lesson = typeof MOCK_LESSONS !== 'undefined' ? MOCK_LESSONS[lessonId] : null;
+      var lessonTitle = lesson ? escapeHtml(lesson.title) : escapeHtml(lessonId);
+      footerParts += '<span class="wf-card-lesson-chip" title="' + lessonTitle + '">◆ ' + lessonTitle + '</span>';
+    }
+
+    // Last run status
+    if (t.recentRuns && t.recentRuns.length > 0) {
+      var lastRun = t.recentRuns[0];
+      var runDotClass = lastRun.status === 'success' ? 'green' : 'red';
+      var runLabel = lastRun.status === 'success' ? 'Success' : 'Failed';
+      footerParts += '<span class="wf-card-run-status"><span class="wf-run-dot ' + runDotClass + '"></span>' + runLabel + ' · ' + escapeHtml(lastRun.time) + '</span>';
+    } else {
+      footerParts += '<span class="wf-card-run-status"><span class="wf-run-dot muted"></span>No runs</span>';
+    }
+
+    html += '<div class="wf-card bevel" data-wf-id="' + t.id + '">' +
+      '<div class="wf-card-header">' +
+        '<div class="wf-card-header-left">' +
+          '<span class="wf-card-title">' + escapeHtml(t.title) + '</span>' +
+          '<span class="wf-card-status label-mono ' + statusClass + '">' + statusLabel + '</span>' +
+          '<span class="wf-card-trigger-chip">' + icon(triggerMeta.icon, 12, 12) + ' ' + escapeHtml(triggerMeta.label) + '</span>' +
+        '</div>' +
+        '<button class="wf-card-run-btn bevel label-mono" data-action="run-card" data-wf-id="' + t.id + '">▶ Run</button>' +
+      '</div>' +
+      '<div class="wf-card-body">' +
+        '<span class="wf-card-desc">' + escapeHtml(t.description) + '</span>' +
+      '</div>' +
+      '<div class="wf-card-footer">' + footerParts + '</div>' +
+    '</div>';
+  });
+
+  cardContainer.innerHTML = html;
+};
+
+// Render library on load
+(function() { Workflows.renderLibrary(); })();
+
+// ============================================
 // WORKFLOW DETAIL
 // ============================================
 /** Shows the detail view for a specific workflow and hides the listing.

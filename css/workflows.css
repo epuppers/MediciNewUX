@@ -143,6 +143,14 @@
   background: rgba(var(--taupe-3-rgb),0.08);
 }
 
+.wf-card-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
 .wf-card-body {
   padding: 10px 14px;
   display: flex;
@@ -182,6 +190,109 @@
   font-size: 13px;
   font-weight: 600;
   color: var(--taupe-5);
+}
+
+/* Trigger type chip */
+.wf-card-trigger-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--taupe-3);
+  background: rgba(var(--taupe-3-rgb), 0.08);
+  padding: 2px 8px;
+  border-radius: var(--r-sm);
+  white-space: nowrap;
+}
+
+.wf-card-trigger-chip svg {
+  flex-shrink: 0;
+}
+
+/* Lesson chip */
+.wf-card-lesson-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--violet-3);
+  background: rgba(var(--violet-3-rgb), 0.08);
+  padding: 2px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 220px;
+}
+
+/* Run status indicator */
+.wf-card-run-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--taupe-3);
+  white-space: nowrap;
+}
+
+.wf-run-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.wf-run-dot.green { background: var(--green); }
+.wf-run-dot.red { background: var(--red); }
+.wf-run-dot.muted { background: var(--taupe-2); }
+
+/* Run button on card */
+.wf-card-run-btn {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 10px;
+  color: var(--violet-3);
+  background: var(--white);
+  border: 1px solid var(--violet-2);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s, background 0.15s, border-color 0.15s;
+  border-radius: var(--r-sm);
+  white-space: nowrap;
+}
+
+.wf-card:hover .wf-card-run-btn {
+  opacity: 1;
+}
+
+.wf-card-run-btn:hover {
+  background: rgba(var(--violet-3-rgb), 0.08);
+  border-color: var(--violet-3);
+}
+
+.wf-card-run-btn:active {
+  border-color: var(--violet-4) var(--violet-1) var(--violet-1) var(--violet-4);
+}
+
+.wf-card-run-btn:focus-visible {
+  outline: 2px solid var(--violet-3);
+  outline-offset: 2px;
+  opacity: 1;
+}
+
+/* Card footer */
+.wf-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px 8px;
+  border-top: 1px solid var(--taupe-1);
 }
 
 /* Workflow empty state */
@@ -588,5 +699,27 @@
 [data-theme="dark"] .back-btn:hover {
   color: var(--taupe-5);
   border-color: var(--taupe-3);
+}
+
+/* Card sub-components */
+[data-theme="dark"] .wf-card-trigger-chip {
+  background: rgba(var(--taupe-3-rgb), 0.12);
+}
+
+[data-theme="dark"] .wf-card-lesson-chip {
+  background: rgba(var(--violet-3-rgb), 0.12);
+}
+
+[data-theme="dark"] .wf-card-footer {
+  border-top-color: var(--taupe-2);
+}
+
+[data-theme="dark"] .wf-card-run-btn {
+  background: transparent;
+  border-color: var(--violet-2);
+}
+
+[data-theme="dark"] .wf-card-run-btn:hover {
+  background: rgba(var(--violet-3-rgb), 0.12);
 }
 
