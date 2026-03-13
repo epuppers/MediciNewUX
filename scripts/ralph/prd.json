@@ -143,7 +143,7 @@
       "id": "6.2",
       "title": "Wire Chat to Workflows navigation",
       "description": "Sidebar active run click -> switch to Chat, select thread, open workflow panel. + New Workflow button -> switch to Chat, select wf-create-dd thread. Command autocomplete selection -> select mock run thread for that template, open workflow panel.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "6.3",
