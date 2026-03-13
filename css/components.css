@@ -127,6 +127,28 @@
   opacity: 0.5;
 }
 
+/* Selected node */
+.flow-node.selected .flow-node-rect {
+  stroke-width: 2.5;
+  filter: brightness(1.05);
+  outline: 2px solid var(--violet-3);
+  outline-offset: 2px;
+}
+
+/* Pannable graph container cursor */
+.flow-graph-container {
+  cursor: grab;
+}
+
+.flow-graph-container:active {
+  cursor: grabbing;
+}
+
+/* Compact mode — no pan cursor */
+.flow-graph-container .flow-graph-compact {
+  cursor: default;
+}
+
 /* Compact mode */
 .flow-graph-compact .flow-node-title {
   font-size: 9px;
@@ -184,6 +206,10 @@
 
 [data-theme="dark"] .flow-node-status-failed .flow-node-rect {
   fill: rgba(var(--red-rgb), 0.12) !important;
+}
+
+[data-theme="dark"] .flow-node.selected .flow-node-rect {
+  outline-color: var(--violet-3);
 }
 
 /* ============================================

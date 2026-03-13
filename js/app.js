@@ -2100,7 +2100,7 @@ Workflows.renderFlowGraph = function(templateId, containerId, options) {
     nodeStatuses = MOCK_WORKFLOW_RUNS[runId].nodeStatuses;
   }
 
-  // Build SVG
+  // Build SVG — use 100% width/height so container controls size; viewBox controls coordinate space
   var svg = '<svg class="flow-graph-svg' + (compact ? ' flow-graph-compact' : '') + '" ' +
     'width="' + svgW + '" height="' + svgH + '" viewBox="0 0 ' + svgW + ' ' + svgH + '" ' +
     'xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Workflow flow graph">';
@@ -2111,6 +2111,11 @@ Workflows.renderFlowGraph = function(templateId, containerId, options) {
     '<path d="M0,0 L8,3 L0,6" class="flow-edge-arrow" />' +
     '</marker>' +
     '</defs>';
+
+  // Wrap all content in a transform group for zoom/pan (full mode only)
+  if (!compact) {
+    svg += '<g class="flow-graph-transform">';
+  }
 
   // Render edges first (below nodes)
   svg += '<g class="flow-edges">';
@@ -2206,11 +2211,133 @@ Workflows.renderFlowGraph = function(templateId, containerId, options) {
   });
   svg += '</g>';
 
+  // Close transform group for full mode
+  if (!compact) {
+    svg += '</g>';
+  }
+
   svg += '</svg>';
 
   // Clear placeholder and insert SVG
   container.innerHTML = svg;
+
+  // Initialize zoom/pan for full mode
+  if (!compact) {
+    Workflows._initGraphInteraction(container, svgW, svgH);
+  }
 };
+
+// ============================================
+// FLOW GRAPH INTERACTION (zoom, pan, node click)
+// ============================================
+
+/** Current zoom/pan state for the flow graph. */
+Workflows._graphZoom = 1;
+Workflows._graphPanX = 0;
+Workflows._graphPanY = 0;
+Workflows._graphDragging = false;
+Workflows._graphDragStart = null;
+Workflows._graphPanStart = null;
+
+/**
+ * Initializes zoom (wheel) and pan (drag) on a flow graph container.
+ * Only used for full-mode graphs, not compact.
+ * @param {HTMLElement} container - The graph container element
+ * @param {number} svgW - Natural SVG width
+ * @param {number} svgH - Natural SVG height
+ */
+Workflows._initGraphInteraction = function(container, svgW, svgH) {
+  // Reset state
+  Workflows._graphZoom = 1;
+  Workflows._graphPanX = 0;
+  Workflows._graphPanY = 0;
+  Workflows._graphDragging = false;
+
+  var svg = container.querySelector('.flow-graph-svg');
+  var transformGroup = container.querySelector('.flow-graph-transform');
+  if (!svg || !transformGroup) return;
+
+  /** Apply current transform to the group element. */
+  function applyTransform() {
+    transformGroup.setAttribute('transform',
+      'translate(' + Workflows._graphPanX + ',' + Workflows._graphPanY + ') ' +
+      'scale(' + Workflows._graphZoom + ')');
+  }
+
+  // --- Mouse wheel zoom ---
+  container.addEventListener('wheel', function(e) {
+    e.preventDefault();
+    var delta = e.deltaY > 0 ? -0.1 : 0.1;
+    var newZoom = Math.max(0.3, Math.min(3, Workflows._graphZoom + delta));
+
+    // Zoom toward cursor position
+    var rect = svg.getBoundingClientRect();
+    var cursorX = e.clientX - rect.left;
+    var cursorY = e.clientY - rect.top;
+
+    // Adjust pan so zoom centers on cursor
+    var zoomRatio = newZoom / Workflows._graphZoom;
+    Workflows._graphPanX = cursorX - zoomRatio * (cursorX - Workflows._graphPanX);
+    Workflows._graphPanY = cursorY - zoomRatio * (cursorY - Workflows._graphPanY);
+    Workflows._graphZoom = newZoom;
+
+    applyTransform();
+  }, { passive: false });
+
+  // --- Mouse drag pan ---
+  container.addEventListener('mousedown', function(e) {
+    // Only pan on direct container/svg clicks, not on nodes
+    if (e.target.closest('.flow-node')) return;
+    if (e.button !== 0) return;
+    Workflows._graphDragging = true;
+    Workflows._graphDragStart = { x: e.clientX, y: e.clientY };
+    Workflows._graphPanStart = { x: Workflows._graphPanX, y: Workflows._graphPanY };
+    container.style.cursor = 'grabbing';
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', function(e) {
+    if (!Workflows._graphDragging) return;
+    var dx = e.clientX - Workflows._graphDragStart.x;
+    var dy = e.clientY - Workflows._graphDragStart.y;
+    Workflows._graphPanX = Workflows._graphPanStart.x + dx;
+    Workflows._graphPanY = Workflows._graphPanStart.y + dy;
+    applyTransform();
+  });
+
+  document.addEventListener('mouseup', function() {
+    if (Workflows._graphDragging) {
+      Workflows._graphDragging = false;
+      container.style.cursor = '';
+    }
+  });
+};
+
+/**
+ * Handles node selection in the flow graph.
+ * Highlights the selected node and stores current selection.
+ * @param {string} nodeId - The node ID to select
+ * @param {string} templateId - The template this node belongs to
+ */
+Workflows.selectNode = function(nodeId, templateId) {
+  // Remove previous selection
+  document.querySelectorAll('.flow-node.selected').forEach(function(n) {
+    n.classList.remove('selected');
+  });
+
+  // Add selection to clicked node
+  var node = document.querySelector('.flow-node[data-node-id="' + nodeId + '"][data-template-id="' + templateId + '"]');
+  if (node) {
+    node.classList.add('selected');
+  }
+
+  Workflows._selectedNodeId = nodeId;
+  Workflows._selectedTemplateId = templateId;
+};
+
+/** Currently selected node. */
+Workflows._selectedNodeId = null;
+Workflows._selectedTemplateId = null;
 
 // ============================================
 // TABS
@@ -3958,6 +4085,14 @@ function escapeHtml(text) {
   // File item click (open viewer)
   var fpFileItem = document.querySelector('.fp-file-item');
   if (fpFileItem) fpFileItem.addEventListener('click', function() { Chat.switchFilePanelTab('viewer'); });
+
+  // --- Flow graph node click (delegation) ---
+  document.addEventListener('click', function(e) {
+    var node = e.target.closest('.flow-node');
+    if (node && node.dataset.nodeId && node.dataset.templateId) {
+      Workflows.selectNode(node.dataset.nodeId, node.dataset.templateId);
+    }
+  });
 
   // --- Workflow listing cards (delegation) ---
   var wfListing = document.getElementById('wfListing');
