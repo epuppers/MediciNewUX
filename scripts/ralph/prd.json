@@ -107,7 +107,7 @@
       "id": "5.3",
       "title": "Workflow chat thread content (completed run)",
       "description": "Add chat content HTML for wf-run-rentroll-047 thread following mock conversation script Thread A in CLAUDE.md. User message with /rent-roll command chip (.wf-command-chip). Cosimo messages with run summary artifact and spreadsheet preview artifact. Use existing .msg-block, .user-card, .ai-block, .artifact patterns. Add CSS for .wf-command-chip (mono, violet bg, white text, pill shape). Update Chat.selectThread() to show this content.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "5.4",
