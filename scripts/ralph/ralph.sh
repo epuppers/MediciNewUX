@@ -1,14 +1,12 @@
 #!/bin/bash
-# Ralph — Autonomous AI agent loop for Workflows Rebuild
+# Ralph — Autonomous AI agent loop for Polish & Corrections
 # Usage: ./ralph.sh [max_iterations]
 #
 # Based on snarktank/ralph with the prd.json completion check fix (PR #93)
-# Instead of parsing Claude's output for <promise>COMPLETE</promise>,
-# we check prd.json directly for remaining stories with passes=false.
 
 set -e
 
-MAX_ITERATIONS=30
+MAX_ITERATIONS=20
 if [[ "$1" =~ ^[0-9]+$ ]]; then
   MAX_ITERATIONS="$1"
 fi
@@ -39,10 +37,20 @@ fi
 # Create progress.txt if it doesn't exist
 if [ ! -f "$PROGRESS_FILE" ]; then
   cat > "$PROGRESS_FILE" << 'EOF'
-# Progress Log — Workflows Rebuild
+# Progress Log — Polish & Corrections
 
 ## Codebase Patterns
-(Patterns discovered during iterations will be added here)
+- ALL colors must use `var(--token)` from tokens.css — no raw hex/rgb values
+- For alpha colors use `rgba(var(--violet-3-rgb), 0.1)` pattern
+- Dark mode overrides go in the SAME CSS file using `[data-theme="dark"]` selector
+- Animation gating: wrap animations with `[data-a11y-motion="reduced"]`
+- Event delegation: all handlers go in `initEventListeners()` — no inline handlers
+- Beveled borders (raised): `border-color: light dark dark light`
+- Font stack: ChicagoFLF (pixel headings), IBM Plex Mono (UI/code), DM Sans (body)
+- Border radii: `var(--r-sm)` (3px), `var(--r-md)` (4px), `var(--r-lg)` (6px) — never raw px
+- Dev server: `python3 -m http.server 8082` serves at http://localhost:8082/index.html
+- Commit format: `polish [task ID]: [brief description]`
+- localStorage keys used: theme, purpleIntensity, a11yFontSize, a11yDyslexia, a11yMotion, a11yContrast
 
 ---
 
@@ -60,16 +68,14 @@ if [ "$CURRENT_BRANCH" != "$BRANCH_NAME" ]; then
   git checkout "$BRANCH_NAME" 2>/dev/null || git checkout -b "$BRANCH_NAME"
 fi
 
-# ─── Completion check function ──────────────────────────────────────
-# This is the fix from PR #93: check prd.json directly instead of
-# parsing Claude's output for a promise string (which was unreliable).
+# ─── Completion check ───────────────────────────────────────────────
 
 check_prd_completion() {
   REMAINING=$(jq '[.userStories[] | select(.passes == false)] | length' "$PRD_FILE")
   if [ "$REMAINING" -eq 0 ]; then
-    return 0  # All done
+    return 0
   else
-    return 1  # Stories remain
+    return 1
   fi
 }
 
@@ -81,15 +87,13 @@ REMAINING=$((TOTAL - DONE))
 
 echo ""
 echo "╔══════════════════════════════════════════════════╗"
-echo "║          Ralph — Workflows Rebuild               ║"
+echo "║         Ralph — Polish & Corrections             ║"
 echo "╠══════════════════════════════════════════════════╣"
 echo "║  Branch:     $BRANCH_NAME"
 echo "║  Stories:    $DONE/$TOTAL complete ($REMAINING remaining)"
 echo "║  Max iter:   $MAX_ITERATIONS"
 echo "╚══════════════════════════════════════════════════╝"
 echo ""
-
-# ─── Check if already complete ───────────────────────────────────────
 
 if check_prd_completion; then
   echo "All stories already complete! Nothing to do."
@@ -111,16 +115,11 @@ for (( i=1; i<=MAX_ITERATIONS; i++ )); do
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
   echo ""
 
-  # Spawn a FRESH Claude Code instance
-  # --dangerously-skip-permissions: allows file edits without prompting
-  # --print: non-interactive mode, exits when done
-  # The CLAUDE.md prompt is piped via stdin
-  OUTPUT=$(claude --dangerously-skip-permissions --print < "$SCRIPT_DIR/CLAUDE.md" 2>&1 | tee /dev/stderr) || true
+  OUTPUT=$(claude --dangerously-skip-permissions --print "$(cat $SCRIPT_DIR/CLAUDE.md)" 2>&1 | tee /dev/stderr) || true
 
   echo ""
   echo "  [Iteration $i complete]"
 
-  # Check completion via prd.json (not output parsing)
   if check_prd_completion; then
     echo ""
     echo "╔══════════════════════════════════════════════════╗"
@@ -129,7 +128,6 @@ for (( i=1; i<=MAX_ITERATIONS; i++ )); do
     echo "╚══════════════════════════════════════════════════╝"
     echo ""
 
-    # Final status
     echo "Stories completed:"
     jq -r '.userStories[] | "  ✓ \(.id): \(.title)"' "$PRD_FILE"
     echo ""
@@ -138,7 +136,6 @@ for (( i=1; i<=MAX_ITERATIONS; i++ )); do
     exit 0
   fi
 
-  # Brief pause between iterations
   sleep 2
 done
 

@@ -16,16 +16,16 @@ You are one iteration of an autonomous coding loop. You have a FRESH context —
    - ALL colors use `var(--token)` from tokens.css — no raw hex/rgb
    - ALL new CSS includes dark mode overrides in the same file
    - ALL new interactive elements have hover, active, focus-visible states
-   - ALL animations respect `[data-a11y-motion="reduce"]`
+   - ALL animations respect `[data-a11y-motion="reduced"]`
    - Use event delegation in `initEventListeners()` — no inline handlers
    - Mock data uses `MOCK_` prefix, goes in `js/mock-data.js`
-   - New JS functions go in the `Workflows` or `Chat` namespace as appropriate
+   - New JS functions go in the appropriate namespace (`UI`, `Chat`, `A11y`, etc.)
    - Preserve ALL existing functionality
 
 6. **Verify the dev server loads:**
 
    ```bash
-   cd /Users/eliotpuplett/Documents/MediciNewUX && python3 -m http.server 8082 &
+   cd /Users/eliotpuplett/Documents/MediciCode/MediciNewUX && python3 -m http.server 8082 &
    sleep 2
    STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8082/index.html)
    kill %1 2>/dev/null
@@ -37,7 +37,7 @@ You are one iteration of an autonomous coding loop. You have a FRESH context —
 
    ```bash
    git add -A
-   git commit -m "workflows [TASK_ID]: [brief description]"
+   git commit -m "polish [TASK_ID]: [brief description]"
    ```
 
    Do NOT git push — human will push after reviewing.
@@ -56,8 +56,6 @@ You are one iteration of an autonomous coding loop. You have a FRESH context —
    ### Codebase Patterns
 
    If you discovered reusable patterns, add them to the Codebase Patterns section at the top of progress.txt:
-   - Example: "Use `Workflows.renderFlowGraph()` with options object for both full and compact modes"
-   - Example: "Dark mode overrides go in the same CSS file, using `[data-theme='dark']` selector"
    - Only add patterns that are general and reusable, not story-specific details.
 
 10. **Stop.** Do not continue to the next story. The loop will spawn a fresh instance for it.
@@ -69,3 +67,27 @@ You are one iteration of an autonomous coding loop. You have a FRESH context —
 - **If you can't complete the story** (blocked, unclear requirement, broken dependency), still update progress.txt explaining WHY, set the story's passes to false, and stop. The human will intervene.
 - **If the dev server doesn't load after your changes**, revert and try a different approach. Do not commit broken code.
 - **Read CLAUDE.md first, every time.** You have no memory. The project docs ARE your memory.
+
+## Key Architecture Reminders
+
+These corrections are polish/fixes on an existing codebase. Key files:
+
+- **index.html** — Single-file HTML with all views (chat threads, workflows, brain sections)
+- **js/app.js** — All behavior. Namespaces: A11y, UI, Chat, Workflows, BrainMemory, BrainLessons, Graph
+- **js/mock-data.js** — All mock data objects (MOCK\_ prefix)
+- **js/icons.js** — ICONS object + icon() helper + injectIcons()
+- **css/tokens.css** — Design tokens, color scales, fonts, reset
+- **css/layout.css** — Sidebar, top bar, main frame, dropdown panels, a11y modes
+- **css/chat.css** — Chat threads, input area, messages, workflow panel
+- **css/components.css** — Brain sections, flow graph, popovers, shared components
+- **css/workflows.css** — Workflow library cards, detail view
+- **css/utilities.css** — Dropdown menus, utility classes, scrollbar styles
+
+## Design System Essentials
+
+- **Beveled borders (raised):** `border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2)` — light top-left, dark bottom-right
+- **Beveled borders (inset):** `border-color: var(--taupe-3) var(--taupe-1) var(--taupe-1) var(--taupe-3)` — dark top-left, light bottom-right
+- **Alpha colors:** `rgba(var(--violet-3-rgb), 0.1)` — use the -rgb triplet tokens
+- **Border radii:** `var(--r-xs)` 2px, `var(--r-sm)` 3px, `var(--r-md)` 4px, `var(--r-lg)` 6px, `var(--r-pill)` 9px
+- **Fonts:** ChicagoFLF (pixel headings), IBM Plex Mono (UI/code), DM Sans (body)
+- **Dark mode:** Same token names redefined under `[data-theme="dark"]` in tokens.css — no dk- prefix
