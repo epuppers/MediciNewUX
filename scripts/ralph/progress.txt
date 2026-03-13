@@ -91,3 +91,8 @@
 - Files modified: js/app.js, css/components.css
 - Gotchas / learnings: The existing .run-row base class has cursor:pointer by default. Overview tab's run rows use .cursor-default utility to override. Runs tab uses .run-row-linked for threadId rows (keeps pointer) and .cursor-default for non-linked rows. The data-action="run-row-click" attribute on linked rows is ready for Phase 6 event delegation wiring.
 
+## Iteration 15 — Task 4.4: Lessons tab
+- What was done: Created Workflows._renderLessonsTab(data) that cross-references template.linkedLessons with MOCK_LESSONS. Each lesson card shows: diamond icon, title, scope badge (company=blue, user=violet), "Used by" node chips (found by filtering template nodes where node.lesson matches the lessonId), 2-line preview text, and author/updated meta. Empty state for templates with no linked lessons. "Link Lesson" dashed button using existing .add-source-btn pattern. Called from showWorkflowDetail(). Added comprehensive CSS to components.css with full dark mode overrides.
+- Files modified: js/app.js, css/components.css
+- Gotchas / learnings: MOCK_LESSONS is keyed by lesson ID strings (e.g., 'rent-roll-format'). Node.lesson field references these same IDs. Templates like covenant, tener-valuation, and due-diligence have empty linkedLessons arrays, so they show the empty state. The due-diligence template has no linkedLessons but its node n4 (Process Rent Rolls) references 'rent-roll-format' — this is intentional since the lesson isn't "linked" at the template level.
+

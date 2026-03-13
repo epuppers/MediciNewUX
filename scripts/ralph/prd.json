@@ -89,7 +89,7 @@
       "id": "4.4",
       "title": "Lessons tab",
       "description": "Create #tab-lessons panel. Card for each linked lesson: name, which nodes use it, last updated. Link Lesson dashed button. Populate by cross-referencing template linkedLessons with MOCK_LESSONS data.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "5.1",
