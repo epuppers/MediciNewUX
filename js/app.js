@@ -927,14 +927,41 @@ UI.showProfileMain = function() {
 UI.buildMiniCalendar = function() {
   const grid = document.getElementById('miniCalGrid');
   if (!grid || grid.children.length > 0) return;
-  const days = ['','','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'];
-  const eventDays = ['9','12','14','18'];
-  days.forEach(d => {
+
+  // Parse month/year from MOCK_CALENDAR
+  const parts = MOCK_CALENDAR.month.split(' ');
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const monthIndex = monthNames.indexOf(parts[0]);
+  const year = parseInt(parts[1], 10);
+
+  // Compute first weekday and number of days
+  const firstDay = new Date(year, monthIndex, 1).getDay(); // 0=Sun
+  const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+
+  // Derive event days from MOCK_CALENDAR.events meta fields
+  const eventDays = MOCK_CALENDAR.events.map(ev => {
+    const match = ev.meta.match(/\b(\d{1,2}),/);
+    return match ? match[1] : null;
+  }).filter(Boolean);
+
+  // Today = March 13, 2026
+  const todayDay = '13';
+
+  // Build grid: leading empties + day cells
+  for (let i = 0; i < firstDay; i++) {
     const div = document.createElement('div');
-    div.className = 'mcg-day' + (d === '' ? ' empty' : '') + (d === '9' ? ' today' : '') + (eventDays.includes(d) && d !== '9' ? ' has-event' : '');
-    div.textContent = d;
+    div.className = 'mcg-day empty';
     grid.appendChild(div);
-  });
+  }
+  for (let d = 1; d <= daysInMonth; d++) {
+    const ds = String(d);
+    const div = document.createElement('div');
+    const isToday = ds === todayDay;
+    const hasEvent = !isToday && eventDays.includes(ds);
+    div.className = 'mcg-day' + (isToday ? ' today' : '') + (hasEvent ? ' has-event' : '');
+    div.textContent = ds;
+    grid.appendChild(div);
+  }
 };
 
 // Close panels on outside click
