@@ -2781,6 +2781,193 @@
   color: var(--taupe-3);
 }
 
+/* ========================================
+   LESSONS TAB
+   ======================================== */
+
+.lesson-tab-card {
+  border: 1px solid var(--taupe-1);
+  border-radius: var(--r-lg);
+  padding: 12px;
+  margin-bottom: 8px;
+  background: var(--white);
+  transition: border-color 0.15s ease;
+}
+
+.lesson-tab-card:hover {
+  border-color: var(--violet-2);
+}
+
+.lesson-tab-card-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.lesson-tab-card-diamond {
+  color: var(--violet-3);
+  font-size: 9px;
+  flex-shrink: 0;
+}
+
+.lesson-tab-card-title {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--taupe-5);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lesson-tab-card-scope {
+  font-family: var(--mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 1px 6px;
+  border-radius: var(--r-sm);
+  flex-shrink: 0;
+}
+
+.lesson-scope-company {
+  color: var(--blue-3);
+  background: rgba(var(--blue-3-rgb), 0.08);
+  border: 1px solid rgba(var(--blue-3-rgb), 0.15);
+}
+
+.lesson-scope-user {
+  color: var(--violet-3);
+  background: rgba(var(--violet-3-rgb), 0.08);
+  border: 1px solid rgba(var(--violet-3-rgb), 0.15);
+}
+
+.lesson-tab-card-nodes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.lesson-tab-card-nodes-label {
+  font-family: var(--sans);
+  font-size: 10px;
+  color: var(--taupe-3);
+}
+
+.lesson-tab-card-node-chip {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--violet-3);
+  background: rgba(var(--violet-3-rgb), 0.06);
+  border: 1px solid rgba(var(--violet-3-rgb), 0.12);
+  border-radius: var(--r-sm);
+  padding: 1px 6px;
+}
+
+.lesson-tab-card-preview {
+  font-family: var(--sans);
+  font-size: 11px;
+  color: var(--taupe-3);
+  line-height: 1.4;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.lesson-tab-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.lesson-tab-card-author,
+.lesson-tab-card-date {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--taupe-2);
+}
+
+.lesson-tab-card-sep {
+  font-size: 10px;
+  color: var(--taupe-2);
+}
+
+.lessons-tab-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 16px;
+  text-align: center;
+}
+
+.lessons-tab-empty-text {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--taupe-3);
+  margin-bottom: 4px;
+}
+
+.lessons-tab-empty-sub {
+  font-family: var(--sans);
+  font-size: 11px;
+  color: var(--taupe-2);
+}
+
+/* Lessons tab — dark mode */
+[data-theme="dark"] .lesson-tab-card {
+  background: var(--surface-1);
+  border-color: var(--taupe-1);
+}
+
+[data-theme="dark"] .lesson-tab-card:hover {
+  border-color: var(--violet-2);
+}
+
+[data-theme="dark"] .lesson-tab-card-title {
+  color: var(--taupe-4);
+}
+
+[data-theme="dark"] .lesson-tab-card-preview {
+  color: var(--taupe-3);
+}
+
+[data-theme="dark"] .lesson-tab-card-author,
+[data-theme="dark"] .lesson-tab-card-date,
+[data-theme="dark"] .lesson-tab-card-sep {
+  color: var(--taupe-2);
+}
+
+[data-theme="dark"] .lesson-scope-company {
+  background: rgba(var(--blue-3-rgb), 0.12);
+  border-color: rgba(var(--blue-3-rgb), 0.2);
+}
+
+[data-theme="dark"] .lesson-scope-user {
+  background: rgba(var(--violet-3-rgb), 0.12);
+  border-color: rgba(var(--violet-3-rgb), 0.2);
+}
+
+[data-theme="dark"] .lesson-tab-card-node-chip {
+  background: rgba(var(--violet-3-rgb), 0.1);
+  border-color: rgba(var(--violet-3-rgb), 0.18);
+}
+
+[data-theme="dark"] .lessons-tab-empty-text {
+  color: var(--taupe-3);
+}
+
+[data-theme="dark"] .lessons-tab-empty-sub {
+  color: var(--taupe-2);
+}
+
 /* Cosimo panel header — must stay dark */
 [data-theme="dark"] .cosimo-panel-header {
   background: var(--surface-2);

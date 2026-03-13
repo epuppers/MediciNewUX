@@ -1940,6 +1940,9 @@ Workflows.showWorkflowDetail = function(id, el) {
   // Build runs tab content
   Workflows._renderRunsTab(data);
 
+  // Build lessons tab content
+  Workflows._renderLessonsTab(data);
+
   // Render flow graph in the graph column
   Workflows.renderFlowGraph(id, 'flowGraphContainer', { compact: false });
 
@@ -2232,6 +2235,64 @@ Workflows._renderRunsTab = function(data) {
       '</div>';
     });
   }
+
+  container.innerHTML = html;
+};
+
+/**
+ * Renders the lessons tab content from template data.
+ * Cross-references linkedLessons with MOCK_LESSONS and shows which nodes use each lesson.
+ * @param {Object} data - Template data object
+ */
+Workflows._renderLessonsTab = function(data) {
+  var container = document.getElementById('tab-lessons');
+  if (!container) return;
+
+  var lessonIds = data.linkedLessons || [];
+  var html = '';
+
+  if (lessonIds.length === 0) {
+    html = '<div class="lessons-tab-empty">' +
+      '<span class="lessons-tab-empty-text">No linked lessons</span>' +
+      '<span class="lessons-tab-empty-sub">Link lessons to help Cosimo follow your domain rules</span>' +
+    '</div>';
+  } else {
+    lessonIds.forEach(function(lessonId) {
+      var lesson = MOCK_LESSONS[lessonId];
+      if (!lesson) return;
+
+      // Find which nodes reference this lesson
+      var usingNodes = (data.nodes || []).filter(function(n) {
+        return n.lesson === lessonId;
+      });
+      var nodeNames = usingNodes.map(function(n) { return n.title; });
+
+      html += '<div class="lesson-tab-card">' +
+        '<div class="lesson-tab-card-header">' +
+          '<span class="lesson-tab-card-diamond">◆</span>' +
+          '<span class="lesson-tab-card-title">' + escapeHtml(lesson.title) + '</span>' +
+          '<span class="lesson-tab-card-scope lesson-scope-' + lesson.scope + '">' + escapeHtml(lesson.scope) + '</span>' +
+        '</div>' +
+        (nodeNames.length > 0
+          ? '<div class="lesson-tab-card-nodes">' +
+              '<span class="lesson-tab-card-nodes-label">Used by:</span>' +
+              nodeNames.map(function(name) {
+                return '<span class="lesson-tab-card-node-chip">' + escapeHtml(name) + '</span>';
+              }).join('') +
+            '</div>'
+          : '') +
+        '<div class="lesson-tab-card-preview">' + escapeHtml(lesson.preview) + '</div>' +
+        '<div class="lesson-tab-card-meta">' +
+          '<span class="lesson-tab-card-author">' + escapeHtml(lesson.author) + '</span>' +
+          '<span class="lesson-tab-card-sep">·</span>' +
+          '<span class="lesson-tab-card-date">Updated ' + escapeHtml(lesson.updated) + '</span>' +
+        '</div>' +
+      '</div>';
+    });
+  }
+
+  // Link Lesson button
+  html += '<button class="add-source-btn" data-action="link-lesson">+ Link Lesson</button>';
 
   container.innerHTML = html;
 };
