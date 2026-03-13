@@ -39,3 +39,8 @@
 - Files modified: js/icons.js
 - Gotchas / learnings: Icon names map to triggerType values in templates: folder-watch → folderWatch, schedule → schedule, chat-command → chatCommand, email → emailTrigger, manual → manualTrigger. The webhook icon is extra for future use. Use icon('folderWatch') or data-icon="folderWatch" to render them.
 
+## Iteration 5 — Task 2.1: Rebuild Library HTML and rendering function
+- What was done: Replaced hardcoded workflow cards in index.html with empty containers (#wfStatsBody, #wfCardContainer). Created Workflows.renderLibrary() in app.js that reads MOCK_WORKFLOW_TEMPLATES, computes stats (total, active, total runs, failed), and builds card HTML dynamically. Each card has: header (title + status badge + trigger type chip + Run button visible on hover), body (description), footer (linked lesson chip with diamond icon + last run status dot + time). Added Workflows._triggerMeta lookup table mapping triggerType to icon name and label. Library renders on page load via IIFE. Card click delegation was already wired in initEventListeners.
+- Files modified: index.html, js/app.js, css/workflows.css
+- Gotchas / learnings: Workflows._triggerMeta maps triggerType strings to {icon, label} objects for rendering trigger chips. The old .wf-card-meta/.wf-meta-item classes are now unused CSS (cards use .wf-card-footer instead). Card click delegation was already in initEventListeners() — no changes needed there. The Run button uses data-action="run-card" for future event handling.
+

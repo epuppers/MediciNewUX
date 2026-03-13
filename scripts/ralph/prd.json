@@ -29,7 +29,7 @@
       "id": "2.1",
       "title": "Rebuild Library HTML and rendering function",
       "description": "Replace hardcoded cards inside #wfListing > .wf-listing with empty container. Create Workflows.renderLibrary() that reads MOCK_WORKFLOW_TEMPLATES, builds card HTML, injects it. Each card: .wf-card with header (title + status badge + trigger type chip), body (description), footer (linked lesson chip if any, last run status indicator, Run button). Stats bar computes totals from data. Call on init. Wire card click to Workflows.showWorkflowDetail(id) via event delegation.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "2.2",
