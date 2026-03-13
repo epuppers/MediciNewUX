@@ -167,7 +167,7 @@
       "id": "6.6",
       "title": "Update CLAUDE.md",
       "description": "Update Project Structure section with any new files or changed line counts. Update JS Namespace Modules to include new Workflows.* and Chat.* functions. Update Key JS Sections list. Verify all documentation is current.",
-      "passes": false
+      "passes": true
     }
   ]
 }

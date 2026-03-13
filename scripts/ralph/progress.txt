@@ -156,3 +156,8 @@
 - Files modified: css/components.css, css/layout.css, css/workflows.css, js/app.js
 - Gotchas / learnings: The global `[data-a11y-motion="reduced"]` rule in layout.css:568-574 uses `!important` to disable ALL animations, so specific per-element gating rules are technically redundant but good for documentation. MOCK_WORKFLOW_RUNS is keyed by run key (e.g. 'wf-run-tener-12'), not threadId (e.g. 'tener-batch-12') — always use MOCK_THREADS[id].workflowRunId for lookups.
 
+## Iteration 28 — Task 6.6: Update CLAUDE.md
+- What was done: Updated Project Structure section with current line counts (index.html ~2106, app.js ~5256, mock-data.js ~1239, icons.js ~107, tokens.css ~203, layout.css ~1754, chat.css ~2277, workflows.css ~850, components.css ~3223). Updated JS Namespace Modules: Chat now lists 37 functions (added openWorkflowPanel, closeWorkflowPanel, showCommandAutocomplete, hideCommandAutocomplete, selectCommand, _acNavigate, _acConfirm, _renderDDFlowGraphs). Workflows now lists 22 functions (added _initGraphInteraction, openCosimoForTemplate, openCosimoForNode, _renderOverviewTab, _renderSchemaTab, _renderTriggersTab, _renderRunsTab, _renderLessonsTab, _findRunThread, navigateToRun, navigateToThread, _triggerMeta, _nodeColors).
+- Files modified: CLAUDE.md
+- Gotchas / learnings: All other sections of CLAUDE.md (Architecture Overview, Workflows Conceptual Model, Template/Run Data Models, Design System Rules, Code Conventions, Critical Rules) were already accurate and didn't need updates.
+
