@@ -1728,11 +1728,11 @@ document.addEventListener('click', function(e) {
  * @param {HTMLElement} [el] - The clicked element (card or sidebar item)
  */
 Workflows.showWorkflowDetail = function(id, el) {
-  const data = MOCK_WORKFLOWS[id];
+  const data = MOCK_WORKFLOW_TEMPLATES[id];
   if (!data) return;
 
   document.getElementById('wfDetailTitle').textContent = data.title;
-  document.getElementById('wfDetailDesc').textContent = data.desc;
+  document.getElementById('wfDetailDesc').textContent = data.description;
 
   document.getElementById('wfListing').classList.add('hidden');
   const detail = document.getElementById('wfDetail');
