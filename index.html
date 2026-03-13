@@ -1090,6 +1090,36 @@
         </div>
       </div><!-- /file-panel -->
 
+      <!-- ======== RIGHT PANEL (workflow context) ======== -->
+      <div class="resize-handle resize-handle-wfpanel" id="wfPanelResizeHandle"></div>
+      <div class="workflow-panel" id="workflowPanel" aria-label="Workflow context panel">
+        <div class="workflow-panel-header">
+          <div class="workflow-panel-title-row">
+            <span class="workflow-panel-name" id="wfPanelName"></span>
+            <span class="workflow-panel-run-id" id="wfPanelRunId"></span>
+          </div>
+          <div class="workflow-panel-header-right">
+            <span class="workflow-panel-status" id="wfPanelStatus"></span>
+            <button class="workflow-panel-close" id="wfPanelCloseBtn" aria-label="Close workflow panel">✕</button>
+          </div>
+        </div>
+        <div class="workflow-panel-graph" id="wfPanelGraph"></div>
+        <div class="workflow-panel-details" id="wfPanelDetails">
+          <div class="workflow-panel-section" id="wfPanelInput">
+            <div class="workflow-panel-section-label label-mono">Input</div>
+            <div class="workflow-panel-section-body" id="wfPanelInputBody"></div>
+          </div>
+          <div class="workflow-panel-section" id="wfPanelExceptions">
+            <div class="workflow-panel-section-label label-mono">Exceptions</div>
+            <div class="workflow-panel-section-body" id="wfPanelExceptionsBody"></div>
+          </div>
+          <div class="workflow-panel-section" id="wfPanelOutput">
+            <div class="workflow-panel-section-label label-mono">Output</div>
+            <div class="workflow-panel-section-body" id="wfPanelOutputBody"></div>
+          </div>
+        </div>
+      </div><!-- /workflow-panel -->
+
       </div><!-- /chat-with-panel -->
     </div>
 

@@ -352,6 +352,12 @@ var Graph = {};
     () => document.getElementById('filePanel'),
     'left'
   );
+
+  // Workflow panel: drag left edge to resize
+  initResize('wfPanelResizeHandle',
+    () => document.getElementById('workflowPanel'),
+    'left'
+  );
 })();
 
 /** Toggles between light and dark theme and re-applies purple intensity.
@@ -1092,6 +1098,14 @@ Chat.selectThread = function(id, el) {
   // Close file panel when switching threads
   Chat.closeFilePanel();
 
+  // Auto-open/close workflow context panel based on thread's workflowRunId
+  var threadData = MOCK_THREADS[id];
+  if (threadData && threadData.workflowRunId && MOCK_WORKFLOW_RUNS[threadData.workflowRunId]) {
+    Chat.openWorkflowPanel(threadData.workflowRunId);
+  } else {
+    Chat.closeWorkflowPanel();
+  }
+
   // Trigger Erabor animation when that thread is selected
   if (id === 'erabor') Chat.runEraborSequence();
 };
@@ -1130,6 +1144,104 @@ Chat.closeFilePanel = function() {
   panel.classList.remove('open');
   panel.style.width = '';
   document.getElementById('filePanelResizeHandle').classList.remove('visible');
+};
+
+// ============================================
+// WORKFLOW CONTEXT PANEL
+// ============================================
+
+/** Opens the right-side workflow context panel for a given run.
+ * @param {string} runId - The threadId key in MOCK_WORKFLOW_RUNS
+ */
+Chat.openWorkflowPanel = function(runId) {
+  const run = MOCK_WORKFLOW_RUNS[runId];
+  if (!run) return;
+  const template = MOCK_WORKFLOW_TEMPLATES[run.templateId];
+  if (!template) return;
+
+  // Close file panel if open
+  Chat.closeFilePanel();
+
+  const panel = document.getElementById('workflowPanel');
+  const handle = document.getElementById('wfPanelResizeHandle');
+
+  // Populate header
+  document.getElementById('wfPanelName').textContent = template.title;
+  document.getElementById('wfPanelRunId').textContent = 'Run ' + run.runId;
+  const statusEl = document.getElementById('wfPanelStatus');
+  statusEl.textContent = run.status.charAt(0).toUpperCase() + run.status.slice(1);
+  statusEl.className = 'workflow-panel-status status-' + run.status;
+
+  // Populate input manifest
+  var inputHtml = '';
+  if (run.inputManifest && run.inputManifest.length) {
+    run.inputManifest.forEach(function(f) {
+      var iconChar = f.type === 'folder' ? '📁' : (f.type === 'pdf' ? '📄' : '📎');
+      var meta = f.type === 'folder' ? (f.fileCount + ' files') : f.size;
+      inputHtml += '<div class="wf-panel-file-item">' +
+        '<span class="wf-panel-file-icon">' + iconChar + '</span>' +
+        '<span class="wf-panel-file-name">' + escapeHtml(f.name) + '</span>' +
+        '<span class="wf-panel-file-meta">' + escapeHtml(meta) + '</span>' +
+        '</div>';
+    });
+  } else {
+    inputHtml = '<span class="wf-panel-empty">No input files</span>';
+  }
+  document.getElementById('wfPanelInputBody').innerHTML = inputHtml;
+
+  // Populate exceptions
+  var excHtml = '';
+  if (run.exceptions && run.exceptions.length) {
+    run.exceptions.forEach(function(ex) {
+      var typeLabel = ex.type.replace(/-/g, ' ');
+      excHtml += '<div class="wf-panel-exception">' +
+        '<span class="wf-panel-exception-dot type-' + ex.type + '"></span>' +
+        '<div class="wf-panel-exception-body">' +
+        '<div class="wf-panel-exception-type">' + escapeHtml(typeLabel) + '</div>' +
+        '<div class="wf-panel-exception-desc">' + escapeHtml(ex.description) + '</div>' +
+        (ex.confidence != null ? '<div class="wf-panel-exception-confidence">Confidence: ' + ex.confidence + '%</div>' : '') +
+        '</div></div>';
+    });
+  } else {
+    excHtml = '<span class="wf-panel-empty">No exceptions</span>';
+  }
+  document.getElementById('wfPanelExceptionsBody').innerHTML = excHtml;
+
+  // Populate output manifest
+  var outHtml = '';
+  if (run.outputManifest && run.outputManifest.length) {
+    run.outputManifest.forEach(function(f) {
+      outHtml += '<div class="wf-panel-file-item">' +
+        '<span class="wf-panel-file-icon">📄</span>' +
+        '<span class="wf-panel-file-name">' + escapeHtml(f.name) + '</span>' +
+        '<span class="wf-panel-file-meta">' + escapeHtml(f.size) + '</span>' +
+        '</div>' +
+        '<div style="font-family:var(--mono);font-size:10px;color:var(--taupe-3);padding-left:20px;">' + escapeHtml(f.path) + '</div>';
+    });
+  } else {
+    outHtml = '<span class="wf-panel-empty">' + (run.status === 'waiting' || run.status === 'running' ? 'Pending...' : 'No output') + '</span>';
+  }
+  document.getElementById('wfPanelOutputBody').innerHTML = outHtml;
+
+  // Render compact flow graph (placeholder for task 5.2 — just show container)
+  var graphContainer = document.getElementById('wfPanelGraph');
+  graphContainer.innerHTML = '';
+  if (typeof Workflows !== 'undefined' && typeof Workflows.renderFlowGraph === 'function') {
+    Workflows.renderFlowGraph(run.templateId, 'wfPanelGraph', { compact: true, showStatus: true, runId: runId });
+  }
+
+  // Open panel
+  panel.classList.add('open');
+  handle.classList.add('visible');
+};
+
+/** Closes the right-side workflow context panel and resets its width. */
+Chat.closeWorkflowPanel = function() {
+  var panel = document.getElementById('workflowPanel');
+  if (!panel) return;
+  panel.classList.remove('open');
+  panel.style.width = '';
+  document.getElementById('wfPanelResizeHandle').classList.remove('visible');
 };
 
 /** Switches between viewer and folder tabs in the file panel.
@@ -4458,6 +4570,10 @@ function escapeHtml(text) {
   if (fpTabViewer) fpTabViewer.addEventListener('click', function() { Chat.switchFilePanelTab('viewer'); });
   if (fpTabFolder) fpTabFolder.addEventListener('click', function() { Chat.switchFilePanelTab('folder'); });
   if (fpCloseBtn) fpCloseBtn.addEventListener('click', function() { Chat.closeFilePanel(); });
+
+  // Workflow panel close button
+  var wfPanelCloseBtn = document.getElementById('wfPanelCloseBtn');
+  if (wfPanelCloseBtn) wfPanelCloseBtn.addEventListener('click', function() { Chat.closeWorkflowPanel(); });
 
   // File item click (open viewer)
   var fpFileItem = document.querySelector('.fp-file-item');
