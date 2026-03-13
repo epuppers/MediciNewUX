@@ -1009,12 +1009,197 @@
       </div><!-- /thread-erabor -->
 
       <div class="chat-thread" id="thread-wf-run-rentroll-047">
-        <div class="msg-list">
-          <div class="ai-block">
-            <div class="ai-avatar"><span class="model-badge">C</span></div>
-            <div class="ai-body"><p>Workflow thread content will be added in a later task.</p></div>
+      <div class="chat-scroll">
+        <div class="date-separator">
+          <div class="date-separator-line"></div>
+          <span class="date-separator-label">Today</span>
+          <div class="date-separator-line"></div>
+        </div>
+
+        <!-- Message 1: User with /rent-roll command + file attachments -->
+        <div class="msg-block">
+          <div class="user-card">
+            <div class="msg-header">
+              <div class="badge badge-human">E</div>
+              <span class="sender">Eliot Puplett</span>
+              <span class="timestamp">12:15 PM</span>
+            </div>
+            <div class="msg-body">
+              <span class="wf-command-chip">/rent-roll</span>
+            </div>
+            <div class="wf-file-attachments">
+              <div class="wf-file-chip"><span class="wf-file-chip-icon">📄</span> 245-Park-Ave-RentRoll.pdf</div>
+              <div class="wf-file-chip"><span class="wf-file-chip-icon">📄</span> Marina-Heights-Q4.pdf</div>
+              <div class="wf-file-chip"><span class="wf-file-chip-icon">📄</span> Berkshire-Units-Dec.pdf</div>
+            </div>
           </div>
         </div>
+
+        <!-- Message 2: Cosimo — run started with artifact -->
+        <div class="msg-block">
+          <div class="ai-block">
+            <div class="msg-header">
+              <div class="badge badge-ai">◆</div>
+              <span class="sender">Cosimo</span>
+              <span class="timestamp">12:15 PM</span>
+              <span class="latency-chip">1.2s</span>
+              <span class="model-badge label-mono">Workflow</span>
+            </div>
+
+            <div class="msg-body">
+              <p>Starting Rent Roll Extraction on 3 files. I'll extract unit-level data and standardize to your output schema.</p>
+            </div>
+
+            <div class="artifact">
+              <div class="art-bar">
+                <div class="art-close"></div>
+                <div class="art-stripe"></div>
+                <span class="art-title">Workflow Run — Rent Roll Extraction</span>
+                <div class="art-stripe"></div>
+                <span class="art-live">LIVE</span>
+              </div>
+              <div class="art-body">
+                <div class="wf-run-summary">
+                  <div class="wf-run-summary-row"><span class="wf-run-summary-label">Template</span><span class="wf-run-summary-value">Rent Roll Extraction</span></div>
+                  <div class="wf-run-summary-row"><span class="wf-run-summary-label">Input</span><span class="wf-run-summary-value">3 PDF files</span></div>
+                  <div class="wf-run-summary-row"><span class="wf-run-summary-label">Output</span><span class="wf-run-summary-value">xlsx → /Finance/CRE/Processed/</span></div>
+                  <div class="wf-run-summary-row"><span class="wf-run-summary-label">Status</span><span class="wf-run-summary-value wf-status-running">Running</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 3: Cosimo — extraction results -->
+        <div class="msg-block">
+          <div class="ai-block">
+            <div class="msg-header">
+              <div class="badge badge-ai">◆</div>
+              <span class="sender">Cosimo</span>
+              <span class="timestamp">12:16 PM</span>
+              <span class="latency-chip">8.4s</span>
+              <span class="model-badge label-mono">Workflow</span>
+            </div>
+            <div class="msg-body">
+              <p>Extracted 142 units across 3 properties. All fields mapped successfully. Two units at Marina Heights had ambiguous floor data — I inferred Floor 2 from unit numbers 201–208. Confidence: 94%.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 4: Cosimo — output ready with spreadsheet artifact -->
+        <div class="msg-block">
+          <div class="ai-block">
+            <div class="msg-header">
+              <div class="badge badge-ai">◆</div>
+              <span class="sender">Cosimo</span>
+              <span class="timestamp">12:16 PM</span>
+              <span class="latency-chip">2.1s</span>
+              <span class="model-badge label-mono">Workflow</span>
+            </div>
+
+            <div class="msg-body">
+              <p>Output ready: <strong>Q4-2025-RentRoll-Standardized.xlsx</strong> saved to /Finance/CRE/Processed/Rent Rolls/. Here's a preview:</p>
+            </div>
+
+            <div class="artifact">
+              <div class="art-bar">
+                <div class="art-close"></div>
+                <div class="art-stripe"></div>
+                <span class="art-title">Q4-2025-RentRoll-Standardized.xlsx</span>
+                <div class="art-stripe"></div>
+              </div>
+              <div class="art-body">
+                <table class="data-tbl">
+                  <thead>
+                    <tr>
+                      <th>Unit</th>
+                      <th>Floor</th>
+                      <th>Tenant</th>
+                      <th>Lease Start</th>
+                      <th>Lease End</th>
+                      <th>Monthly Rent</th>
+                      <th>Sq Ft</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>101</td>
+                      <td>1</td>
+                      <td>Meridian Capital LLC</td>
+                      <td>Jan 2024</td>
+                      <td>Dec 2028</td>
+                      <td>$14,200</td>
+                      <td>2,400</td>
+                      <td><span class="wf-status-chip occupied">Occupied</span></td>
+                    </tr>
+                    <tr>
+                      <td>205</td>
+                      <td>2</td>
+                      <td>Apex Realty Group</td>
+                      <td>Mar 2023</td>
+                      <td>Feb 2026</td>
+                      <td>$11,800</td>
+                      <td>1,850</td>
+                      <td><span class="wf-status-chip occupied">Occupied</span></td>
+                    </tr>
+                    <tr>
+                      <td>312</td>
+                      <td>3</td>
+                      <td>—</td>
+                      <td>—</td>
+                      <td>—</td>
+                      <td>—</td>
+                      <td>1,200</td>
+                      <td><span class="wf-status-chip vacant">Vacant</span></td>
+                    </tr>
+                    <tr>
+                      <td>418</td>
+                      <td>4</td>
+                      <td>Crossharbor Partners</td>
+                      <td>Jun 2025</td>
+                      <td>May 2030</td>
+                      <td>$18,500</td>
+                      <td>3,100</td>
+                      <td><span class="wf-status-chip occupied">Occupied</span></td>
+                    </tr>
+                    <tr>
+                      <td>507</td>
+                      <td>5</td>
+                      <td>BGC Partners Inc.</td>
+                      <td>Sep 2024</td>
+                      <td>Aug 2027</td>
+                      <td>$9,750</td>
+                      <td>1,600</td>
+                      <td><span class="wf-status-chip notice">Notice</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="msg-feedback">
+              <button class="feedback-btn up" title="Good response"><span data-icon="thumbUp"></span></button>
+              <button class="feedback-btn down" title="Poor response"><span data-icon="thumbDown"></span></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 5: User — confirmation -->
+        <div class="msg-block">
+          <div class="user-card">
+            <div class="msg-header">
+              <div class="badge badge-human">E</div>
+              <span class="sender">Eliot Puplett</span>
+              <span class="timestamp">12:18 PM</span>
+            </div>
+            <div class="msg-body">
+              Looks good, thanks
+            </div>
+          </div>
+        </div>
+
+      </div>
       </div><!-- /thread-wf-run-rentroll-047 -->
 
       <div class="chat-thread" id="thread-tener-batch-12">
