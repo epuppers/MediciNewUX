@@ -17,7 +17,7 @@
       "id": "1.3",
       "title": "Create MOCK_WORKFLOW_COMMANDS and update MOCK_THREADS",
       "description": "Add MOCK_WORKFLOW_COMMANDS array to mock-data.js with 5 chat commands per CLAUDE.md. Add 3 new workflow-linked entries to MOCK_THREADS: wf-run-rentroll-047 (completed run, indicator: ready), tener-batch-12 (waiting run, indicator: waiting), wf-create-dd (creation flow, no run link). Each new thread has workflowRunId field. Update thread sidebar HTML in index.html for the 3 new threads with appropriate data attributes.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "1.4",
