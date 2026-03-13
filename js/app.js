@@ -881,8 +881,8 @@ UI.handleNew = function() {
     // Focus the input
     const input = document.getElementById('new-thread-input');
     if (input) input.focus();
-  } else {
-    alert('New workflow creation dialog would open here');
+  } else if (UI.currentMode === 'workflows') {
+    Workflows.navigateToThread('wf-create-dd');
   }
 };
 
@@ -1385,6 +1385,16 @@ Chat.selectCommand = function(command, argPlaceholder) {
 
   Chat.hideCommandAutocomplete();
   inputEl.focus();
+
+  // Navigate to mock run thread for this command's template (if one exists)
+  var cmdData = MOCK_WORKFLOW_COMMANDS.find(function(c) { return c.command === command; });
+  if (cmdData && cmdData.templateId) {
+    var threadId = Workflows._findRunThread(cmdData.templateId);
+    if (threadId) {
+      Chat.selectThread(threadId, document.querySelector('.thread-item[data-thread-id="' + threadId + '"]'));
+      Chat.openWorkflowPanel(MOCK_WORKFLOW_RUNS[threadId] ? threadId : null);
+    }
+  }
 };
 
 /** Navigates the autocomplete dropdown selection.
@@ -4649,8 +4659,8 @@ function escapeHtml(text) {
   if (wfActiveRuns) {
     wfActiveRuns.addEventListener('click', function(e) {
       var item = e.target.closest('.wf-active-run-item');
-      if (item && item.dataset.wfId) {
-        Workflows.showWorkflowDetail(item.dataset.wfId, item);
+      if (item && item.dataset.threadId) {
+        Workflows.navigateToThread(item.dataset.threadId);
       }
     });
   }
