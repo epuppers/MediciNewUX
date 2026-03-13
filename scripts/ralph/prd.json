@@ -137,7 +137,7 @@
       "id": "6.1",
       "title": "Wire Library to Detail to Chat navigation",
       "description": "Library card click -> Workflows.showWorkflowDetail(id) (verify smooth). Detail Run button -> switch to Chat view, select mock run thread, open workflow panel. Detail Runs tab row click -> if threadId, switch to Chat, select thread. Back button -> Library. Store last-viewed state in Workflows namespace so tab switching preserves it.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "6.2",
