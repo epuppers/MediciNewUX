@@ -1905,15 +1905,39 @@ Workflows.showWorkflowDetail = function(id, el) {
   const data = MOCK_WORKFLOW_TEMPLATES[id];
   if (!data) return;
 
+  // Store current template ID for other functions
+  Workflows._currentTemplateId = id;
+
   document.getElementById('wfDetailTitle').textContent = data.title;
   document.getElementById('wfDetailDesc').textContent = data.description;
+
+  // Build meta row: status badge + trigger chip + version + creator
+  var metaEl = document.getElementById('wfDetailMeta');
+  if (metaEl) {
+    var statusClass = 'status-' + data.status;
+    var statusLabel = data.status.charAt(0).toUpperCase() + data.status.slice(1);
+    var triggerInfo = Workflows._triggerMeta[data.triggerType] || { icon: '', label: data.triggerType };
+    var triggerIcon = typeof icon === 'function' ? icon(triggerInfo.icon) : '';
+
+    metaEl.innerHTML =
+      '<span class="wf-detail-meta-badge ' + statusClass + '">' + escapeHtml(statusLabel) + '</span>' +
+      '<span class="wf-detail-meta-chip">' + triggerIcon + ' ' + escapeHtml(triggerInfo.label) + '</span>' +
+      '<span class="wf-detail-meta-sep"></span>' +
+      '<span class="wf-detail-meta-text">v' + data.version + '</span>' +
+      '<span class="wf-detail-meta-sep"></span>' +
+      '<span class="wf-detail-meta-text">' + escapeHtml(data.createdBy) + ' · ' + escapeHtml(data.createdDate) + '</span>';
+  }
+
+  // Build overview tab content
+  Workflows._renderOverviewTab(data);
 
   document.getElementById('wfListing').classList.add('hidden');
   const detail = document.getElementById('wfDetail');
   detail.classList.remove('hidden');
 
   // Reset to overview tab
-  Workflows.switchTab('overview', document.querySelector('.tab-btn'));
+  var firstTab = detail.querySelector('.tab-btn');
+  if (firstTab) Workflows.switchTab('overview', firstTab);
 
   // Update sidebar active — match by data-wf-id attribute
   document.querySelectorAll('.wf-side-item').forEach(item => item.classList.remove('active'));
@@ -1927,6 +1951,65 @@ Workflows.showWorkflowDetail = function(id, el) {
     document.querySelectorAll('.wf-side-item').forEach(item => item.classList.remove('active'));
     sideTarget.classList.add('active');
   }
+};
+
+/** Renders the overview tab content from template data.
+ * @param {Object} data - Template data object
+ */
+Workflows._renderOverviewTab = function(data) {
+  var container = document.getElementById('wfDetailOverview');
+  if (!container) return;
+
+  var runs = data.runs || {};
+  var lastRun = (data.recentRuns && data.recentRuns.length > 0) ? data.recentRuns[0] : null;
+  var lastRunTime = lastRun ? lastRun.time : '—';
+  var lastRunStatus = lastRun ? lastRun.status : '—';
+  var lastRunStatusColor = lastRunStatus === 'success' ? 'text-green' : (lastRunStatus === 'failed' ? 'text-red' : '');
+
+  var html =
+    '<div class="overview-grid">' +
+      '<div class="detail-section bevel">' +
+        '<div class="detail-section-bar"><div class="art-stripe"></div>' +
+        '<span class="detail-section-title">Status</span><div class="art-stripe"></div></div>' +
+        '<div class="detail-section-body">' +
+          '<div class="kv-row"><span class="kv-key">State</span><span class="kv-val status-' + data.status + '">● ' + escapeHtml(data.status.charAt(0).toUpperCase() + data.status.slice(1)) + '</span></div>' +
+          '<div class="kv-row"><span class="kv-key">Last Run</span><span class="kv-val">' + escapeHtml(lastRunTime) + '</span></div>' +
+          '<div class="kv-row"><span class="kv-key">Last Result</span><span class="kv-val ' + lastRunStatusColor + '">' + escapeHtml(lastRunStatus.charAt(0).toUpperCase() + lastRunStatus.slice(1)) + '</span></div>' +
+          '<div class="kv-row"><span class="kv-key">Avg Duration</span><span class="kv-val">' + escapeHtml(runs.avgDuration || '—') + '</span></div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="detail-section bevel">' +
+        '<div class="detail-section-bar"><div class="art-stripe"></div>' +
+        '<span class="detail-section-title">Performance</span><div class="art-stripe"></div></div>' +
+        '<div class="detail-section-body">' +
+          '<div class="kv-row"><span class="kv-key">Total Runs</span><span class="kv-val">' + (runs.total || 0) + '</span></div>' +
+          '<div class="kv-row"><span class="kv-key">Success Rate</span><span class="kv-val text-green">' + (runs.successRate ? runs.successRate + '%' : '—') + '</span></div>' +
+          '<div class="kv-row"><span class="kv-key">Files Processed</span><span class="kv-val">' + (runs.filesProcessed || 0) + '</span></div>' +
+          '<div class="kv-row"><span class="kv-key">Created</span><span class="kv-val">' + escapeHtml(data.createdDate) + '</span></div>' +
+        '</div>' +
+      '</div>';
+
+  // Recent activity from recentRuns
+  if (data.recentRuns && data.recentRuns.length > 0) {
+    html += '<div class="detail-section bevel overview-full">' +
+      '<div class="detail-section-bar"><div class="art-stripe"></div>' +
+      '<span class="detail-section-title">Recent Activity</span><div class="art-stripe"></div></div>' +
+      '<div class="detail-section-body">';
+    data.recentRuns.forEach(function(run) {
+      var dotClass = run.status === 'success' ? 'success' : 'failed';
+      html += '<div class="run-row cursor-default">' +
+        '<div class="run-status-dot ' + dotClass + '"></div>' +
+        '<span class="run-id">' + escapeHtml(run.id) + '</span>' +
+        '<span class="run-trigger">' + escapeHtml(run.trigger) + '</span>' +
+        '<span class="run-time">' + escapeHtml(run.time) + '</span>' +
+        '<span class="run-duration">' + escapeHtml(run.duration) + '</span>' +
+        '</div>';
+    });
+    html += '</div></div>';
+  }
+
+  html += '</div>';
+  container.innerHTML = html;
 };
 
 /** Returns to the workflow listing view from the detail view. */
@@ -1945,11 +2028,14 @@ Workflows.showWorkflowListing = function() {
  * @param {HTMLElement} btn - The tab button element to mark active
  */
 Workflows.switchTab = function(tabId, btn) {
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  var infoCol = document.querySelector('.wf-detail-info-col');
+  if (!infoCol) return;
+  infoCol.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  infoCol.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
 
   btn.classList.add('active');
-  document.getElementById('tab-' + tabId).classList.add('active');
+  var panel = document.getElementById('tab-' + tabId);
+  if (panel) panel.classList.add('active');
 };
 
 // ============================================

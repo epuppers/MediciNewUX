@@ -1152,332 +1152,42 @@
         </div>
 
         <div class="wf-detail">
-          <div class="wf-detail-header">
-            <div class="wf-detail-desc" id="wfDetailDesc">Extracts and standardizes rent roll data from uploaded PDFs into clean xlsx format.</div>
-
-            <div class="tab-bar">
-              <button class="tab-btn active" data-tab="overview">Overview</button>
-              <button class="tab-btn" data-tab="config">Configuration</button>
-              <button class="tab-btn" data-tab="steps">Steps</button>
-              <button class="tab-btn" data-tab="runs">Runs</button>
-            </div>
-          </div>
-
-          <div class="tab-content">
-            <!-- OVERVIEW TAB -->
-            <div class="tab-panel active" id="tab-overview">
-              <div class="overview-grid">
-                <div class="detail-section bevel">
-                  <div class="detail-section-bar">
-                    <div class="art-stripe"></div>
-                    <span class="detail-section-title">Status</span>
-                    <div class="art-stripe"></div>
-                  </div>
-                  <div class="detail-section-body">
-                    <div class="kv-row">
-                      <span class="kv-key">State</span>
-                      <span class="kv-val text-green">● Active</span>
-                    </div>
-                    <div class="kv-row">
-                      <span class="kv-key">Last Run</span>
-                      <span class="kv-val">Feb 25, 12:15 PM</span>
-                    </div>
-                    <div class="kv-row">
-                      <span class="kv-key">Last Result</span>
-                      <span class="kv-val text-green">Success</span>
-                    </div>
-                    <div class="kv-row">
-                      <span class="kv-key">Avg Duration</span>
-                      <span class="kv-val">12.4s</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="detail-section bevel">
-                  <div class="detail-section-bar">
-                    <div class="art-stripe"></div>
-                    <span class="detail-section-title">Performance</span>
-                    <div class="art-stripe"></div>
-                  </div>
-                  <div class="detail-section-body">
-                    <div class="kv-row">
-                      <span class="kv-key">Total Runs</span>
-                      <span class="kv-val">47</span>
-                    </div>
-                    <div class="kv-row">
-                      <span class="kv-key">Success Rate</span>
-                      <span class="kv-val text-green">95.7%</span>
-                    </div>
-                    <div class="kv-row">
-                      <span class="kv-key">Files Processed</span>
-                      <span class="kv-val">183</span>
-                    </div>
-                    <div class="kv-row">
-                      <span class="kv-key">Created</span>
-                      <span class="kv-val">Jan 14, 2026</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="detail-section bevel overview-full">
-                  <div class="detail-section-bar">
-                    <div class="art-stripe"></div>
-                    <span class="detail-section-title">Recent Activity</span>
-                    <div class="art-stripe"></div>
-                  </div>
-                  <div class="detail-section-body">
-                    <div class="run-row cursor-default">
-                      <div class="run-status-dot success"></div>
-                      <span class="run-id">#047</span>
-                      <span class="run-trigger">Manual — 3 files</span>
-                      <span class="run-time">Today, 12:15 PM</span>
-                      <span class="run-duration">11.2s</span>
-                    </div>
-                    <div class="run-row cursor-default">
-                      <div class="run-status-dot success"></div>
-                      <span class="run-id">#046</span>
-                      <span class="run-trigger">Folder watch — 1 file</span>
-                      <span class="run-time">Today, 9:04 AM</span>
-                      <span class="run-duration">8.7s</span>
-                    </div>
-                    <div class="run-row cursor-default">
-                      <div class="run-status-dot failed"></div>
-                      <span class="run-id">#045</span>
-                      <span class="run-trigger">Manual — 2 files</span>
-                      <span class="run-time">Yesterday, 4:30 PM</span>
-                      <span class="run-duration">3.1s</span>
-                    </div>
-                  </div>
+          <div class="wf-detail-columns">
+            <!-- Left: Flow Graph (60%) -->
+            <div class="wf-detail-graph-col">
+              <div class="flow-graph-container bevel" id="flowGraphContainer" aria-label="Workflow flow graph">
+                <!-- Flow graph SVG rendered by Workflows.renderFlowGraph() -->
+                <div class="flow-graph-placeholder">
+                  <span class="flow-graph-placeholder-text">Flow graph</span>
                 </div>
               </div>
             </div>
+            <!-- Right: Info Column (40%) -->
+            <div class="wf-detail-info-col">
+              <div class="wf-detail-desc" id="wfDetailDesc"></div>
+              <div class="wf-detail-meta" id="wfDetailMeta"></div>
 
-            <!-- CONFIGURATION TAB -->
-            <div class="tab-panel" id="tab-config">
-              <div class="detail-section bevel">
-                <div class="detail-section-bar">
-                  <div class="art-stripe"></div>
-                  <span class="detail-section-title">Source Data Locations</span>
-                  <div class="art-stripe"></div>
-                </div>
-                <div class="detail-section-body">
-                  <div class="source-item">
-                    <div class="source-icon">📁</div>
-                    <div class="source-info">
-                      <div class="source-name">CRE Rent Rolls — Q4 2025</div>
-                      <div class="source-path">/Finance/CRE/Rent Rolls/Q4-2025/</div>
-                    </div>
-                    <span class="source-count">42 files</span>
-                  </div>
-                  <div class="source-item">
-                    <div class="source-icon">📁</div>
-                    <div class="source-info">
-                      <div class="source-name">Hilgard Property Uploads</div>
-                      <div class="source-path">/Clients/Hilgard/Property Documents/</div>
-                    </div>
-                    <span class="source-count">18 files</span>
-                  </div>
-                  <div class="source-item">
-                    <div class="source-icon">📄</div>
-                    <div class="source-info">
-                      <div class="source-name">Master Property List.xlsx</div>
-                      <div class="source-path">/Finance/CRE/master-property-list.xlsx</div>
-                    </div>
-                    <span class="source-count">1 file</span>
-                  </div>
-                  <button class="add-source-btn" id="addSourceBtn">+ Add File or Folder</button>
-                </div>
+              <div class="tab-bar">
+                <button class="tab-btn active" data-tab="overview">Overview</button>
+                <button class="tab-btn" data-tab="schema">Schema</button>
+                <button class="tab-btn" data-tab="triggers">Triggers</button>
+                <button class="tab-btn" data-tab="runs">Runs</button>
+                <button class="tab-btn" data-tab="lessons">Lessons</button>
               </div>
 
-              <div class="detail-section bevel">
-                <div class="detail-section-bar">
-                  <div class="art-stripe"></div>
-                  <span class="detail-section-title">Input Configuration</span>
-                  <div class="art-stripe"></div>
+              <div class="tab-content">
+                <!-- OVERVIEW TAB -->
+                <div class="tab-panel active" id="tab-overview">
+                  <div id="wfDetailOverview"></div>
                 </div>
-                <div class="detail-section-body">
-                  <div class="config-row">
-                    <span class="config-label">Accepted Types</span>
-                    <div class="config-value">
-                      <div class="file-type-chips">
-                        <span class="file-chip label-mono pdf">.pdf</span>
-                        <span class="file-chip label-mono xlsx">.xlsx</span>
-                        <span class="file-chip label-mono csv">.csv</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="config-row">
-                    <span class="config-label">Max File Size</span>
-                    <span class="config-value">50 MB</span>
-                  </div>
-                  <div class="config-row">
-                    <span class="config-label">Trigger</span>
-                    <span class="config-value">On file upload + Manual</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="detail-section bevel">
-                <div class="detail-section-bar">
-                  <div class="art-stripe"></div>
-                  <span class="detail-section-title">Output Configuration</span>
-                  <div class="art-stripe"></div>
-                </div>
-                <div class="detail-section-body">
-                  <div class="config-row">
-                    <span class="config-label">Output Format</span>
-                    <div class="config-value">
-                      <div class="file-type-chips">
-                        <span class="file-chip label-mono xlsx">.xlsx</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="config-row">
-                    <span class="config-label">Destination</span>
-                    <span class="config-value">/Finance/CRE/Processed/Rent Rolls/</span>
-                  </div>
-                  <div class="config-row">
-                    <span class="config-label">Columns</span>
-                    <span class="config-value">Unit, Floor, Tenant, Lease Start, Lease End, Monthly Rent, Sq Ft, $/SF, Status, Notes</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="lesson-applied">
-                <div class="lesson-applied-bar">
-                  <span class="lesson-applied-icon">◆</span>
-                  <span class="lesson-applied-label">Lesson Applied</span>
-                </div>
-                <div class="lesson-applied-body">
-                  <div class="lesson-applied-name">rent-roll-extraction-standardized</div>
-                  <div class="lesson-applied-meta">Created by E. Puckett · Last updated 6 days ago · Used in 3 workflows</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- STEPS TAB -->
-            <div class="tab-panel" id="tab-steps">
-              <div class="step-list">
-                <div class="step-connector"></div>
-
-                <div class="step-item">
-                  <div class="step-marker bevel complete">1</div>
-                  <div class="step-card bevel">
-                    <div class="step-card-title">Ingest & Validate</div>
-                    <div class="step-card-desc">Accept uploaded files, validate format and size constraints. Reject unsupported types with error message.</div>
-                    <div class="step-card-tags">
-                      <span class="step-tag label-mono">Input</span>
-                      <span class="step-tag label-mono">Validation</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="step-item">
-                  <div class="step-marker bevel complete">2</div>
-                  <div class="step-card bevel">
-                    <div class="step-card-title">Extract & Parse</div>
-                    <div class="step-card-desc">Run PDF extraction with OCR fallback. Identify table structures, header rows, and unit-level data. Handle multi-page spreads.</div>
-                    <div class="step-card-tags">
-                      <span class="step-tag label-mono">PDF</span>
-                      <span class="step-tag label-mono">OCR</span>
-                      <span class="step-tag label-mono">Tables</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="step-item">
-                  <div class="step-marker bevel running">3</div>
-                  <div class="step-card bevel">
-                    <div class="step-card-title">Standardize & Enrich</div>
-                    <div class="step-card-desc">Map extracted data to standard columns. Infer floor numbers from unit IDs. Normalize dates, currency, and square footage. Apply lesson rules.</div>
-                    <div class="step-card-tags">
-                      <span class="step-tag label-mono">Mapping</span>
-                      <span class="step-tag label-mono">Inference</span>
-                      <span class="step-tag label-mono">Lesson</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="step-item">
-                  <div class="step-marker bevel">4</div>
-                  <div class="step-card bevel">
-                    <div class="step-card-title">Generate Output</div>
-                    <div class="step-card-desc">Build formatted xlsx with property-level sheets. Add summary tab with vacancy rates and rent PSF metrics. Save to destination folder.</div>
-                    <div class="step-card-tags">
-                      <span class="step-tag label-mono">Output</span>
-                      <span class="step-tag label-mono">XLSX</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- RUNS TAB -->
-            <div class="tab-panel" id="tab-runs">
-              <div class="detail-section bevel">
-                <div class="detail-section-bar">
-                  <div class="art-stripe"></div>
-                  <span class="detail-section-title">Execution History</span>
-                  <div class="art-stripe"></div>
-                </div>
-                <div class="detail-section-body">
-                  <div class="run-row">
-                    <div class="run-status-dot success"></div>
-                    <span class="run-id">#047</span>
-                    <span class="run-trigger">Manual trigger — 3 PDF files</span>
-                    <span class="run-time">Today, 12:15 PM</span>
-                    <span class="run-duration">11.2s</span>
-                  </div>
-                  <div class="run-row">
-                    <div class="run-status-dot success"></div>
-                    <span class="run-id">#046</span>
-                    <span class="run-trigger">Folder watch — 1 PDF file</span>
-                    <span class="run-time">Today, 9:04 AM</span>
-                    <span class="run-duration">8.7s</span>
-                  </div>
-                  <div class="run-row">
-                    <div class="run-status-dot failed"></div>
-                    <span class="run-id">#045</span>
-                    <span class="run-trigger">Manual trigger — 2 files (1 corrupt)</span>
-                    <span class="run-time">Yesterday, 4:30 PM</span>
-                    <span class="run-duration">3.1s</span>
-                  </div>
-                  <div class="run-row">
-                    <div class="run-status-dot success"></div>
-                    <span class="run-id">#044</span>
-                    <span class="run-trigger">Folder watch — 5 PDF files</span>
-                    <span class="run-time">Yesterday, 11:20 AM</span>
-                    <span class="run-duration">22.8s</span>
-                  </div>
-                  <div class="run-row">
-                    <div class="run-status-dot success"></div>
-                    <span class="run-id">#043</span>
-                    <span class="run-trigger">Manual trigger — 1 XLSX file</span>
-                    <span class="run-time">Feb 23, 3:45 PM</span>
-                    <span class="run-duration">6.3s</span>
-                  </div>
-                  <div class="run-row">
-                    <div class="run-status-dot success"></div>
-                    <span class="run-id">#042</span>
-                    <span class="run-trigger">Folder watch — 2 PDF files</span>
-                    <span class="run-time">Feb 23, 10:12 AM</span>
-                    <span class="run-duration">14.1s</span>
-                  </div>
-                  <div class="run-row">
-                    <div class="run-status-dot success"></div>
-                    <span class="run-id">#041</span>
-                    <span class="run-trigger">Manual trigger — 4 PDF files</span>
-                    <span class="run-time">Feb 22, 2:55 PM</span>
-                    <span class="run-duration">18.6s</span>
-                  </div>
-                  <div class="run-row">
-                    <div class="run-status-dot failed"></div>
-                    <span class="run-id">#040</span>
-                    <span class="run-trigger">Folder watch — 1 PDF (password protected)</span>
-                    <span class="run-time">Feb 22, 9:30 AM</span>
-                    <span class="run-duration">1.8s</span>
-                  </div>
-                </div>
+                <!-- SCHEMA TAB (Task 4.1) -->
+                <div class="tab-panel" id="tab-schema"></div>
+                <!-- TRIGGERS TAB (Task 4.2) -->
+                <div class="tab-panel" id="tab-triggers"></div>
+                <!-- RUNS TAB (Task 4.3) -->
+                <div class="tab-panel" id="tab-runs"></div>
+                <!-- LESSONS TAB (Task 4.4) -->
+                <div class="tab-panel" id="tab-lessons"></div>
               </div>
             </div>
           </div>
