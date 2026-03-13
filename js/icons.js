@@ -66,7 +66,20 @@ var ICONS = {
 
   checkmark: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M2 8.5l4 4 8-9"/></svg>',
 
-  retry: '<svg class="retry-icon" viewBox="0 0 16 16" fill="none"><path d="M13.65 2.35A7.96 7.96 0 0 0 8 0C3.58 0 0 3.58 0 8s3.58 8 8 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 8 14 6 6 0 1 1 8 2c1.66 0 3.14.69 4.22 1.78L9 7h7V0l-2.35 2.35z" fill="currentColor"/></svg>'
+  retry: '<svg class="retry-icon" viewBox="0 0 16 16" fill="none"><path d="M13.65 2.35A7.96 7.96 0 0 0 8 0C3.58 0 0 3.58 0 8s3.58 8 8 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 8 14 6 6 0 1 1 8 2c1.66 0 3.14.69 4.22 1.78L9 7h7V0l-2.35 2.35z" fill="currentColor"/></svg>',
+
+  // Workflow trigger type icons
+  folderWatch: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M1.5 3.5v9h13v-7h-7l-2-2z"/><circle cx="11" cy="8.5" r="1.5" stroke-width="1.2"/><circle cx="11" cy="8.5" r="0.5" fill="currentColor" stroke="none"/></svg>',
+
+  schedule: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l3 2"/></svg>',
+
+  chatCommand: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="1.5" y="2.5" width="13" height="11" rx="1"/><path d="M4.5 7l2.5 2-2.5 2"/><line x1="8.5" y1="11" x2="11.5" y2="11"/></svg>',
+
+  emailTrigger: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="1.5" y="3" width="13" height="10"/><path d="M1.5 3l6.5 5.5L14.5 3"/></svg>',
+
+  manualTrigger: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M5 2.5v11l8-5.5z"/></svg>',
+
+  webhook: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M4.5 6.5l2-2 2 2 2-2 2 2"/><path d="M4.5 10.5l2-2 2 2 2-2 2 2"/></svg>'
 };
 
 // Helper: return an icon SVG string with custom width/height
