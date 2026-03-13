@@ -1171,6 +1171,12 @@
   align-items: center;
   justify-content: center;
   background: var(--off-white);
+  overflow: hidden;
+}
+
+.workflow-panel-graph .flow-graph-compact {
+  max-width: 100%;
+  height: auto;
 }
 
 .workflow-panel-details {

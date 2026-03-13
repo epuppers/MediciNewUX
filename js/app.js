@@ -2494,10 +2494,15 @@ Workflows.renderFlowGraph = function(templateId, containerId, options) {
     nodeStatuses = MOCK_WORKFLOW_RUNS[runId].nodeStatuses;
   }
 
-  // Build SVG — use 100% width/height so container controls size; viewBox controls coordinate space
-  var svg = '<svg class="flow-graph-svg' + (compact ? ' flow-graph-compact' : '') + '" ' +
-    'width="' + svgW + '" height="' + svgH + '" viewBox="0 0 ' + svgW + ' ' + svgH + '" ' +
-    'xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Workflow flow graph">';
+  // Build SVG — compact mode scales to fit container, full mode uses fixed dimensions
+  var svg = '<svg class="flow-graph-svg' + (compact ? ' flow-graph-compact' : '') + '" ';
+  if (compact) {
+    // Compact: use viewBox for scaling, width 100% so it fits the panel
+    svg += 'width="100%" height="' + svgH + '" viewBox="0 0 ' + svgW + ' ' + svgH + '" preserveAspectRatio="xMidYMid meet" ';
+  } else {
+    svg += 'width="' + svgW + '" height="' + svgH + '" viewBox="0 0 ' + svgW + ' ' + svgH + '" ';
+  }
+  svg += 'xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Workflow flow graph">';
 
   // Defs: arrowhead marker
   svg += '<defs>' +
