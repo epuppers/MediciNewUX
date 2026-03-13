@@ -101,7 +101,7 @@
       "id": "5.2",
       "title": "Compact flow graph with run status",
       "description": "Extend Workflows.renderFlowGraph() to handle { compact: true, showStatus: true, runId: '...' }. Compact: nodes 100x36, title only, no description, no zoom/pan, fits ~300px width. Status mode: node fill colors from MOCK_WORKFLOW_RUNS[runId].nodeStatuses — completed (green), running (violet + pulse), waiting (amber), pending (faded taupe), failed (red), skipped (faded + strikethrough). Wire into workflow context panel graph container.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "5.3",
