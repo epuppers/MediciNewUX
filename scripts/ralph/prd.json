@@ -77,7 +77,7 @@
       "id": "4.2",
       "title": "Triggers tab",
       "description": "Create #tab-triggers panel. List active triggers: icon by type, type label, config detail (folder path / cron / command string). Add Trigger dashed button using existing .add-source-btn pattern. Populate from template triggerConfig. Add CSS for .trigger-item to components.css.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "4.3",

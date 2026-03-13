@@ -81,3 +81,8 @@
 - Files modified: js/app.js, css/components.css
 - Gotchas / learnings: Schema type badges reuse the file-chip color pattern (type-specific color + border + light bg). The output format chip reuses existing .file-chip classes (already have xlsx, pdf, csv, etc. styled). Enum fields have an options array that gets rendered as small chips below the description.
 
+## Iteration 13 — Task 4.2: Triggers tab
+- What was done: Created Workflows._renderTriggersTab(data) that renders trigger items from template triggerConfig. Each trigger item shows: icon in a tinted circle, type label (mono bold), "Primary" badge for the main trigger type, and config detail (folder path, cron schedule, chat command code chip, or manual text). Handles templates where primary type is chat-command (shows command detail on primary item) and templates with secondary chat commands (e.g., rent-roll has folder-watch primary + /rent-roll chat command). Empty state for templates with no triggers. "Add Trigger" dashed button using existing .add-source-btn class. Called from showWorkflowDetail(). Added comprehensive CSS to components.css with full dark mode overrides.
+- Files modified: js/app.js, css/components.css
+- Gotchas / learnings: triggerConfig can have multiple trigger fields (e.g., watchPath + chatCommand). The primary trigger type comes from data.triggerType, but chat commands may exist as a secondary trigger. The trigger-detail-command uses a <code> element styled as a violet-tinted chip for command strings.
+
