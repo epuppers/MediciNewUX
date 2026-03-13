@@ -131,7 +131,7 @@
       "id": "5.7",
       "title": "Thread sidebar workflow indicators",
       "description": "Update sidebar thread rendering to detect workflowRunId on threads. Add small gear icon (.thread-wf-icon) before title text. Add waiting indicator type (amber dot + Waiting). Add running indicator (violet dot + pulse). Pulse animation gated by [data-a11y-motion]. Add CSS to layout.css or chat.css.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "6.1",
