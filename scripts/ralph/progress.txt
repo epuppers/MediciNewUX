@@ -66,3 +66,8 @@
 - Files modified: scripts/ralph/prd.json, scripts/ralph/progress.txt
 - Gotchas / learnings: Tasks 2.1 and 2.2 proactively added all CSS alongside the HTML/JS, so 2.3 was already complete. Card-related CSS lives in workflows.css; sidebar-related CSS lives in layout.css (following the project's file organization convention).
 
+## Iteration 10 — Task 3.3: Flow graph interaction (zoom, pan, node click)
+- What was done: Added zoom (mouse wheel with cursor-centered scaling, range 0.3x–3x), pan (mouse drag on background), and node click selection to the flow graph. Wrapped SVG content in a `<g class="flow-graph-transform">` group (full mode only) that receives translate/scale transforms. Created Workflows._initGraphInteraction() called after SVG insertion. Created Workflows.selectNode(nodeId, templateId) that toggles a `.selected` class. Added event delegation for node clicks in initEventListeners(). Added CSS for selected node state (thicker stroke + violet outline), grab/grabbing cursors on container, and dark mode override for selection outline.
+- Files modified: js/app.js, css/components.css
+- Gotchas / learnings: Zoom/pan only applies to full mode (not compact). The transform group wraps edges and nodes but not defs. Pan is implemented via mousedown/mousemove/mouseup on document (mouseup/mousemove on document so drag works outside container bounds). Node clicks are excluded from pan initiation via `.closest('.flow-node')` check. State stored in Workflows._graphZoom, _graphPanX, _graphPanY. The _initGraphInteraction function is called each time renderFlowGraph runs, resetting state.
+

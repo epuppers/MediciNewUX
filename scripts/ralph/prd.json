@@ -59,7 +59,7 @@
       "id": "3.3",
       "title": "Flow graph interaction (zoom, pan, node click)",
       "description": "Add mouse wheel zoom (scale transform on SVG viewBox or group) and mouse drag pan to flow graph container (full mode only, not compact). Add click handler on nodes calling Workflows.selectNode(nodeId). Respect [data-a11y-motion]. Store current zoom/pan state in Workflows namespace.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "3.4",
