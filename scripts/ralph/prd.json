@@ -155,7 +155,7 @@
       "id": "6.4",
       "title": "Toast notifications and keyboard shortcuts",
       "description": "Fire showToast() when navigating to completed run (Run #047 completed) or waiting run (Run #012 waiting for review). Verify Escape key dismisses: node popover -> command autocomplete -> workflow panel (priority order). Verify / key in chat input triggers autocomplete.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "6.5",
