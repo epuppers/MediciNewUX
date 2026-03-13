@@ -1461,7 +1461,8 @@
 .lesson-card {
   background: var(--white);
   border: 2px solid;
-  border-color: var(--taupe-1) var(--taupe-2) var(--taupe-2) var(--taupe-1);
+  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+  border-left: 3px solid var(--violet-3);
   border-radius: var(--r-md);
   padding: 12px 14px;
   cursor: pointer;
@@ -1469,7 +1470,8 @@
 }
 
 .lesson-card:hover {
-  border-color: var(--violet-2) var(--violet-3) var(--violet-3) var(--violet-2);
+  border-color: var(--violet-3) var(--violet-4) var(--violet-4) var(--violet-3);
+  border-left-color: var(--violet-4);
 }
 
 .lesson-card-top {
@@ -1490,15 +1492,15 @@
 }
 
 .scope-company {
-  background: var(--violet-1);
-  color: var(--violet-3);
-  border: 1px solid var(--violet-2);
+  background: var(--blue-3);
+  color: var(--white);
+  border: 1px solid var(--blue-3);
 }
 
 .scope-user {
-  background: var(--blue-1);
-  color: var(--blue-3);
-  border: 1px solid var(--blue-2);
+  background: var(--violet-3);
+  color: var(--white);
+  border: 1px solid var(--violet-3);
 }
 
 .lesson-card-top-right {
@@ -1617,6 +1619,14 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.lesson-block {
+  border: 2px solid;
+  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+  border-radius: var(--r-md);
+  padding: 12px;
+  background: var(--white);
 }
 
 .lesson-detail-body[contenteditable="true"] {
@@ -3250,11 +3260,28 @@
 
 /* Lessons — dark mode */
 [data-theme="dark"] .lesson-card {
-  border-color: var(--taupe-2);
+  border-color: var(--taupe-3) var(--taupe-4) var(--taupe-4) var(--taupe-3);
+  border-left-color: var(--violet-3);
 }
 
 [data-theme="dark"] .lesson-card:hover {
-  border-color: var(--violet-2);
+  border-color: var(--violet-3) var(--violet-4) var(--violet-4) var(--violet-3);
+  border-left-color: var(--violet-4);
+}
+
+[data-theme="dark"] .scope-company {
+  background: var(--blue-3);
+  border-color: var(--blue-3);
+}
+
+[data-theme="dark"] .scope-user {
+  background: var(--violet-3);
+  border-color: var(--violet-3);
+}
+
+[data-theme="dark"] .lesson-block {
+  border-color: var(--taupe-3) var(--taupe-4) var(--taupe-4) var(--taupe-3);
+  background: var(--taupe-1);
 }
 
 [data-theme="dark"] .lesson-table th {
