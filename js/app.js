@@ -1931,6 +1931,9 @@ Workflows.showWorkflowDetail = function(id, el) {
   // Build overview tab content
   Workflows._renderOverviewTab(data);
 
+  // Render flow graph in the graph column
+  Workflows.renderFlowGraph(id, 'flowGraphContainer', { compact: false });
+
   document.getElementById('wfListing').classList.add('hidden');
   const detail = document.getElementById('wfDetail');
   detail.classList.remove('hidden');
@@ -2018,6 +2021,195 @@ Workflows.showWorkflowListing = function() {
   document.getElementById('wfDetail').classList.add('hidden');
   document.querySelectorAll('.wf-side-item').forEach(item => item.classList.remove('active'));
   UI.closeCosimoPanel();
+};
+
+// ============================================
+// FLOW GRAPH RENDERER
+// ============================================
+
+/** Color scheme for each node type (stroke, fill CSS variables). */
+Workflows._nodeColors = {
+  input:  { stroke: 'var(--blue-3)',  fill: 'var(--blue-1)' },
+  action: { stroke: 'var(--violet-3)', fill: 'var(--violet-1)' },
+  gate:   { stroke: 'var(--amber)',    fill: 'rgba(var(--amber-rgb), 0.08)' },
+  branch: { stroke: 'var(--taupe-3)',  fill: 'var(--off-white)' },
+  output: { stroke: 'var(--green)',    fill: 'rgba(var(--green-rgb), 0.08)' }
+};
+
+/** Dark mode fill overrides (higher alpha on tinted fills). */
+Workflows._nodeColorsDark = {
+  gate:   'rgba(var(--amber-rgb), 0.12)',
+  output: 'rgba(var(--green-rgb), 0.12)'
+};
+
+/**
+ * Renders a flow graph SVG for a workflow template.
+ * @param {string} templateId - Template ID from MOCK_WORKFLOW_TEMPLATES
+ * @param {string} containerId - DOM element ID to render into
+ * @param {Object} [options] - Render options
+ * @param {boolean} [options.compact=false] - Compact mode (smaller nodes, no description)
+ * @param {boolean} [options.showStatus=false] - Show run status colors on nodes
+ * @param {string|null} [options.runId=null] - Run ID for status lookup
+ */
+Workflows.renderFlowGraph = function(templateId, containerId, options) {
+  var opts = options || {};
+  var compact = opts.compact || false;
+  var showStatus = opts.showStatus || false;
+  var runId = opts.runId || null;
+
+  var template = MOCK_WORKFLOW_TEMPLATES[templateId];
+  if (!template) return;
+
+  var container = document.getElementById(containerId);
+  if (!container) return;
+
+  var nodes = template.nodes || [];
+  var edges = template.edges || [];
+
+  // Node dimensions
+  var nodeW = compact ? 100 : 160;
+  var nodeH = compact ? 36 : 60;
+  var xSpacing = compact ? 130 : 200;
+  var ySpacing = compact ? 60 : 100;
+  var padding = compact ? 30 : 60;
+
+  // Find grid bounds
+  var minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+  nodes.forEach(function(n) {
+    if (n.x < minX) minX = n.x;
+    if (n.x > maxX) maxX = n.x;
+    if (n.y < minY) minY = n.y;
+    if (n.y > maxY) maxY = n.y;
+  });
+
+  // Build node position map (grid coords -> pixel center)
+  var nodeMap = {};
+  nodes.forEach(function(n) {
+    var px = (n.x - minX) * xSpacing + padding + nodeW / 2;
+    var py = (n.y - minY) * ySpacing + padding + nodeH / 2;
+    nodeMap[n.id] = { data: n, cx: px, cy: py };
+  });
+
+  // SVG dimensions
+  var svgW = (maxX - minX) * xSpacing + nodeW + padding * 2;
+  var svgH = (maxY - minY) * ySpacing + nodeH + padding * 2;
+
+  // Get run statuses if applicable
+  var nodeStatuses = null;
+  if (showStatus && runId && MOCK_WORKFLOW_RUNS[runId]) {
+    nodeStatuses = MOCK_WORKFLOW_RUNS[runId].nodeStatuses;
+  }
+
+  // Build SVG
+  var svg = '<svg class="flow-graph-svg' + (compact ? ' flow-graph-compact' : '') + '" ' +
+    'width="' + svgW + '" height="' + svgH + '" viewBox="0 0 ' + svgW + ' ' + svgH + '" ' +
+    'xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Workflow flow graph">';
+
+  // Defs: arrowhead marker
+  svg += '<defs>' +
+    '<marker id="arrowhead-' + templateId + '" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">' +
+    '<path d="M0,0 L8,3 L0,6" class="flow-edge-arrow" />' +
+    '</marker>' +
+    '</defs>';
+
+  // Render edges first (below nodes)
+  svg += '<g class="flow-edges">';
+  edges.forEach(function(edge) {
+    var fromNode = nodeMap[edge.from];
+    var toNode = nodeMap[edge.to];
+    if (!fromNode || !toNode) return;
+
+    var x1 = fromNode.cx;
+    var y1 = fromNode.cy + nodeH / 2;
+    var x2 = toNode.cx;
+    var y2 = toNode.cy - nodeH / 2;
+
+    // Build path: straight if same column, otherwise route with a bend
+    var pathD;
+    if (Math.abs(x1 - x2) < 2) {
+      // Straight vertical line
+      pathD = 'M' + x1 + ',' + y1 + ' L' + x2 + ',' + y2;
+    } else {
+      // Route: go down from source, bend horizontally, then down to target
+      var midY = (y1 + y2) / 2;
+      pathD = 'M' + x1 + ',' + y1 +
+        ' L' + x1 + ',' + midY +
+        ' L' + x2 + ',' + midY +
+        ' L' + x2 + ',' + y2;
+    }
+
+    svg += '<path d="' + pathD + '" class="flow-edge" ' +
+      'marker-end="url(#arrowhead-' + templateId + ')" />';
+
+    // Branch label at midpoint
+    if (edge.label && !compact) {
+      var lx = (x1 + x2) / 2;
+      var ly = (y1 + y2) / 2 - 6;
+      // Offset label slightly away from center for readability
+      if (Math.abs(x1 - x2) > 2) {
+        ly = (y1 + y2) / 2 - 8;
+      }
+      svg += '<text x="' + lx + '" y="' + ly + '" class="flow-edge-label" text-anchor="middle">' +
+        escapeHtml(edge.label) + '</text>';
+    }
+  });
+  svg += '</g>';
+
+  // Render nodes
+  svg += '<g class="flow-nodes">';
+  nodes.forEach(function(n) {
+    var pos = nodeMap[n.id];
+    var rx = pos.cx - nodeW / 2;
+    var ry = pos.cy - nodeH / 2;
+    var colors = Workflows._nodeColors[n.type] || Workflows._nodeColors.action;
+    var isGate = n.type === 'gate';
+
+    // Determine status class
+    var statusClass = '';
+    if (nodeStatuses && nodeStatuses[n.id]) {
+      statusClass = ' flow-node-status-' + nodeStatuses[n.id];
+    }
+
+    svg += '<g class="flow-node flow-node-' + n.type + statusClass + '" ' +
+      'data-node-id="' + n.id + '" data-template-id="' + templateId + '" ' +
+      'tabindex="0" role="button" aria-label="' + escapeHtml(n.title) + ' (' + n.type + ')">';
+
+    // Node rect
+    svg += '<rect x="' + rx + '" y="' + ry + '" width="' + nodeW + '" height="' + nodeH + '" ' +
+      'rx="6" ry="6" ' +
+      'class="flow-node-rect" ' +
+      'style="stroke:' + colors.stroke + '; fill:' + colors.fill + ';"' +
+      (isGate ? ' stroke-dasharray="6 3"' : '') + ' />';
+
+    // Title text
+    var titleY = compact ? pos.cy + 4 : pos.cy - 6;
+    svg += '<text x="' + pos.cx + '" y="' + titleY + '" class="flow-node-title" text-anchor="middle">' +
+      escapeHtml(n.title) + '</text>';
+
+    // Description text (full mode only)
+    if (!compact && n.description) {
+      var descY = pos.cy + 10;
+      // Truncate long descriptions
+      var desc = n.description.length > 35 ? n.description.substring(0, 33) + '…' : n.description;
+      svg += '<text x="' + pos.cx + '" y="' + descY + '" class="flow-node-desc" text-anchor="middle">' +
+        escapeHtml(desc) + '</text>';
+    }
+
+    // Lesson indicator chip (full mode only)
+    if (!compact && n.lesson) {
+      var chipX = rx + nodeW - 10;
+      var chipY = ry + 4;
+      svg += '<circle cx="' + chipX + '" cy="' + chipY + '" r="4" class="flow-node-lesson-dot" />';
+    }
+
+    svg += '</g>';
+  });
+  svg += '</g>';
+
+  svg += '</svg>';
+
+  // Clear placeholder and insert SVG
+  container.innerHTML = svg;
 };
 
 // ============================================

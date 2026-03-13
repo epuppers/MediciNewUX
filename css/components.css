@@ -1,4 +1,192 @@
 /* ============================================
+   FLOW GRAPH SVG
+   ============================================ */
+
+.flow-graph-svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Edges */
+.flow-edge {
+  fill: none;
+  stroke: var(--taupe-3);
+  stroke-width: 1.5;
+}
+
+.flow-edge-arrow {
+  fill: var(--taupe-3);
+  stroke: none;
+}
+
+.flow-edge-label {
+  font-family: var(--sans);
+  font-size: 9px;
+  fill: var(--taupe-3);
+  pointer-events: none;
+}
+
+/* Node group */
+.flow-node {
+  cursor: pointer;
+  outline: none;
+}
+
+.flow-node:hover .flow-node-rect,
+.flow-node:focus-visible .flow-node-rect {
+  stroke-width: 2.5;
+  filter: brightness(1.05);
+}
+
+.flow-node:focus-visible .flow-node-rect {
+  outline: 2px solid var(--violet-3);
+  outline-offset: 2px;
+}
+
+.flow-node:active .flow-node-rect {
+  filter: brightness(0.95);
+}
+
+/* Node rect */
+.flow-node-rect {
+  stroke-width: 1.5;
+  transition: stroke-width 0.15s, filter 0.15s;
+}
+
+/* Node title text */
+.flow-node-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--taupe-5);
+  pointer-events: none;
+}
+
+/* Node description text */
+.flow-node-desc {
+  font-family: var(--sans);
+  font-size: 10px;
+  fill: var(--taupe-3);
+  pointer-events: none;
+}
+
+/* Lesson indicator dot */
+.flow-node-lesson-dot {
+  fill: var(--violet-3);
+  stroke: none;
+  opacity: 0.7;
+}
+
+/* === Run Status Overrides === */
+
+.flow-node-status-completed .flow-node-rect {
+  stroke: var(--green) !important;
+  fill: rgba(var(--green-rgb), 0.08) !important;
+}
+
+.flow-node-status-running .flow-node-rect {
+  stroke: var(--violet-3) !important;
+  fill: rgba(var(--violet-3-rgb), 0.08) !important;
+  animation: wf-pulse-node 2s infinite;
+}
+
+[data-a11y-motion="reduce"] .flow-node-status-running .flow-node-rect {
+  animation: none;
+}
+
+@keyframes wf-pulse-node {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.flow-node-status-waiting .flow-node-rect {
+  stroke: var(--amber) !important;
+  fill: rgba(var(--amber-rgb), 0.08) !important;
+}
+
+.flow-node-status-pending .flow-node-rect {
+  stroke: var(--taupe-2) !important;
+  fill: var(--taupe-1) !important;
+  opacity: 0.4;
+}
+
+.flow-node-status-failed .flow-node-rect {
+  stroke: var(--red) !important;
+  fill: rgba(var(--red-rgb), 0.08) !important;
+}
+
+.flow-node-status-skipped .flow-node-rect {
+  stroke: var(--taupe-2) !important;
+  fill: var(--taupe-1) !important;
+  opacity: 0.4;
+}
+
+.flow-node-status-skipped .flow-node-title {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+/* Compact mode */
+.flow-graph-compact .flow-node-title {
+  font-size: 9px;
+}
+
+.flow-graph-compact .flow-edge {
+  stroke-width: 1;
+}
+
+/* === Dark Mode === */
+
+[data-theme="dark"] .flow-edge {
+  stroke: var(--taupe-3);
+}
+
+[data-theme="dark"] .flow-edge-arrow {
+  fill: var(--taupe-3);
+}
+
+[data-theme="dark"] .flow-edge-label {
+  fill: var(--taupe-3);
+}
+
+[data-theme="dark"] .flow-node-title {
+  fill: var(--taupe-5);
+}
+
+[data-theme="dark"] .flow-node-desc {
+  fill: var(--taupe-3);
+}
+
+[data-theme="dark"] .flow-node-lesson-dot {
+  fill: var(--violet-3);
+}
+
+[data-theme="dark"] .flow-node-gate .flow-node-rect {
+  fill: rgba(var(--amber-rgb), 0.12);
+}
+
+[data-theme="dark"] .flow-node-output .flow-node-rect {
+  fill: rgba(var(--green-rgb), 0.12);
+}
+
+[data-theme="dark"] .flow-node-status-completed .flow-node-rect {
+  fill: rgba(var(--green-rgb), 0.12) !important;
+}
+
+[data-theme="dark"] .flow-node-status-running .flow-node-rect {
+  fill: rgba(var(--violet-3-rgb), 0.12) !important;
+}
+
+[data-theme="dark"] .flow-node-status-waiting .flow-node-rect {
+  fill: rgba(var(--amber-rgb), 0.12) !important;
+}
+
+[data-theme="dark"] .flow-node-status-failed .flow-node-rect {
+  fill: rgba(var(--red-rgb), 0.12) !important;
+}
+
+/* ============================================
    WORKFLOW STEPS
    ============================================ */
 
