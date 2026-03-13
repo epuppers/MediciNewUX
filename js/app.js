@@ -1266,6 +1266,155 @@ Chat.closeWorkflowPanel = function() {
   document.getElementById('wfPanelResizeHandle').classList.remove('visible');
 };
 
+// ============================================
+// COMMAND AUTOCOMPLETE
+// ============================================
+
+/** Currently active autocomplete index (-1 = none selected) */
+Chat._acIndex = -1;
+
+/** Whether the autocomplete dropdown is currently visible */
+Chat._acOpen = false;
+
+/** Cached reference to the autocomplete dropdown element */
+Chat._acDropdown = null;
+
+/** Shows the command autocomplete dropdown above the active input area.
+ * @param {HTMLElement} inputEl - The contenteditable input element
+ * @param {string} query - The text after '/' to filter commands
+ */
+Chat.showCommandAutocomplete = function(inputEl, query) {
+  var inputArea = inputEl.closest('.input-area');
+  if (!inputArea) return;
+
+  // Filter commands by query
+  var q = query.toLowerCase();
+  var matches = MOCK_WORKFLOW_COMMANDS.filter(function(cmd) {
+    return cmd.command.toLowerCase().indexOf(q) > -1 ||
+           cmd.label.toLowerCase().indexOf(q) > -1;
+  });
+
+  if (matches.length === 0) {
+    Chat.hideCommandAutocomplete();
+    return;
+  }
+
+  // Create or reuse dropdown
+  var dropdown = Chat._acDropdown;
+  if (!dropdown) {
+    dropdown = document.createElement('div');
+    dropdown.className = 'wf-command-autocomplete';
+    dropdown.setAttribute('role', 'listbox');
+    dropdown.setAttribute('aria-label', 'Workflow commands');
+    Chat._acDropdown = dropdown;
+  }
+
+  // Remove from previous parent if moved to different input-area
+  if (dropdown.parentNode && dropdown.parentNode !== inputArea) {
+    dropdown.parentNode.removeChild(dropdown);
+  }
+
+  // Build items
+  var html = '';
+  matches.forEach(function(cmd, i) {
+    html += '<div class="wf-command-autocomplete-item" role="option" data-index="' + i + '" data-command="' + escapeHtml(cmd.command) + '"' +
+      (cmd.argPlaceholder ? ' data-arg="' + escapeHtml(cmd.argPlaceholder) + '"' : '') + '>' +
+      '<div class="wf-command-autocomplete-cmd">' + escapeHtml(cmd.command) +
+      ' <span class="wf-ac-label">' + escapeHtml(cmd.label) + '</span></div>' +
+      '<div class="wf-command-autocomplete-desc">' + escapeHtml(cmd.description) + '</div>' +
+      '</div>';
+  });
+  dropdown.innerHTML = html;
+
+  // Insert into input-area
+  if (!dropdown.parentNode) {
+    inputArea.insertBefore(dropdown, inputArea.firstChild);
+  }
+
+  dropdown.classList.add('open');
+  Chat._acOpen = true;
+  Chat._acIndex = -1;
+  Chat._acInputEl = inputEl;
+};
+
+/** Hides the command autocomplete dropdown. */
+Chat.hideCommandAutocomplete = function() {
+  if (Chat._acDropdown) {
+    Chat._acDropdown.classList.remove('open');
+  }
+  Chat._acOpen = false;
+  Chat._acIndex = -1;
+  Chat._acInputEl = null;
+};
+
+/** Selects a command from the autocomplete dropdown.
+ * @param {string} command - The command text (e.g., '/rent-roll')
+ * @param {string} [argPlaceholder] - Optional arg placeholder
+ */
+Chat.selectCommand = function(command, argPlaceholder) {
+  var inputEl = Chat._acInputEl;
+  if (!inputEl) return;
+  var text = command;
+  if (argPlaceholder) text += ' ' + argPlaceholder;
+  inputEl.textContent = text;
+
+  // Place cursor at end (or select placeholder if present)
+  var range = document.createRange();
+  var sel = window.getSelection();
+  if (argPlaceholder) {
+    // Select the placeholder text for easy replacement
+    var textNode = inputEl.firstChild;
+    if (textNode) {
+      var start = command.length + 1;
+      range.setStart(textNode, start);
+      range.setEnd(textNode, start + argPlaceholder.length);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+  } else {
+    range.selectNodeContents(inputEl);
+    range.collapse(false);
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
+
+  Chat.hideCommandAutocomplete();
+  inputEl.focus();
+};
+
+/** Navigates the autocomplete dropdown selection.
+ * @param {number} direction - 1 for down, -1 for up
+ */
+Chat._acNavigate = function(direction) {
+  if (!Chat._acOpen || !Chat._acDropdown) return;
+  var items = Chat._acDropdown.querySelectorAll('.wf-command-autocomplete-item');
+  if (items.length === 0) return;
+
+  // Remove current active
+  if (Chat._acIndex >= 0 && Chat._acIndex < items.length) {
+    items[Chat._acIndex].classList.remove('active');
+  }
+
+  // Calculate new index
+  Chat._acIndex += direction;
+  if (Chat._acIndex < 0) Chat._acIndex = items.length - 1;
+  if (Chat._acIndex >= items.length) Chat._acIndex = 0;
+
+  // Apply active class and scroll into view
+  items[Chat._acIndex].classList.add('active');
+  items[Chat._acIndex].scrollIntoView({ block: 'nearest' });
+};
+
+/** Confirms the currently selected autocomplete item. */
+Chat._acConfirm = function() {
+  if (!Chat._acOpen || !Chat._acDropdown || Chat._acIndex < 0) return false;
+  var items = Chat._acDropdown.querySelectorAll('.wf-command-autocomplete-item');
+  if (Chat._acIndex >= items.length) return false;
+  var item = items[Chat._acIndex];
+  Chat.selectCommand(item.dataset.command, item.dataset.arg || null);
+  return true;
+};
+
 /** Switches between viewer and folder tabs in the file panel.
  * @param {string} tab - Target tab ('viewer' | 'folder')
  */
@@ -4605,6 +4754,54 @@ function escapeHtml(text) {
   // File item click (open viewer)
   var fpFileItem = document.querySelector('.fp-file-item');
   if (fpFileItem) fpFileItem.addEventListener('click', function() { Chat.switchFilePanelTab('viewer'); });
+
+  // --- Command autocomplete: input detection ---
+  document.addEventListener('input', function(e) {
+    var el = e.target;
+    if (!el.classList.contains('text-input') || !el.isContentEditable) return;
+    var text = el.textContent || '';
+    if (text.charAt(0) === '/') {
+      Chat.showCommandAutocomplete(el, text);
+    } else {
+      Chat.hideCommandAutocomplete();
+    }
+  });
+
+  // --- Command autocomplete: keyboard navigation ---
+  document.addEventListener('keydown', function(e) {
+    if (!Chat._acOpen) return;
+    var el = e.target;
+    if (!el.classList.contains('text-input') || !el.isContentEditable) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      Chat._acNavigate(1);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      Chat._acNavigate(-1);
+    } else if (e.key === 'Enter') {
+      if (Chat._acIndex >= 0) {
+        e.preventDefault();
+        Chat._acConfirm();
+      }
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      Chat.hideCommandAutocomplete();
+    }
+  });
+
+  // --- Command autocomplete: click to select ---
+  document.addEventListener('click', function(e) {
+    var item = e.target.closest('.wf-command-autocomplete-item');
+    if (item) {
+      Chat.selectCommand(item.dataset.command, item.dataset.arg || null);
+      return;
+    }
+    // Click outside: dismiss
+    if (Chat._acOpen && !e.target.closest('.wf-command-autocomplete') && !e.target.closest('.text-input')) {
+      Chat.hideCommandAutocomplete();
+    }
+  });
 
   // --- Flow graph node click (delegation) ---
   document.addEventListener('click', function(e) {

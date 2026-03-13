@@ -1606,6 +1606,7 @@
 
 /* Input Area */
 .input-area {
+  position: relative;
   padding: 12px 16px;
   border-top: 2px solid;
   border-image: linear-gradient(90deg, var(--violet-2), var(--berry-2), var(--taupe-2)) 1;
@@ -2172,4 +2173,105 @@
 
 [data-theme="dark"] .wf-panel-exception {
   border-bottom-color: var(--surface-3);
+}
+
+/* ============================================
+   WORKFLOW COMMAND AUTOCOMPLETE
+   ============================================ */
+.wf-command-autocomplete {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  max-height: 240px;
+  overflow-y: auto;
+  background: var(--white);
+  border: 2px solid;
+  border-color: var(--taupe-2) var(--taupe-4) var(--taupe-4) var(--taupe-2);
+  box-shadow: 2px 2px 0 rgba(var(--black-rgb), 0.08);
+  border-radius: var(--r-md);
+  z-index: 200;
+  margin-bottom: 4px;
+  padding: 4px 0;
+}
+
+.wf-command-autocomplete.open {
+  display: block;
+}
+
+.wf-command-autocomplete-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 8px 12px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  transition: background 0.1s;
+}
+
+.wf-command-autocomplete-item:hover,
+.wf-command-autocomplete-item.active {
+  background: rgba(var(--violet-3-rgb), 0.06);
+}
+
+.wf-command-autocomplete-item:active {
+  background: rgba(var(--violet-3-rgb), 0.12);
+}
+
+.wf-command-autocomplete-item:focus-visible {
+  outline: 2px solid var(--violet-3);
+  outline-offset: -2px;
+  border-radius: var(--r-sm);
+}
+
+.wf-command-autocomplete-cmd {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--violet-3);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wf-command-autocomplete-cmd .wf-ac-label {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--taupe-4);
+}
+
+.wf-command-autocomplete-desc {
+  font-family: var(--sans);
+  font-size: 10px;
+  color: var(--taupe-3);
+  line-height: 1.3;
+}
+
+/* Dark mode */
+[data-theme="dark"] .wf-command-autocomplete {
+  background: var(--surface-2);
+  border-color: var(--surface-4) var(--surface-1) var(--surface-1) var(--surface-4);
+  box-shadow: 2px 2px 0 rgba(var(--black-rgb), 0.2);
+}
+
+[data-theme="dark"] .wf-command-autocomplete-item:hover,
+[data-theme="dark"] .wf-command-autocomplete-item.active {
+  background: rgba(var(--violet-3-rgb), 0.1);
+}
+
+[data-theme="dark"] .wf-command-autocomplete-item:active {
+  background: rgba(var(--violet-3-rgb), 0.18);
+}
+
+[data-theme="dark"] .wf-command-autocomplete-cmd .wf-ac-label {
+  color: var(--taupe-3);
+}
+
+[data-theme="dark"] .wf-command-autocomplete-desc {
+  color: var(--taupe-2);
 }
