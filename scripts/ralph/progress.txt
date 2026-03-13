@@ -76,3 +76,8 @@
 - Files modified: js/app.js, css/components.css, css/workflows.css
 - Gotchas / learnings: Dark mode tokens don't use dk- prefix — the same token names (--taupe-1 through --taupe-5, --white, --off-white) are redefined under [data-theme="dark"] in tokens.css. Popover is inserted into .wf-detail-graph-col (which has position:relative) and positioned using getBoundingClientRect() relative to the column. The _activePopover reference tracks the current popover for click-outside dismissal. Only full-mode graphs get popovers (compact SVGs with .flow-graph-compact class are skipped).
 
+## Iteration 12 — Task 4.1: Schema tab
+- What was done: Created Workflows._renderSchemaTab(data) that renders Input Schema section (description + field rows with name, type badge, required indicator, description, enum options) and Output Schema section (format file-chip, destination path, column chips). Called from showWorkflowDetail(). Added comprehensive CSS to components.css: .schema-field-row, .schema-field-header, .schema-field-name, .schema-type-badge with per-type color variants (string=blue, number=violet, date=amber, currency=green, enum=berry, boolean=taupe), .schema-required (red), .schema-field-desc, .schema-option-chip, .schema-output-meta, .schema-destination, .schema-columns-label, .schema-column-chip. Full dark mode overrides with 0.12 alpha fills.
+- Files modified: js/app.js, css/components.css
+- Gotchas / learnings: Schema type badges reuse the file-chip color pattern (type-specific color + border + light bg). The output format chip reuses existing .file-chip classes (already have xlsx, pdf, csv, etc. styled). Enum fields have an options array that gets rendered as small chips below the description.
+

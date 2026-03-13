@@ -71,7 +71,7 @@
       "id": "4.1",
       "title": "Schema tab",
       "description": "Create #tab-schema in info column. Two sections: Input Schema (description text + field table) and Output Schema (format chip + destination + column list). Each input field row: name (mono bold), type badge (small chip), required indicator, description text. Use existing .detail-section pattern. Populate from MOCK_WORKFLOW_TEMPLATES[id].inputSchema and .outputSchema. Add CSS for .schema-field-row, .schema-type-badge, .schema-required to components.css.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "4.2",
