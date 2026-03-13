@@ -1816,8 +1816,83 @@ Workflows.renderLibrary = function() {
   cardContainer.innerHTML = html;
 };
 
-// Render library on load
-(function() { Workflows.renderLibrary(); })();
+/** Renders the workflow sidebar: active runs section + template list.
+ * Active runs come from MOCK_WORKFLOW_RUNS where status is 'running' or 'waiting'.
+ * Template list shows all templates with trigger type icons.
+ */
+Workflows.renderSidebar = function() {
+  var activeRunsEl = document.getElementById('wfActiveRuns');
+  var listEl = document.getElementById('wfSidebarList');
+  if (!activeRunsEl || !listEl) return;
+
+  // Build active runs section
+  var activeHtml = '';
+  var runs = typeof MOCK_WORKFLOW_RUNS !== 'undefined' ? MOCK_WORKFLOW_RUNS : {};
+  var runKeys = Object.keys(runs);
+  var activeRuns = runKeys.filter(function(k) {
+    return runs[k].status === 'running' || runs[k].status === 'waiting';
+  });
+
+  if (activeRuns.length > 0) {
+    activeHtml += '<div class="side-label">Active Runs</div>';
+    activeRuns.forEach(function(key) {
+      var run = runs[key];
+      var template = MOCK_WORKFLOW_TEMPLATES[run.templateId];
+      var templateName = template ? escapeHtml(template.title) : escapeHtml(run.templateId);
+      var thread = MOCK_THREADS[run.threadId];
+      var threadTitle = thread ? escapeHtml(thread.title) : escapeHtml(run.threadId);
+      var statusClass = run.status === 'running' ? 'wf-run-running' : 'wf-run-waiting';
+      var statusLabel = run.status === 'running' ? 'Running' : 'Waiting';
+      var dotClass = run.status === 'running' ? 'wf-pulse' : '';
+
+      activeHtml += '<div class="wf-active-run-item" data-thread-id="' + escapeHtml(run.threadId) + '" data-wf-id="' + escapeHtml(run.templateId) + '">' +
+        '<div class="wf-active-run-name">' + templateName + '</div>' +
+        '<div class="wf-active-run-meta">' +
+          '<span class="wf-active-run-indicator ' + statusClass + '"><span class="wf-active-run-dot ' + dotClass + '"></span>' + statusLabel + '</span>' +
+          '<span class="wf-active-run-thread">' + threadTitle + '</span>' +
+        '</div>' +
+      '</div>';
+    });
+    activeRunsEl.innerHTML = activeHtml;
+    activeRunsEl.classList.remove('hidden');
+  } else {
+    activeRunsEl.innerHTML = '';
+    activeRunsEl.classList.add('hidden');
+  }
+
+  // Build template list
+  var templates = Object.values(MOCK_WORKFLOW_TEMPLATES);
+  var listHtml = '';
+  templates.forEach(function(t) {
+    var triggerMeta = Workflows._triggerMeta[t.triggerType] || { icon: 'manualTrigger', label: t.triggerType };
+    var statusClass = t.status + '-status';
+    var statusLabel = t.status.charAt(0).toUpperCase() + t.status.slice(1);
+
+    // Last run info
+    var runInfo = '';
+    if (t.recentRuns && t.recentRuns.length > 0) {
+      runInfo = 'Last run: ' + escapeHtml(t.recentRuns[0].time);
+    } else {
+      runInfo = 'No runs';
+    }
+
+    listHtml += '<div class="wf-side-item" data-wf-id="' + t.id + '">' +
+      '<div class="wf-side-title">' +
+        '<span class="wf-side-trigger-icon">' + icon(triggerMeta.icon, 12, 12) + '</span>' +
+        escapeHtml(t.title) +
+      '</div>' +
+      '<div class="wf-side-meta">' +
+        '<span class="wf-side-status ' + statusClass + '">' + statusLabel + '</span> ' +
+        runInfo +
+      '</div>' +
+    '</div>';
+  });
+
+  listEl.innerHTML = listHtml;
+};
+
+// Render library and sidebar on load
+(function() { Workflows.renderLibrary(); Workflows.renderSidebar(); })();
 
 // ============================================
 // WORKFLOW DETAIL
@@ -3448,6 +3523,17 @@ function escapeHtml(text) {
     wfSidebarList.addEventListener('click', function(e) {
       var item = e.target.closest('.wf-side-item');
       if (item) Workflows.showWorkflowDetail(item.dataset.wfId, item);
+    });
+  }
+
+  // --- Sidebar: Active runs (delegation) ---
+  var wfActiveRuns = document.getElementById('wfActiveRuns');
+  if (wfActiveRuns) {
+    wfActiveRuns.addEventListener('click', function(e) {
+      var item = e.target.closest('.wf-active-run-item');
+      if (item && item.dataset.wfId) {
+        Workflows.showWorkflowDetail(item.dataset.wfId, item);
+      }
     });
   }
 

@@ -82,45 +82,9 @@
 
     <!-- Workflow sidebar items -->
     <div id="workflowSidebar" class="hidden">
-      <div class="side-label">Workflows</div>
-      <div class="workflow-sidebar-list">
-        <div class="wf-side-item" data-wf-id="rent-roll">
-          Rent Roll Extraction
-          <div class="wf-side-meta">
-            <span class="wf-side-status active-status">Active</span>
-            Last run: 2h ago
-          </div>
-        </div>
-        <div class="wf-side-item" data-wf-id="k1-extract">
-          K-1 Document Processing
-          <div class="wf-side-meta">
-            <span class="wf-side-status active-status">Active</span>
-            Last run: 6h ago
-          </div>
-        </div>
-        <div class="wf-side-item" data-wf-id="lp-waterfall">
-          LP Distribution Waterfall
-          <div class="wf-side-meta">
-            <span class="wf-side-status draft-status">Draft</span>
-            Created Feb 20
-          </div>
-        </div>
-        <div class="wf-side-item" data-wf-id="fee-calc">
-          Management Fee Calculator
-          <div class="wf-side-meta">
-            <span class="wf-side-status active-status">Active</span>
-            Last run: 1d ago
-          </div>
-        </div>
-        <div class="wf-side-item" data-wf-id="covenant">
-          Loan Covenant Monitor
-          <span class="wf-notif-dot"></span>
-          <div class="wf-side-meta">
-            <span class="wf-side-status paused-status">Paused</span>
-            Paused Feb 15
-          </div>
-        </div>
-      </div>
+      <div class="wf-active-runs" id="wfActiveRuns"></div>
+      <div class="side-label">Templates</div>
+      <div class="workflow-sidebar-list" id="wfSidebarList"></div>
     </div>
 
     <!-- Brain nav — always visible at bottom of sidebar -->
