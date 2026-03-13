@@ -11,16 +11,16 @@ Serves at http://localhost:8082/index.html
 
 ## Project Structure
 ```
-index.html          — Main SPA (all views: Chat, Workflows, Brain) (~1955 lines)
+index.html          — Main SPA (all views: Chat, Workflows, Brain) (~2106 lines)
 login.html          — Authentication screen (SSO-only, no email form)
-js/app.js           — Application logic, namespaced modules (~3710 lines)
-js/mock-data.js     — All MOCK_* and CONFIG_* data objects (~710 lines)
-js/icons.js         — SVG icon strings + icon() helper + injectIcons() (~94 lines)
-css/tokens.css      — Design tokens, color palette, dark mode vars, border radii, RGB triplets (~133 lines)
-css/layout.css      — App frame, sidebar, panels, resize handles, accessibility modes (~1585 lines)
-css/chat.css        — Chat messages, streaming, artifacts, file panel, workflow context panel (~1649 lines)
-css/workflows.css   — Workflow library, template detail, flow graph container (~592 lines)
-css/components.css  — Flow graph nodes/edges, Brain sections, Cosimo panel, error states (~2183 lines)
+js/app.js           — Application logic, namespaced modules (~5256 lines)
+js/mock-data.js     — All MOCK_* and CONFIG_* data objects (~1239 lines)
+js/icons.js         — SVG icon strings + icon() helper + injectIcons() (~107 lines)
+css/tokens.css      — Design tokens, color palette, dark mode vars, border radii, RGB triplets (~203 lines)
+css/layout.css      — App frame, sidebar, panels, resize handles, accessibility modes (~1754 lines)
+css/chat.css        — Chat messages, streaming, artifacts, file panel, workflow context panel (~2277 lines)
+css/workflows.css   — Workflow library, template detail, flow graph container (~850 lines)
+css/components.css  — Flow graph nodes/edges, Brain sections, Cosimo panel, error states (~3223 lines)
 css/utilities.css   — Helpers (dropdowns, scrollbars, overlays, bevels, label-mono) (~245 lines)
 fonts/              — ChicagoFLF.ttf (retro display font)
 PRD.md              — Build task list (current: Workflows Rebuild)
@@ -405,8 +405,8 @@ Functions are organized into namespace objects to reduce globals:
 - **ColorUtils** — hexToHsl, hslToHex, hexToRgbString
 - **A11y** (7 functions) — toggleTheme, applyPurpleIntensity, applyFontSizeBoost, toggleDyslexiaFont, toggleReducedMotion, toggleHighContrast, syncA11yToggles
 - **UI** (15 functions) — switchMode, switchBrainSection, renderHeaderPanels, closeAllPanels, toggleTaskPanel, toggleCalendarPanel, toggleUsagePanel, toggleProfileMenu, buildMiniCalendar, handleNew, openCosimoPanel, closeCosimoPanel, handlePanelKey, sendPanelMessage, toggleDropdown
-- **Chat** (30+ functions) — runGlobalSearch, closeSearch, disableInput, giveFeedback, selectThread, updateFilesButton, openFilePanel, closeFilePanel, switchFilePanelTab, buildSpreadsheet, exportThread, shareThread, fillSuggestion, retryK1, streamReply, typeTextBlock, streamSectionBlock, tokenizeHTML, runEraborSequence, markEraborDone, cancelErabor, eraborTimer, showEraborStopBtn, softScroll, isNearBottom, attachFromComputer, attachFromDrive, toggleModelDropdown, selectModel, openWorkflowPanel, closeWorkflowPanel
-- **Workflows** (10+ functions) — renderLibrary, renderSidebar, showWorkflowDetail, showWorkflowListing, switchTab, renderFlowGraph, selectNode, openNodePopover, closeNodePopover
+- **Chat** (37 functions) — runGlobalSearch, closeSearch, disableInput, giveFeedback, selectThread, updateFilesButton, openFilePanel, closeFilePanel, openWorkflowPanel, closeWorkflowPanel, showCommandAutocomplete, hideCommandAutocomplete, selectCommand, _acNavigate, _acConfirm, _renderDDFlowGraphs, switchFilePanelTab, buildSpreadsheet, exportThread, shareThread, fillSuggestion, retryK1, streamReply, typeTextBlock, streamSectionBlock, tokenizeHTML, runEraborSequence, markEraborDone, cancelErabor, eraborTimer, showEraborStopBtn, softScroll, isNearBottom, attachFromComputer, attachFromDrive, toggleModelDropdown, selectModel
+- **Workflows** (22 functions) — renderLibrary, renderSidebar, showWorkflowDetail, showWorkflowListing, switchTab, renderFlowGraph, _initGraphInteraction, selectNode, openNodePopover, closeNodePopover, openCosimoForTemplate, openCosimoForNode, _renderOverviewTab, _renderSchemaTab, _renderTriggersTab, _renderRunsTab, _renderLessonsTab, _findRunThread, navigateToRun, navigateToThread, _triggerMeta, _nodeColors
 - **BrainMemory** (14 functions) — renderMemoryFromData, toggleAddMemory, cancelAddMemory, submitNewMemory, filterMemories, filterByCategory, toggleFactMenu, editFact, deleteFact, confirmDelete, cancelDelete, toggleTrait, removeTrait, addCustomTrait
 - **BrainLessons** (11 functions) — renderLessonList, filterLessons, filterLessonScope, openLesson, closeLessonDetail, toggleLessonEdit, openCosimoForLesson, toggleLessonScope, deleteLesson, createNewLesson, toggleCardScope
 - **Graph** (18 functions) — findEntity, buildGraph, makeEdge, makeNode, animateNode, applyRootState, applyClusterState, graphNavigate, openGraphEntity, closeGraphDetail, navigateToRelated, updateBreadcrumb, showGraphTooltip, hideGraphTooltip, startDriftLoop, editGraphEntity, openCosimoForEntity
