@@ -2387,8 +2387,200 @@
 }
 
 /* ============================================
+   SCHEMA TAB
+   ============================================ */
+
+.schema-desc {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--taupe-4);
+  line-height: 1.5;
+  margin: 0 0 14px 0;
+}
+
+.schema-field-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.schema-field-row {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--taupe-1);
+}
+
+.schema-field-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.schema-field-row:first-child {
+  padding-top: 0;
+}
+
+.schema-field-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 3px;
+}
+
+.schema-field-name {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--taupe-5);
+}
+
+.schema-type-badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border: 1px solid;
+  border-radius: var(--r-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.schema-type-string {
+  color: var(--blue-3);
+  border-color: var(--blue-3);
+  background: rgba(var(--blue-3-rgb), 0.06);
+}
+
+.schema-type-number {
+  color: var(--violet-3);
+  border-color: var(--violet-3);
+  background: rgba(var(--violet-3-rgb), 0.06);
+}
+
+.schema-type-date {
+  color: var(--amber);
+  border-color: var(--amber);
+  background: rgba(var(--amber-rgb), 0.06);
+}
+
+.schema-type-currency {
+  color: var(--green);
+  border-color: var(--green);
+  background: rgba(var(--green-rgb), 0.06);
+}
+
+.schema-type-enum {
+  color: var(--berry-3);
+  border-color: var(--berry-3);
+  background: rgba(var(--berry-3-rgb), 0.06);
+}
+
+.schema-type-boolean {
+  color: var(--taupe-3);
+  border-color: var(--taupe-3);
+  background: rgba(var(--taupe-3-rgb), 0.06);
+}
+
+.schema-required {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--red);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.schema-field-desc {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--taupe-3);
+  line-height: 1.4;
+}
+
+.schema-field-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.schema-option-chip {
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 2px 6px;
+  background: var(--off-white);
+  border: 1px solid var(--taupe-2);
+  color: var(--taupe-4);
+  border-radius: var(--r-sm);
+}
+
+.schema-output-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.schema-destination {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--taupe-3);
+}
+
+.schema-columns {
+  margin-top: 0;
+}
+
+.schema-columns-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--taupe-3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.schema-column-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.schema-column-chip {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  background: var(--off-white);
+  border: 1px solid var(--taupe-2);
+  color: var(--taupe-5);
+  border-radius: var(--r-sm);
+}
+
+/* ============================================
    DARK MODE OVERRIDES
    ============================================ */
+
+/* Schema tab — dark mode */
+[data-theme="dark"] .schema-desc {
+  color: var(--taupe-3);
+}
+
+[data-theme="dark"] .schema-type-string { background: rgba(var(--blue-3-rgb), 0.12); }
+[data-theme="dark"] .schema-type-number { background: rgba(var(--violet-3-rgb), 0.12); }
+[data-theme="dark"] .schema-type-date { background: rgba(var(--amber-rgb), 0.12); }
+[data-theme="dark"] .schema-type-currency { background: rgba(var(--green-rgb), 0.12); }
+[data-theme="dark"] .schema-type-enum { background: rgba(var(--berry-3-rgb), 0.12); }
+[data-theme="dark"] .schema-type-boolean { background: rgba(var(--taupe-3-rgb), 0.12); }
+
+[data-theme="dark"] .schema-option-chip {
+  background: var(--taupe-1);
+  border-color: var(--taupe-2);
+}
+
+[data-theme="dark"] .schema-column-chip {
+  background: var(--taupe-1);
+  border-color: var(--taupe-2);
+}
 
 /* Cosimo panel header — must stay dark */
 [data-theme="dark"] .cosimo-panel-header {

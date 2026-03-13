@@ -1931,6 +1931,9 @@ Workflows.showWorkflowDetail = function(id, el) {
   // Build overview tab content
   Workflows._renderOverviewTab(data);
 
+  // Build schema tab content
+  Workflows._renderSchemaTab(data);
+
   // Render flow graph in the graph column
   Workflows.renderFlowGraph(id, 'flowGraphContainer', { compact: false });
 
@@ -2012,6 +2015,86 @@ Workflows._renderOverviewTab = function(data) {
   }
 
   html += '</div>';
+  container.innerHTML = html;
+};
+
+/** Renders the schema tab content showing input/output schemas.
+ * @param {Object} data - Template data object
+ */
+Workflows._renderSchemaTab = function(data) {
+  var container = document.getElementById('tab-schema');
+  if (!container) return;
+
+  var html = '';
+  var input = data.inputSchema;
+  var output = data.outputSchema;
+
+  // Input Schema section
+  if (input) {
+    html += '<div class="detail-section bevel">' +
+      '<div class="detail-section-bar"><div class="art-stripe"></div>' +
+      '<span class="detail-section-title">Input Schema</span><div class="art-stripe"></div></div>' +
+      '<div class="detail-section-body">';
+
+    if (input.description) {
+      html += '<p class="schema-desc">' + escapeHtml(input.description) + '</p>';
+    }
+
+    if (input.fields && input.fields.length > 0) {
+      html += '<div class="schema-field-list">';
+      input.fields.forEach(function(field) {
+        var reqHtml = field.required ? '<span class="schema-required">Required</span>' : '';
+        html += '<div class="schema-field-row">' +
+          '<div class="schema-field-header">' +
+            '<span class="schema-field-name">' + escapeHtml(field.name) + '</span>' +
+            '<span class="schema-type-badge schema-type-' + field.type + '">' + escapeHtml(field.type) + '</span>' +
+            reqHtml +
+          '</div>' +
+          '<div class="schema-field-desc">' + escapeHtml(field.description) + '</div>';
+        if (field.type === 'enum' && field.options) {
+          html += '<div class="schema-field-options">' +
+            field.options.map(function(opt) {
+              return '<span class="schema-option-chip">' + escapeHtml(opt) + '</span>';
+            }).join('') +
+          '</div>';
+        }
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+    html += '</div></div>';
+  }
+
+  // Output Schema section
+  if (output) {
+    html += '<div class="detail-section bevel">' +
+      '<div class="detail-section-bar"><div class="art-stripe"></div>' +
+      '<span class="detail-section-title">Output Schema</span><div class="art-stripe"></div></div>' +
+      '<div class="detail-section-body">';
+
+    // Format + destination row
+    html += '<div class="schema-output-meta">';
+    if (output.format) {
+      html += '<span class="file-chip ' + output.format + '">' + escapeHtml(output.format.toUpperCase()) + '</span>';
+    }
+    if (output.destination) {
+      html += '<span class="schema-destination">' + escapeHtml(output.destination) + '</span>';
+    }
+    html += '</div>';
+
+    // Column list
+    if (output.columns && output.columns.length > 0) {
+      html += '<div class="schema-columns">' +
+        '<div class="schema-columns-label">Columns</div>' +
+        '<div class="schema-column-list">';
+      output.columns.forEach(function(col) {
+        html += '<span class="schema-column-chip">' + escapeHtml(col) + '</span>';
+      });
+      html += '</div></div>';
+    }
+    html += '</div></div>';
+  }
+
   container.innerHTML = html;
 };
 
