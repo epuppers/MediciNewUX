@@ -86,3 +86,8 @@
 - Files modified: js/app.js, css/components.css
 - Gotchas / learnings: triggerConfig can have multiple trigger fields (e.g., watchPath + chatCommand). The primary trigger type comes from data.triggerType, but chat commands may exist as a secondary trigger. The trigger-detail-command uses a <code> element styled as a violet-tinted chip for command strings.
 
+## Iteration 14 — Task 4.3: Runs tab
+- What was done: Created Workflows._renderRunsTab(data) that renders run history from template.recentRuns. Summary bar shows total runs, success rate, and avg duration. Each run row uses existing .run-row pattern with status dot, run ID, trigger detail, timestamp, and duration. Rows with threadId get .run-row-linked class (pointer cursor, violet hover/active/focus-visible states, data-thread-id attribute for Phase 6 navigation wiring). Rows without threadId get .cursor-default. Empty state for templates with no runs. Added CSS to components.css with full dark mode overrides. Called from showWorkflowDetail().
+- Files modified: js/app.js, css/components.css
+- Gotchas / learnings: The existing .run-row base class has cursor:pointer by default. Overview tab's run rows use .cursor-default utility to override. Runs tab uses .run-row-linked for threadId rows (keeps pointer) and .cursor-default for non-linked rows. The data-action="run-row-click" attribute on linked rows is ready for Phase 6 event delegation wiring.
+
