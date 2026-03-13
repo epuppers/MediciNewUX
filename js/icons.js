@@ -60,6 +60,8 @@ var ICONS = {
 
   close: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><line x1="4" y1="4" x2="12" y2="12"/><line x1="12" y1="4" x2="4" y2="12"/></svg>',
 
+  arrowLeft: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="11" height="11"><path d="M15 8H1M5 4l-4 4 4 4"/></svg>',
+
   arrowRight: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="11" height="11" class="inline-icon"><path d="M1 8h14M11 4l4 4-4 4"/></svg>',
 
   copy: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5.5" y="1.5" width="8" height="10"/><path d="M2.5 4.5v10h8"/></svg>',

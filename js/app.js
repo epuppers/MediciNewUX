@@ -905,7 +905,22 @@ UI.toggleProfileMenu = function() {
   const wasOpen = pp && !pp.classList.contains('hidden');
   UI.closeAllPanels();
   if (pp) pp.classList.add('hidden');
-  if (!wasOpen && pp) pp.classList.remove('hidden');
+  if (!wasOpen && pp) {
+    pp.classList.remove('show-subpanel');
+    pp.classList.remove('hidden');
+  }
+};
+
+/** Shows the appearance & accessibility sub-panel in the profile menu. */
+UI.showProfileSubpanel = function() {
+  const pp = document.getElementById('profilePanel');
+  if (pp) pp.classList.add('show-subpanel');
+};
+
+/** Returns to the main profile menu from the sub-panel. */
+UI.showProfileMain = function() {
+  const pp = document.getElementById('profilePanel');
+  if (pp) pp.classList.remove('show-subpanel');
 };
 
 /** Builds the mini calendar day grid inside the calendar dropdown. */
@@ -4860,6 +4875,15 @@ function escapeHtml(text) {
     profilePanel.addEventListener('click', function(e) {
       var themeToggle = e.target.closest('.profile-menu-theme');
       var signOut = e.target.closest('.profile-menu-signout');
+      var actionEl = e.target.closest('[data-action]');
+
+      // Menu item actions (appearance, account settings, back)
+      if (actionEl) {
+        var action = actionEl.getAttribute('data-action');
+        if (action === 'appearance') { e.stopPropagation(); UI.showProfileSubpanel(); return; }
+        if (action === 'profile-back') { e.stopPropagation(); UI.showProfileMain(); return; }
+        if (action === 'account-settings') { e.stopPropagation(); showToast('Coming soon'); return; }
+      }
 
       // Sign out
       if (signOut) { window.location.href = 'login.html'; return; }

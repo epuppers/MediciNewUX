@@ -149,75 +149,99 @@
           <span class="top-profile-name">Eliot Puplett</span>
         </div>
         <div class="th-dropdown th-dropdown-profile bevel hidden" id="profilePanel" aria-label="Profile settings">
-          <div class="profile-menu-theme">
-            <span class="profile-menu-theme-label">Dark mode</span>
-            <div class="profile-menu-toggle" id="themeToggleSwitch" role="switch" aria-checked="false" aria-label="Dark mode">
-              <div class="profile-menu-toggle-track" id="themeToggleTrack">
-                <div class="profile-menu-toggle-thumb" id="themeToggleThumb"></div>
+          <!-- Main profile menu -->
+          <div class="profile-menu-view" id="profileMainView">
+            <div class="profile-menu-user-info">
+              <div class="profile-menu-user-avatar">E</div>
+              <div class="profile-menu-user-details">
+                <div class="profile-menu-user-name">Eliot Puplett</div>
+                <div class="profile-menu-user-email">e.puplett@medici.com</div>
+              </div>
+            </div>
+            <div class="profile-menu-divider"></div>
+            <div class="profile-menu-item label-mono" data-action="appearance">
+              <span>Appearance &amp; Accessibility</span>
+              <span class="profile-menu-item-chevron" data-icon="chevronRight"></span>
+            </div>
+            <div class="profile-menu-item label-mono" data-action="account-settings">Account Settings</div>
+            <div class="profile-menu-divider"></div>
+            <div class="profile-menu-item label-mono profile-menu-signout">Sign Out</div>
+          </div>
+
+          <!-- Appearance & Accessibility sub-panel -->
+          <div class="profile-menu-view profile-menu-subpanel" id="profileAppearanceView">
+            <div class="profile-menu-subpanel-header" data-action="profile-back">
+              <span class="profile-menu-back-icon" data-icon="arrowLeft"></span>
+              <span class="profile-menu-subpanel-title">Appearance &amp; Accessibility</span>
+            </div>
+            <div class="profile-menu-divider"></div>
+            <div class="profile-menu-theme">
+              <span class="profile-menu-theme-label">Dark mode</span>
+              <div class="profile-menu-toggle" id="themeToggleSwitch" role="switch" aria-checked="false" aria-label="Dark mode">
+                <div class="profile-menu-toggle-track" id="themeToggleTrack">
+                  <div class="profile-menu-toggle-thumb" id="themeToggleThumb"></div>
+                </div>
+              </div>
+            </div>
+            <div class="profile-menu-contrast">
+              <div class="profile-menu-contrast-header">
+                <span class="profile-menu-theme-label">Purple intensity</span>
+                <span class="profile-menu-contrast-value" id="contrastValue">100%</span>
+              </div>
+              <input type="range" class="profile-menu-slider" id="purpleIntensitySlider" min="0" max="150" value="100">
+              <div class="profile-menu-slider-labels">
+                <span>Subtle</span>
+                <span>Default</span>
+                <span>Vivid</span>
+              </div>
+            </div>
+            <div class="profile-menu-divider"></div>
+            <div class="profile-menu-section-label">Accessibility</div>
+
+            <!-- Font size slider -->
+            <div class="profile-menu-contrast">
+              <div class="profile-menu-contrast-header">
+                <span class="profile-menu-theme-label">Text size</span>
+                <span class="profile-menu-contrast-value" id="fontSizeValue">100%</span>
+              </div>
+              <input type="range" class="profile-menu-slider" id="fontSizeSlider" min="0" max="4" step="1" value="0">
+              <div class="profile-menu-slider-labels">
+                <span>100%</span>
+                <span>110%</span>
+                <span>120%</span>
+              </div>
+            </div>
+
+            <!-- Dyslexia-friendly font -->
+            <div class="profile-menu-theme">
+              <span class="profile-menu-theme-label">Dyslexia-friendly font</span>
+              <div class="profile-menu-toggle" role="switch" aria-checked="false" aria-label="Dyslexia-friendly font">
+                <div class="profile-menu-toggle-track" id="dyslexiaToggleTrack">
+                  <div class="profile-menu-toggle-thumb" id="dyslexiaToggleThumb"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reduced motion -->
+            <div class="profile-menu-theme">
+              <span class="profile-menu-theme-label">Reduced motion</span>
+              <div class="profile-menu-toggle" role="switch" aria-checked="false" aria-label="Reduced motion">
+                <div class="profile-menu-toggle-track" id="motionToggleTrack">
+                  <div class="profile-menu-toggle-thumb" id="motionToggleThumb"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- High contrast + focus -->
+            <div class="profile-menu-theme">
+              <span class="profile-menu-theme-label">High contrast &amp; focus</span>
+              <div class="profile-menu-toggle" role="switch" aria-checked="false" aria-label="High contrast and focus">
+                <div class="profile-menu-toggle-track" id="contrastToggleTrack">
+                  <div class="profile-menu-toggle-thumb" id="contrastToggleThumb"></div>
+                </div>
               </div>
             </div>
           </div>
-          <div class="profile-menu-contrast">
-            <div class="profile-menu-contrast-header">
-              <span class="profile-menu-theme-label">Purple intensity</span>
-              <span class="profile-menu-contrast-value" id="contrastValue">100%</span>
-            </div>
-            <input type="range" class="profile-menu-slider" id="purpleIntensitySlider" min="0" max="150" value="100">
-            <div class="profile-menu-slider-labels">
-              <span>Subtle</span>
-              <span>Default</span>
-              <span>Vivid</span>
-            </div>
-          </div>
-          <div class="profile-menu-divider"></div>
-          <div class="profile-menu-section-label">Accessibility</div>
-
-          <!-- Font size slider -->
-          <div class="profile-menu-contrast">
-            <div class="profile-menu-contrast-header">
-              <span class="profile-menu-theme-label">Text size</span>
-              <span class="profile-menu-contrast-value" id="fontSizeValue">100%</span>
-            </div>
-            <input type="range" class="profile-menu-slider" id="fontSizeSlider" min="0" max="4" step="1" value="0">
-            <div class="profile-menu-slider-labels">
-              <span>100%</span>
-              <span>110%</span>
-              <span>120%</span>
-            </div>
-          </div>
-
-          <!-- Dyslexia-friendly font -->
-          <div class="profile-menu-theme">
-            <span class="profile-menu-theme-label">Dyslexia-friendly font</span>
-            <div class="profile-menu-toggle" role="switch" aria-checked="false" aria-label="Dyslexia-friendly font">
-              <div class="profile-menu-toggle-track" id="dyslexiaToggleTrack">
-                <div class="profile-menu-toggle-thumb" id="dyslexiaToggleThumb"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Reduced motion -->
-          <div class="profile-menu-theme">
-            <span class="profile-menu-theme-label">Reduced motion</span>
-            <div class="profile-menu-toggle" role="switch" aria-checked="false" aria-label="Reduced motion">
-              <div class="profile-menu-toggle-track" id="motionToggleTrack">
-                <div class="profile-menu-toggle-thumb" id="motionToggleThumb"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- High contrast + focus -->
-          <div class="profile-menu-theme">
-            <span class="profile-menu-theme-label">High contrast &amp; focus</span>
-            <div class="profile-menu-toggle" role="switch" aria-checked="false" aria-label="High contrast and focus">
-              <div class="profile-menu-toggle-track" id="contrastToggleTrack">
-                <div class="profile-menu-toggle-thumb" id="contrastToggleThumb"></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="profile-menu-divider"></div>
-          <div class="profile-menu-item label-mono profile-menu-signout">Sign Out</div>
         </div>
       </div>
     </div>
