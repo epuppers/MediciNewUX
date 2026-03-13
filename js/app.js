@@ -3062,6 +3062,87 @@ Workflows.closeNodePopover = function() {
 /** Reference to active popover element. */
 Workflows._activePopover = null;
 
+/** Opens the Cosimo panel pre-loaded with context for the current template.
+ * @param {string} [templateId] - Template ID (defaults to _currentTemplateId)
+ */
+Workflows.openCosimoForTemplate = function(templateId) {
+  var id = templateId || Workflows._currentTemplateId;
+  if (!id) { UI.openCosimoPanel(); return; }
+  var tpl = MOCK_WORKFLOW_TEMPLATES[id];
+  if (!tpl) { UI.openCosimoPanel(); return; }
+
+  var panelName = document.querySelector('.cosimo-panel-name');
+  panelName.textContent = 'Edit: ' + tpl.title;
+
+  var panelChat = document.getElementById('panelChat');
+  panelChat.innerHTML =
+    '<div class="panel-msg panel-msg-ai">' +
+      '<div class="panel-msg-header">' +
+        '<div class="badge badge-ai" style="width:16px;height:16px;font-size:9px;">&#9670;</div>' +
+        '<span class="panel-msg-sender">Cosimo</span>' +
+      '</div>' +
+      'I have the <strong>' + escapeHtml(tpl.title) + '</strong> workflow loaded (' +
+      tpl.nodes.length + ' nodes, ' + tpl.status + '). I can help you:' +
+      '<br><br>' +
+      '<strong>"Add a validation step before the output"</strong><br>' +
+      '<strong>"Change the trigger to run on a schedule"</strong><br>' +
+      '<strong>"Add a gate node for manual review"</strong><br>' +
+      '<strong>"Update the output format to CSV"</strong>' +
+    '</div>';
+
+  var panelInput = document.getElementById('panelInput');
+  if (panelInput) panelInput.textContent = '';
+
+  UI.openCosimoPanel();
+};
+
+/** Opens the Cosimo panel pre-loaded with context for a specific node.
+ * @param {string} nodeId - The node ID
+ * @param {string} [templateId] - Template ID (defaults to _currentTemplateId)
+ */
+Workflows.openCosimoForNode = function(nodeId, templateId) {
+  var tplId = templateId || Workflows._currentTemplateId;
+  if (!tplId) { UI.openCosimoPanel(); return; }
+  var tpl = MOCK_WORKFLOW_TEMPLATES[tplId];
+  if (!tpl) { UI.openCosimoPanel(); return; }
+  var node = tpl.nodes.find(function(n) { return n.id === nodeId; });
+  if (!node) { UI.openCosimoPanel(); return; }
+
+  var typeLabels = { input: 'Input', action: 'Action', gate: 'Gate', branch: 'Branch', output: 'Output' };
+  var typeLabel = typeLabels[node.type] || node.type;
+
+  var panelName = document.querySelector('.cosimo-panel-name');
+  panelName.textContent = 'Edit: ' + node.title;
+
+  var lessonCtx = '';
+  if (node.lesson && MOCK_LESSONS[node.lesson]) {
+    lessonCtx = ' This node uses the <strong>' + escapeHtml(MOCK_LESSONS[node.lesson].title) + '</strong> lesson.';
+  }
+
+  var panelChat = document.getElementById('panelChat');
+  panelChat.innerHTML =
+    '<div class="panel-msg panel-msg-ai">' +
+      '<div class="panel-msg-header">' +
+        '<div class="badge badge-ai" style="width:16px;height:16px;font-size:9px;">&#9670;</div>' +
+        '<span class="panel-msg-sender">Cosimo</span>' +
+      '</div>' +
+      'Editing the <strong>' + escapeHtml(node.title) + '</strong> ' + typeLabel + ' node in ' +
+      escapeHtml(tpl.title) + '.' + lessonCtx +
+      '<br><br>' +
+      'I can help you:' +
+      '<br><br>' +
+      '<strong>"Change what this step extracts"</strong><br>' +
+      '<strong>"Add error handling for missing fields"</strong><br>' +
+      '<strong>"Split this into two separate steps"</strong><br>' +
+      '<strong>"Connect this to a different output"</strong>' +
+    '</div>';
+
+  var panelInput = document.getElementById('panelInput');
+  if (panelInput) panelInput.textContent = 'Edit the "' + node.title + '" step to ';
+
+  UI.openCosimoPanel();
+};
+
 // ============================================
 // TABS
 // ============================================
@@ -4881,8 +4962,11 @@ function escapeHtml(text) {
 
     // Edit with Cosimo button in popover
     if (e.target.closest('[data-action="popover-edit-cosimo"]')) {
+      var popEl = e.target.closest('.node-popover');
+      var pNodeId = popEl ? popEl.dataset.nodeId : null;
+      var pTplId = popEl ? popEl.dataset.templateId : null;
       Workflows.closeNodePopover();
-      UI.openCosimoPanel();
+      Workflows.openCosimoForNode(pNodeId, pTplId);
       return;
     }
 
@@ -4939,7 +5023,7 @@ function escapeHtml(text) {
         if (Workflows._currentTemplateId) Workflows.navigateToRun(Workflows._currentTemplateId);
       }
       else if (action === 'duplicate') alert('Duplicated');
-      else if (action === 'edit-cosimo') UI.openCosimoPanel();
+      else if (action === 'edit-cosimo') Workflows.openCosimoForTemplate();
       else if (action === 'delete') alert('Deleted');
     });
   }
