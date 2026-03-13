@@ -446,6 +446,91 @@ const MOCK_WORKFLOW_TEMPLATES = {
 };
 
 // ============================================
+// MOCK DATA — WORKFLOW RUNS
+// ============================================
+const MOCK_WORKFLOW_RUNS = {
+  'wf-run-rentroll-047': {
+    templateId: 'rent-roll',
+    runId: '#047',
+    status: 'completed',
+    triggerType: 'manual',
+    triggeredBy: 'E. Puckett',
+    startTime: 'Today, 12:15 PM',
+    threadId: 'wf-run-rentroll-047',
+    inputManifest: [
+      { name: '245-Park-Ave-RentRoll.pdf', type: 'pdf', size: '2.1 MB' },
+      { name: 'Marina-Heights-Q4.pdf', type: 'pdf', size: '1.8 MB' },
+      { name: 'Berkshire-Units-Dec.pdf', type: 'pdf', size: '3.4 MB' }
+    ],
+    nodeStatuses: {
+      'n1': 'completed',
+      'n2': 'completed',
+      'n3': 'completed',
+      'n4': 'skipped',
+      'n5': 'completed',
+      'n6': 'completed',
+      'n7': 'completed'
+    },
+    exceptions: [
+      {
+        nodeId: 'n5',
+        type: 'inference',
+        description: 'Inferred Floor 2 for units 201–208 at Marina Heights based on unit numbering convention.',
+        confidence: 94
+      }
+    ],
+    outputManifest: [
+      { name: 'Q4-2025-RentRoll-Standardized.xlsx', path: '/Finance/CRE/Processed/Rent Rolls/', size: '84 KB' }
+    ]
+  },
+
+  'wf-run-tener-12': {
+    templateId: 'tener-valuation',
+    runId: '#012',
+    status: 'waiting',
+    triggerType: 'chat-command',
+    triggeredBy: 'E. Puckett',
+    startTime: 'Yesterday, 2:00 PM',
+    threadId: 'tener-batch-12',
+    inputManifest: [
+      { name: 'Batch-12-Parcels/', type: 'folder', fileCount: 47 }
+    ],
+    nodeStatuses: {
+      'n1': 'completed',
+      'n2': 'completed',
+      'n3': 'completed',
+      'n4': 'completed',
+      'n5': 'completed',
+      'n6': 'waiting',
+      'n7': 'pending',
+      'n8': 'pending',
+      'n9': 'pending'
+    },
+    exceptions: [
+      {
+        nodeId: 'n6',
+        type: 'conflicting-value',
+        description: 'Parcel-2847-Assessment.pdf has conflicting assessed values — page 3 shows $4.2M, page 7 shows $4.8M (amended).',
+        confidence: null
+      },
+      {
+        nodeId: 'n6',
+        type: 'low-confidence',
+        description: 'Parcel-3102-Notice.pdf — poor OCR quality, 3 fields uncertain.',
+        confidence: 67
+      },
+      {
+        nodeId: 'n6',
+        type: 'format-unknown',
+        description: 'Parcel-4411-Filing.tiff — unexpected format (TIFF scan, not PDF). Needs conversion.',
+        confidence: null
+      }
+    ],
+    outputManifest: []
+  }
+};
+
+// ============================================
 // MOCK DATA — SPREADSHEET
 // ============================================
 const MOCK_SPREADSHEET = {
