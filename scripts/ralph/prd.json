@@ -5,67 +5,67 @@
       "id": "P-01",
       "title": "Fix sidebar logo and title vertical alignment",
       "description": "The .logo-row uses align-items: flex-start, so the 6-sphere logo pyramid (31×29px inside a 28×28 .logo-mark) sits higher than the COSIMO title text and MEDICI & COMPANY subtitle. Fix: change .logo-row to align-items: center. Verify the spheres pyramid is vertically centered with the two-line title block. Both light and dark mode. Do NOT change sphere sizes, spacing, or the title font sizes — only the vertical alignment relationship between them.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "P-02",
       "title": "Add sidebar collapse/expand toggle button",
       "description": "CSS for .sidebar.collapsed already exists (width: 48px, hides header/labels/lists). But there is no toggle button or JS to trigger it. Add: (1) a small toggle button (.sidebar-toggle-btn) at the top-right corner of the sidebar header — use a chevron-left icon when expanded, chevron-right when collapsed. (2) Create UI.toggleSidebar() that toggles .collapsed on #sidebar and updates the icon. (3) When collapsed, only the logo spheres and toggle button should be visible. (4) Store collapsed state in localStorage ('sidebarCollapsed'). (5) Restore on load. (6) Add CSS for .sidebar-toggle-btn with hover/active/focus-visible states. (7) Add dark mode overrides. (8) Ensure the sidebar resize handle is hidden when collapsed.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "P-03",
       "title": "Make Brain nav section collapsible",
       "description": "The .brain-nav section at the bottom of the sidebar currently always takes vertical space. Make it toggleable: (1) Add a small collapse/expand toggle to the Brain section header — a chevron icon that rotates on toggle. (2) Create UI.toggleBrainNav() that toggles .brain-nav-collapsed class, hiding .brain-nav-items (the 3 buttons) and leaving just the 'Brain' label + toggle visible. (3) When brain-nav is collapsed and the user is on the Brain view, the view should remain visible — brain nav collapse only affects sidebar space, not the main content area. (4) Animate the collapse/expand with max-height transition, gated by [data-a11y-motion='reduced']. (5) Store state in localStorage ('brainNavCollapsed'). (6) Restore on load. (7) Add CSS with dark mode overrides.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "P-04",
       "title": "Restructure profile menu with sub-menus",
       "description": "Currently clicking the user profile avatar opens #profilePanel which directly shows all accessibility toggles (dark mode, purple intensity, text size, dyslexia font, reduced motion, high contrast) plus Sign Out — this is non-standard. Restructure: (1) Profile menu top section shows user info: avatar (E), name (Eliot Puplett), email (placeholder). (2) Below that: menu items — 'Appearance & Accessibility' (with chevron-right icon, opens sub-panel), 'Account Settings' (placeholder, shows toast 'Coming soon'), divider, 'Sign Out'. (3) 'Appearance & Accessibility' click replaces the profile menu content with a back-arrow header + all the existing toggles/sliders (dark mode, purple intensity, text size, dyslexia, reduced motion, high contrast). (4) Back arrow returns to main profile menu. (5) Animate the transition with a slide-left/slide-right, gated by reduced motion. (6) Widen #profilePanel to 240px for the sub-panel. (7) Add CSS with dark mode overrides. (8) All existing toggle functionality must be preserved — just moved into the sub-panel.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "P-05",
       "title": "Elevate Memory page card depth to match app bevels",
       "description": "The Memory section (Brain > Memory) feels flatter than the rest of the app. The .mem-fact-card, .mem-role-card, and .mem-personality cards use flat border-color: taupe-1/taupe-2 without the 3D bevel depth the rest of the app uses. Fix: (1) Give .mem-fact-card a proper raised bevel — use the .bevel pattern (border-color: light dark dark light) to match .wf-card, .lesson-card etc. (2) Add subtle left-border accent per category color (preference=berry, workflow=green, contact=blue, fund=violet, style=amber, context=taupe). (3) Give .mem-role-card and .mem-personality the same bevel treatment. (4) Add inset background tint to the .mem-facts-toolbar and .mem-search-input to match the depth of workflow detail panels. (5) Increase contrast on .mem-cat-pill active state. (6) Full dark mode overrides for all changes. (7) Do NOT change functionality — this is purely visual depth polish.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "P-06",
       "title": "Upgrade Memory from plain text to knowledge graph entity chips",
       "description": "Currently MOCK_MEMORY.facts are plain text strings. Update to a mini knowledge-graph display: (1) Add a linkedEntities array to each fact in MOCK_MEMORY — each entity is { name, type } where type matches Graph entity types (person, fund, property, document). Example: 'Reports go to Sarah Chen (CFO)...' gets linkedEntities: [{name:'Sarah Chen', type:'person'}, {name:'Marcus Webb', type:'person'}]. Add 2-3 entities per fact where appropriate. (2) In renderMemoryFromData(), render linked entities as small clickable chips below the fact text — use an inline-icon for type (person=person icon, fund=building icon, property=folder icon) + entity name. Style as .mem-entity-chip (mono 10px, border, rounded, hover effect). (3) Clicking an entity chip navigates to the Graph view and selects that entity — call UI.switchBrainSection('graphs') then Graph.selectByName(name) or show a toast if the entity isn't in the graph data. (4) Add CSS with dark mode overrides for .mem-entity-chip.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "P-07",
       "title": "Elevate Lessons page card depth to match app bevels",
       "description": "The Lessons section has the same flat styling issue as Memory. The .lesson-card uses flat borders without proper 3D bevel depth. Fix: (1) Give .lesson-card the raised bevel pattern (border-color: light dark dark light). (2) Add a subtle left-border accent in violet for all lesson cards. (3) Improve the .lesson-scope-badge contrast — make 'company' badge use solid blue-3 background with white text, 'user' badge use solid violet-3 background with white text (currently these are transparent with colored text, too low contrast). (4) Match the detail section (.lesson-block) cards with proper bevel depth when in the lesson detail view. (5) Full dark mode overrides for all changes. (6) Do NOT change functionality — visual depth only.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "P-08",
       "title": "Fix Erabor thread input area to match standard pattern",
       "description": "The Erabor Partnership thread (#thread-erabor) has a non-standard input area at line 976-1008 of index.html. Issues: (1) Uses a text 'Attach' button instead of the icon-based .attach-wrapper with .attach-menu (computer + cloud icons) that all other threads use. (2) Has an explicit .cmd-stop button that other threads don't have. (3) The .input-footer has the model-selector AFTER the keyboard shortcut hint text, whereas the standard pattern puts model-selector FIRST. Fix: replace the Erabor input area HTML with the exact same pattern used by the Fund III thread (lines 417-456). Keep the same thread IDs and aria labels. Remove the erabor-specific JS IDs (erabor-input, erabor-send-btn, erabor-stop-btn, erabor-input-area) — use the standard class-based patterns instead.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "P-09",
       "title": "Change typing indicator dots from squares to spheres matching logo",
       "description": "The .typing-dot elements in the loading/typing indicator use border-radius: var(--r-md) (4px), making them rounded squares. They should be circles/spheres to match the 6-sphere logo mark. Fix: (1) Change .typing-dot border-radius to 50%. (2) Add a radial-gradient background matching .logo-sphere.dark (radial-gradient at 35% 30%, from violet-3 to violet-4) instead of flat var(--violet-3). (3) Add a subtle inset box-shadow matching the logo spheres (inset 0 -1px 2px rgba(black,0.25), inset 0 1px 1px rgba(white,0.08)). (4) Verify animation still looks correct with the spherical shape. (5) Full dark mode overrides. (6) Respect [data-a11y-motion='reduced'] — the existing @keyframes typing-bounce should already be caught by the global reduced motion rule.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "P-10",
       "title": "Fix calendar dropdown grid layout",
       "description": "UI.buildMiniCalendar() generates a hardcoded day array with only 2 leading empty cells: ['','','1','2',...,'31']. This doesn't properly compute the starting weekday offset, so days are clumped incorrectly. Fix: (1) Compute the correct starting day-of-week for March 2026 (March 1, 2026 is a Sunday = 0 leading empties). (2) Replace the hardcoded array with computed logic: create a Date object for the first day of the month from MOCK_CALENDAR.month ('March 2026'), get the weekday (getDay()), prepend that many empty cells, then fill days 1 through the last day of the month (31 for March). (3) Derive the event days from MOCK_CALENDAR.events by parsing their meta fields for day numbers. (4) Mark 'today' as day 13 (since today is March 13, 2026 per MOCK_CALENDAR). (5) Keep all existing .mcg-day classes (.today, .has-event, .empty). (6) Verify the 7-column grid layout displays correctly.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "P-11",
       "title": "File upload preview strip and user message file attachments",
       "description": "Two related features, demonstrated in the Fund III thread. (A) Staged file preview strip: when files are 'attached' (simulated via the attach button or drag-drop), show a .input-file-strip row ABOVE the .input-row inside .input-area. Each staged file is a .input-file-chip: small pill with file-type icon (📄 for PDF, ▦ for xlsx, 📊 for csv), filename (mono 11px, truncated with ellipsis at ~20 chars), file size (mono 10px taupe-3), and an × remove button. Chips are horizontally scrollable if they overflow. For the static demo: add 2 mock staged files to the Fund III input area HTML (e.g., 'Q1_Holdings_Report.pdf 2.4 MB' and 'Fund_III_NAV_032026.xlsx 840 KB'). Add CSS for .input-file-strip, .input-file-chip, .input-file-chip-remove with hover/active/focus-visible states, bevel border, dark mode overrides. (B) User message with files: add a new user message (Message 5) to the Fund III thread between the current last AI message and the input area. Message from Eliot at 2:38 PM saying 'Here are the updated holdings and NAV for the rebalance. Can you run the allocation against these and confirm the drift numbers still hold?'. Below the .msg-body, add a .msg-file-attachments div containing 2 .file-attachment elements (same pattern as Cosimo's Hilgard xlsx attachment but smaller — reuse .file-attachment class): 'Q1_Holdings_Report.pdf' (24 pages, 2.4 MB) and 'Fund_III_NAV_032026.xlsx' (3 sheets, 840 KB). The file-attachment-icon background should be var(--blue-3) for PDF and var(--green) for xlsx to differentiate. Add .msg-file-attachments CSS (flex column, gap, margin-top) to chat.css with dark mode overrides.",
-      "passes": false
+      "passes": true
     }
   ]
 }

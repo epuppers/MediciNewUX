@@ -22,6 +22,7 @@ workflow.md (the blueprint — persistent on disk)
 ```
 
 Each agent receives:
+
 - The `workflow.md` file (high-level blueprint, schemas, rules — never changes during a run)
 - The specific step definition (what to do, what inputs to expect, what output to produce)
 - Outputs from prior steps (only the ones this step needs — not the entire history)
@@ -83,6 +84,7 @@ Gates are points in the workflow where execution pauses and a human must act bef
 **Auto gates** — Cosimo hits something unexpected at runtime (low confidence extraction, conflicting data, unknown format) and creates an ad hoc gate. The default behavior when confused is: stop and ask.
 
 **How gates work at runtime:**
+
 1. Agent completes a step and determines a gate is needed (either because the flow graph says so, or because it encountered an exception)
 2. The run pauses. Status changes to `waiting`.
 3. Cosimo posts a message in the Chat thread explaining what it needs: what happened, what it's unsure about, what decision is required
@@ -108,6 +110,7 @@ Workflows have a visibility toggle:
 - **Org-wide**: anyone in the organization can see, run, and be assigned as a gate reviewer
 
 When a workflow is org-wide:
+
 - It appears in every user's Workflow Library
 - Any user can trigger a run
 - Gate notifications can target any user in the org
@@ -124,7 +127,7 @@ Real-world inputs are messy. The input schema system handles three levels of var
 
 **Fixed schema** — every run gets the same document structure. Example: a monthly fee calculation that always reads from the same commitment schedule format. The schema defines exact fields and types.
 
-**Variable-but-typed schema** — the documents are the "same kind of thing" but vary in format. Example: rent rolls from 40 different property managers, each with different column names, layouts, and quirks. The schema defines the **target fields** (Unit ID, Tenant, Rent, etc.) and Cosimo's extraction step is responsible for mapping whatever it receives onto those fields. This is where lessons are critical — each property manager's format gets a lesson that teaches Cosimo the mapping.
+**Variable-but-typed schema** — the documents are the "same kind of thing" but vary in format. Example: rent rolls from 40 different property managers, each with different column names, layouts, and quirks. The schema defines the **target fields** (Unit ID, Tenant, Rent, etc.) and Cosimo's extraction step is responsible for mapping whatever it receives onto those fields. This is where lessons are critical — each property manager's format gets a lesson (or at least it's own agent instance) that teaches Cosimo the mapping.
 
 **Loose schema** — the workflow accepts "whatever documents are relevant." Example: due diligence on a new acquisition where the data room contents are unpredictable. The schema defines **document categories** (financials, environmental, title, etc.) and Cosimo classifies and routes at runtime.
 
@@ -155,10 +158,11 @@ A workflow's trigger config can include `chained` — meaning it starts automati
 Example: Book-keeping workflow completes → automatically triggers Financial Statements workflow, passing the book-keeping output as input.
 
 **How chaining works:**
+
 1. Workflow A's final step completes. Run status → `completed`.
 2. The harness checks if any workflow has a chain trigger pointing to Workflow A.
 3. If so, it creates a new run of Workflow B, populating the input manifest with Workflow A's output manifest.
-4. A new Chat thread is created for the chained run (or it continues in the same thread — this is a UX decision we can make later).
+4. A new Chat thread is created for the chained run (with a link from the last workflow chat).
 
 Chains can be multi-level (A → B → C) but not circular. The system should validate this on workflow creation.
 
@@ -175,7 +179,7 @@ Lessons and workflow steps are deeply connected:
 - At runtime, when a step's agent is spun up, the relevant lesson is included in its context alongside the step definition
 - When Cosimo encounters a new pattern at runtime (e.g., a rent roll format it hasn't seen before), it can create a new lesson from the experience and link it to the workflow step for future runs
 
-Lessons are the mechanism by which workflows get smarter over time without being rebuilt.
+Lessons are the mechanism by which workflows get smarter over time without being rebuilt. It also allows for more surgical edits over time (for example, a marketing person at a Co could update the branding lesson that feeds document creation for 20+ workflows)
 
 ---
 
@@ -183,15 +187,15 @@ Lessons are the mechanism by which workflows get smarter over time without being
 
 Where things live:
 
-| Data | Location | Notes |
-|------|----------|-------|
-| `workflow.md` files | Per-client storage (on-prem or cloud) | The workflow blueprint — versioned |
-| Step outputs (intermediate) | Temp storage, cleaned after run completes | Large files, short-lived |
-| Final outputs | Client-specified destination (folder, system) | Permanent |
-| Run logs | SQL DB | Metadata, node statuses, exceptions, timing |
-| Run conversations | Chat storage | Full thread history for audit trail |
-| Lessons | Knowledge graph + vector store | Depending on client's data architecture |
-| Input files | Client's existing file storage | Cosimo reads from wherever they already are |
+| Data                        | Location                                      | Notes                                       |
+| --------------------------- | --------------------------------------------- | ------------------------------------------- |
+| `workflow.md` files         | Per-client storage (on-prem or cloud)         | The workflow blueprint — versioned          |
+| Step outputs (intermediate) | Temp storage, cleaned after run completes     | Large files, short-lived                    |
+| Final outputs               | Client-specified destination (folder, system) | Permanent                                   |
+| Run logs                    | SQL DB                                        | Metadata, node statuses, exceptions, timing |
+| Run conversations           | Chat storage                                  | Full thread history for audit trail         |
+| Lessons                     | Knowledge graph + vector store                | Depending on client's data architecture     |
+| Input files                 | Client's existing file storage                | Cosimo reads from wherever they already are |
 
 The workflow system does not mandate a single storage backend. It adapts to each client's existing infrastructure — the harness abstracts file access.
 
@@ -199,10 +203,9 @@ The workflow system does not mandate a single storage backend. It adapts to each
 
 ## 11. Open Questions for Implementation
 
-1. **Agent orchestration runtime:** What manages the spin-up/kill cycle for step agents? Is this the harness layer Shairq is building, or a separate orchestrator?
+1. **Agent orchestration runtime:** What manages the spin-up/kill cycle for step agents? Is this the harness layer, or a separate orchestrator?
 2. **Parallel step execution:** The flow graph supports branches (parallel paths). Do we run parallel step agents concurrently, or sequentially? Concurrency is faster but harder to debug.
 3. **Step output format:** What's the intermediate format between steps? JSON? Files on disk? A structured message passed through the harness?
-4. **Chain thread behavior:** When Workflow A triggers Workflow B, does B get its own Chat thread or continue in A's thread? Separate is cleaner for audit; combined is better for user context.
-5. **Lesson versioning during runs:** If a lesson is updated mid-run (by another user or another run), does the current run use the original or updated version? Recommend: pin lesson version at run start.
-6. **Max workflow complexity:** Do we need guardrails on step count or depth? A 200-step workflow is technically possible but may need a different UX for monitoring.
-7. **Offline / async gates:** If a gate reviewer doesn't respond for 48 hours, what happens? Escalation? Timeout? Auto-proceed with Cosimo's best guess + flag?
+4. **Lesson versioning during runs:** If a lesson is updated mid-run (by another user or another run), does the current run use the original or updated version? (Probably best to pin lesson version at run start?).
+5. **Max workflow complexity:** Do we need guardrails on step count or depth? A 200-step workflow is technically possible but may need a different UX for monitoring.
+6. **Offline / async gates:** If a gate reviewer doesn't respond for 48 hours, what happens? Escalation? Timeout? Auto-proceed with Cosimo's best guess + flag?

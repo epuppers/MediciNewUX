@@ -341,11 +341,51 @@ var Graph = {};
     });
   }
 
-  // Sidebar: drag right edge to resize
-  initResize('sidebarResizeHandle',
-    () => document.getElementById('sidebar'),
-    'right'
-  );
+  // Sidebar: drag right edge to resize, with narrow breakpoint snap
+  (function() {
+    var NARROW_SNAP = 56;
+    var NARROW_THRESHOLD = 110;
+    var handle = document.getElementById('sidebarResizeHandle');
+    if (!handle) return;
+    var startX, startW, sidebar;
+
+    handle.addEventListener('mousedown', function(e) {
+      e.preventDefault();
+      sidebar = document.getElementById('sidebar');
+      if (!sidebar) return;
+      startX = e.clientX;
+      startW = sidebar.offsetWidth;
+      handle.classList.add('dragging');
+      sidebar.classList.add('no-transition');
+      sidebar.classList.add('dragging');
+      document.body.style.cursor = 'col-resize';
+      document.body.style.userSelect = 'none';
+
+      function onMove(e) {
+        var newW = startW + (e.clientX - startX);
+        if (newW < NARROW_THRESHOLD) {
+          sidebar.style.width = NARROW_SNAP + 'px';
+          sidebar.classList.add('narrow');
+        } else {
+          sidebar.classList.remove('narrow');
+          sidebar.style.width = newW + 'px';
+        }
+      }
+
+      function onUp() {
+        handle.classList.remove('dragging');
+        sidebar.classList.remove('no-transition');
+        sidebar.classList.remove('dragging');
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+      }
+
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+  })();
 
   // File panel: drag left edge to resize
   initResize('filePanelResizeHandle',
@@ -565,6 +605,32 @@ A11y.toggleHighContrast = function() {
   A11y.syncA11yToggles();
 };
 
+/** Toggles icon labels mode — replaces icon-only buttons with text labels. */
+A11y.toggleIconLabels = function() {
+  var root = document.documentElement;
+  var active = root.getAttribute('data-a11y-labels') === 'show';
+  if (active) {
+    root.removeAttribute('data-a11y-labels');
+    localStorage.setItem('a11yLabels', 'off');
+  } else {
+    root.setAttribute('data-a11y-labels', 'show');
+    localStorage.setItem('a11yLabels', 'on');
+  }
+  A11y.syncA11yToggles();
+};
+
+/** Injects hidden label spans into all buttons with data-label attributes. */
+A11y.injectIconLabels = function() {
+  document.querySelectorAll('[data-label]').forEach(function(el) {
+    if (el.querySelector('.a11y-label')) return;
+    var span = document.createElement('span');
+    span.className = 'a11y-label';
+    span.setAttribute('aria-hidden', 'true');
+    span.textContent = el.getAttribute('data-label');
+    el.appendChild(span);
+  });
+};
+
 // --- Sync toggle visuals to current state ---
 /** Synchronizes all accessibility toggle UI elements to match current DOM state. */
 A11y.syncA11yToggles = function() {
@@ -573,6 +639,7 @@ A11y.syncA11yToggles = function() {
   var dyslexiaOn = root.getAttribute('data-a11y-font') === 'dyslexia';
   var motionOn = root.getAttribute('data-a11y-motion') === 'reduced';
   var contrastOn = root.getAttribute('data-a11y-contrast') === 'high';
+  var labelsOn = root.getAttribute('data-a11y-labels') === 'show';
 
   var dt = document.getElementById('dyslexiaToggleTrack');
   var dh = document.getElementById('dyslexiaToggleThumb');
@@ -580,6 +647,8 @@ A11y.syncA11yToggles = function() {
   var mh = document.getElementById('motionToggleThumb');
   var ct = document.getElementById('contrastToggleTrack');
   var ch = document.getElementById('contrastToggleThumb');
+  var lt = document.getElementById('labelsToggleTrack');
+  var lh = document.getElementById('labelsToggleThumb');
 
   if (dt) dt.classList.toggle('active', dyslexiaOn);
   if (dh) dh.classList.toggle('active', dyslexiaOn);
@@ -587,14 +656,18 @@ A11y.syncA11yToggles = function() {
   if (mh) mh.classList.toggle('active', motionOn);
   if (ct) ct.classList.toggle('active', contrastOn);
   if (ch) ch.classList.toggle('active', contrastOn);
+  if (lt) lt.classList.toggle('active', labelsOn);
+  if (lh) lh.classList.toggle('active', labelsOn);
 
   // Sync aria-checked on toggle switches
   var dyslexiaSwitch = dt ? dt.closest('[role="switch"]') : null;
   var motionSwitch = mt ? mt.closest('[role="switch"]') : null;
   var contrastSwitch = ct ? ct.closest('[role="switch"]') : null;
+  var labelsSwitch = lt ? lt.closest('[role="switch"]') : null;
   if (dyslexiaSwitch) dyslexiaSwitch.setAttribute('aria-checked', String(dyslexiaOn));
   if (motionSwitch) motionSwitch.setAttribute('aria-checked', String(motionOn));
   if (contrastSwitch) contrastSwitch.setAttribute('aria-checked', String(contrastOn));
+  if (labelsSwitch) labelsSwitch.setAttribute('aria-checked', String(labelsOn));
 
   // Sync theme toggle
   var themeSwitch = document.getElementById('themeToggleSwitch');
@@ -621,8 +694,12 @@ A11y.syncA11yToggles = function() {
   if (localStorage.getItem('a11yContrast') === 'on') {
     document.documentElement.setAttribute('data-a11y-contrast', 'high');
   }
+  if (localStorage.getItem('a11yLabels') === 'on') {
+    document.documentElement.setAttribute('data-a11y-labels', 'show');
+  }
 
   A11y.syncA11yToggles();
+  A11y.injectIconLabels();
 })();
 
 // ============================================
@@ -630,40 +707,15 @@ A11y.syncA11yToggles = function() {
 // ============================================
 
 /** Toggles the sidebar between collapsed and expanded states.
- * Persists state to localStorage. Updates toggle button icon.
+ * Used internally by Cosimo panel open/close.
  */
 UI.toggleSidebar = function() {
   var sidebar = document.getElementById('sidebar');
-  var btn = document.getElementById('sidebarToggleBtn');
   var handle = document.getElementById('sidebarResizeHandle');
   if (!sidebar) return;
   var collapsed = sidebar.classList.toggle('collapsed');
-  localStorage.setItem('sidebarCollapsed', collapsed ? 'true' : 'false');
-  if (btn) {
-    btn.querySelector('[data-icon]').setAttribute('data-icon', collapsed ? 'chevronRight' : 'chevronLeft');
-    injectIcons();
-    btn.title = collapsed ? 'Expand sidebar' : 'Collapse sidebar';
-    btn.setAttribute('aria-label', btn.title);
-  }
   if (handle) handle.style.display = collapsed ? 'none' : '';
 };
-
-// Restore sidebar collapsed state from localStorage
-(function() {
-  if (localStorage.getItem('sidebarCollapsed') === 'true') {
-    var sidebar = document.getElementById('sidebar');
-    var btn = document.getElementById('sidebarToggleBtn');
-    var handle = document.getElementById('sidebarResizeHandle');
-    if (sidebar) sidebar.classList.add('collapsed');
-    if (btn) {
-      btn.querySelector('[data-icon]').setAttribute('data-icon', 'chevronRight');
-      btn.title = 'Expand sidebar';
-      btn.setAttribute('aria-label', 'Expand sidebar');
-    }
-    if (handle) handle.style.display = 'none';
-    injectIcons();
-  }
-})();
 
 /** Toggles the Brain nav section between collapsed and expanded states.
  * Persists state to localStorage. Updates toggle button chevron.
@@ -809,7 +861,7 @@ UI.renderHeaderPanels = function() {
     }).join('');
     calPanel.innerHTML =
       '<div class="th-dropdown-header">' + escapeHtml(MOCK_CALENDAR.month) + '</div>' +
-      '<div class="mini-cal"><div class="mini-cal-days">Su Mo Tu We Th Fr Sa</div><div class="mini-cal-grid" id="miniCalGrid"></div></div>' +
+      '<div class="mini-cal"><div class="mini-cal-days"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div><div class="mini-cal-grid" id="miniCalGrid"></div></div>' +
       '<div class="th-dropdown-header" style="border-top:1px solid var(--taupe-2);">Upcoming</div>' +
       eventsHtml;
   }
@@ -2847,7 +2899,7 @@ Workflows.renderFlowGraph = function(templateId, containerId, options) {
     // Compact: use viewBox for scaling, width 100% so it fits the panel
     svg += 'width="100%" height="' + svgH + '" viewBox="0 0 ' + svgW + ' ' + svgH + '" preserveAspectRatio="xMidYMid meet" ';
   } else {
-    svg += 'width="' + svgW + '" height="' + svgH + '" viewBox="0 0 ' + svgW + ' ' + svgH + '" ';
+    svg += 'width="100%" viewBox="0 0 ' + svgW + ' ' + svgH + '" preserveAspectRatio="xMidYMid meet" ';
   }
   svg += 'xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Workflow flow graph">';
 
@@ -4868,10 +4920,6 @@ function escapeHtml(text) {
 // ============================================
 (function initEventListeners() {
 
-  // --- Sidebar: Toggle collapse ---
-  var sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
-  if (sidebarToggleBtn) sidebarToggleBtn.addEventListener('click', function() { UI.toggleSidebar(); });
-
   // --- Brain nav: Toggle collapse ---
   var brainNavToggle = document.getElementById('brainNavToggle');
   if (brainNavToggle) brainNavToggle.addEventListener('click', function() { UI.toggleBrainNav(); });
@@ -4974,6 +5022,13 @@ function escapeHtml(text) {
       if (themeToggle && themeToggle.querySelector('#contrastToggleTrack')) {
         e.stopPropagation();
         A11y.toggleHighContrast();
+        return;
+      }
+
+      // Icon labels toggle
+      if (themeToggle && themeToggle.querySelector('#labelsToggleTrack')) {
+        e.stopPropagation();
+        A11y.toggleIconLabels();
         return;
       }
 
@@ -5199,10 +5254,7 @@ function escapeHtml(text) {
       var item = e.target.closest('.dropdown-item');
       if (!item) return;
       var action = item.dataset.action;
-      if (action === 'run-now') {
-        if (Workflows._currentTemplateId) Workflows.navigateToRun(Workflows._currentTemplateId);
-      }
-      else if (action === 'duplicate') alert('Duplicated');
+      if (action === 'duplicate') alert('Duplicated');
       else if (action === 'edit-cosimo') Workflows.openCosimoForTemplate();
       else if (action === 'delete') alert('Deleted');
     });

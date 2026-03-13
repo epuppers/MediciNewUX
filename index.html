@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/layout.css?v=2">
 <link rel="stylesheet" href="css/chat.css">
 <link rel="stylesheet" href="css/workflows.css">
 <link rel="stylesheet" href="css/components.css">
@@ -23,13 +23,10 @@
     <div class="sidebar-header">
       <div class="logo-row">
         <div class="logo-mark"><div class="logo-spheres"><div class="logo-sphere dark"></div><div class="logo-sphere light"></div><div class="logo-sphere dark"></div><div class="logo-sphere dark"></div><div class="logo-sphere dark"></div><div class="logo-sphere dark"></div></div></div>
-        <div>
+        <div class="logo-text">
           <div class="logo-title">COSIMO</div>
           <div class="logo-sub">MEDICI & COMPANY</div>
         </div>
-        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Collapse sidebar" aria-label="Collapse sidebar">
-          <span data-icon="chevronLeft"></span>
-        </button>
       </div>
 
       <button class="new-btn label-mono" id="newBtn">+ New Thread</button>
@@ -133,14 +130,14 @@
       </button>
       <div class="top-tab-spacer"></div>
       <div class="top-header-right">
-        <button class="top-icon-btn" id="taskAlertBtn" title="Assigned Tasks" aria-label="Assigned Tasks">
+        <button class="top-icon-btn" id="taskAlertBtn" title="Assigned Tasks" aria-label="Assigned Tasks" data-label="Tasks">
           <span class="th-icon">◈</span>
           <div class="th-badge" id="taskBadge">3</div>
         </button>
-        <button class="top-icon-btn" id="calendarBtn" title="Calendar" aria-label="Calendar">
+        <button class="top-icon-btn" id="calendarBtn" title="Calendar" aria-label="Calendar" data-label="Calendar">
           <span class="th-icon">▦</span>
         </button>
-        <button class="top-icon-btn" id="usageBtn" title="Usage" aria-label="Usage">
+        <button class="top-icon-btn" id="usageBtn" title="Usage" aria-label="Usage" data-label="Usage">
           <span data-icon="gauge"></span>
         </button>
         <div class="th-divider"></div>
@@ -241,6 +238,16 @@
                 </div>
               </div>
             </div>
+
+            <!-- Icon labels -->
+            <div class="profile-menu-theme">
+              <span class="profile-menu-theme-label">Icon labels</span>
+              <div class="profile-menu-toggle" role="switch" aria-checked="false" aria-label="Show icon labels">
+                <div class="profile-menu-toggle-track" id="labelsToggleTrack">
+                  <div class="profile-menu-toggle-thumb" id="labelsToggleThumb"></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -263,9 +270,9 @@
       <div class="main-header" id="chatHeader">
         <span class="header-title" id="chatHeaderTitle">Fund III — Allocation Drift</span>
         <div class="header-actions">
-          <button class="header-btn bevel label-mono icon-btn disabled" id="filesBtn" disabled title="Files" aria-label="Files"><span data-icon="folder"></span></button>
-          <button class="header-btn bevel label-mono icon-btn" id="exportBtn" title="Export" aria-label="Export"><span data-icon="export"></span></button>
-          <button class="header-btn bevel label-mono icon-btn" id="shareBtn" title="Share" aria-label="Share"><span data-icon="share"></span></button>
+          <button class="header-btn bevel label-mono icon-btn disabled" id="filesBtn" disabled title="Files" aria-label="Files" data-label="Files"><span data-icon="folder"></span></button>
+          <button class="header-btn bevel label-mono icon-btn" id="exportBtn" title="Export" aria-label="Export" data-label="Export"><span data-icon="export"></span></button>
+          <button class="header-btn bevel label-mono icon-btn" id="shareBtn" title="Share" aria-label="Share" data-label="Share"><span data-icon="share"></span></button>
         </div>
       </div>
 
@@ -367,8 +374,8 @@
               <p><strong>Recommendation:</strong> Paired trade — trim the S&P 500 position and rotate into the EAFE sleeve. I've drafted the rebalancing memo for the IC. Want me to pull it up, or look at tax implications first?</p>
             </div>
             <div class="msg-feedback">
-              <button class="feedback-btn up" title="Good response"><span data-icon="thumbUp"></span></button>
-              <button class="feedback-btn down" title="Poor response"><span data-icon="thumbDown"></span></button>
+              <button class="feedback-btn up" title="Good response" aria-label="Good response" data-label="Like"><span data-icon="thumbUp"></span></button>
+              <button class="feedback-btn down" title="Poor response" aria-label="Poor response" data-label="Dislike"><span data-icon="thumbDown"></span></button>
             </div>
           </div>
         </div>
@@ -439,8 +446,8 @@
               </div>
             </div>
             <div class="msg-feedback">
-              <button class="feedback-btn up" title="Good response"><span data-icon="thumbUp"></span></button>
-              <button class="feedback-btn down" title="Poor response"><span data-icon="thumbDown"></span></button>
+              <button class="feedback-btn up" title="Good response" aria-label="Good response" data-label="Like"><span data-icon="thumbUp"></span></button>
+              <button class="feedback-btn down" title="Poor response" aria-label="Poor response" data-label="Dislike"><span data-icon="thumbDown"></span></button>
             </div>
           </div>
         </div>
@@ -496,17 +503,17 @@
         <div class="input-row">
           <div class="text-input bevel-inset" contenteditable="true" role="textbox" aria-label="Message input" data-placeholder="Continue this thread..."></div>
           <div class="attach-wrapper">
-            <button class="cmd-btn label-mono" title="Attach file"><span data-icon="attach"></span></button>
+            <button class="cmd-btn label-mono" title="Attach file" data-label="Attach"><span data-icon="attach"></span></button>
             <div class="attach-menu">
-              <button class="attach-option" title="From computer">
+              <button class="attach-option" title="From computer" data-label="Computer">
                 <span data-icon="computer"></span>
               </button>
-              <button class="attach-option" title="From cloud drive">
+              <button class="attach-option" title="From cloud drive" data-label="Drive">
                 <span data-icon="cloud"></span>
               </button>
             </div>
           </div>
-          <button class="cmd-btn label-mono cmd-primary" title="Send"><span data-icon="send"></span></button>
+          <button class="cmd-btn label-mono cmd-primary" title="Send" data-label="Send"><span data-icon="send"></span></button>
         </div>
         <div class="input-footer">
           <div class="model-selector">
@@ -615,17 +622,17 @@
         <div class="input-row">
           <div class="text-input bevel-inset" contenteditable="true" role="textbox" aria-label="Message input" data-placeholder="Continue this thread..."></div>
           <div class="attach-wrapper">
-            <button class="cmd-btn label-mono" title="Attach file"><span data-icon="attach"></span></button>
+            <button class="cmd-btn label-mono" title="Attach file" data-label="Attach"><span data-icon="attach"></span></button>
             <div class="attach-menu">
-              <button class="attach-option" title="From computer">
+              <button class="attach-option" title="From computer" data-label="Computer">
                 <span data-icon="computer"></span>
               </button>
-              <button class="attach-option" title="From cloud drive">
+              <button class="attach-option" title="From cloud drive" data-label="Drive">
                 <span data-icon="cloud"></span>
               </button>
             </div>
           </div>
-          <button class="cmd-btn label-mono cmd-primary" title="Send"><span data-icon="send"></span></button>
+          <button class="cmd-btn label-mono cmd-primary" title="Send" data-label="Send"><span data-icon="send"></span></button>
         </div>
         <div class="input-footer">
           <div class="model-selector">
@@ -694,17 +701,17 @@
         <div class="input-row">
           <div class="text-input bevel-inset" contenteditable="true" role="textbox" aria-label="Message input" data-placeholder="Continue this thread..."></div>
           <div class="attach-wrapper">
-            <button class="cmd-btn label-mono" title="Attach file"><span data-icon="attach"></span></button>
+            <button class="cmd-btn label-mono" title="Attach file" data-label="Attach"><span data-icon="attach"></span></button>
             <div class="attach-menu">
-              <button class="attach-option" title="From computer">
+              <button class="attach-option" title="From computer" data-label="Computer">
                 <span data-icon="computer"></span>
               </button>
-              <button class="attach-option" title="From cloud drive">
+              <button class="attach-option" title="From cloud drive" data-label="Drive">
                 <span data-icon="cloud"></span>
               </button>
             </div>
           </div>
-          <button class="cmd-btn label-mono cmd-primary" title="Send"><span data-icon="send"></span></button>
+          <button class="cmd-btn label-mono cmd-primary" title="Send" data-label="Send"><span data-icon="send"></span></button>
         </div>
         <div class="input-footer">
           <div class="model-selector">
@@ -751,17 +758,17 @@
         <div class="input-row">
           <div class="text-input bevel-inset" id="new-thread-input" contenteditable="true" role="textbox" aria-label="Ask Cosimo anything" data-placeholder="Ask Cosimo anything..."></div>
           <div class="attach-wrapper">
-            <button class="cmd-btn label-mono" title="Attach file"><span data-icon="attach"></span></button>
+            <button class="cmd-btn label-mono" title="Attach file" data-label="Attach"><span data-icon="attach"></span></button>
             <div class="attach-menu">
-              <button class="attach-option" title="From computer">
+              <button class="attach-option" title="From computer" data-label="Computer">
                 <span data-icon="computer"></span>
               </button>
-              <button class="attach-option" title="From cloud drive">
+              <button class="attach-option" title="From cloud drive" data-label="Drive">
                 <span data-icon="cloud"></span>
               </button>
             </div>
           </div>
-          <button class="cmd-btn label-mono cmd-primary" title="Send"><span data-icon="send"></span></button>
+          <button class="cmd-btn label-mono cmd-primary" title="Send" data-label="Send"><span data-icon="send"></span></button>
         </div>
         <div class="input-footer">
           <div class="model-selector">
@@ -836,17 +843,17 @@
         <div class="input-row">
           <div class="text-input bevel-inset" contenteditable="true" role="textbox" aria-label="Message input" data-placeholder="Continue this thread..."></div>
           <div class="attach-wrapper">
-            <button class="cmd-btn label-mono" title="Attach file"><span data-icon="attach"></span></button>
+            <button class="cmd-btn label-mono" title="Attach file" data-label="Attach"><span data-icon="attach"></span></button>
             <div class="attach-menu">
-              <button class="attach-option" title="From computer">
+              <button class="attach-option" title="From computer" data-label="Computer">
                 <span data-icon="computer"></span>
               </button>
-              <button class="attach-option" title="From cloud drive">
+              <button class="attach-option" title="From cloud drive" data-label="Drive">
                 <span data-icon="cloud"></span>
               </button>
             </div>
           </div>
-          <button class="cmd-btn label-mono cmd-primary" title="Send"><span data-icon="send"></span></button>
+          <button class="cmd-btn label-mono cmd-primary" title="Send" data-label="Send"><span data-icon="send"></span></button>
         </div>
         <div class="input-footer">
           <div class="model-selector">
@@ -1055,17 +1062,17 @@
         <div class="input-row">
           <div class="text-input bevel-inset" contenteditable="true" role="textbox" aria-label="Message input" data-placeholder="Continue this thread..."></div>
           <div class="attach-wrapper">
-            <button class="cmd-btn label-mono" title="Attach file"><span data-icon="attach"></span></button>
+            <button class="cmd-btn label-mono" title="Attach file" data-label="Attach"><span data-icon="attach"></span></button>
             <div class="attach-menu">
-              <button class="attach-option" title="From computer">
+              <button class="attach-option" title="From computer" data-label="Computer">
                 <span data-icon="computer"></span>
               </button>
-              <button class="attach-option" title="From cloud drive">
+              <button class="attach-option" title="From cloud drive" data-label="Drive">
                 <span data-icon="cloud"></span>
               </button>
             </div>
           </div>
-          <button class="cmd-btn label-mono cmd-primary" title="Send"><span data-icon="send"></span></button>
+          <button class="cmd-btn label-mono cmd-primary" title="Send" data-label="Send"><span data-icon="send"></span></button>
         </div>
         <div class="input-footer">
           <div class="model-selector">
@@ -1264,8 +1271,8 @@
             </div>
 
             <div class="msg-feedback">
-              <button class="feedback-btn up" title="Good response"><span data-icon="thumbUp"></span></button>
-              <button class="feedback-btn down" title="Poor response"><span data-icon="thumbDown"></span></button>
+              <button class="feedback-btn up" title="Good response" aria-label="Good response" data-label="Like"><span data-icon="thumbUp"></span></button>
+              <button class="feedback-btn down" title="Poor response" aria-label="Poor response" data-label="Dislike"><span data-icon="thumbDown"></span></button>
             </div>
           </div>
         </div>
@@ -1284,6 +1291,47 @@
           </div>
         </div>
 
+      </div>
+
+      <div class="input-area">
+        <div class="input-row">
+          <div class="text-input bevel-inset" contenteditable="true" role="textbox" aria-label="Message input" data-placeholder="Continue this thread..."></div>
+          <div class="attach-wrapper">
+            <button class="cmd-btn label-mono" title="Attach file" data-label="Attach"><span data-icon="attach"></span></button>
+            <div class="attach-menu">
+              <button class="attach-option" title="From computer" data-label="Computer">
+                <span data-icon="computer"></span>
+              </button>
+              <button class="attach-option" title="From cloud drive" data-label="Drive">
+                <span data-icon="cloud"></span>
+              </button>
+            </div>
+          </div>
+          <button class="cmd-btn label-mono cmd-primary" title="Send" data-label="Send"><span data-icon="send"></span></button>
+        </div>
+        <div class="input-footer">
+          <div class="model-selector">
+            <button class="model-selector-btn label-mono">
+              <span class="model-selector-label">Analyst</span>
+              <span data-icon="chevronDown"></span>
+            </button>
+            <div class="model-dropdown">
+              <button class="model-option" data-model="assistant">
+                <span class="model-option-name label-mono">Assistant</span>
+                <span class="model-option-desc">Quick questions and lookups</span>
+              </button>
+              <button class="model-option selected" data-model="analyst">
+                <span class="model-option-name label-mono">Analyst</span>
+                <span class="model-option-desc">Drafts, summaries, and document review</span>
+              </button>
+              <button class="model-option" data-model="expert">
+                <span class="model-option-name label-mono">Expert</span>
+                <span class="model-option-desc">Complex analysis and long-form deliverables</span>
+              </button>
+            </div>
+          </div>
+          <span>⌘B bold · ⌘I italic · ⌘U underline · **markdown**</span>
+        </div>
       </div>
       </div><!-- /thread-wf-run-rentroll-047 -->
 
@@ -1423,8 +1471,8 @@
             </div>
 
             <div class="msg-feedback">
-              <button class="feedback-btn up" title="Good response"><span data-icon="thumbUp"></span></button>
-              <button class="feedback-btn down" title="Poor response"><span data-icon="thumbDown"></span></button>
+              <button class="feedback-btn up" title="Good response" aria-label="Good response" data-label="Like"><span data-icon="thumbUp"></span></button>
+              <button class="feedback-btn down" title="Poor response" aria-label="Poor response" data-label="Dislike"><span data-icon="thumbDown"></span></button>
             </div>
           </div>
         </div>
@@ -1474,12 +1522,53 @@
             </div>
 
             <div class="msg-feedback">
-              <button class="feedback-btn up" title="Good response"><span data-icon="thumbUp"></span></button>
-              <button class="feedback-btn down" title="Poor response"><span data-icon="thumbDown"></span></button>
+              <button class="feedback-btn up" title="Good response" aria-label="Good response" data-label="Like"><span data-icon="thumbUp"></span></button>
+              <button class="feedback-btn down" title="Poor response" aria-label="Poor response" data-label="Dislike"><span data-icon="thumbDown"></span></button>
             </div>
           </div>
         </div>
 
+      </div>
+
+      <div class="input-area">
+        <div class="input-row">
+          <div class="text-input bevel-inset" contenteditable="true" role="textbox" aria-label="Message input" data-placeholder="Continue this thread..."></div>
+          <div class="attach-wrapper">
+            <button class="cmd-btn label-mono" title="Attach file" data-label="Attach"><span data-icon="attach"></span></button>
+            <div class="attach-menu">
+              <button class="attach-option" title="From computer" data-label="Computer">
+                <span data-icon="computer"></span>
+              </button>
+              <button class="attach-option" title="From cloud drive" data-label="Drive">
+                <span data-icon="cloud"></span>
+              </button>
+            </div>
+          </div>
+          <button class="cmd-btn label-mono cmd-primary" title="Send" data-label="Send"><span data-icon="send"></span></button>
+        </div>
+        <div class="input-footer">
+          <div class="model-selector">
+            <button class="model-selector-btn label-mono">
+              <span class="model-selector-label">Analyst</span>
+              <span data-icon="chevronDown"></span>
+            </button>
+            <div class="model-dropdown">
+              <button class="model-option" data-model="assistant">
+                <span class="model-option-name label-mono">Assistant</span>
+                <span class="model-option-desc">Quick questions and lookups</span>
+              </button>
+              <button class="model-option selected" data-model="analyst">
+                <span class="model-option-name label-mono">Analyst</span>
+                <span class="model-option-desc">Drafts, summaries, and document review</span>
+              </button>
+              <button class="model-option" data-model="expert">
+                <span class="model-option-name label-mono">Expert</span>
+                <span class="model-option-desc">Complex analysis and long-form deliverables</span>
+              </button>
+            </div>
+          </div>
+          <span>⌘B bold · ⌘I italic · ⌘U underline · **markdown**</span>
+        </div>
       </div>
       </div><!-- /thread-tener-batch-12 -->
 
@@ -1650,6 +1739,47 @@
         </div>
 
       </div>
+
+      <div class="input-area">
+        <div class="input-row">
+          <div class="text-input bevel-inset" contenteditable="true" role="textbox" aria-label="Message input" data-placeholder="Continue this thread..."></div>
+          <div class="attach-wrapper">
+            <button class="cmd-btn label-mono" title="Attach file" data-label="Attach"><span data-icon="attach"></span></button>
+            <div class="attach-menu">
+              <button class="attach-option" title="From computer" data-label="Computer">
+                <span data-icon="computer"></span>
+              </button>
+              <button class="attach-option" title="From cloud drive" data-label="Drive">
+                <span data-icon="cloud"></span>
+              </button>
+            </div>
+          </div>
+          <button class="cmd-btn label-mono cmd-primary" title="Send" data-label="Send"><span data-icon="send"></span></button>
+        </div>
+        <div class="input-footer">
+          <div class="model-selector">
+            <button class="model-selector-btn label-mono">
+              <span class="model-selector-label">Analyst</span>
+              <span data-icon="chevronDown"></span>
+            </button>
+            <div class="model-dropdown">
+              <button class="model-option" data-model="assistant">
+                <span class="model-option-name label-mono">Assistant</span>
+                <span class="model-option-desc">Quick questions and lookups</span>
+              </button>
+              <button class="model-option selected" data-model="analyst">
+                <span class="model-option-name label-mono">Analyst</span>
+                <span class="model-option-desc">Drafts, summaries, and document review</span>
+              </button>
+              <button class="model-option" data-model="expert">
+                <span class="model-option-name label-mono">Expert</span>
+                <span class="model-option-desc">Complex analysis and long-form deliverables</span>
+              </button>
+            </div>
+          </div>
+          <span>⌘B bold · ⌘I italic · ⌘U underline · **markdown**</span>
+        </div>
+      </div>
       </div><!-- /thread-wf-create-dd -->
 
       </div><!-- /chat-main -->
@@ -1788,7 +1918,6 @@
             <div class="dropdown-wrapper">
               <button class="header-btn bevel label-mono" id="wfActionsBtn">Actions ▾</button>
               <div class="dropdown-menu" id="actionDropdown">
-                <button class="dropdown-item" data-action="run-now">▶ Run Now</button>
                 <button class="dropdown-item" data-action="duplicate">⧉ Duplicate</button>
                 <button class="dropdown-item violet" data-action="edit-cosimo">◆ Edit with Cosimo</button>
                 <button class="dropdown-item text-red" data-action="delete">✕ Delete Workflow</button>
@@ -1986,9 +2115,9 @@
                   <span id="lessonDetailTitle">Lesson Title</span>
                 </span>
                 <div class="header-actions">
-                  <button class="header-btn bevel label-mono icon-btn" id="lessonEditBtn" title="Edit Directly" aria-label="Edit Directly"><span data-icon="edit"></span></button>
-                  <button class="header-btn bevel label-mono icon-btn" id="lessonCosimoBtn" title="Edit with Cosimo" aria-label="Edit with Cosimo"><span data-icon="cosimo"></span></button>
-                  <button class="header-btn bevel label-mono icon-btn" id="lessonDeleteBtn" title="Delete Lesson" aria-label="Delete Lesson"><span data-icon="trashRed"></span></button>
+                  <button class="header-btn bevel label-mono icon-btn" id="lessonEditBtn" title="Edit Directly" aria-label="Edit Directly" data-label="Edit"><span data-icon="edit"></span></button>
+                  <button class="header-btn bevel label-mono icon-btn" id="lessonCosimoBtn" title="Edit with Cosimo" aria-label="Edit with Cosimo" data-label="Cosimo"><span data-icon="cosimo"></span></button>
+                  <button class="header-btn bevel label-mono icon-btn" id="lessonDeleteBtn" title="Delete Lesson" aria-label="Delete Lesson" data-label="Delete"><span data-icon="trashRed"></span></button>
                 </div>
               </div>
 
@@ -2123,9 +2252,9 @@
                     </div>
                   </div>
                   <div class="graph-detail-actions">
-                    <button class="header-btn bevel label-mono icon-btn" id="graphEditBtn" title="Edit" aria-label="Edit"><span data-icon="edit"></span></button>
-                    <button class="header-btn bevel label-mono icon-btn" id="graphCosimoBtn" title="Edit with Cosimo" aria-label="Edit with Cosimo"><span data-icon="cosimo"></span></button>
-                    <button class="header-btn bevel label-mono icon-btn" id="graphCloseBtn" title="Close" aria-label="Close"><span data-icon="close"></span></button>
+                    <button class="header-btn bevel label-mono icon-btn" id="graphEditBtn" title="Edit" aria-label="Edit" data-label="Edit"><span data-icon="edit"></span></button>
+                    <button class="header-btn bevel label-mono icon-btn" id="graphCosimoBtn" title="Edit with Cosimo" aria-label="Edit with Cosimo" data-label="Cosimo"><span data-icon="cosimo"></span></button>
+                    <button class="header-btn bevel label-mono icon-btn" id="graphCloseBtn" title="Close" aria-label="Close" data-label="Close"><span data-icon="close"></span></button>
                   </div>
                 </div>
                 <div class="graph-detail-body" id="graphDetailBody">
@@ -2174,7 +2303,7 @@
   <div class="cosimo-panel-input">
     <div class="panel-input-row">
       <div class="panel-text-input bevel-inset" id="panelInput" contenteditable="true" role="textbox" aria-label="Cosimo message input" data-placeholder="Describe a change..."></div>
-      <button class="panel-send-btn label-mono" id="cosimoPanelSend" title="Send"><span data-icon="send" data-icon-w="12" data-icon-h="12"></span></button>
+      <button class="panel-send-btn label-mono" id="cosimoPanelSend" title="Send" data-label="Send"><span data-icon="send" data-icon-w="12" data-icon-h="12"></span></button>
     </div>
   </div>
 </div>

@@ -21,7 +21,7 @@
   flex-direction: column;
   flex-shrink: 0;
   overflow: hidden;
-  min-width: 180px;
+  min-width: 56px;
   max-width: 420px;
   border-radius: var(--r-md);
 }
@@ -81,13 +81,14 @@
 .sidebar.collapsed .side-label,
 .sidebar.collapsed .thread-list,
 .sidebar.collapsed .workflow-sidebar-list,
+.sidebar.collapsed .wf-active-runs,
 .sidebar.collapsed .sidebar-footer .user-name,
 .sidebar.collapsed .sidebar-footer .theme-toggle {
   display: none;
 }
 
 .sidebar.collapsed .sidebar-header {
-  padding: 8px 4px;
+  padding: 14px 4px 4px;
   border-bottom: none;
 }
 
@@ -103,11 +104,12 @@
 .sidebar.collapsed .logo-row {
   justify-content: center;
   margin-bottom: 0;
-  padding: 12px 0;
+  padding: 0;
+  gap: 0;
+  min-height: 33px;
 }
 
-.sidebar.collapsed .logo-title,
-.sidebar.collapsed .logo-sub,
+.sidebar.collapsed .logo-text,
 .sidebar.collapsed .new-btn {
   display: none;
 }
@@ -119,6 +121,38 @@
 .sidebar.collapsed .resize-handle-sidebar,
 .sidebar.collapsed + .resize-handle-sidebar {
   display: none;
+}
+
+/* --- Sidebar narrow state (dragged to logo-only width) --- */
+.sidebar.narrow .side-label,
+.sidebar.narrow .thread-list,
+.sidebar.narrow .workflow-sidebar-list,
+.sidebar.narrow .wf-active-runs,
+.sidebar.narrow .sidebar-footer .user-name,
+.sidebar.narrow .sidebar-footer .theme-toggle,
+.sidebar.narrow .sidebar-search,
+.sidebar.narrow .logo-text,
+.sidebar.narrow .new-btn,
+.sidebar.narrow .brain-nav {
+  display: none;
+}
+
+.sidebar.narrow .sidebar-header {
+  padding: 14px 4px 4px;
+  border-bottom: none;
+}
+
+.sidebar.narrow .sidebar-footer {
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.sidebar.narrow .logo-row {
+  justify-content: center;
+  margin-bottom: 0;
+  padding: 0;
+  gap: 0;
+  min-height: 33px;
 }
 
 /* ============================================
@@ -173,23 +207,30 @@
   padding: 14px 12px 12px;
   border-bottom: 1px solid var(--taupe-4);
   background: var(--taupe-5);
+  overflow: hidden;
 }
 
 .logo-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   margin-bottom: 14px;
+  overflow: hidden;
+}
+
+.logo-text {
+  overflow: hidden;
+  min-width: 0;
+  white-space: nowrap;
 }
 
 .logo-mark {
-  width: 28px;
-  height: 28px;
+  width: 31px;
+  height: 29px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border-radius: var(--r-md);
 }
 
 /* 6-sphere inverted triangle logo
@@ -242,10 +283,10 @@
 
 .logo-sub {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 9px;
   color: var(--taupe-3);
-  letter-spacing: 0.08em;
-  margin-top: 2px;
+  letter-spacing: 0.1em;
+  margin-top: 1px;
 }
 
 /* ============================================
