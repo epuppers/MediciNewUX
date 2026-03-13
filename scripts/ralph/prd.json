@@ -113,7 +113,7 @@
       "id": "5.4",
       "title": "Workflow chat thread content (gate run)",
       "description": "Add chat content HTML for tener-batch-12 thread following mock conversation script Thread B in CLAUDE.md. Gate messages get .msg-gate class on .ai-block — 3px amber left border, light amber background tint, Awaiting Review chip in header. Exception table as .data-tbl artifact. Add CSS for .msg-gate and .msg-gate-chip. Both light and dark mode.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "5.5",
