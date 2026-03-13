@@ -1107,6 +1107,17 @@ Chat.selectThread = function(id, el) {
   var threadData = MOCK_THREADS[id];
   if (threadData && threadData.workflowRunId && MOCK_WORKFLOW_RUNS[threadData.workflowRunId]) {
     Chat.openWorkflowPanel(threadData.workflowRunId);
+    // Toast notification for run status
+    var runData = MOCK_WORKFLOW_RUNS[threadData.workflowRunId];
+    if (runData.status === 'completed') {
+      showToast('Run ' + runData.runId + ' completed');
+    } else if (runData.status === 'waiting') {
+      showToast('Run ' + runData.runId + ' waiting for review');
+    } else if (runData.status === 'running') {
+      showToast('Run ' + runData.runId + ' in progress');
+    } else if (runData.status === 'failed') {
+      showToast('Run ' + runData.runId + ' failed');
+    }
   } else {
     Chat.closeWorkflowPanel();
   }
@@ -5216,5 +5227,31 @@ function escapeHtml(text) {
 
   var panelInput = document.getElementById('panelInput');
   if (panelInput) panelInput.addEventListener('keydown', function(e) { UI.handlePanelKey(e); });
+
+  // --- Global Escape key handler with priority chain ---
+  document.addEventListener('keydown', function(e) {
+    if (e.key !== 'Escape') return;
+
+    // Priority 1: Node popover (most specific overlay)
+    if (Workflows._activePopover) {
+      e.preventDefault();
+      Workflows.closeNodePopover();
+      return;
+    }
+
+    // Priority 2: Command autocomplete dropdown
+    if (Chat._acOpen) {
+      // Already handled by the autocomplete-specific keydown listener
+      return;
+    }
+
+    // Priority 3: Workflow context panel
+    var wfPanel = document.getElementById('workflowPanel');
+    if (wfPanel && wfPanel.classList.contains('open')) {
+      e.preventDefault();
+      Chat.closeWorkflowPanel();
+      return;
+    }
+  });
 
 })();
