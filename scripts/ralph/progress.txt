@@ -49,3 +49,8 @@
 - Files modified: index.html, js/app.js, css/layout.css
 - Gotchas / learnings: MOCK_WORKFLOW_RUNS is keyed by threadId. Only the tener run (status: 'waiting') currently appears in Active Runs since rentroll is 'completed'. The wf-pulse animation class is reusable for any element needing a pulse effect. Active run items have data-thread-id and data-wf-id attributes for future navigation wiring (task 6.2).
 
+## Iteration 7 — Task 2.3: Library CSS
+- What was done: All CSS from this task was already implemented during tasks 2.1 and 2.2. Verified completeness: .wf-card-trigger-chip, .wf-card-lesson-chip, .wf-card-run-status, .wf-card-run-btn (all in workflows.css with dark mode overrides and hover/active/focus-visible states), .wf-active-runs, .wf-active-run-item, @keyframes wf-pulse (all in layout.css with dark mode overrides and [data-a11y-motion="reduce"] gating). No code changes needed.
+- Files modified: scripts/ralph/prd.json, scripts/ralph/progress.txt
+- Gotchas / learnings: Tasks 2.1 and 2.2 proactively added all CSS alongside the HTML/JS, so 2.3 was already complete. Card-related CSS lives in workflows.css; sidebar-related CSS lives in layout.css (following the project's file organization convention).
+

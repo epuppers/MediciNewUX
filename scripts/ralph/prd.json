@@ -41,7 +41,7 @@
       "id": "2.3",
       "title": "Library CSS",
       "description": "Add to workflows.css: .wf-card-trigger-chip (icon + label chip, mono 10px), .wf-card-lesson-chip (violet pill with diamond), .wf-card-run-status (dot + text), .wf-card-run-btn (small bevel button, visible on card hover), .wf-active-runs (sidebar section, tinted background), .wf-active-run-item, @keyframes wf-pulse (gated by [data-a11y-motion]). Include full dark mode overrides for all new classes.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "3.1",
