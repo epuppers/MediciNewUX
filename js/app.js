@@ -1108,6 +1108,13 @@ Chat.selectThread = function(id, el) {
 
   // Trigger Erabor animation when that thread is selected
   if (id === 'erabor') Chat.runEraborSequence();
+
+  // Render flow graph artifacts in wf-create-dd thread after DOM is visible
+  if (id === 'wf-create-dd') {
+    requestAnimationFrame(function() {
+      Chat._renderDDFlowGraphs();
+    });
+  }
 };
 
 /** Updates the Files button enabled/disabled state based on the active thread. */
@@ -1149,6 +1156,21 @@ Chat.closeFilePanel = function() {
 // ============================================
 // WORKFLOW CONTEXT PANEL
 // ============================================
+
+/** Renders flow graph artifacts inside the wf-create-dd thread.
+ * Called via requestAnimationFrame after thread becomes visible.
+ */
+Chat._renderDDFlowGraphs = function() {
+  var initialEl = document.getElementById('ddFlowGraphInitial');
+  var updatedEl = document.getElementById('ddFlowGraphUpdated');
+  // Only render if containers exist and are empty (avoid re-rendering)
+  if (initialEl && !initialEl.querySelector('svg')) {
+    Workflows.renderFlowGraph('due-diligence', 'ddFlowGraphInitial', { compact: false, noInteraction: true });
+  }
+  if (updatedEl && !updatedEl.querySelector('svg')) {
+    Workflows.renderFlowGraph('due-diligence', 'ddFlowGraphUpdated', { compact: false, noInteraction: true });
+  }
+};
 
 /** Opens the right-side workflow context panel for a given run.
  * @param {string} runId - The threadId key in MOCK_WORKFLOW_RUNS
@@ -2620,8 +2642,8 @@ Workflows.renderFlowGraph = function(templateId, containerId, options) {
   // Clear placeholder and insert SVG
   container.innerHTML = svg;
 
-  // Initialize zoom/pan for full mode
-  if (!compact) {
+  // Initialize zoom/pan for full mode (skip if noInteraction flag set)
+  if (!compact && !opts.noInteraction) {
     Workflows._initGraphInteraction(container, svgW, svgH);
   }
 };

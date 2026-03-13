@@ -1044,6 +1044,32 @@
   letter-spacing: 0.02em;
 }
 
+/* Inline command reference in Cosimo messages */
+.wf-command-inline {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 6px;
+  background: rgba(var(--violet-3-rgb), 0.08);
+  color: var(--violet-3);
+  border: 1px solid rgba(var(--violet-3-rgb), 0.2);
+  border-radius: var(--r-sm);
+}
+
+/* Flow graph inside chat artifacts */
+.wf-artifact-graph {
+  min-height: 200px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 12px 8px;
+}
+
+.wf-artifact-graph svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
 /* File attachment chips on user messages */
 .wf-file-attachments {
   display: flex;
@@ -1160,6 +1186,16 @@
 
 [data-theme="dark"] .wf-status-chip.notice {
   background: rgba(var(--amber-rgb), 0.12);
+}
+
+[data-theme="dark"] .wf-command-inline {
+  background: rgba(var(--violet-3-rgb), 0.12);
+  color: var(--violet-3);
+  border-color: rgba(var(--violet-3-rgb), 0.25);
+}
+
+[data-theme="dark"] .wf-artifact-graph {
+  background: var(--taupe-1);
 }
 
 /* Gate message styling — amber left border + tint background */

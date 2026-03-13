@@ -1399,12 +1399,172 @@
       </div><!-- /thread-tener-batch-12 -->
 
       <div class="chat-thread" id="thread-wf-create-dd">
-        <div class="msg-list">
-          <div class="ai-block">
-            <div class="ai-avatar"><span class="model-badge">C</span></div>
-            <div class="ai-body"><p>Workflow thread content will be added in a later task.</p></div>
+      <div class="chat-scroll">
+        <div class="date-separator">
+          <div class="date-separator-line"></div>
+          <span class="date-separator-label">Yesterday</span>
+          <div class="date-separator-line"></div>
+        </div>
+
+        <!-- Message 1: User — wants to create DD workflow -->
+        <div class="msg-block">
+          <div class="user-card">
+            <div class="msg-header">
+              <div class="badge badge-human">E</div>
+              <span class="sender">Eliot Puplett</span>
+              <span class="timestamp">3:42 PM</span>
+            </div>
+            <div class="msg-body">
+              <p>I want to create a workflow for due diligence on new investments</p>
+            </div>
           </div>
         </div>
+
+        <!-- Message 2: Cosimo — asks clarifying questions -->
+        <div class="msg-block">
+          <div class="ai-block">
+            <div class="msg-header">
+              <div class="badge badge-ai">◆</div>
+              <span class="sender">Cosimo</span>
+              <span class="timestamp">3:42 PM</span>
+              <span class="latency-chip">0.8s</span>
+              <span class="model-badge label-mono">Cosimo</span>
+            </div>
+            <div class="msg-body">
+              <p>Great — let's set up a DD workflow. A few questions to get the shape right. What kind of documents will typically be involved? And is this for a specific asset class or general?</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 3: User — describes requirements -->
+        <div class="msg-block">
+          <div class="user-card">
+            <div class="msg-header">
+              <div class="badge badge-human">E</div>
+              <span class="sender">Eliot Puplett</span>
+              <span class="timestamp">3:44 PM</span>
+            </div>
+            <div class="msg-body">
+              <p>Real estate acquisitions. We usually get a data room with financials, rent rolls, environmental reports, title docs, and zoning info. I want Cosimo to pull key metrics from each doc type and flag any red flags.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 4: Cosimo — proposed flow graph -->
+        <div class="msg-block">
+          <div class="ai-block">
+            <div class="msg-header">
+              <div class="badge badge-ai">◆</div>
+              <span class="sender">Cosimo</span>
+              <span class="timestamp">3:45 PM</span>
+              <span class="latency-chip">2.1s</span>
+              <span class="model-badge label-mono">Cosimo</span>
+            </div>
+            <div class="msg-body">
+              <p>Here's what I'm thinking for the flow:</p>
+            </div>
+            <div class="artifact">
+              <div class="art-bar">
+                <div class="art-close"></div>
+                <div class="art-stripe"></div>
+                <span class="art-title">Proposed Workflow — Due Diligence</span>
+                <div class="art-stripe"></div>
+              </div>
+              <div class="art-body">
+                <div id="ddFlowGraphInitial" class="wf-artifact-graph"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 5: User — asks for cross-reference step -->
+        <div class="msg-block">
+          <div class="user-card">
+            <div class="msg-header">
+              <div class="badge badge-human">E</div>
+              <span class="sender">Eliot Puplett</span>
+              <span class="timestamp">3:47 PM</span>
+            </div>
+            <div class="msg-body">
+              <p>Add a step that cross-references the rent roll numbers against the financials to check for consistency</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 6: Cosimo — updated flow graph -->
+        <div class="msg-block">
+          <div class="ai-block">
+            <div class="msg-header">
+              <div class="badge badge-ai">◆</div>
+              <span class="sender">Cosimo</span>
+              <span class="timestamp">3:48 PM</span>
+              <span class="latency-chip">1.8s</span>
+              <span class="model-badge label-mono">Cosimo</span>
+            </div>
+            <div class="msg-body">
+              <p>Added a cross-reference validation step after the extraction branches merge. Here's the updated flow:</p>
+            </div>
+            <div class="artifact">
+              <div class="art-bar">
+                <div class="art-close"></div>
+                <div class="art-stripe"></div>
+                <span class="art-title">Updated Workflow — Due Diligence</span>
+                <div class="art-stripe"></div>
+              </div>
+              <div class="art-body">
+                <div id="ddFlowGraphUpdated" class="wf-artifact-graph"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 7: Cosimo — suggests trigger -->
+        <div class="msg-block">
+          <div class="ai-block">
+            <div class="msg-header">
+              <div class="badge badge-ai">◆</div>
+              <span class="sender">Cosimo</span>
+              <span class="timestamp">3:48 PM</span>
+              <span class="latency-chip">0.6s</span>
+              <span class="model-badge label-mono">Cosimo</span>
+            </div>
+            <div class="msg-body">
+              <p>What should trigger this? I'd suggest a chat command — you'd type <code class="wf-command-inline">/due-diligence [company name]</code> to kick it off and point it at the target's data room.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 8: User — names the command -->
+        <div class="msg-block">
+          <div class="user-card">
+            <div class="msg-header">
+              <div class="badge badge-human">E</div>
+              <span class="sender">Eliot Puplett</span>
+              <span class="timestamp">3:49 PM</span>
+            </div>
+            <div class="msg-body">
+              <p>Perfect. Let's call it /dd for short</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 9: Cosimo — confirms setup -->
+        <div class="msg-block">
+          <div class="ai-block">
+            <div class="msg-header">
+              <div class="badge badge-ai">◆</div>
+              <span class="sender">Cosimo</span>
+              <span class="timestamp">3:49 PM</span>
+              <span class="latency-chip">0.9s</span>
+              <span class="model-badge label-mono">Cosimo</span>
+            </div>
+            <div class="msg-body">
+              <p>Done. Your DD workflow is set up with the command <span class="wf-command-chip">/dd</span>. You can run it now or find it in the Workflows library.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
       </div><!-- /thread-wf-create-dd -->
 
       </div><!-- /chat-main -->
