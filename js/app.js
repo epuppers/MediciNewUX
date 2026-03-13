@@ -1937,6 +1937,9 @@ Workflows.showWorkflowDetail = function(id, el) {
   // Build triggers tab content
   Workflows._renderTriggersTab(data);
 
+  // Build runs tab content
+  Workflows._renderRunsTab(data);
+
   // Render flow graph in the graph column
   Workflows.renderFlowGraph(id, 'flowGraphContainer', { compact: false });
 
@@ -2184,6 +2187,51 @@ Workflows._renderTriggersTab = function(data) {
 
   // Add Trigger button
   html += '<button class="add-source-btn" data-action="add-trigger">+ Add Trigger</button>';
+
+  container.innerHTML = html;
+};
+
+/** Renders the runs tab content from template data.
+ * @param {Object} data - Template data object
+ */
+Workflows._renderRunsTab = function(data) {
+  var container = document.getElementById('tab-runs');
+  if (!container) return;
+
+  var runs = data.recentRuns || [];
+  var html = '';
+
+  if (runs.length === 0) {
+    html = '<div class="runs-empty">' +
+      '<span class="runs-empty-text">No runs yet</span>' +
+      '<span class="runs-empty-sub">Run this workflow to see execution history</span>' +
+    '</div>';
+  } else {
+    // Summary bar
+    var stats = data.runs || {};
+    html += '<div class="runs-summary">' +
+      '<span class="runs-summary-stat"><span class="runs-summary-val">' + (stats.total || 0) + '</span> runs</span>' +
+      '<span class="runs-summary-sep">·</span>' +
+      '<span class="runs-summary-stat"><span class="runs-summary-val text-green">' + (stats.successRate ? stats.successRate + '%' : '—') + '</span> success</span>' +
+      '<span class="runs-summary-sep">·</span>' +
+      '<span class="runs-summary-stat"><span class="runs-summary-val">' + escapeHtml(stats.avgDuration || '—') + '</span> avg</span>' +
+    '</div>';
+
+    // Run rows
+    runs.forEach(function(run) {
+      var dotClass = run.status === 'success' ? 'success' : 'failed';
+      var hasThread = run.threadId ? true : false;
+      var rowClass = 'run-row' + (hasThread ? ' run-row-linked' : ' cursor-default');
+      var threadAttr = hasThread ? ' data-thread-id="' + escapeHtml(run.threadId) + '"' : '';
+      html += '<div class="' + rowClass + '"' + threadAttr + ' data-action="run-row-click">' +
+        '<div class="run-status-dot ' + dotClass + '"></div>' +
+        '<span class="run-id">' + escapeHtml(run.id) + '</span>' +
+        '<span class="run-trigger">' + escapeHtml(run.trigger) + '</span>' +
+        '<span class="run-time">' + escapeHtml(run.time) + '</span>' +
+        '<span class="run-duration">' + escapeHtml(run.duration) + '</span>' +
+      '</div>';
+    });
+  }
 
   container.innerHTML = html;
 };

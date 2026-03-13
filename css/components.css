@@ -621,6 +621,72 @@
   text-align: right;
 }
 
+/* Linked run rows (have threadId — clickable) */
+.run-row-linked {
+  cursor: pointer;
+}
+
+.run-row-linked:hover {
+  border-color: var(--violet-3);
+  background: rgba(var(--violet-3-rgb), 0.03);
+}
+
+.run-row-linked:active {
+  background: rgba(var(--violet-3-rgb), 0.06);
+}
+
+.run-row-linked:focus-visible {
+  outline: 2px solid var(--violet-3);
+  outline-offset: 1px;
+}
+
+/* Runs tab summary bar */
+.runs-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  background: rgba(var(--violet-3-rgb), 0.04);
+  border: 1px solid var(--taupe-2);
+  border-radius: var(--r-md);
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--taupe-3);
+}
+
+.runs-summary-val {
+  font-weight: 600;
+  color: var(--taupe-5);
+}
+
+.runs-summary-sep {
+  color: var(--taupe-2);
+}
+
+/* Runs tab empty state */
+.runs-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 32px 16px;
+  text-align: center;
+}
+
+.runs-empty-text {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--taupe-4);
+}
+
+.runs-empty-sub {
+  font-family: var(--sans);
+  font-size: 11px;
+  color: var(--taupe-3);
+}
+
 /* ============================================
    COSIMO CHAT PANEL (slide-in)
    ============================================ */
@@ -2757,6 +2823,20 @@
 
 [data-theme="dark"] .run-status-dot.failed {
   border-color: var(--red-hi) var(--red-lo) var(--red-lo) var(--red-hi);
+}
+
+/* Runs tab dark mode */
+[data-theme="dark"] .run-row-linked:hover {
+  background: rgba(var(--violet-3-rgb), 0.08);
+}
+
+[data-theme="dark"] .run-row-linked:active {
+  background: rgba(var(--violet-3-rgb), 0.12);
+}
+
+[data-theme="dark"] .runs-summary {
+  background: rgba(var(--violet-3-rgb), 0.08);
+  border-color: var(--taupe-2);
 }
 
 /* Panel messages */
