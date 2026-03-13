@@ -1005,17 +1005,23 @@
         </div>
       </div>
 
-      <div class="input-area" id="erabor-input-area">
+      <div class="input-area">
         <div class="input-row">
-          <div class="text-input bevel-inset" id="erabor-input" contenteditable="true" role="textbox" aria-label="Message input" data-placeholder="Continue this thread..."></div>
-          <button class="cmd-btn label-mono">Attach</button>
-          <button class="cmd-btn label-mono cmd-primary" id="erabor-send-btn" title="Send"><span data-icon="send"></span></button>
-          <button class="cmd-btn label-mono cmd-stop hidden" id="erabor-stop-btn" title="Stop">
-            <span data-icon="stop"></span>
-          </button>
+          <div class="text-input bevel-inset" contenteditable="true" role="textbox" aria-label="Message input" data-placeholder="Continue this thread..."></div>
+          <div class="attach-wrapper">
+            <button class="cmd-btn label-mono" title="Attach file"><span data-icon="attach"></span></button>
+            <div class="attach-menu">
+              <button class="attach-option" title="From computer">
+                <span data-icon="computer"></span>
+              </button>
+              <button class="attach-option" title="From cloud drive">
+                <span data-icon="cloud"></span>
+              </button>
+            </div>
+          </div>
+          <button class="cmd-btn label-mono cmd-primary" title="Send"><span data-icon="send"></span></button>
         </div>
         <div class="input-footer">
-          <span>⌘B bold · ⌘I italic · ⌘U underline · **markdown**</span>
           <div class="model-selector">
             <button class="model-selector-btn label-mono">
               <span class="model-selector-label">Analyst</span>
@@ -1036,6 +1042,7 @@
               </button>
             </div>
           </div>
+          <span>⌘B bold · ⌘I italic · ⌘U underline · **markdown**</span>
         </div>
       </div>
       </div><!-- /thread-erabor -->

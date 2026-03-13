@@ -1695,10 +1695,10 @@ Chat.eraborTimer = function(fn, ms) {
  * @param {boolean} show - If true, show stop button and hide send; vice versa
  */
 Chat.showEraborStopBtn = function(show) {
-  const sendBtn = document.getElementById('erabor-send-btn');
-  const stopBtn = document.getElementById('erabor-stop-btn');
+  const thread = document.getElementById('thread-erabor');
+  if (!thread) return;
+  const sendBtn = thread.querySelector('.input-area .cmd-primary');
   if (sendBtn) sendBtn.classList.toggle('hidden', show);
-  if (stopBtn) stopBtn.classList.toggle('hidden', !show);
 };
 
 /** Runs the Erabor thread demo animation: thinking, reasoning steps, then streamed reply. */
@@ -1789,7 +1789,8 @@ Chat.cancelErabor = function() {
   Chat.disableInput('erabor', false);
 
   // Put user's message back in the input for editing
-  const input = document.getElementById('erabor-input');
+  const thread = document.getElementById('thread-erabor');
+  const input = thread ? thread.querySelector('.input-area .text-input') : null;
   if (input) {
     input.textContent = Chat.eraborUserMsg;
     input.focus();
@@ -5014,9 +5015,8 @@ function escapeHtml(text) {
   var k1RetryBtn = document.getElementById('k1RetryBtn');
   if (k1RetryBtn) k1RetryBtn.addEventListener('click', function() { Chat.retryK1(); });
 
-  // --- Stop/cancel button ---
-  var stopBtn = document.getElementById('erabor-stop-btn');
-  if (stopBtn) stopBtn.addEventListener('click', function() { Chat.cancelErabor(); });
+  // --- Erabor cancel: no dedicated stop button in standard input pattern ---
+  // Cancel is handled by Chat.cancelErabor() if called programmatically
 
   // --- File panel ---
   var fpTabViewer = document.getElementById('fpTabViewer');
