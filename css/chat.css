@@ -1162,6 +1162,39 @@
   background: rgba(var(--amber-rgb), 0.12);
 }
 
+/* Gate message styling — amber left border + tint background */
+.msg-gate {
+  border-left: 3px solid var(--amber);
+  background: rgba(var(--amber-rgb), 0.05);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  padding-left: 12px;
+}
+
+.msg-gate-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--amber);
+  background: rgba(var(--amber-rgb), 0.1);
+  border: 1px solid rgba(var(--amber-rgb), 0.25);
+  border-radius: var(--r-sm);
+  padding: 1px 7px;
+  white-space: nowrap;
+}
+
+[data-theme="dark"] .msg-gate {
+  background: rgba(var(--amber-rgb), 0.08);
+  border-left-color: var(--amber);
+}
+
+[data-theme="dark"] .msg-gate-chip {
+  background: rgba(var(--amber-rgb), 0.15);
+  border-color: rgba(var(--amber-rgb), 0.3);
+}
+
 /* ============================================
    WORKFLOW CONTEXT PANEL
    ============================================ */

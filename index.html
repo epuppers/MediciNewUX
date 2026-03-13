@@ -1203,12 +1203,199 @@
       </div><!-- /thread-wf-run-rentroll-047 -->
 
       <div class="chat-thread" id="thread-tener-batch-12">
-        <div class="msg-list">
-          <div class="ai-block">
-            <div class="ai-avatar"><span class="model-badge">C</span></div>
-            <div class="ai-body"><p>Workflow thread content will be added in a later task.</p></div>
+      <div class="chat-scroll">
+        <div class="date-separator">
+          <div class="date-separator-line"></div>
+          <span class="date-separator-label">Today</span>
+          <div class="date-separator-line"></div>
+        </div>
+
+        <!-- Message 1: User with /valuation command + folder attachment -->
+        <div class="msg-block">
+          <div class="user-card">
+            <div class="msg-header">
+              <div class="badge badge-human">E</div>
+              <span class="sender">Eliot Puplett</span>
+              <span class="timestamp">9:42 AM</span>
+            </div>
+            <div class="msg-body">
+              <span class="wf-command-chip">/valuation</span>
+            </div>
+            <div class="wf-file-attachments">
+              <div class="wf-file-chip"><span class="wf-file-chip-icon">📁</span> Batch-12-Parcels/ — 47 files</div>
+            </div>
           </div>
         </div>
+
+        <!-- Message 2: Cosimo — run started with artifact -->
+        <div class="msg-block">
+          <div class="ai-block">
+            <div class="msg-header">
+              <div class="badge badge-ai">◆</div>
+              <span class="sender">Cosimo</span>
+              <span class="timestamp">9:42 AM</span>
+              <span class="latency-chip">1.8s</span>
+              <span class="model-badge label-mono">Workflow</span>
+            </div>
+
+            <div class="msg-body">
+              <p>Starting Valuation Filing workflow on Batch 12 — 47 property files. I'll extract parcel IDs, assessed values, and filing deadlines.</p>
+            </div>
+
+            <div class="artifact">
+              <div class="art-bar">
+                <div class="art-close"></div>
+                <div class="art-stripe"></div>
+                <span class="art-title">Workflow Run — Valuation Filing</span>
+                <div class="art-stripe"></div>
+                <span class="art-live">LIVE</span>
+              </div>
+              <div class="art-body">
+                <div class="wf-run-summary">
+                  <div class="wf-run-summary-row"><span class="wf-run-summary-label">Template</span><span class="wf-run-summary-value">Tener Valuation Filing</span></div>
+                  <div class="wf-run-summary-row"><span class="wf-run-summary-label">Run</span><span class="wf-run-summary-value">#012</span></div>
+                  <div class="wf-run-summary-row"><span class="wf-run-summary-label">Input</span><span class="wf-run-summary-value">47 files (Batch-12-Parcels/)</span></div>
+                  <div class="wf-run-summary-row"><span class="wf-run-summary-label">Output</span><span class="wf-run-summary-value">Filing package → /Tener/Filings/</span></div>
+                  <div class="wf-run-summary-row"><span class="wf-run-summary-label">Status</span><span class="wf-run-summary-value wf-status-running">Running</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 3: Cosimo — gate message with exception table -->
+        <div class="msg-block">
+          <div class="ai-block msg-gate">
+            <div class="msg-header">
+              <div class="badge badge-ai">◆</div>
+              <span class="sender">Cosimo</span>
+              <span class="timestamp">9:48 AM</span>
+              <span class="latency-chip">5m 42s</span>
+              <span class="model-badge label-mono">Workflow</span>
+              <span class="msg-gate-chip">⏸ Awaiting Review</span>
+            </div>
+
+            <div class="msg-body">
+              <p>Processed 44 of 47 files successfully. 3 files need your attention:</p>
+            </div>
+
+            <div class="artifact">
+              <div class="art-bar">
+                <div class="art-close"></div>
+                <div class="art-stripe"></div>
+                <span class="art-title">Exceptions — Batch 12</span>
+                <div class="art-stripe"></div>
+              </div>
+              <div class="art-body">
+                <table class="data-tbl">
+                  <thead>
+                    <tr>
+                      <th>File</th>
+                      <th>Issue</th>
+                      <th>Suggestion</th>
+                      <th>Confidence</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Parcel-2847-Assessment.pdf</td>
+                      <td>Conflicting assessed values (p.3: $4.2M, p.7: $4.8M)</td>
+                      <td>Use page 7 (amended)</td>
+                      <td>—</td>
+                    </tr>
+                    <tr>
+                      <td>Parcel-3102-Notice.pdf</td>
+                      <td>Poor OCR quality — 3 fields uncertain</td>
+                      <td>Manual review needed</td>
+                      <td>67%</td>
+                    </tr>
+                    <tr>
+                      <td>Parcel-4411-Filing.tiff</td>
+                      <td>Unexpected format (TIFF scan, not PDF)</td>
+                      <td>Convert and retry</td>
+                      <td>—</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 4: Cosimo — gate follow-up question -->
+        <div class="msg-block">
+          <div class="ai-block msg-gate">
+            <div class="msg-header">
+              <div class="badge badge-ai">◆</div>
+              <span class="sender">Cosimo</span>
+              <span class="timestamp">9:48 AM</span>
+              <span class="model-badge label-mono">Workflow</span>
+              <span class="msg-gate-chip">⏸ Awaiting Review</span>
+            </div>
+
+            <div class="msg-body">
+              <p>Specifically: <strong>Parcel-2847-Assessment.pdf</strong> has two conflicting assessed values on pages 3 and 7 ($4.2M vs $4.8M). Which should I use, or should I flag both in the output?</p>
+            </div>
+
+            <div class="msg-feedback">
+              <button class="feedback-btn up" title="Good response"><span data-icon="thumbUp"></span></button>
+              <button class="feedback-btn down" title="Poor response"><span data-icon="thumbDown"></span></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 5: User — response to gate -->
+        <div class="msg-block">
+          <div class="user-card">
+            <div class="msg-header">
+              <div class="badge badge-human">E</div>
+              <span class="sender">Eliot Puplett</span>
+              <span class="timestamp">9:55 AM</span>
+            </div>
+            <div class="msg-body">
+              Use the page 7 value, that's the amended assessment
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 6: Cosimo — acknowledgment -->
+        <div class="msg-block">
+          <div class="ai-block">
+            <div class="msg-header">
+              <div class="badge badge-ai">◆</div>
+              <span class="sender">Cosimo</span>
+              <span class="timestamp">9:55 AM</span>
+              <span class="latency-chip">0.8s</span>
+              <span class="model-badge label-mono">Workflow</span>
+            </div>
+            <div class="msg-body">
+              <p>Got it — using $4.8M for Parcel 2847. Resuming processing on remaining exceptions...</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message 7: Cosimo — completion -->
+        <div class="msg-block">
+          <div class="ai-block">
+            <div class="msg-header">
+              <div class="badge badge-ai">◆</div>
+              <span class="sender">Cosimo</span>
+              <span class="timestamp">9:58 AM</span>
+              <span class="latency-chip">2m 34s</span>
+              <span class="model-badge label-mono">Workflow</span>
+            </div>
+            <div class="msg-body">
+              <p>All 47 files processed. Output saved to <strong>/Tener/Filings/Batch-12/</strong>. 3 parcels were flagged for manual values — I've noted your corrections in the audit trail.</p>
+            </div>
+
+            <div class="msg-feedback">
+              <button class="feedback-btn up" title="Good response"><span data-icon="thumbUp"></span></button>
+              <button class="feedback-btn down" title="Poor response"><span data-icon="thumbDown"></span></button>
+            </div>
+          </div>
+        </div>
+
+      </div>
       </div><!-- /thread-tener-batch-12 -->
 
       <div class="chat-thread" id="thread-wf-create-dd">
