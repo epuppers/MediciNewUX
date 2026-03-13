@@ -665,6 +665,34 @@ UI.toggleSidebar = function() {
   }
 })();
 
+/** Toggles the Brain nav section between collapsed and expanded states.
+ * Persists state to localStorage. Updates toggle button chevron.
+ */
+UI.toggleBrainNav = function() {
+  var nav = document.getElementById('brainNav');
+  var btn = document.getElementById('brainNavToggle');
+  if (!nav) return;
+  var collapsed = nav.classList.toggle('brain-nav-collapsed');
+  localStorage.setItem('brainNavCollapsed', collapsed ? 'true' : 'false');
+  if (btn) {
+    btn.title = collapsed ? 'Expand Brain nav' : 'Collapse Brain nav';
+    btn.setAttribute('aria-label', btn.title);
+  }
+};
+
+// Restore brain nav collapsed state from localStorage
+(function() {
+  if (localStorage.getItem('brainNavCollapsed') === 'true') {
+    var nav = document.getElementById('brainNav');
+    var btn = document.getElementById('brainNavToggle');
+    if (nav) nav.classList.add('brain-nav-collapsed');
+    if (btn) {
+      btn.title = 'Expand Brain nav';
+      btn.setAttribute('aria-label', 'Expand Brain nav');
+    }
+  }
+})();
+
 UI.currentMode = 'chat';
 
 /** Switches the main view between chat, workflows, and brain modes.
@@ -4767,6 +4795,10 @@ function escapeHtml(text) {
   // --- Sidebar: Toggle collapse ---
   var sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
   if (sidebarToggleBtn) sidebarToggleBtn.addEventListener('click', function() { UI.toggleSidebar(); });
+
+  // --- Brain nav: Toggle collapse ---
+  var brainNavToggle = document.getElementById('brainNavToggle');
+  if (brainNavToggle) brainNavToggle.addEventListener('click', function() { UI.toggleBrainNav(); });
 
   // --- Sidebar: Thread list (delegation) ---
   var threadList = document.querySelector('.thread-list');
