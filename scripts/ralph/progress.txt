@@ -49,6 +49,11 @@
 - Files modified: index.html, js/app.js, css/layout.css
 - Gotchas / learnings: MOCK_WORKFLOW_RUNS is keyed by threadId. Only the tener run (status: 'waiting') currently appears in Active Runs since rentroll is 'completed'. The wf-pulse animation class is reusable for any element needing a pulse effect. Active run items have data-thread-id and data-wf-id attributes for future navigation wiring (task 6.2).
 
+## Iteration 8 — Task 3.1: Two-column detail layout
+- What was done: Replaced the single-column wfDetail content with a two-column layout: left column (60%) contains .flow-graph-container with bevel border and placeholder text, right column (40%) contains description, meta row, tab bar (overview/schema/triggers/runs/lessons), and scrollable tab content. Updated Workflows.showWorkflowDetail() to populate meta row (status badge, trigger chip, version, creator) and overview tab (status/performance sections + recent activity) from MOCK_WORKFLOW_TEMPLATES data. Added Workflows._renderOverviewTab() helper. Added Workflows._currentTemplateId for state tracking. Scoped switchTab() to info column. Added full CSS with dark mode overrides.
+- Files modified: index.html, js/app.js, css/workflows.css
+- Gotchas / learnings: Tab names changed from overview/config/steps/runs to overview/schema/triggers/runs/lessons to match future tasks 4.1-4.4. The old hardcoded config/steps tabs are removed. Workflows._currentTemplateId stores which template is being viewed. switchTab() is now scoped to .wf-detail-info-col to avoid conflicts with other tab bars.
+
 ## Iteration 7 — Task 2.3: Library CSS
 - What was done: All CSS from this task was already implemented during tasks 2.1 and 2.2. Verified completeness: .wf-card-trigger-chip, .wf-card-lesson-chip, .wf-card-run-status, .wf-card-run-btn (all in workflows.css with dark mode overrides and hover/active/focus-visible states), .wf-active-runs, .wf-active-run-item, @keyframes wf-pulse (all in layout.css with dark mode overrides and [data-a11y-motion="reduce"] gating). No code changes needed.
 - Files modified: scripts/ralph/prd.json, scripts/ralph/progress.txt

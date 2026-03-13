@@ -47,7 +47,7 @@
       "id": "3.1",
       "title": "Two-column detail layout",
       "description": "Replace content inside #wfDetail with new structure: header (back button + title + actions dropdown + Run button), then .wf-detail-columns flex row with .wf-detail-graph-col (60%) and .wf-detail-info-col (40%). Add CSS for two-column layout, graph container (.flow-graph-container — full height, bevel border, overflow hidden), and info column (overflow-y auto). Include dark mode overrides. Update Workflows.showWorkflowDetail() to populate from MOCK_WORKFLOW_TEMPLATES.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "3.2",
