@@ -44,3 +44,8 @@
 - Files modified: index.html, js/app.js, css/workflows.css
 - Gotchas / learnings: Workflows._triggerMeta maps triggerType strings to {icon, label} objects for rendering trigger chips. The old .wf-card-meta/.wf-meta-item classes are now unused CSS (cards use .wf-card-footer instead). Card click delegation was already in initEventListeners() — no changes needed there. The Run button uses data-action="run-card" for future event handling.
 
+## Iteration 6 — Task 2.2: Rebuild workflow sidebar
+- What was done: Replaced hardcoded sidebar HTML in index.html with empty containers (#wfActiveRuns, #wfSidebarList). Created Workflows.renderSidebar() that builds two sections: (1) Active Runs at top, filtered from MOCK_WORKFLOW_RUNS where status is 'running' or 'waiting' — shows template name, status indicator with colored dot, and thread title; (2) Template list below with trigger type icons from Workflows._triggerMeta, status badges, and last run info. Added event delegation for active run item clicks. Added full CSS for .wf-active-runs section (tinted violet background, border separator), .wf-active-run-item with hover/active/focus-visible states, .wf-run-running/.wf-run-waiting status colors, @keyframes wf-pulse gated by [data-a11y-motion="reduce"], .wf-side-trigger-icon, and dark mode overrides for all new classes.
+- Files modified: index.html, js/app.js, css/layout.css
+- Gotchas / learnings: MOCK_WORKFLOW_RUNS is keyed by threadId. Only the tener run (status: 'waiting') currently appears in Active Runs since rentroll is 'completed'. The wf-pulse animation class is reusable for any element needing a pulse effect. Active run items have data-thread-id and data-wf-id attributes for future navigation wiring (task 6.2).
+

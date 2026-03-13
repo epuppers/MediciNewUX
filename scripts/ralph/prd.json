@@ -35,7 +35,7 @@
       "id": "2.2",
       "title": "Rebuild workflow sidebar",
       "description": "Replace hardcoded items in #workflowSidebar with dynamic rendering. Create Workflows.renderSidebar(). Add Active Runs section at top populated from MOCK_WORKFLOW_RUNS where status is running or waiting — each item shows template name, thread title, status indicator. Below: template list with trigger type icons. Wire sidebar clicks via event delegation.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "2.3",
