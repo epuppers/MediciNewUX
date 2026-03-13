@@ -1162,6 +1162,12 @@
   background: rgba(var(--amber-rgb),0.15);
 }
 
+.thread-indicator.waiting {
+  color: var(--amber);
+  border-color: var(--amber);
+  background: rgba(var(--amber-rgb),0.15);
+}
+
 .thread-indicator.error {
   color: var(--red);
   border-color: var(--red);
@@ -1561,6 +1567,10 @@ main {
 }
 
 [data-theme="dark"] .thread-indicator.needs-input {
+  background: rgba(var(--amber-rgb),0.2);
+}
+
+[data-theme="dark"] .thread-indicator.waiting {
   background: rgba(var(--amber-rgb),0.2);
 }
 

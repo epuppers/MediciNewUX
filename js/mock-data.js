@@ -531,6 +531,43 @@ const MOCK_WORKFLOW_RUNS = {
 };
 
 // ============================================
+// MOCK DATA — WORKFLOW COMMANDS
+// ============================================
+const MOCK_WORKFLOW_COMMANDS = [
+  {
+    command: '/rent-roll',
+    label: 'Rent Roll Extraction',
+    description: 'Extract and standardize rent roll data from PDFs',
+    templateId: 'rent-roll'
+  },
+  {
+    command: '/k1',
+    label: 'K-1 Document Extraction',
+    description: 'Parse K-1 forms and extract partner allocations',
+    templateId: 'k1-extract'
+  },
+  {
+    command: '/fees',
+    label: 'Fee Calculation',
+    description: 'Calculate management fees with commitment offsets',
+    templateId: 'fee-calc'
+  },
+  {
+    command: '/valuation',
+    label: 'Valuation Filing',
+    description: 'Extract parcel data and generate tax filing packages',
+    templateId: 'tener-valuation'
+  },
+  {
+    command: '/dd',
+    label: 'Due Diligence',
+    description: 'Run due diligence analysis on a target company',
+    templateId: 'due-diligence',
+    argPlaceholder: '[company name]'
+  }
+];
+
+// ============================================
 // MOCK DATA — SPREADSHEET
 // ============================================
 const MOCK_SPREADSHEET = {
@@ -702,6 +739,30 @@ const MOCK_THREADS = {
     hasFiles: false,
     indicator: null,
     keywords: 'erabor partnership terms gp commit clawback side letter marcus'
+  },
+  'wf-run-rentroll-047': {
+    title: 'Rent Roll Extraction — Q4 Batch',
+    meta: 'Today, 12:15 PM',
+    hasFiles: false,
+    indicator: 'ready',
+    keywords: 'rent roll extraction q4 batch 245 park marina heights berkshire',
+    workflowRunId: 'wf-run-rentroll-047'
+  },
+  'tener-batch-12': {
+    title: 'Tener — Valuation Filing Batch 12',
+    meta: 'Today, 10:42 AM',
+    hasFiles: false,
+    indicator: 'waiting',
+    keywords: 'tener valuation filing batch 12 parcel assessment',
+    workflowRunId: 'wf-run-tener-12'
+  },
+  'wf-create-dd': {
+    title: 'New Workflow: Due Diligence',
+    meta: 'Yesterday, 3:15 PM',
+    hasFiles: false,
+    indicator: null,
+    keywords: 'due diligence workflow create new investment real estate',
+    workflowRunId: null
   },
   new: {
     title: 'New Thread',
