@@ -119,7 +119,7 @@
       "id": "5.5",
       "title": "Workflow chat thread content (creation flow)",
       "description": "Add chat content HTML for wf-create-dd thread following mock conversation script Thread C in CLAUDE.md. Cosimo shows proposed flow graph as artifact — call Workflows.renderFlowGraph('due-diligence', artBodyDivId, { compact: false, showStatus: false }) after DOM element is visible (use requestAnimationFrame). Show both initial and updated graph artifacts.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "5.6",
