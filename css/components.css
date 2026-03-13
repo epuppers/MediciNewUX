@@ -915,7 +915,7 @@
 .mem-role-card {
   background: var(--white);
   border: 2px solid;
-  border-color: var(--taupe-1) var(--taupe-2) var(--taupe-2) var(--taupe-1);
+  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
   border-radius: var(--r-md);
   padding: 12px 14px;
 }
@@ -943,7 +943,7 @@
 .mem-personality {
   background: var(--white);
   border: 2px solid;
-  border-color: var(--taupe-1) var(--taupe-2) var(--taupe-2) var(--taupe-1);
+  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
   border-radius: var(--r-md);
   padding: 12px 14px;
 }
@@ -1055,6 +1055,9 @@
 /* Facts Toolbar */
 .mem-facts-toolbar {
   margin-bottom: 12px;
+  background: rgba(var(--black-rgb), 0.02);
+  border-radius: var(--r-md);
+  padding: 10px;
 }
 
 .mem-search-wrap {
@@ -1077,9 +1080,9 @@
   font-family: var(--mono);
   font-size: 12px;
   color: var(--taupe-5);
-  background: var(--white);
+  background: var(--off-white);
   border: 2px solid;
-  border-color: var(--taupe-1) var(--taupe-2) var(--taupe-2) var(--taupe-1);
+  border-color: var(--taupe-3) var(--taupe-1) var(--taupe-1) var(--taupe-3);
   border-radius: var(--r-md);
   outline: none;
 }
@@ -1114,9 +1117,9 @@
 }
 
 .mem-cat-pill.active {
-  background: var(--taupe-5);
+  background: var(--violet-3);
   color: var(--white);
-  border-color: var(--taupe-4) var(--taupe-5) var(--taupe-5) var(--taupe-4);
+  border-color: var(--violet-2) var(--violet-4) var(--violet-4) var(--violet-2);
 }
 
 /* Add Memory Form */
@@ -1182,15 +1185,24 @@
 .mem-fact-card {
   background: var(--white);
   border: 2px solid;
-  border-color: var(--taupe-1) var(--taupe-2) var(--taupe-2) var(--taupe-1);
+  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
   border-radius: var(--r-md);
   padding: 10px 14px;
   transition: border-color 0.15s;
+  border-left: 3px solid var(--taupe-2);
 }
 
 .mem-fact-card:hover {
-  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+  border-color: var(--taupe-3) var(--taupe-4) var(--taupe-4) var(--taupe-3);
 }
+
+/* Category left-border accents */
+.mem-fact-card[data-category="preference"] { border-left-color: var(--berry-3); }
+.mem-fact-card[data-category="workflow"] { border-left-color: var(--green); }
+.mem-fact-card[data-category="contact"] { border-left-color: var(--blue-3); }
+.mem-fact-card[data-category="fund"] { border-left-color: var(--violet-3); }
+.mem-fact-card[data-category="style"] { border-left-color: var(--amber); }
+.mem-fact-card[data-category="context"] { border-left-color: var(--taupe-3); }
 
 .mem-fact-top {
   display: flex;
@@ -3117,10 +3129,21 @@
 
 /* Memory — dark mode */
 [data-theme="dark"] .mem-role-card,
-[data-theme="dark"] .mem-personality,
-[data-theme="dark"] .mem-fact-card,
+[data-theme="dark"] .mem-personality {
+  border-color: var(--taupe-3) var(--taupe-2) var(--taupe-2) var(--taupe-3);
+}
+
+[data-theme="dark"] .mem-fact-card {
+  border-color: var(--taupe-3) var(--taupe-2) var(--taupe-2) var(--taupe-3);
+}
+
 [data-theme="dark"] .mem-search-input {
-  border-color: var(--taupe-2);
+  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+  background: rgba(var(--black-rgb), 0.15);
+}
+
+[data-theme="dark"] .mem-facts-toolbar {
+  background: rgba(var(--black-rgb), 0.1);
 }
 
 [data-theme="dark"] .mem-trait-tag.active {
@@ -3128,8 +3151,9 @@
 }
 
 [data-theme="dark"] .mem-cat-pill.active {
-  background: var(--taupe-4);
-  border-color: var(--taupe-3);
+  background: var(--violet-3);
+  border-color: var(--violet-2);
+  color: var(--white);
 }
 
 [data-theme="dark"] .mem-fact-menu {
