@@ -1403,7 +1403,6 @@ Chat.selectCommand = function(command, argPlaceholder) {
     var threadId = Workflows._findRunThread(cmdData.templateId);
     if (threadId) {
       Chat.selectThread(threadId, document.querySelector('.thread-item[data-thread-id="' + threadId + '"]'));
-      Chat.openWorkflowPanel(MOCK_WORKFLOW_RUNS[threadId] ? threadId : null);
     }
   }
 };

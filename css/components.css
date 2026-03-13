@@ -91,7 +91,7 @@
   animation: wf-pulse-node 2s infinite;
 }
 
-[data-a11y-motion="reduce"] .flow-node-status-running .flow-node-rect {
+[data-a11y-motion="reduced"] .flow-node-status-running .flow-node-rect {
   animation: none;
 }
 
@@ -236,7 +236,7 @@
   transform: translateY(0);
 }
 
-[data-a11y-motion="reduce"] .node-popover {
+[data-a11y-motion="reduced"] .node-popover {
   transition: none;
 }
 
@@ -396,7 +396,7 @@
   outline-offset: 2px;
 }
 
-[data-a11y-motion="reduce"] .node-popover-cosimo-btn {
+[data-a11y-motion="reduced"] .node-popover-cosimo-btn {
   transition: none;
 }
 

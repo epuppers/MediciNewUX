@@ -600,6 +600,9 @@
 /* Thicker borders on interactive elements */
 [data-a11y-contrast="high"] .thread-item,
 [data-a11y-contrast="high"] .wf-side-item,
+[data-a11y-contrast="high"] .wf-active-run-item,
+[data-a11y-contrast="high"] .wf-card,
+[data-a11y-contrast="high"] .run-row-linked,
 [data-a11y-contrast="high"] .brain-nav-btn,
 [data-a11y-contrast="high"] .top-tab,
 [data-a11y-contrast="high"] .tab-btn,
@@ -1257,7 +1260,7 @@
   animation: wf-pulse 2s infinite;
 }
 
-[data-a11y-motion="reduce"] .wf-pulse {
+[data-a11y-motion="reduced"] .wf-pulse {
   animation: none;
 }
 
@@ -1330,7 +1333,7 @@
   animation: wf-pulse 2s infinite;
 }
 
-[data-a11y-motion="reduce"] .thread-indicator.running {
+[data-a11y-motion="reduced"] .thread-indicator.running {
   animation: none;
 }
 

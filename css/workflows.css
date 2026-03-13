@@ -222,7 +222,7 @@
   color: var(--violet-3);
   background: rgba(var(--violet-3-rgb), 0.08);
   padding: 2px 8px;
-  border-radius: 10px;
+  border-radius: var(--r-lg);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
