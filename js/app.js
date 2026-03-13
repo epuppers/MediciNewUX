@@ -669,7 +669,12 @@ UI.switchMode = function(mode, btn) {
     workflowSidebar.classList.remove('hidden');
     newBtn.textContent = '+ New Workflow';
     newBtn.classList.remove('hidden');
-    Workflows.showWorkflowListing();
+    // Restore last-viewed state (detail or listing) instead of always resetting to listing
+    if (Workflows._lastViewState && Workflows._lastViewState.templateId) {
+      Workflows.showWorkflowDetail(Workflows._lastViewState.templateId);
+    } else {
+      Workflows.showWorkflowListing();
+    }
   }
 };
 
@@ -2188,8 +2193,9 @@ Workflows.showWorkflowDetail = function(id, el) {
   const data = MOCK_WORKFLOW_TEMPLATES[id];
   if (!data) return;
 
-  // Store current template ID for other functions
+  // Store current template ID for other functions and last-viewed state
   Workflows._currentTemplateId = id;
+  Workflows._lastViewState = { templateId: id };
 
   document.getElementById('wfDetailTitle').textContent = data.title;
   document.getElementById('wfDetailDesc').textContent = data.description;
@@ -2585,7 +2591,49 @@ Workflows.showWorkflowListing = function() {
   document.getElementById('wfListing').classList.remove('hidden');
   document.getElementById('wfDetail').classList.add('hidden');
   document.querySelectorAll('.wf-side-item').forEach(item => item.classList.remove('active'));
+  Workflows._lastViewState = null;
   UI.closeCosimoPanel();
+};
+
+/**
+ * Finds a mock run thread for a template by searching MOCK_WORKFLOW_RUNS.
+ * Returns the threadId of the first matching run, or null.
+ * @param {string} templateId - Template ID to search for
+ * @returns {string|null} Thread ID of a matching run
+ */
+Workflows._findRunThread = function(templateId) {
+  var keys = Object.keys(MOCK_WORKFLOW_RUNS);
+  for (var i = 0; i < keys.length; i++) {
+    var run = MOCK_WORKFLOW_RUNS[keys[i]];
+    if (run.templateId === templateId) return run.threadId;
+  }
+  return null;
+};
+
+/**
+ * Navigates from Workflows to Chat, selecting the run thread for a template.
+ * Opens the workflow context panel automatically.
+ * @param {string} templateId - Template ID to find a run for
+ */
+Workflows.navigateToRun = function(templateId) {
+  var threadId = Workflows._findRunThread(templateId);
+  if (!threadId) {
+    showToast('No mock run available for this workflow');
+    return;
+  }
+  Workflows.navigateToThread(threadId);
+};
+
+/**
+ * Navigates from Workflows to Chat for a specific thread ID.
+ * @param {string} threadId - Thread ID to navigate to
+ */
+Workflows.navigateToThread = function(threadId) {
+  if (!MOCK_THREADS[threadId]) return;
+  var chatTab = document.getElementById('tabChat');
+  UI.switchMode('chat', chatTab);
+  var sideItem = document.querySelector('.thread-item[data-thread-id="' + threadId + '"]');
+  Chat.selectThread(threadId, sideItem);
 };
 
 // ============================================
@@ -4845,6 +4893,14 @@ function escapeHtml(text) {
   var wfListing = document.getElementById('wfListing');
   if (wfListing) {
     wfListing.addEventListener('click', function(e) {
+      // Run button on card — navigate to chat run thread
+      var runBtn = e.target.closest('[data-action="run-card"]');
+      if (runBtn && runBtn.dataset.wfId) {
+        e.stopPropagation();
+        Workflows.navigateToRun(runBtn.dataset.wfId);
+        return;
+      }
+      // Card click — show detail
       var card = e.target.closest('.wf-card');
       if (card && card.dataset.wfId) Workflows.showWorkflowDetail(card.dataset.wfId, card);
     });
@@ -4858,7 +4914,9 @@ function escapeHtml(text) {
   if (newWorkflowBtn) newWorkflowBtn.addEventListener('click', function() { UI.handleNew(); });
   if (wfBackBtn) wfBackBtn.addEventListener('click', function() { Workflows.showWorkflowListing(); });
   if (wfActionsBtn) wfActionsBtn.addEventListener('click', function(e) { UI.toggleDropdown(e); });
-  if (wfRunBtn) wfRunBtn.addEventListener('click', function() { alert('Running workflow...'); });
+  if (wfRunBtn) wfRunBtn.addEventListener('click', function() {
+    if (Workflows._currentTemplateId) Workflows.navigateToRun(Workflows._currentTemplateId);
+  });
 
   // --- Action dropdown (delegation) ---
   var actionDropdown = document.getElementById('actionDropdown');
@@ -4867,7 +4925,9 @@ function escapeHtml(text) {
       var item = e.target.closest('.dropdown-item');
       if (!item) return;
       var action = item.dataset.action;
-      if (action === 'run-now') alert('Run triggered');
+      if (action === 'run-now') {
+        if (Workflows._currentTemplateId) Workflows.navigateToRun(Workflows._currentTemplateId);
+      }
       else if (action === 'duplicate') alert('Duplicated');
       else if (action === 'edit-cosimo') UI.openCosimoPanel();
       else if (action === 'delete') alert('Deleted');
@@ -4880,6 +4940,17 @@ function escapeHtml(text) {
     tabBar.addEventListener('click', function(e) {
       var btn = e.target.closest('.tab-btn');
       if (btn && btn.dataset.tab) Workflows.switchTab(btn.dataset.tab, btn);
+    });
+  }
+
+  // --- Workflow detail run rows (delegation) ---
+  var wfDetail = document.getElementById('wfDetail');
+  if (wfDetail) {
+    wfDetail.addEventListener('click', function(e) {
+      var row = e.target.closest('[data-action="run-row-click"]');
+      if (row && row.dataset.threadId) {
+        Workflows.navigateToThread(row.dataset.threadId);
+      }
     });
   }
 
