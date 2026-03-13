@@ -23,7 +23,7 @@
       "id": "1.4",
       "title": "Add new trigger icons to icons.js",
       "description": "Add 6 new icon entries to ICONS object: folderWatch (folder with eye), schedule (clock), chatCommand (terminal/prompt >_), emailTrigger (envelope), manualTrigger (play triangle), webhook (chain links). Follow existing icon conventions: SVG with viewBox, fill='none', stroke='currentColor'.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "2.1",

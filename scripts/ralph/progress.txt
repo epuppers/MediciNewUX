@@ -34,3 +34,8 @@
 - Files modified: js/mock-data.js, index.html, css/layout.css
 - Gotchas / learnings: New threads use workflowRunId field (null for creation threads, threadId string for run threads). The "waiting" indicator reuses amber color like "needs-input". MOCK_WORKFLOW_RUNS is keyed by threadId, matching the workflowRunId field on threads. The /dd command has an argPlaceholder field for the entity argument.
 
+## Iteration 4 — Task 1.4: Add new trigger icons to icons.js
+- What was done: Added 6 new SVG icons to the ICONS object in js/icons.js: folderWatch (folder with eye dot), schedule (clock with hands), chatCommand (terminal window with >_ prompt), emailTrigger (envelope with V-flap), manualTrigger (play triangle), webhook (zigzag chain pattern). All follow existing conventions: viewBox="0 0 16 16", fill="none", stroke="currentColor", stroke-width="1.5", width/height 14.
+- Files modified: js/icons.js
+- Gotchas / learnings: Icon names map to triggerType values in templates: folder-watch → folderWatch, schedule → schedule, chat-command → chatCommand, email → emailTrigger, manual → manualTrigger. The webhook icon is extra for future use. Use icon('folderWatch') or data-icon="folderWatch" to render them.
+
