@@ -125,7 +125,7 @@
       "id": "5.6",
       "title": "Chat command autocomplete",
       "description": "When user types / as first character in chat input, show .wf-command-autocomplete dropdown above input. Populate from MOCK_WORKFLOW_COMMANDS. Each item: command (mono bold violet), label, description. Keyboard nav (arrow keys, Enter, Escape). Mouse click to select. Selecting inserts command text. If command expects entity arg, append placeholder. Dismiss on Escape / click-outside / blur. Add CSS to chat.css with dark mode overrides.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "5.7",
