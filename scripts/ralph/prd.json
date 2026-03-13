@@ -53,7 +53,7 @@
       "id": "3.2",
       "title": "Flow graph SVG renderer",
       "description": "Create Workflows.renderFlowGraph(templateId, containerId, options). Options: { compact: false, showStatus: false, runId: null }. Read nodes/edges from template data, calculate pixel positions from x/y grid coords (x-spacing 200px, y-spacing 100px), render SVG. Nodes: rounded rect (160x60 full, 100x36 compact), stroke/fill by type per CLAUDE.md node color scheme, title text (mono 11px bold), description (sans 10px, truncated — full mode only), lesson chip if applicable. Gate nodes: dashed stroke. Edges: lines with arrowheads, branch labels at midpoints. All colors via CSS custom properties. Add SVG CSS to components.css.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "3.3",

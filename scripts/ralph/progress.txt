@@ -16,6 +16,8 @@
 - Border radii: `var(--r-sm)` (3px), `var(--r-md)` (4px), `var(--r-lg)` (6px) — never raw px
 - Dev server: `python3 -m http.server 8082` serves at http://localhost:8082/index.html
 - Commit format: `workflows [task number]: [brief description]`
+- Flow graph: `Workflows.renderFlowGraph(templateId, containerId, { compact, showStatus, runId })` renders SVG into any container. Arrowhead marker IDs namespaced by templateId. Node colors set via inline styles (CSS vars work in SVG inline styles). Status overrides use !important to beat inline colors.
+- Flow graph CSS is in components.css under "FLOW GRAPH SVG" section header
 
 ---
 
@@ -53,6 +55,11 @@
 - What was done: Replaced the single-column wfDetail content with a two-column layout: left column (60%) contains .flow-graph-container with bevel border and placeholder text, right column (40%) contains description, meta row, tab bar (overview/schema/triggers/runs/lessons), and scrollable tab content. Updated Workflows.showWorkflowDetail() to populate meta row (status badge, trigger chip, version, creator) and overview tab (status/performance sections + recent activity) from MOCK_WORKFLOW_TEMPLATES data. Added Workflows._renderOverviewTab() helper. Added Workflows._currentTemplateId for state tracking. Scoped switchTab() to info column. Added full CSS with dark mode overrides.
 - Files modified: index.html, js/app.js, css/workflows.css
 - Gotchas / learnings: Tab names changed from overview/config/steps/runs to overview/schema/triggers/runs/lessons to match future tasks 4.1-4.4. The old hardcoded config/steps tabs are removed. Workflows._currentTemplateId stores which template is being viewed. switchTab() is now scoped to .wf-detail-info-col to avoid conflicts with other tab bars.
+
+## Iteration 9 — Task 3.2: Flow graph SVG renderer
+- What was done: Created Workflows.renderFlowGraph(templateId, containerId, options) in app.js. Reads nodes/edges from MOCK_WORKFLOW_TEMPLATES, calculates pixel positions from x/y grid coords, renders SVG with: rounded rect nodes (160x60 full, 100x36 compact), stroke/fill colors by node type per design spec, title text (mono 11px bold), description text (sans 10px, truncated at 35 chars, full mode only), lesson indicator dot, gate node dashed stroke, edges with arrowheads and branch labels at midpoints, run status color overrides (completed/running/waiting/pending/failed/skipped). Added Workflows._nodeColors lookup. Called from showWorkflowDetail() to render into #flowGraphContainer. Added comprehensive SVG CSS to components.css with full dark mode overrides, hover/active/focus-visible states, run status animations, and reduced motion gating.
+- Files modified: js/app.js, css/components.css
+- Gotchas / learnings: Arrowhead marker IDs are namespaced by templateId to avoid SVG ID collisions when multiple graphs are on the page. Edge routing uses straight lines for same-column nodes and a midpoint bend for cross-column connections. Node colors use inline style attributes since SVG fill/stroke can't be set via CSS classes alone (CSS custom properties work in inline styles). Compact mode reduces spacing (130x60 vs 200x100) and hides descriptions. Status classes use !important to override inline node type colors.
 
 ## Iteration 7 — Task 2.3: Library CSS
 - What was done: All CSS from this task was already implemented during tasks 2.1 and 2.2. Verified completeness: .wf-card-trigger-chip, .wf-card-lesson-chip, .wf-card-run-status, .wf-card-run-btn (all in workflows.css with dark mode overrides and hover/active/focus-visible states), .wf-active-runs, .wf-active-run-item, @keyframes wf-pulse (all in layout.css with dark mode overrides and [data-a11y-motion="reduce"] gating). No code changes needed.
