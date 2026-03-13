@@ -95,7 +95,7 @@
       "id": "5.1",
       "title": "Workflow Context Panel structure",
       "description": "Add #workflowPanel to chat area in index.html (same side and pattern as #filePanel). Structure: .workflow-panel-header (template name, run ID, status badge, close button), .workflow-panel-graph (container for compact mini flow graph), .workflow-panel-details (scrollable: input manifest, exceptions, output manifest). Create Chat.openWorkflowPanel(runId) and Chat.closeWorkflowPanel(). Panel opens automatically when selecting thread with workflowRunId, closes when selecting thread without one. Resizable via drag handle. Add CSS to chat.css with dark mode overrides.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "5.2",
