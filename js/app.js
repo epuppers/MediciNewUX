@@ -628,6 +628,43 @@ A11y.syncA11yToggles = function() {
 // ============================================
 // MODE SWITCHING
 // ============================================
+
+/** Toggles the sidebar between collapsed and expanded states.
+ * Persists state to localStorage. Updates toggle button icon.
+ */
+UI.toggleSidebar = function() {
+  var sidebar = document.getElementById('sidebar');
+  var btn = document.getElementById('sidebarToggleBtn');
+  var handle = document.getElementById('sidebarResizeHandle');
+  if (!sidebar) return;
+  var collapsed = sidebar.classList.toggle('collapsed');
+  localStorage.setItem('sidebarCollapsed', collapsed ? 'true' : 'false');
+  if (btn) {
+    btn.querySelector('[data-icon]').setAttribute('data-icon', collapsed ? 'chevronRight' : 'chevronLeft');
+    injectIcons();
+    btn.title = collapsed ? 'Expand sidebar' : 'Collapse sidebar';
+    btn.setAttribute('aria-label', btn.title);
+  }
+  if (handle) handle.style.display = collapsed ? 'none' : '';
+};
+
+// Restore sidebar collapsed state from localStorage
+(function() {
+  if (localStorage.getItem('sidebarCollapsed') === 'true') {
+    var sidebar = document.getElementById('sidebar');
+    var btn = document.getElementById('sidebarToggleBtn');
+    var handle = document.getElementById('sidebarResizeHandle');
+    if (sidebar) sidebar.classList.add('collapsed');
+    if (btn) {
+      btn.querySelector('[data-icon]').setAttribute('data-icon', 'chevronRight');
+      btn.title = 'Expand sidebar';
+      btn.setAttribute('aria-label', 'Expand sidebar');
+    }
+    if (handle) handle.style.display = 'none';
+    injectIcons();
+  }
+})();
+
 UI.currentMode = 'chat';
 
 /** Switches the main view between chat, workflows, and brain modes.
@@ -4726,6 +4763,10 @@ function escapeHtml(text) {
 // EVENT LISTENERS (replaces all inline onclick handlers)
 // ============================================
 (function initEventListeners() {
+
+  // --- Sidebar: Toggle collapse ---
+  var sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+  if (sidebarToggleBtn) sidebarToggleBtn.addEventListener('click', function() { UI.toggleSidebar(); });
 
   // --- Sidebar: Thread list (delegation) ---
   var threadList = document.querySelector('.thread-list');

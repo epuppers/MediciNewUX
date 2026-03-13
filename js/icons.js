@@ -38,6 +38,10 @@ var ICONS = {
 
   chevronDown: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>',
 
+  chevronLeft: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M10 3l-5 5 5 5"/></svg>',
+
+  chevronRight: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M6 3l5 5-5 5"/></svg>',
+
   stop: '<svg class="stop-icon" viewBox="0 0 12 12" fill="currentColor"><rect x="1" y="1" width="10" height="10" rx="0"/></svg>',
 
   search: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="10" y1="10" x2="14" y2="14"/></svg>',
