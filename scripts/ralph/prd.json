@@ -65,7 +65,7 @@
       "id": "3.4",
       "title": "Node detail popover",
       "description": "Create Workflows.openNodePopover(nodeId, templateId, anchorRect) rendering .node-popover (320px wide, absolutely positioned over graph) with: type label badge, title, full description, linked lesson detail, Edit with Cosimo button, Close button. Click-outside-to-dismiss. Add CSS for .node-popover to components.css with dark mode overrides. Wire Edit with Cosimo to open existing Cosimo panel.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "4.1",

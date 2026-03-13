@@ -2340,6 +2340,101 @@ Workflows._selectedNodeId = null;
 Workflows._selectedTemplateId = null;
 
 // ============================================
+// NODE POPOVER
+// ============================================
+
+/**
+ * Opens a detail popover for a flow graph node.
+ * @param {string} nodeId - The node ID
+ * @param {string} templateId - The template this node belongs to
+ * @param {DOMRect} anchorRect - Bounding rect of the clicked node for positioning
+ */
+Workflows.openNodePopover = function(nodeId, templateId, anchorRect) {
+  Workflows.closeNodePopover();
+
+  var tpl = MOCK_WORKFLOW_TEMPLATES[templateId];
+  if (!tpl) return;
+
+  var node = null;
+  for (var i = 0; i < tpl.nodes.length; i++) {
+    if (tpl.nodes[i].id === nodeId) { node = tpl.nodes[i]; break; }
+  }
+  if (!node) return;
+
+  // Build type label
+  var typeLabels = { input: 'Input', action: 'Action', gate: 'Gate', branch: 'Branch', output: 'Output' };
+  var typeLabel = typeLabels[node.type] || node.type;
+
+  // Build linked lesson HTML
+  var lessonHtml = '';
+  if (node.lesson && MOCK_LESSONS[node.lesson]) {
+    var les = MOCK_LESSONS[node.lesson];
+    lessonHtml = '<div class="node-popover-lesson">' +
+      '<div class="node-popover-lesson-label">Linked Lesson</div>' +
+      '<div class="node-popover-lesson-title">' +
+        '<span class="node-popover-lesson-diamond">&#9670;</span> ' +
+        escapeHtml(les.title) +
+      '</div>' +
+      '<div class="node-popover-lesson-preview">' + escapeHtml(les.preview.substring(0, 120)) + '&hellip;</div>' +
+    '</div>';
+  }
+
+  // Build popover HTML
+  var html = '<div class="node-popover" data-node-id="' + nodeId + '" data-template-id="' + templateId + '">' +
+    '<div class="node-popover-header">' +
+      '<span class="node-popover-type node-popover-type--' + node.type + '">' + typeLabel + '</span>' +
+      '<button class="node-popover-close" aria-label="Close popover">&times;</button>' +
+    '</div>' +
+    '<div class="node-popover-title">' + escapeHtml(node.title) + '</div>' +
+    '<div class="node-popover-desc">' + escapeHtml(node.description) + '</div>' +
+    lessonHtml +
+    '<div class="node-popover-actions">' +
+      '<button class="node-popover-cosimo-btn" data-action="popover-edit-cosimo">Edit with Cosimo</button>' +
+    '</div>' +
+  '</div>';
+
+  // Insert into graph column (position relative ancestor)
+  var graphCol = document.querySelector('.wf-detail-graph-col');
+  if (!graphCol) return;
+  graphCol.insertAdjacentHTML('beforeend', html);
+
+  var popover = graphCol.querySelector('.node-popover');
+  if (!popover) return;
+
+  // Position relative to graph column
+  var colRect = graphCol.getBoundingClientRect();
+  var popoverW = 320;
+  var left = (anchorRect.left + anchorRect.width / 2) - colRect.left - popoverW / 2;
+  var top = anchorRect.bottom - colRect.top + 8;
+
+  // Clamp to stay within column bounds
+  if (left < 8) left = 8;
+  if (left + popoverW > colRect.width - 8) left = colRect.width - popoverW - 8;
+
+  popover.style.left = left + 'px';
+  popover.style.top = top + 'px';
+
+  // Animate in
+  requestAnimationFrame(function() {
+    popover.classList.add('show');
+  });
+
+  Workflows._activePopover = popover;
+};
+
+/**
+ * Closes any open node popover.
+ */
+Workflows.closeNodePopover = function() {
+  var existing = document.querySelector('.node-popover');
+  if (existing) existing.remove();
+  Workflows._activePopover = null;
+};
+
+/** Reference to active popover element. */
+Workflows._activePopover = null;
+
+// ============================================
 // TABS
 // ============================================
 /** Switches the active tab in the workflow detail view.
@@ -4088,9 +4183,39 @@ function escapeHtml(text) {
 
   // --- Flow graph node click (delegation) ---
   document.addEventListener('click', function(e) {
+    // Close popover on click-outside
+    if (Workflows._activePopover) {
+      var isInsidePopover = e.target.closest('.node-popover');
+      var isNode = e.target.closest('.flow-node');
+      if (!isInsidePopover && !isNode) {
+        Workflows.closeNodePopover();
+        return;
+      }
+    }
+
+    // Close popover button
+    if (e.target.closest('.node-popover-close')) {
+      Workflows.closeNodePopover();
+      return;
+    }
+
+    // Edit with Cosimo button in popover
+    if (e.target.closest('[data-action="popover-edit-cosimo"]')) {
+      Workflows.closeNodePopover();
+      UI.openCosimoPanel();
+      return;
+    }
+
+    // Node click -> select + open popover (full mode only)
     var node = e.target.closest('.flow-node');
     if (node && node.dataset.nodeId && node.dataset.templateId) {
+      // Only open popover in full (non-compact) graph
+      var svg = node.closest('.flow-graph-svg');
+      if (svg && svg.classList.contains('flow-graph-compact')) return;
+
       Workflows.selectNode(node.dataset.nodeId, node.dataset.templateId);
+      var rect = node.getBoundingClientRect();
+      Workflows.openNodePopover(node.dataset.nodeId, node.dataset.templateId, rect);
     }
   });
 
