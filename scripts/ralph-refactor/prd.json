@@ -17,13 +17,13 @@
       "id": "R-03",
       "title": "Install and configure shadcn/ui + install all needed components",
       "description": "Inside medici-app/: (1) Run `npx shadcn@latest init` — the CLI auto-detects React Router 7. Accept defaults. This creates components.json, components/ui/, and lib/utils.ts with cn() helper. (2) Install all needed shadcn components in batches: `npx shadcn@latest add button card dialog dropdown-menu input label` then `npx shadcn@latest add tabs table badge separator scroll-area` then `npx shadcn@latest add tooltip popover sheet avatar switch slider` then `npx shadcn@latest add command sidebar skeleton alert`. (3) Verify `npm run dev` still starts without errors. (4) Verify that importing a component like Button from '~/components/ui/button' works by temporarily rendering one. VERIFICATION: ls components/ui/ should show 20+ component files. `npm run dev` loads cleanly.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "R-04",
       "title": "Port design tokens to shadcn CSS variables + set up fonts",
       "description": "Inside medici-app/: (1) Copy fonts/ChicagoFLF.ttf to public/fonts/ChicagoFLF.ttf. (2) In app/app.css (after the tailwind import), add @font-face for ChicagoFLF and @theme block defining custom font families: --font-pixel: 'ChicagoFLF', monospace; --font-mono: 'IBM Plex Mono', monospace; --font-sans: 'DM Sans', sans-serif. (3) Add @layer base with :root {} containing ALL shadcn CSS variables mapped from the existing tokens.css. Map every color: --background maps to --off-white (#FAF9F7 → HSL), --foreground to --taupe-5, --primary to --violet-3, --secondary to --taupe-1, --muted-foreground to --taupe-3, --destructive to --red, --border to --taupe-2. Also add Medici custom extensions: --amber, --green, --blue, --berry, --violet-1 through --violet-4, plus all -rgb triplet tokens. (4) Add .dark {} section with ALL dark mode remappings from tokens.css [data-theme='dark']. REFERENCE: Read the existing css/tokens.css carefully — every :root variable and every [data-theme='dark'] override must be ported. (5) Add Google Fonts import for IBM Plex Mono and DM Sans (or use @fontsource packages). VERIFICATION: `npm run dev` loads. Inspect element shows CSS variables on :root. Both light theme vars and .dark vars are present in the stylesheet.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "R-05",
