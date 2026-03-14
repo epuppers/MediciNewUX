@@ -38,6 +38,8 @@ var ICONS = {
 
   chevronDown: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6l4 4 4-4"/></svg>',
 
+  chevronUp: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M4 10l4-4 4 4"/></svg>',
+
   chevronLeft: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M10 3l-5 5 5 5"/></svg>',
 
   chevronRight: '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M6 3l5 5-5 5"/></svg>',

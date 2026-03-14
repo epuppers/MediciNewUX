@@ -2944,15 +2944,19 @@ Workflows.renderFlowGraph = function(templateId, containerId, options) {
     svg += '<path d="' + pathD + '" class="flow-edge" ' +
       'marker-end="url(#arrowhead-' + templateId + ')" />';
 
-    // Branch label at midpoint
+    // Branch label near the horizontal segment of bent edges
     if (edge.label && !compact) {
+      var midY = (y1 + y2) / 2;
+      // Position label on the horizontal segment, offset above the line
       var lx = (x1 + x2) / 2;
-      var ly = (y1 + y2) / 2 - 6;
-      // Offset label slightly away from center for readability
+      var ly = midY - 6;
+      // For bent edges, anchor toward the destination side for clarity
+      var anchor = 'middle';
       if (Math.abs(x1 - x2) > 2) {
-        ly = (y1 + y2) / 2 - 8;
+        // Offset further from the line on horizontal segments
+        ly = midY - 8;
       }
-      svg += '<text x="' + lx + '" y="' + ly + '" class="flow-edge-label" text-anchor="middle">' +
+      svg += '<text x="' + lx + '" y="' + ly + '" class="flow-edge-label" text-anchor="' + anchor + '">' +
         escapeHtml(edge.label) + '</text>';
     }
   });
@@ -2984,25 +2988,24 @@ Workflows.renderFlowGraph = function(templateId, containerId, options) {
       'style="stroke:' + colors.stroke + '; fill:' + colors.fill + ';"' +
       (isGate ? ' stroke-dasharray="6 3"' : '') + ' />';
 
-    // Title text
-    var titleY = compact ? pos.cy + 4 : pos.cy - 6;
-    svg += '<text x="' + pos.cx + '" y="' + titleY + '" class="flow-node-title" text-anchor="middle">' +
-      escapeHtml(n.title) + '</text>';
-
-    // Description text (full mode only)
+    // Title + description via foreignObject for text wrapping
+    var foX = rx + 4;
+    var foY = ry + 2;
+    var foW = nodeW - 8;
+    var foH = nodeH - 4;
+    svg += '<foreignObject x="' + foX + '" y="' + foY + '" width="' + foW + '" height="' + foH + '">';
+    svg += '<div xmlns="http://www.w3.org/1999/xhtml" class="flow-node-fo' + (compact ? ' compact' : '') + '">';
+    svg += '<div class="flow-node-title">' + escapeHtml(n.title) + '</div>';
     if (!compact && n.description) {
-      var descY = pos.cy + 10;
-      // Truncate long descriptions
-      var desc = n.description.length > 35 ? n.description.substring(0, 33) + '…' : n.description;
-      svg += '<text x="' + pos.cx + '" y="' + descY + '" class="flow-node-desc" text-anchor="middle">' +
-        escapeHtml(desc) + '</text>';
+      svg += '<div class="flow-node-desc">' + escapeHtml(n.description) + '</div>';
     }
+    svg += '</div></foreignObject>';
 
     // Lesson indicator chip (full mode only)
     if (!compact && n.lesson) {
-      var chipX = rx + nodeW - 10;
-      var chipY = ry + 4;
-      svg += '<circle cx="' + chipX + '" cy="' + chipY + '" r="4" class="flow-node-lesson-dot" />';
+      var chipX = rx + nodeW - 8;
+      var chipY = ry + 8;
+      svg += '<circle cx="' + chipX + '" cy="' + chipY + '" r="3" class="flow-node-lesson-dot" />';
     }
 
     svg += '</g>';
@@ -5474,7 +5477,15 @@ function escapeHtml(text) {
       return;
     }
 
-    // Priority 3: Workflow context panel
+    // Priority 3: Cosimo panel
+    var cosimoPanel = document.getElementById('cosimoPanel');
+    if (cosimoPanel && cosimoPanel.classList.contains('open')) {
+      e.preventDefault();
+      UI.closeCosimoPanel();
+      return;
+    }
+
+    // Priority 4: Workflow context panel
     var wfPanel = document.getElementById('workflowPanel');
     if (wfPanel && wfPanel.classList.contains('open')) {
       e.preventDefault();

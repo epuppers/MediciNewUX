@@ -25,6 +25,14 @@
   font-size: 9px;
   fill: var(--taupe-3);
   pointer-events: none;
+  paint-order: stroke fill;
+  stroke: var(--off-white);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+
+[data-theme="dark"] .flow-edge-label {
+  stroke: var(--surface-1);
 }
 
 /* Node group */
@@ -54,21 +62,49 @@
   transition: stroke-width 0.15s, filter 0.15s;
 }
 
+/* foreignObject wrapper for node text */
+.flow-node-fo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  padding: 2px 0;
+  box-sizing: border-box;
+}
+
 /* Node title text */
 .flow-node-title {
   font-family: var(--mono);
   font-size: 11px;
   font-weight: 600;
-  fill: var(--taupe-5);
-  pointer-events: none;
+  color: var(--taupe-5);
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
 }
 
 /* Node description text */
 .flow-node-desc {
   font-family: var(--sans);
   font-size: 10px;
-  fill: var(--taupe-3);
-  pointer-events: none;
+  color: var(--taupe-3);
+  line-height: 1.2;
+  margin-top: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
 }
 
 /* Lesson indicator dot */
@@ -127,6 +163,10 @@
   opacity: 0.5;
 }
 
+.flow-node-status-skipped .flow-node-fo {
+  opacity: 0.5;
+}
+
 /* Selected node */
 .flow-node.selected .flow-node-rect {
   stroke-width: 2.5;
@@ -150,8 +190,9 @@
 }
 
 /* Compact mode */
-.flow-graph-compact .flow-node-title {
+.flow-node-fo.compact .flow-node-title {
   font-size: 9px;
+  -webkit-line-clamp: 1;
 }
 
 .flow-graph-compact .flow-edge {
@@ -168,16 +209,12 @@
   fill: var(--taupe-3);
 }
 
-[data-theme="dark"] .flow-edge-label {
-  fill: var(--taupe-3);
-}
-
 [data-theme="dark"] .flow-node-title {
-  fill: var(--taupe-5);
+  color: var(--taupe-5);
 }
 
 [data-theme="dark"] .flow-node-desc {
-  fill: var(--taupe-3);
+  color: var(--taupe-3);
 }
 
 [data-theme="dark"] .flow-node-lesson-dot {
@@ -717,32 +754,30 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 14px;
-  background: var(--taupe-5);
-  border-bottom: 1px solid var(--taupe-4);
+  padding: 8px 12px;
+  min-height: 38px;
+  background: var(--white);
+  border-bottom: 1px solid var(--taupe-2);
+  flex-shrink: 0;
+  gap: 8px;
 }
 
 .cosimo-panel-title {
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-.cosimo-panel-title .logo-mark {
-  width: 22px;
-  height: 22px;
-}
-
-.cosimo-panel-title .logo-mark-inner {
-  width: 8px;
-  height: 8px;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .cosimo-panel-name {
-  font-family: var(--pixel);
-  font-size: 16px;
-  color: var(--taupe-1);
-  letter-spacing: 0.5px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--taupe-5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .panel-close-btn {
@@ -751,14 +786,20 @@
   font-size: 11px;
   color: var(--taupe-3);
   background: transparent;
-  border: 1px solid var(--taupe-4);
+  border: 1px solid var(--taupe-2);
   border-radius: var(--r-md);
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .panel-close-btn:hover {
-  color: var(--taupe-1);
+  color: var(--taupe-5);
   border-color: var(--taupe-3);
+}
+
+.panel-close-btn:focus-visible {
+  outline: 2px solid var(--violet-3);
+  outline-offset: 2px;
 }
 
 .cosimo-panel-chat {
@@ -821,6 +862,7 @@
 .panel-input-row {
   display: flex;
   gap: 6px;
+  align-items: flex-end;
 }
 
 .panel-text-input {
@@ -852,22 +894,7 @@
   border-color: var(--violet-3);
 }
 
-.panel-send-btn {
-  padding: 7px 12px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--white);
-  background: var(--violet-3);
-  border: 1px solid;
-  border-color: var(--violet-2) var(--violet-5) var(--violet-5) var(--violet-2);
-  border-radius: var(--r-md);
-  cursor: pointer;
-}
-
-.panel-send-btn:hover { background: var(--violet-4); }
-.panel-send-btn:active { border-color: var(--violet-5) var(--violet-2) var(--violet-2) var(--violet-5); }
-.panel-send-btn:focus-visible { outline: 2px solid var(--violet-3); outline-offset: 2px; }
-.panel-send-btn:disabled { opacity: 0.5; cursor: default; }
+/* Panel send button uses .cmd-btn .cmd-primary from chat.css */
 
 /* Typing indicator */
 .typing-indicator {
@@ -3105,9 +3132,10 @@
   color: var(--taupe-2);
 }
 
-/* Cosimo panel header — must stay dark */
+/* Cosimo panel — dark mode */
 [data-theme="dark"] .cosimo-panel-header {
-  background: var(--surface-2);
+  background: var(--surface-1);
+  border-bottom-color: var(--surface-3);
 }
 
 [data-theme="dark"] .cosimo-panel-name {
@@ -3115,8 +3143,12 @@
 }
 
 [data-theme="dark"] .cosimo-panel {
-  border-color: var(--taupe-1);
+  border-color: var(--surface-3);
   box-shadow: -4px 0 20px rgba(var(--black-rgb),0.5);
+}
+
+[data-theme="dark"] .panel-close-btn {
+  border-color: var(--surface-3);
 }
 
 /* Step markers — text on colored backgrounds */
