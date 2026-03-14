@@ -74,3 +74,10 @@
 - Gotchas / learnings: React Router 7 creates its own .git — must remove it. Type generation (`npx react-router typegen`) needed before `tsc --noEmit` will pass — the +types directories are generated files. On macOS, `timeout` command doesn't exist in zsh — use `&` + `sleep` + `kill` pattern instead.
 - Verification: `npx tsc --noEmit` passes (exit 0). `npm run dev` starts on port 5173, returns HTTP 200.
 
+## Iteration 2 — Task R-02: Install and configure Tailwind CSS v4
+- What was done: Verified that Tailwind CSS v4 was already fully configured by the R-01 scaffolding (create-react-router includes Tailwind v4 by default). Confirmed: tailwindcss and @tailwindcss/vite in package.json, tailwindcss() plugin in vite.config.ts, `@import 'tailwindcss'` in app.css. Added temporary `text-red-500` test class to home route, verified it rendered via curl (3 matches), then removed the test class.
+- Files created/modified: None (everything was already in place from R-01)
+- Key decisions: No changes needed — create-react-router@latest already includes Tailwind v4 setup.
+- Gotchas / learnings: React Router 7's `create-react-router` scaffold includes Tailwind CSS v4 out of the box — both the packages and the vite.config.ts plugin are pre-configured.
+- Verification: `npx tsc --noEmit` passes (exit 0). `npm run dev` starts on port 5173. `text-red-500` class renders correctly in HTML output. Test class removed after verification.
+

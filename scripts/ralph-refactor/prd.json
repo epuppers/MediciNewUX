@@ -11,7 +11,7 @@
       "id": "R-02",
       "title": "Install and configure Tailwind CSS v4",
       "description": "Inside medici-app/: (1) Run `npm install tailwindcss @tailwindcss/vite`. (2) Add the Tailwind Vite plugin to vite.config.ts: import tailwindcss from '@tailwindcss/vite' and add tailwindcss() to plugins array. (3) In the root CSS file (app/app.css or equivalent), add `@import 'tailwindcss';` at the top. (4) Verify `npm run dev` still works and Tailwind classes are applied (test by adding a `className='text-red-500'` to any element and confirming it renders red). (5) Remove the test class after verification. No tailwind.config.js needed in v4.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "R-03",
