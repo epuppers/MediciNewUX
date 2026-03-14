@@ -1,17 +1,19 @@
 #!/bin/bash
-# Ralph — Autonomous AI agent loop for Polish & Corrections
+# Ralph — Autonomous AI agent loop for React Migration
 # Usage: ./ralph.sh [max_iterations]
 #
 # Based on snarktank/ralph with the prd.json completion check fix (PR #93)
+# Adapted for the MediciNewUX React migration
 
 set -e
 
-MAX_ITERATIONS=20
+MAX_ITERATIONS=60
 if [[ "$1" =~ ^[0-9]+$ ]]; then
   MAX_ITERATIONS="$1"
 fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 PRD_FILE="$SCRIPT_DIR/prd.json"
 PROGRESS_FILE="$SCRIPT_DIR/progress.txt"
 
@@ -36,29 +38,14 @@ fi
 
 # Create progress.txt if it doesn't exist
 if [ ! -f "$PROGRESS_FILE" ]; then
-  cat > "$PROGRESS_FILE" << 'EOF'
-# Progress Log — Polish & Corrections
-
-## Codebase Patterns
-- ALL colors must use `var(--token)` from tokens.css — no raw hex/rgb values
-- For alpha colors use `rgba(var(--violet-3-rgb), 0.1)` pattern
-- Dark mode overrides go in the SAME CSS file using `[data-theme="dark"]` selector
-- Animation gating: wrap animations with `[data-a11y-motion="reduced"]`
-- Event delegation: all handlers go in `initEventListeners()` — no inline handlers
-- Beveled borders (raised): `border-color: light dark dark light`
-- Font stack: ChicagoFLF (pixel headings), IBM Plex Mono (UI/code), DM Sans (body)
-- Border radii: `var(--r-sm)` (3px), `var(--r-md)` (4px), `var(--r-lg)` (6px) — never raw px
-- Dev server: `python3 -m http.server 8082` serves at http://localhost:8082/index.html
-- Commit format: `polish [task ID]: [brief description]`
-- localStorage keys used: theme, purpleIntensity, a11yFontSize, a11yDyslexia, a11yMotion, a11yContrast
-
----
-
-EOF
-  echo "Created progress.txt"
+  echo "Error: progress.txt not found at $PROGRESS_FILE"
+  echo "Create it before running the loop."
+  exit 1
 fi
 
 # ─── Branch setup ────────────────────────────────────────────────────
+
+cd "$PROJECT_DIR"
 
 BRANCH_NAME=$(jq -r '.branchName' "$PRD_FILE")
 CURRENT_BRANCH=$(git branch --show-current 2>/dev/null || echo "")
@@ -86,13 +73,14 @@ DONE=$(jq '[.userStories[] | select(.passes == true)] | length' "$PRD_FILE")
 REMAINING=$((TOTAL - DONE))
 
 echo ""
-echo "╔══════════════════════════════════════════════════╗"
-echo "║         Ralph — Polish & Corrections             ║"
-echo "╠══════════════════════════════════════════════════╣"
+echo "╔══════════════════════════════════════════════════════════════╗"
+echo "║         Ralph — React Migration Loop                        ║"
+echo "╠══════════════════════════════════════════════════════════════╣"
+echo "║  Project:    MediciNewUX → React + shadcn/ui                ║"
 echo "║  Branch:     $BRANCH_NAME"
 echo "║  Stories:    $DONE/$TOTAL complete ($REMAINING remaining)"
 echo "║  Max iter:   $MAX_ITERATIONS"
-echo "╚══════════════════════════════════════════════════╝"
+echo "╚══════════════════════════════════════════════════════════════╝"
 echo ""
 
 if check_prd_completion; then
@@ -106,32 +94,43 @@ for (( i=1; i<=MAX_ITERATIONS; i++ )); do
   DONE=$(jq '[.userStories[] | select(.passes == true)] | length' "$PRD_FILE")
   REMAINING=$((TOTAL - DONE))
   NEXT_STORY=$(jq -r '[.userStories[] | select(.passes == false)][0] | "\(.id): \(.title)"' "$PRD_FILE")
+  NEXT_ID=$(jq -r '[.userStories[] | select(.passes == false)][0] | .id' "$PRD_FILE")
 
   echo ""
-  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
   echo "  Iteration $i of $MAX_ITERATIONS"
   echo "  Progress: $DONE/$TOTAL complete ($REMAINING remaining)"
   echo "  Next story: $NEXT_STORY"
-  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
   echo ""
 
+  # Run Claude with the agent instructions
   OUTPUT=$(claude --dangerously-skip-permissions --print "$(cat $SCRIPT_DIR/CLAUDE.md)" 2>&1 | tee /dev/stderr) || true
 
   echo ""
-  echo "  [Iteration $i complete]"
+  echo "  [Iteration $i complete — Task $NEXT_ID]"
+
+  # Check if this specific story was marked as passed
+  STORY_STATUS=$(jq -r --arg id "$NEXT_ID" '[.userStories[] | select(.id == $id)][0] | .passes' "$PRD_FILE")
+  if [ "$STORY_STATUS" = "false" ]; then
+    echo "  ⚠ Story $NEXT_ID was NOT marked as passed. Agent may have been blocked."
+    echo "  Check progress.txt for details."
+  fi
 
   if check_prd_completion; then
     echo ""
-    echo "╔══════════════════════════════════════════════════╗"
-    echo "║       🎉 Ralph completed all tasks! 🎉           ║"
+    echo "╔══════════════════════════════════════════════════════════════╗"
+    echo "║       React Migration Complete!                             ║"
     echo "║       Finished at iteration $i of $MAX_ITERATIONS"
-    echo "╚══════════════════════════════════════════════════╝"
+    echo "╚══════════════════════════════════════════════════════════════╝"
     echo ""
 
     echo "Stories completed:"
-    jq -r '.userStories[] | "  ✓ \(.id): \(.title)"' "$PRD_FILE"
+    jq -r '.userStories[] | "  \(if .passes then "✓" else "✗" end) \(.id): \(.title)"' "$PRD_FILE"
     echo ""
-    echo "Review commits: git log --oneline"
+    echo "Review commits:  git log --oneline"
+    echo "Type check:      cd medici-app && npx tsc --noEmit"
+    echo "Dev server:      cd medici-app && npm run dev"
     echo "Push when ready: git push origin $BRANCH_NAME"
     exit 0
   fi
@@ -145,12 +144,15 @@ DONE=$(jq '[.userStories[] | select(.passes == true)] | length' "$PRD_FILE")
 REMAINING=$((TOTAL - DONE))
 
 echo ""
-echo "╔══════════════════════════════════════════════════╗"
+echo "╔══════════════════════════════════════════════════════════════╗"
 echo "║  Max iterations reached ($MAX_ITERATIONS)"
 echo "║  Progress: $DONE/$TOTAL complete ($REMAINING remaining)"
-echo "╚══════════════════════════════════════════════════╝"
+echo "╚══════════════════════════════════════════════════════════════╝"
 echo ""
 
+echo "Completed stories:"
+jq -r '.userStories[] | select(.passes == true) | "  ✓ \(.id): \(.title)"' "$PRD_FILE"
+echo ""
 echo "Remaining stories:"
 jq -r '.userStories[] | select(.passes == false) | "  ✗ \(.id): \(.title)"' "$PRD_FILE"
 echo ""

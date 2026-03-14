@@ -1,0 +1,198 @@
+================================================================================
+           RALPH LOOP REVIEW — VERIFICATION CHECKLIST FOR DEPLOYMENT
+================================================================================
+
+BEFORE RUNNING ./ralph.sh, verify all items below:
+
+================================================================================
+SETUP & FILES (5 items)
+================================================================================
+
+[ ] File: /scripts/ralph-refactor/prd.json exists and contains 57 tasks
+    Command: jq '.userStories | length' prd.json
+    Expected: 57
+
+[ ] File: /scripts/ralph-refactor/CLAUDE.md exists and is readable
+    Expected: Instructions for agent, stack details, verification steps
+
+[ ] File: /scripts/ralph-refactor/progress.txt exists and has Codebase Patterns
+    Expected: Initial structure with codebase reference info
+
+[ ] File: /scripts/ralph-refactor/ralph.sh is executable
+    Command: test -x ralph.sh && echo "OK"
+    Expected: OK
+
+[ ] File: Project root contains REFACTORING-PLAN.md (reference document)
+    Command: test -f REFACTORING-PLAN.md && echo "OK"
+    Expected: OK
+
+================================================================================
+PHASE COVERAGE (9 items — one per phase)
+================================================================================
+
+[ ] Phase 1 (Scaffolding): Tasks R-01 through R-05 (5 tasks)
+    Command: jq '.userStories[] | select(.id >= "R-01" and .id <= "R-05") | .id' prd.json | wc -l
+    Expected: 5
+
+[ ] Phase 2 (Data Layer): Tasks R-06 through R-12 (7 tasks)
+    Command: jq '.userStories[] | select(.id >= "R-06" and .id <= "R-12") | .id' prd.json | wc -l
+    Expected: 7
+
+[ ] Phase 3 (State): Task R-13 + checkpoint R-14 (2 tasks)
+    Command: jq '.userStories[] | select(.id == "R-13" or .id == "R-14") | .id' prd.json | wc -l
+    Expected: 2
+
+[ ] Phase 4 (Components): Tasks R-15 through R-43 (29 tasks)
+    Command: jq '.userStories[] | select(.id >= "R-15" and .id <= "R-43") | .id' prd.json | wc -l
+    Expected: 29
+
+[ ] Phase 5 (Routing): Task R-45 (1 task)
+    Command: jq '.userStories[] | select(.id == "R-45") | .id' prd.json
+    Expected: R-45
+
+[ ] Phase 6 (Styling): Tasks R-04, R-47, R-48, R-49 (4 tasks)
+    Command: jq '.userStories[] | select(.id == "R-04" or .id == "R-47" or .id == "R-48" or .id == "R-49") | .id' prd.json | wc -l
+    Expected: 4
+
+[ ] Phase 7 (Events): Tasks R-44, R-46, R-48 (3 tasks — R-48 overlaps with Phase 6)
+    Command: jq '.userStories[] | select(.id == "R-44" or .id == "R-46" or .id == "R-48") | .id' prd.json
+    Expected: R-44, R-46, R-48
+
+[ ] Phase 8 (Loading/Error): Tasks R-50 through R-53 (4 tasks)
+    Command: jq '.userStories[] | select(.id >= "R-50" and .id <= "R-53") | .id' prd.json | wc -l
+    Expected: 4
+
+[ ] Phase 9 (Docs): Tasks R-55 through R-57 (3 tasks)
+    Command: jq '.userStories[] | select(.id >= "R-55" and .id <= "R-57") | .id' prd.json | wc -l
+    Expected: 3
+
+================================================================================
+CRITICAL FIXES APPLIED (1 HIGH priority item)
+================================================================================
+
+[ ] **HIGH PRIORITY FIX**: R-45 moved to position 15 (after R-24, before R-25)
+    Command: jq '.userStories | to_entries[] | select(.value.id == "R-45") | .key' prd.json
+    Expected: 14 (zero-indexed position for 15th element)
+
+    IF NOT FIXED: Edit prd.json manually:
+    1. Find R-45 object (search for "R-45": ")
+    2. Cut entire object
+    3. Find R-24 object (search for "R-24": ")
+    4. Paste R-45 immediately after R-24's closing brace
+    5. Verify JSON is valid: jq . prd.json > /dev/null
+
+================================================================================
+CONSISTENCY CHECKS (4 items)
+================================================================================
+
+[ ] CLAUDE.md and prd.json use same stack:
+    Grep both files:
+      grep "React Router 7" CLAUDE.md && grep "React Router 7" prd.json | head -1
+    Expected: Both mention React Router 7
+
+[ ] CLAUDE.md and prd.json reference same project structure (medici-app/):
+    Grep both:
+      grep "medici-app/" CLAUDE.md && grep "medici-app/" prd.json | head -1
+    Expected: Both mention medici-app/
+
+[ ] prd.json references all required file paths:
+    Count occurrences:
+      grep -o "services/[a-z-]*\.ts\|data/[a-z-]*\.ts" prd.json | sort -u
+    Expected: services/types.ts, data/mock-*.ts files
+
+[ ] ralph.sh can parse prd.json:
+    Command: jq '.branchName' prd.json && jq '.userStories[0].id' prd.json
+    Expected: Outputs branch name (react-migration) and first task ID (R-01)
+
+================================================================================
+VERIFICATION TASK COVERAGE (8 items)
+================================================================================
+
+[ ] Checkpoint after Phase 1+2: R-14 TypeScript compilation checkpoint
+    Command: jq '.userStories[] | select(.id == "R-14") | .title' prd.json
+    Expected: Contains "TypeScript"
+
+[ ] Checkpoint after shell: R-20 App shell checkpoint
+    Command: jq '.userStories[] | select(.id == "R-20") | .title' prd.json
+    Expected: Contains "shell"
+
+[ ] Checkpoint after chat: R-26 Chat view checkpoint
+    Command: jq '.userStories[] | select(.id == "R-26") | .title' prd.json
+    Expected: Contains "chat"
+
+[ ] Checkpoint after workflows: R-34 Workflows view checkpoint
+    Command: jq '.userStories[] | select(.id == "R-34") | .title' prd.json
+    Expected: Contains "Workflows"
+
+[ ] Checkpoint after brain: R-39 Brain view checkpoint
+    Command: jq '.userStories[] | select(.id == "R-39") | .title' prd.json
+    Expected: Contains "Brain"
+
+[ ] Dark mode verification: R-49 exists with comprehensive review
+    Command: jq '.userStories[] | select(.id == "R-49") | .title' prd.json
+    Expected: Contains "dark mode"
+
+[ ] Cross-view verification: R-53 exists
+    Command: jq '.userStories[] | select(.id == "R-53") | .title' prd.json
+    Expected: Contains "navigation" or "integration"
+
+[ ] Final QA: R-57 exists
+    Command: jq '.userStories[] | select(.id == "R-57") | .title' prd.json
+    Expected: Contains "QA" or "verification"
+
+================================================================================
+SCRIPT VALIDATION (5 items)
+================================================================================
+
+[ ] ralph.sh reads prd.json correctly:
+    Command: bash ralph.sh 1 (dry run, max 1 iteration)
+    Expected: Shows "Stories: 0/57 complete" or similar, doesn't fail
+
+[ ] ralph.sh finds branch name:
+    Command: grep "branchName" scripts/ralph-refactor/prd.json
+    Expected: "branchName": "react-migration"
+
+[ ] ralph.sh has jq available:
+    Command: jq --version
+    Expected: jq version output (e.g., "jq-1.6")
+
+[ ] ralph.sh has claude CLI available:
+    Command: which claude
+    Expected: Path to claude command
+
+[ ] CLAUDE.md references correct file paths for agents:
+    Grep:
+      grep "app/components\|app/stores\|app/data" CLAUDE.md | head -1
+    Expected: References the correct directory paths
+
+================================================================================
+OPTIONAL ENHANCEMENTS (not required, but good to have)
+================================================================================
+
+[ ] (OPTIONAL) Verification steps added to component tasks (R-21 through R-43)
+    Check: Do all component task descriptions include a "VERIFICATION:" section?
+    This improves task clarity but isn't blocking.
+
+[ ] (OPTIONAL) R-49 documented as potentially multi-iteration
+    Check: Does CLAUDE.md mention that R-49 might take 2-3 iterations?
+    This sets expectations but isn't required.
+
+[ ] (OPTIONAL) R-28 split into smaller tasks or documented as large
+    Check: Is R-28 noted as a large task?
+    Not required but reduces risk.
+
+================================================================================
+FINAL SIGN-OFF
+================================================================================
+
+[ ] All 57 tasks present and ordered correctly
+[ ] All 9 phases covered
+[ ] R-45 ordering fix applied (critical)
+[ ] No syntax errors in prd.json (jq . > /dev/null)
+[ ] ralph.sh can execute without errors
+[ ] CLAUDE.md and prd.json consistent
+[ ] Checkpoint tasks present at all major phase boundaries
+
+DEPLOYMENT APPROVED IF: All above items checked AND R-45 fix is applied.
+
+================================================================================

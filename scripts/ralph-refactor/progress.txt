@@ -1,0 +1,76 @@
+# Progress Log — React Migration
+
+## Codebase Patterns
+
+### Original Prototype Reference
+- index.html: ~2106 lines, single-file SPA with all views (Chat, Workflows, Brain)
+- js/app.js: ~5256 lines, all behavior in namespace objects (A11y, UI, Chat, Workflows, BrainMemory, BrainLessons, Graph)
+- js/mock-data.js: ~1239 lines, all MOCK_* and CONFIG_* data objects
+- js/icons.js: ~107 lines, SVG icon strings + icon() helper
+- css/tokens.css: ~203 lines, design tokens, color palette, dark mode vars, RGB triplets
+- css/layout.css: ~1754 lines, app frame, sidebar, panels, resize handles, a11y modes
+- css/chat.css: ~2277 lines, chat messages, streaming, artifacts, file panel
+- css/workflows.css: ~850 lines, workflow library, template detail
+- css/components.css: ~3223 lines, flow graph nodes/edges, Brain sections, Cosimo panel
+- css/utilities.css: ~245 lines, helpers, dropdowns, scrollbars
+
+### New Codebase (medici-app/)
+- All new code goes inside medici-app/ directory
+- Original prototype files remain UNTOUCHED as reference
+- Use ~ alias for app-relative imports
+- shadcn components installed to app/components/ui/
+- Zustand stores in app/stores/
+- Service layer in app/services/ wraps mock data behind async functions
+- Mock data in app/data/ — this is the ONLY place MOCK_* constants live
+- Route files in app/routes/ with loaders for data fetching
+
+### Stack Specifics
+- React Router 7 (framework mode): npx create-react-router@latest
+- Tailwind v4: @import 'tailwindcss' in CSS, @tailwindcss/vite plugin, @theme for custom values
+- shadcn/ui: npx shadcn@latest init detects React Router 7 automatically
+- Zustand: create<Type>() for stores, persist() middleware for localStorage
+- Dev server: npm run dev (Vite, default port 5173)
+- Type check: npx tsc --noEmit
+- Build: npm run build
+
+### Design Token Mapping (tokens.css → app.css)
+- :root vars → :root in @layer base
+- [data-theme="dark"] → .dark {} in @layer base
+- --off-white → --background (HSL format for shadcn)
+- --taupe-5 → --foreground
+- --violet-3 → --primary
+- --taupe-1 → --secondary
+- --taupe-3 → --muted-foreground
+- --red → --destructive
+- --taupe-2 → --border
+- Medici-specific tokens preserved as custom CSS properties
+
+### Chat Thread IDs (8 total)
+- fund3: Fund III Rebalance (5 messages, wash sale data table, user file attachments)
+- hilgard: Hilgard Capital Analysis (fund analysis with spreadsheet artifact)
+- q4lp: Q4 LP Reporting (LP distributions)
+- k1: K-1 Processing (K-1 extraction, data table, retry button)
+- erabor: The Erabor Partnership (streaming demo with multi-section response)
+- wf-run-rentroll-047: Rent Roll Extraction Q4 Batch (completed workflow run)
+- tener-batch-12: Tener Valuation Filing Batch 12 (waiting workflow gate run)
+- wf-create-dd: New Workflow: Due Diligence (workflow creation conversation)
+
+### Workflow Template IDs (7 total)
+- rent-roll, k1-extract, lp-waterfall, fee-calc, covenant, tener-valuation, due-diligence
+
+### Workflow Run IDs (2 total)
+- wf-run-rentroll-047 (completed), wf-run-tener-12 (waiting)
+
+### Commit Format
+- refactor [TASK_ID]: [brief description]
+- Example: refactor R-01: Initialize React Router 7 project
+
+---
+
+## Iteration 1 — Task R-01: Initialize React Router 7 project with core dependencies
+- What was done: Created medici-app/ using `npx create-react-router@latest medici-app --yes`. Installed zustand and lucide-react. Removed nested .git directory. Generated React Router types with `npx react-router typegen`.
+- Files created/modified: medici-app/ (entire scaffolded project)
+- Key decisions: Used --yes flag for non-interactive creation. Removed .git from medici-app since it lives inside parent repo.
+- Gotchas / learnings: React Router 7 creates its own .git — must remove it. Type generation (`npx react-router typegen`) needed before `tsc --noEmit` will pass — the +types directories are generated files. On macOS, `timeout` command doesn't exist in zsh — use `&` + `sleep` + `kill` pattern instead.
+- Verification: `npx tsc --noEmit` passes (exit 0). `npm run dev` starts on port 5173, returns HTTP 200.
+
