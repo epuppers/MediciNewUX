@@ -1992,6 +1992,515 @@
   border-color: rgba(var(--amber-rgb), 0.3);
 }
 
+/* ======== Chat Input Area ======== */
+
+.input-area {
+  position: relative;
+  padding: 12px 16px;
+  border-top: 2px solid;
+  border-image: linear-gradient(90deg, var(--violet-2), var(--berry-2), var(--taupe-2)) 1;
+  background: var(--white);
+}
+
+.dark .input-area {
+  background: var(--surface-1);
+}
+
+/* File upload preview strip */
+.input-file-strip {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.input-file-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 4px 8px;
+  background: var(--off-white);
+  border: 1px solid;
+  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+  border-radius: var(--r-sm);
+}
+
+.input-file-chip:hover {
+  background: var(--taupe-1);
+}
+
+.dark .input-file-chip {
+  background: var(--surface-2);
+  border-color: var(--taupe-3) var(--taupe-4) var(--taupe-4) var(--taupe-3);
+}
+
+.dark .input-file-chip:hover {
+  background: var(--surface-3);
+}
+
+.input-file-chip-icon {
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.input-file-chip-name {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--taupe-5);
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dark .input-file-chip-name {
+  color: var(--taupe-1);
+}
+
+.input-file-chip-size {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--taupe-3);
+  flex-shrink: 0;
+}
+
+.input-file-chip-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--r-sm);
+  font-size: 12px;
+  line-height: 1;
+  color: var(--taupe-3);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.input-file-chip-remove:hover {
+  background: rgba(var(--red-rgb), 0.1);
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.input-file-chip-remove:active {
+  background: rgba(var(--red-rgb), 0.2);
+}
+
+.input-file-chip-remove:focus-visible {
+  outline: 2px solid var(--violet-3);
+  outline-offset: 1px;
+}
+
+.dark .input-file-chip-remove:hover {
+  background: rgba(var(--red-rgb), 0.15);
+}
+
+/* Input row */
+.input-row {
+  display: flex;
+  gap: 6px;
+  align-items: flex-end;
+}
+
+/* Text input */
+.text-input {
+  flex: 1;
+  padding: 8px 10px;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--taupe-5);
+  background: var(--off-white);
+  border: 1px solid;
+  border-color: var(--taupe-3) var(--taupe-1) var(--taupe-1) var(--taupe-3);
+  outline: none;
+  overflow-y: auto;
+  min-height: 36px;
+  max-height: 160px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  border-radius: var(--r-md);
+  resize: none;
+}
+
+.text-input:focus {
+  border-color: var(--violet-3);
+  box-shadow: 0 0 0 1px var(--violet-3);
+}
+
+.text-input::placeholder {
+  color: var(--taupe-3);
+}
+
+.dark .text-input {
+  background: var(--surface-0);
+  color: var(--taupe-1);
+  border-color: var(--taupe-3);
+}
+
+.text-input.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  background: var(--taupe-1);
+  cursor: not-allowed;
+}
+
+.dark .text-input.disabled {
+  background: var(--surface-2);
+}
+
+/* Command buttons (attach, send) */
+.cmd-btn {
+  padding: 8px 12px;
+  min-height: 36px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--taupe-4);
+  background: var(--taupe-1);
+  border: 1px solid;
+  border-color: var(--white) var(--taupe-3) var(--taupe-3) var(--white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-md);
+}
+
+.cmd-btn:hover {
+  background: var(--berry-1);
+}
+
+.cmd-btn:active {
+  border-color: var(--taupe-3) var(--white) var(--white) var(--taupe-3);
+}
+
+.cmd-btn:focus-visible {
+  outline: 2px solid var(--violet-3);
+  outline-offset: 2px;
+}
+
+.cmd-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+  pointer-events: none;
+}
+
+.cmd-btn svg {
+  display: block;
+}
+
+.dark .cmd-btn {
+  background: var(--surface-2);
+  color: var(--taupe-3);
+  border-color: var(--taupe-3);
+}
+
+.dark .cmd-btn:hover {
+  background: rgba(var(--violet-3-rgb), 0.12);
+}
+
+/* Primary command button (send) */
+.cmd-primary {
+  background: var(--violet-3);
+  color: var(--white);
+  border-color: var(--violet-2) var(--violet-5) var(--violet-5) var(--violet-2);
+}
+
+.cmd-primary:hover {
+  background: var(--violet-4);
+}
+
+.dark .cmd-primary {
+  color: var(--text-light);
+  background: var(--violet-3);
+  border-color: var(--violet-2) var(--violet-5) var(--violet-5) var(--violet-2);
+}
+
+.dark .cmd-primary:hover {
+  background: var(--violet-4);
+}
+
+/* Input footer */
+.input-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--taupe-3);
+}
+
+/* Model selector */
+.model-selector-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--taupe-4);
+  background: transparent;
+  border: 1px solid var(--taupe-2);
+  cursor: pointer;
+  transition: all 0.1s;
+  white-space: nowrap;
+  border-radius: var(--r-md);
+}
+
+.model-selector-btn:hover {
+  border-color: var(--violet-2) var(--violet-4) var(--violet-4) var(--violet-2);
+  color: var(--violet-3);
+}
+
+.model-selector-btn:focus-visible {
+  outline: 2px solid var(--violet-3);
+  outline-offset: 1px;
+}
+
+.model-selector-btn svg {
+  width: 8px;
+  height: 8px;
+  display: block;
+  transition: transform 0.15s;
+}
+
+.dark .model-selector-btn {
+  border-color: var(--taupe-2);
+  color: var(--taupe-3);
+}
+
+.dark .model-selector-btn:hover {
+  border-color: var(--violet-3);
+  color: var(--violet-3);
+}
+
+/* Model dropdown */
+.model-dropdown {
+  min-width: 260px;
+  background: var(--white);
+  border: 2px solid;
+  border-color: var(--taupe-2) var(--taupe-4) var(--taupe-4) var(--taupe-2);
+  box-shadow: 2px 2px 0 rgba(var(--black-rgb), 0.08);
+  border-radius: var(--r-md);
+  padding: 0;
+  overflow: hidden;
+}
+
+.dark .model-dropdown {
+  background: var(--surface-2);
+  border-color: var(--taupe-2);
+  box-shadow: 2px 2px 0 rgba(var(--black-rgb), 0.3);
+}
+
+.model-option {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--taupe-1);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.1s;
+}
+
+.model-option:last-child {
+  border-bottom: none;
+}
+
+.model-option:hover {
+  background: var(--berry-1);
+}
+
+.model-option.selected {
+  background: rgba(var(--violet-3-rgb), 0.06);
+}
+
+.dark .model-option {
+  border-bottom-color: var(--surface-3);
+}
+
+.dark .model-option:hover {
+  background: rgba(var(--violet-3-rgb), 0.1);
+}
+
+.dark .model-option.selected {
+  background: rgba(var(--violet-3-rgb), 0.08);
+}
+
+.model-option-name {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--taupe-5);
+}
+
+.dark .model-option-name {
+  color: var(--taupe-1);
+}
+
+.model-option-desc {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--taupe-3);
+  line-height: 1.3;
+}
+
+/* Attach menu */
+.attach-dropdown {
+  background: var(--white);
+  border: 2px solid;
+  border-color: var(--taupe-2) var(--taupe-4) var(--taupe-4) var(--taupe-2);
+  box-shadow: 2px 2px 0 rgba(var(--black-rgb), 0.08);
+  border-radius: var(--r-md);
+  padding: 3px;
+}
+
+.dark .attach-dropdown {
+  background: var(--surface-2);
+  border-color: var(--taupe-2);
+  box-shadow: 2px 2px 0 rgba(var(--black-rgb), 0.3);
+}
+
+.attach-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 10px;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  color: var(--taupe-4);
+  font-family: var(--mono);
+  font-size: 11px;
+  transition: all 0.1s;
+  border-radius: var(--r-md);
+}
+
+.attach-option:hover {
+  background: var(--berry-1);
+  border-color: var(--berry-2);
+  color: var(--violet-3);
+}
+
+.dark .attach-option:hover {
+  background: rgba(var(--violet-3-rgb), 0.12);
+  border-color: var(--violet-3);
+}
+
+.attach-option svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+/* Workflow command autocomplete */
+.wf-command-autocomplete {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  max-height: 240px;
+  overflow-y: auto;
+  background: var(--white);
+  border: 2px solid;
+  border-color: var(--taupe-2) var(--taupe-4) var(--taupe-4) var(--taupe-2);
+  box-shadow: 2px 2px 0 rgba(var(--black-rgb), 0.08);
+  border-radius: var(--r-md);
+  z-index: 200;
+  margin-bottom: 4px;
+  padding: 4px 0;
+}
+
+.dark .wf-command-autocomplete {
+  background: var(--surface-2);
+  border-color: var(--surface-4, var(--taupe-3)) var(--surface-1) var(--surface-1) var(--surface-4, var(--taupe-3));
+  box-shadow: 2px 2px 0 rgba(var(--black-rgb), 0.2);
+}
+
+.wf-ac-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 8px 12px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  transition: background 0.1s;
+}
+
+.wf-ac-item:hover,
+.wf-ac-item.active {
+  background: rgba(var(--violet-3-rgb), 0.06);
+}
+
+.wf-ac-item:active {
+  background: rgba(var(--violet-3-rgb), 0.12);
+}
+
+.wf-ac-item:focus-visible {
+  outline: 2px solid var(--violet-3);
+  outline-offset: -2px;
+  border-radius: var(--r-sm);
+}
+
+.dark .wf-ac-item:hover,
+.dark .wf-ac-item.active {
+  background: rgba(var(--violet-3-rgb), 0.1);
+}
+
+.dark .wf-ac-item:active {
+  background: rgba(var(--violet-3-rgb), 0.18);
+}
+
+.wf-ac-cmd {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--violet-3);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wf-ac-cmd .wf-ac-label {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--taupe-4);
+}
+
+.dark .wf-ac-cmd .wf-ac-label {
+  color: var(--taupe-3);
+}
+
+.wf-ac-desc {
+  font-family: var(--sans);
+  font-size: 10px;
+  color: var(--taupe-3);
+  line-height: 1.3;
+}
+
+.dark .wf-ac-desc {
+  color: var(--taupe-2);
+}
+
 /* ======== Chat Artifacts ======== */
 
 .artifact {
