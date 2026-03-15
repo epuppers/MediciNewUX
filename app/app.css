@@ -778,6 +778,194 @@
   .dark .mem-facts-toolbar {
     background: rgba(var(--black-rgb, 0,0,0), 0.1);
   }
+
+  /* ======== Brain Lessons Section ======== */
+
+  /* Lesson Cards (Brain list view) */
+  .brain-lesson-card {
+    background: var(--white);
+    border: 2px solid;
+    border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+    border-left: 3px solid var(--violet-3);
+    border-radius: var(--r-md);
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+
+  .brain-lesson-card:hover {
+    border-color: var(--violet-3) var(--violet-4) var(--violet-4) var(--violet-3);
+    border-left-color: var(--violet-4);
+  }
+
+  .brain-lesson-card:focus-visible {
+    outline: 2px solid var(--violet-3);
+    outline-offset: 2px;
+  }
+
+  .dark .brain-lesson-card {
+    background: var(--surface-1);
+    border-color: var(--taupe-3) var(--taupe-4) var(--taupe-4) var(--taupe-3);
+    border-left-color: var(--violet-3);
+  }
+
+  .dark .brain-lesson-card:hover {
+    border-color: var(--violet-3) var(--violet-4) var(--violet-4) var(--violet-3);
+    border-left-color: var(--violet-4);
+  }
+
+  /* Scope badge (shared between card and detail) */
+  .brain-scope-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: var(--r-md);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .brain-scope-badge.scope-company {
+    background: var(--blue-3);
+    color: var(--white);
+    border: 1px solid var(--blue-3);
+  }
+
+  .brain-scope-badge.scope-user {
+    background: var(--violet-3);
+    color: var(--white);
+    border: 1px solid var(--violet-3);
+  }
+
+  .dark .brain-scope-badge.scope-company {
+    background: var(--blue-3);
+    border-color: var(--blue-3);
+  }
+
+  .dark .brain-scope-badge.scope-user {
+    background: var(--violet-3);
+    border-color: var(--violet-3);
+  }
+
+  /* Lesson Detail */
+  .lesson-back-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: var(--taupe-3);
+    cursor: pointer;
+    padding: 0 8px 0 0;
+    font-family: var(--mono);
+    transition: color 0.1s;
+  }
+
+  .lesson-back-btn:hover {
+    color: var(--taupe-5);
+  }
+
+  .dark .lesson-back-btn:hover {
+    color: var(--taupe-1);
+  }
+
+  .lesson-detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0 16px;
+    border-bottom: 1px solid var(--taupe-1);
+    margin-bottom: 20px;
+  }
+
+  .dark .lesson-detail-meta {
+    border-bottom-color: var(--taupe-3);
+  }
+
+  .lesson-detail-stat {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--taupe-2);
+  }
+
+  /* Content blocks */
+  .lesson-block {
+    border: 2px solid;
+    border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+    border-radius: var(--r-md);
+    padding: 12px;
+    background: var(--white);
+  }
+
+  .dark .lesson-block {
+    border-color: var(--taupe-3) var(--taupe-4) var(--taupe-4) var(--taupe-3);
+    background: var(--surface-1);
+  }
+
+  .lesson-block h3 {
+    font-family: var(--pixel);
+    font-size: 14px;
+    color: var(--taupe-5);
+    letter-spacing: 0.3px;
+    margin-bottom: 8px;
+  }
+
+  .dark .lesson-block h3 {
+    color: var(--taupe-1);
+  }
+
+  .lesson-block p,
+  .lesson-block li {
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--taupe-4);
+  }
+
+  .dark .lesson-block p,
+  .dark .lesson-block li {
+    color: var(--taupe-2);
+  }
+
+  .lesson-block ul,
+  .lesson-block ol {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .lesson-block code {
+    font-family: var(--mono);
+    font-size: 11px;
+    background: var(--taupe-1);
+    border-radius: var(--r-md);
+    padding: 1px 5px;
+    color: var(--violet-3);
+  }
+
+  .dark .lesson-block code {
+    background: var(--taupe-2);
+  }
+
+  .lesson-block strong {
+    font-weight: 700;
+    color: var(--taupe-5);
+  }
+
+  .dark .lesson-block strong {
+    color: var(--taupe-1);
+  }
+
+  /* Edit mode for lesson content */
+  .lesson-detail-body-editing .lesson-block {
+    border: 1px dashed var(--violet-2);
+    padding: 12px;
+    background: rgba(var(--violet-3-rgb), 0.02);
+  }
+
+  .dark .lesson-detail-body-editing .lesson-block {
+    background: rgba(var(--violet-3-rgb), 0.06);
+  }
 }
 
 /* ======== Sidebar Custom Styles ========
