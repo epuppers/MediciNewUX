@@ -12,8 +12,18 @@ interface EntityGraphProps {
   onSelectEntity: (id: string) => void;
 }
 
-/** Color palette per category, matching the original prototype */
-const CATEGORY_COLORS: Record<string, { core: string; mid: string; dim: string }> = {
+/** Category color tokens — uses CSS custom properties via var() */
+const CATEGORY_COLORS: Record<string, { core: string; mid: string; dim: string; cssVar: string }> = {
+  funds:     { core: 'var(--violet-3)', mid: 'var(--violet-4)', dim: 'var(--violet-4)',  cssVar: '--violet-3' },
+  contacts:  { core: 'var(--berry-3)',  mid: 'var(--berry-4)',  dim: 'var(--berry-4)',   cssVar: '--berry-3' },
+  documents: { core: 'var(--blue-3)',   mid: 'var(--blue-2)',   dim: 'var(--blue-2)',    cssVar: '--blue-3' },
+  workflows: { core: 'var(--green)',    mid: 'var(--green-lo)', dim: 'var(--green-lo)',  cssVar: '--green' },
+  systems:   { core: 'var(--amber)',    mid: 'var(--amber)',    dim: 'var(--amber)',     cssVar: '--amber' },
+  entities:  { core: 'var(--taupe-3)',  mid: 'var(--taupe-4)',  dim: 'var(--taupe-4)',   cssVar: '--taupe-3' },
+};
+
+/** RGB triplets for gradient stops — needed for SVG radialGradient which can't use var() directly */
+const CATEGORY_RGB: Record<string, { core: string; mid: string; dim: string }> = {
   funds:     { core: '#9b6bc2', mid: '#74418F', dim: '#4D2B5F' },
   contacts:  { core: '#c278c4', mid: '#8B4F8D', dim: '#5D355E' },
   documents: { core: '#7bb8d9', mid: '#5a9fc2', dim: '#3a7a9e' },
@@ -89,7 +99,6 @@ export function EntityGraph({ graphData, selectedEntityId, onSelectEntity }: Ent
         const key = [pn.node.id, relId].sort().join('::');
         if (seen.has(key)) continue;
         seen.add(key);
-        // Use source category for edge color
         result.push({ from: pn, to: target, category: pn.category });
       }
     }
@@ -102,7 +111,6 @@ export function EntityGraph({ graphData, selectedEntityId, onSelectEntity }: Ent
     setViewBox((prev) => {
       const newW = prev.w * zoomFactor;
       const newH = prev.h * zoomFactor;
-      // Zoom toward center of viewBox
       const dx = (prev.w - newW) / 2;
       const dy = (prev.h - newH) / 2;
       return {
@@ -144,34 +152,65 @@ export function EntityGraph({ graphData, selectedEntityId, onSelectEntity }: Ent
     onSelectEntity(nodeId);
   }, [onSelectEntity]);
 
+  const handleZoom = useCallback((direction: 'in' | 'out') => {
+    const factor = direction === 'in' ? 0.8 : 1.25;
+    setViewBox((prev) => {
+      const newW = prev.w * factor;
+      const newH = prev.h * factor;
+      const dx = (prev.w - newW) / 2;
+      const dy = (prev.h - newH) / 2;
+      return {
+        x: prev.x + dx,
+        y: prev.y + dy,
+        w: Math.max(200, Math.min(3000, newW)),
+        h: Math.max(160, Math.min(2400, newH)),
+      };
+    });
+  }, []);
+
   return (
-    <div className="relative h-full w-full overflow-hidden rounded-lg border border-border bg-background">
+    <div className="graph-container relative h-full w-full overflow-hidden">
       {/* Category legend */}
-      <div className="absolute left-3 top-3 z-10 flex flex-wrap gap-2">
+      <div className="graph-legend">
         {graphData.categories.map((cat) => {
-          const colors = CATEGORY_COLORS[cat.id];
+          const rgb = CATEGORY_RGB[cat.id];
           return (
-            <div
-              key={cat.id}
-              className="flex items-center gap-1.5 rounded-md bg-background/80 px-2 py-1 text-xs backdrop-blur-sm"
-            >
+            <div key={cat.id} className="graph-legend-item">
               <span
-                className="inline-block size-2.5 rounded-full"
-                style={{ backgroundColor: colors?.core ?? '#888' }}
+                className="graph-legend-dot"
+                style={{ backgroundColor: rgb?.core ?? '#888' }}
               />
-              <span className="font-medium text-muted-foreground">
-                {cat.label}
-              </span>
-              <span className="text-muted-foreground/60">{cat.count}</span>
+              <span className="graph-legend-label">{cat.label}</span>
+              <span className="graph-legend-count">{cat.count}</span>
             </div>
           );
         })}
       </div>
 
+      {/* Zoom controls */}
+      <div className="graph-zoom-controls">
+        <button
+          type="button"
+          className="graph-zoom-btn"
+          onClick={() => handleZoom('in')}
+          aria-label="Zoom in"
+        >
+          +
+        </button>
+        <button
+          type="button"
+          className="graph-zoom-btn"
+          onClick={() => handleZoom('out')}
+          aria-label="Zoom out"
+        >
+          −
+        </button>
+      </div>
+
       <svg
         ref={svgRef}
         viewBox={`${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`}
-        className={cn('h-full w-full', isPanning ? 'cursor-grabbing' : 'cursor-grab')}
+        className={cn('graph-svg', isPanning ? 'cursor-grabbing' : 'cursor-grab')}
         onWheel={handleWheel}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
@@ -179,7 +218,7 @@ export function EntityGraph({ graphData, selectedEntityId, onSelectEntity }: Ent
         onMouseLeave={handleMouseUp}
       >
         <defs>
-          {Object.entries(CATEGORY_COLORS).map(([id, colors]) => (
+          {Object.entries(CATEGORY_RGB).map(([id, colors]) => (
             <radialGradient
               key={id}
               id={`grad-${id}`}
@@ -200,7 +239,7 @@ export function EntityGraph({ graphData, selectedEntityId, onSelectEntity }: Ent
         {/* Edges */}
         <g className="opacity-20 dark:opacity-15">
           {edges.map((edge, i) => {
-            const colors = CATEGORY_COLORS[edge.category];
+            const rgb = CATEGORY_RGB[edge.category];
             return (
               <line
                 key={i}
@@ -208,7 +247,7 @@ export function EntityGraph({ graphData, selectedEntityId, onSelectEntity }: Ent
                 y1={edge.from.y}
                 x2={edge.to.x}
                 y2={edge.to.y}
-                stroke={colors?.core ?? '#888'}
+                stroke={rgb?.core ?? '#888'}
                 strokeWidth={0.8}
               />
             );
@@ -218,7 +257,7 @@ export function EntityGraph({ graphData, selectedEntityId, onSelectEntity }: Ent
         {/* Nodes */}
         {positionedNodes.map((pn) => {
           const isSelected = selectedEntityId === pn.node.id;
-          const colors = CATEGORY_COLORS[pn.category];
+          const rgb = CATEGORY_RGB[pn.category];
           const selectedNode = selectedEntityId ? nodeMap.get(selectedEntityId) : null;
           const isRelatedToSelected = selectedNode?.node.related.includes(pn.node.id);
           const dimmed = selectedEntityId && !isSelected && !isRelatedToSelected;
@@ -236,7 +275,7 @@ export function EntityGraph({ graphData, selectedEntityId, onSelectEntity }: Ent
                 <circle
                   r={pn.radius + 6}
                   fill="none"
-                  stroke={colors?.core ?? '#888'}
+                  stroke={rgb?.core ?? '#888'}
                   strokeWidth={2}
                   opacity={0.5}
                 />
@@ -253,8 +292,8 @@ export function EntityGraph({ graphData, selectedEntityId, onSelectEntity }: Ent
               <text
                 y={pn.radius + 14}
                 textAnchor="middle"
-                className="fill-foreground text-[9px] font-medium"
-                style={{ fontFamily: 'var(--font-mono, IBM Plex Mono, monospace)' }}
+                className="text-[9px] font-semibold"
+                style={{ fontFamily: 'var(--mono)', fill: 'rgba(255,255,255,0.85)' }}
               >
                 {pn.node.label}
               </text>
@@ -262,8 +301,8 @@ export function EntityGraph({ graphData, selectedEntityId, onSelectEntity }: Ent
               <text
                 y={pn.radius + 24}
                 textAnchor="middle"
-                className="fill-muted-foreground text-[7px]"
-                style={{ fontFamily: 'var(--font-sans, DM Sans, sans-serif)' }}
+                className="text-[7px]"
+                style={{ fontFamily: 'var(--sans)', fill: 'rgba(255,255,255,0.5)' }}
               >
                 {pn.node.sub}
               </text>

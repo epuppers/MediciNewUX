@@ -64,27 +64,23 @@ export default function BrainGraphRoute({ loaderData }: Route.ComponentProps) {
   };
 
   return (
-    <div className="flex h-full">
-      {/* Graph area */}
-      <div className="flex-1 overflow-hidden">
-        <EntityGraph
-          graphData={graphData}
-          selectedEntityId={selectedEntityId}
-          onSelectEntity={handleSelectEntity}
-        />
-      </div>
+    <div className="relative h-full overflow-hidden">
+      {/* Graph area (full) */}
+      <EntityGraph
+        graphData={graphData}
+        selectedEntityId={selectedEntityId}
+        onSelectEntity={handleSelectEntity}
+      />
 
-      {/* Detail panel */}
+      {/* Detail panel — slides up from bottom inside the graph container */}
       {selectedEntity && (
-        <div className="w-80 shrink-0 overflow-y-auto">
-          <EntityDetail
-            entity={selectedEntity.node}
-            entityCategory={selectedEntity.category}
-            graphData={graphData}
-            onNavigate={handleNavigateToRelated}
-            onClose={handleCloseDetail}
-          />
-        </div>
+        <EntityDetail
+          entity={selectedEntity.node}
+          entityCategory={selectedEntity.category}
+          graphData={graphData}
+          onNavigate={handleNavigateToRelated}
+          onClose={handleCloseDetail}
+        />
       )}
     </div>
   );
@@ -116,19 +112,10 @@ export function ErrorBoundary() {
 /** Loading skeleton — graph area + detail panel */
 export function HydrateFallback() {
   return (
-    <div className="flex h-full">
+    <div className="relative h-full overflow-hidden">
       {/* Graph area skeleton */}
-      <div className="flex-1 overflow-hidden p-6">
-        <Skeleton className="h-full w-full rounded-lg" />
-      </div>
-      {/* Detail panel skeleton */}
-      <div className="w-80 shrink-0 space-y-4 border-l border-border p-4">
-        <Skeleton className="h-6 w-32" />
-        <Skeleton className="size-16 rounded-full" />
-        <Skeleton className="h-4 w-full" />
-        <Skeleton className="h-4 w-3/4" />
-        <Skeleton className="h-24 w-full rounded-lg" />
-        <Skeleton className="h-24 w-full rounded-lg" />
+      <div className="h-full w-full p-6">
+        <Skeleton className="h-full w-full rounded-[var(--r-lg)]" />
       </div>
     </div>
   );

@@ -1,5 +1,4 @@
 import { X } from 'lucide-react';
-import { Badge } from '~/components/ui/badge';
 import type { GraphNode, GraphData } from '~/services/types';
 import { cn } from '~/lib/utils';
 
@@ -15,14 +14,14 @@ interface EntityDetailProps {
   onClose: () => void;
 }
 
-/** Color palette per category (matches entity-graph.tsx) */
-const CATEGORY_COLORS: Record<string, string> = {
-  funds: '#9b6bc2',
-  contacts: '#c278c4',
-  documents: '#7bb8d9',
-  workflows: '#6abf6e',
-  systems: '#d4a646',
-  entities: '#9e9ca3',
+/** Category color tokens for the icon border — uses CSS custom properties */
+const CATEGORY_CSS_COLORS: Record<string, string> = {
+  funds: 'var(--violet-3)',
+  contacts: 'var(--berry-3)',
+  documents: 'var(--blue-3)',
+  workflows: 'var(--green)',
+  systems: 'var(--amber)',
+  entities: 'var(--taupe-3)',
 };
 
 /** Category labels for badge display */
@@ -43,7 +42,7 @@ export function EntityDetail({
   onNavigate,
   onClose,
 }: EntityDetailProps) {
-  const color = CATEGORY_COLORS[entityCategory] ?? '#888';
+  const color = CATEGORY_CSS_COLORS[entityCategory] ?? 'var(--taupe-3)';
 
   // Resolve related entities to full node data
   const relatedNodes = entity.related
@@ -57,74 +56,69 @@ export function EntityDetail({
     .filter(Boolean) as { node: GraphNode; category: string }[];
 
   return (
-    <div className="flex h-full flex-col border-l border-border bg-background">
+    <div className="graph-detail-pane open">
+      {/* Resize handle */}
+      <div className="graph-detail-resize" />
+
       {/* Header */}
-      <div className="flex items-start gap-3 border-b border-border p-4">
-        <div
-          className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-lg text-white"
-          style={{ backgroundColor: color }}
-        >
-          <span className="text-sm">&#9670;</span>
-        </div>
-        <div className="min-w-0 flex-1">
-          <h3 className="truncate text-sm font-semibold text-foreground">
-            {entity.label}
-          </h3>
-          <p className="text-xs text-muted-foreground">{entity.sub}</p>
-          <Badge
-            variant="outline"
-            className="mt-1 text-[10px]"
+      <div className="graph-detail-header">
+        <div className="graph-detail-title-row">
+          <div
+            className="graph-detail-icon"
             style={{ borderColor: color, color }}
           >
-            {CATEGORY_LABELS[entityCategory] ?? entityCategory}
-          </Badge>
+            <span>&#9670;</span>
+          </div>
+          <div>
+            <div className="graph-detail-name">{entity.label}</div>
+            <div className="graph-detail-type label-mono">
+              {CATEGORY_LABELS[entityCategory] ?? entityCategory}
+            </div>
+          </div>
         </div>
-        <button
-          type="button"
-          onClick={onClose}
-          className="rounded-md p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        >
-          <X className="size-4" />
-        </button>
+        <div className="graph-detail-actions">
+          <button
+            type="button"
+            onClick={onClose}
+            className="header-btn bevel"
+            title="Close"
+            aria-label="Close entity detail"
+          >
+            <X className="size-4" />
+          </button>
+        </div>
       </div>
 
-      {/* Facts */}
-      <div className="flex-1 overflow-y-auto p-4">
-        <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          Facts
-        </h4>
-        <div className="flex flex-col gap-1.5">
+      {/* Body */}
+      <div className="graph-detail-body">
+        {/* Facts */}
+        <div className="graph-detail-facts">
           {entity.facts.map((fact, i) => (
-            <div key={i} className="flex gap-2 text-sm leading-relaxed text-foreground">
-              <span className="mt-0.5 shrink-0 text-muted-foreground">&bull;</span>
-              <span>{fact}</span>
+            <div key={i} className="graph-fact-row">
+              <span className="graph-fact-bullet">&bull;</span>
+              <span className="graph-fact-text">{fact}</span>
             </div>
           ))}
         </div>
 
         {/* Related Entities */}
         {relatedNodes.length > 0 && (
-          <div className="mt-5">
-            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <div>
+            <div className="graph-detail-related-label">
               Related ({relatedNodes.length})
-            </h4>
-            <div className="flex flex-wrap gap-1.5">
+            </div>
+            <div className="graph-detail-related">
               {relatedNodes.map(({ node, category }) => {
-                const relColor = CATEGORY_COLORS[category] ?? '#888';
+                const relColor = CATEGORY_CSS_COLORS[category] ?? 'var(--taupe-3)';
                 return (
                   <button
                     key={node.id}
                     type="button"
                     onClick={() => onNavigate(node.id)}
-                    className={cn(
-                      'inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium',
-                      'transition-colors hover:bg-muted',
-                      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-                      'border border-border bg-background text-foreground'
-                    )}
+                    className="graph-related-pill"
                   >
                     <span
-                      className="inline-block size-2 rounded-full"
+                      className="inline-block size-2 rounded-full mr-1.5"
                       style={{ backgroundColor: relColor }}
                     />
                     {node.label}
