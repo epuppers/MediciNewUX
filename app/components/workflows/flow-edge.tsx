@@ -48,16 +48,13 @@ export function FlowEdgeComponent({ edge, nodes, config }: FlowEdgeProps) {
           y1={y1}
           x2={x2}
           y2={y2}
-          className="stroke-muted-foreground/50"
-          strokeWidth={config.edgeStroke}
+          className="flow-edge"
           markerEnd="url(#arrowhead)"
         />
       ) : (
         <path
           d={`M ${x1} ${y1} L ${x1} ${my} L ${x2} ${my} L ${x2} ${y2}`}
-          fill="none"
-          className="stroke-muted-foreground/50"
-          strokeWidth={config.edgeStroke}
+          className="flow-edge"
           markerEnd="url(#arrowhead)"
         />
       )}
@@ -71,16 +68,14 @@ export function FlowEdgeComponent({ edge, nodes, config }: FlowEdgeProps) {
             width={edge.label.length * 6.4}
             height={14}
             rx={3}
-            className="fill-background"
+            fill="var(--off-white)"
           />
           <text
             x={mx}
             y={my}
             textAnchor="middle"
             dominantBaseline="central"
-            fontFamily="'IBM Plex Mono', monospace"
-            fontSize={9}
-            className="fill-muted-foreground"
+            className="flow-edge-label"
           >
             {edge.label}
           </text>

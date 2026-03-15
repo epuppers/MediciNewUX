@@ -5,6 +5,7 @@
 import { useMemo } from 'react';
 import type { FlowNode, FlowEdge, NodeStatus } from '~/services/types';
 import { CONFIG } from '~/data/config';
+import { cn } from '~/lib/utils';
 import { FlowNodeComponent } from './flow-node';
 import type { FlowGraphConfig } from './flow-node';
 import { FlowEdgeComponent } from './flow-edge';
@@ -59,7 +60,7 @@ export function FlowGraph({
   return (
     <svg
       viewBox={viewBox}
-      className="w-full h-full"
+      className={cn('flow-graph-svg', compact && 'flow-graph-compact')}
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label="Workflow flow graph"
@@ -77,7 +78,7 @@ export function FlowGraph({
         >
           <path
             d="M 0 0 L 8 3 L 0 6 Z"
-            className="fill-muted-foreground/50"
+            className="flow-edge-arrow"
           />
         </marker>
       </defs>
