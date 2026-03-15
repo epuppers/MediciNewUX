@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronUp, FileText, Workflow } from 'lucide-react';
+import { ChevronDown, ChevronUp, Workflow } from 'lucide-react';
 import type { Artifact as ArtifactType, ArtifactTableData, ArtifactMetadataData, ArtifactFlowGraphData } from '~/services/types';
 import { DataTable } from '~/components/chat/data-table';
 import { cn } from '~/lib/utils';
@@ -23,25 +23,18 @@ export function Artifact({ artifact, className }: ArtifactProps) {
   }
 
   return (
-    <div
-      className={cn(
-        'my-2.5 overflow-hidden rounded-[var(--r-md)] border-2',
-        'border-[var(--taupe-2)] border-r-[var(--taupe-4)] border-b-[var(--taupe-4)]',
-        'bg-[var(--white)] dark:bg-[var(--surface-1)] dark:border-[var(--taupe-2)]',
-        className
-      )}
-    >
+    <div className={cn('artifact', className)}>
       {/* Art bar — title bar with stripes */}
-      <div className="flex items-center gap-2 px-2.5 py-1.5 bg-[var(--taupe-5)] dark:bg-[var(--surface-2)]">
-        <div className="h-2.5 w-2.5 rounded-full bg-[var(--taupe-3)]" />
-        <ArtStripe />
-        <span className="shrink-0 font-[var(--font-mono)] text-[11px] font-semibold text-[var(--taupe-1)] dark:text-[var(--taupe-4)] whitespace-nowrap">
+      <div className="art-bar">
+        <div className="art-close" />
+        <div className="art-stripe" />
+        <span className="art-title">
           {artifact.title}
         </span>
-        <ArtStripe />
+        <div className="art-stripe" />
         <button
           onClick={handleToggle}
-          className="shrink-0 flex h-5 w-5 items-center justify-center rounded-[var(--r-sm)] text-[var(--taupe-3)] hover:text-[var(--taupe-5)] dark:hover:text-[var(--taupe-1)] transition-colors"
+          className="art-toggle"
           aria-label={collapsed ? 'Expand artifact' : 'Collapse artifact'}
         >
           {collapsed ? (
@@ -54,30 +47,11 @@ export function Artifact({ artifact, className }: ArtifactProps) {
 
       {/* Art body */}
       {!collapsed && (
-        <div className="p-3 overflow-x-auto">
+        <div className="art-body">
           <ArtifactBody artifact={artifact} />
         </div>
       )}
     </div>
-  );
-}
-
-/** Repeating diagonal stripe decoration for the artifact title bar */
-function ArtStripe() {
-  return (
-    <div
-      className="h-[6px] min-w-0 flex-1"
-      style={{
-        background: `repeating-linear-gradient(
-          -45deg,
-          var(--taupe-3),
-          var(--taupe-3) 1px,
-          transparent 1px,
-          transparent 4px
-        )`,
-        opacity: 0.3,
-      }}
-    />
   );
 }
 
@@ -92,13 +66,11 @@ function ArtifactBody({ artifact }: { artifact: ArtifactType }) {
     case 'metadata': {
       const data = artifact.data as ArtifactMetadataData;
       return (
-        <div className="space-y-1.5">
+        <div className="space-y-0">
           {data.entries.map((entry, i) => (
-            <div key={i} className="flex gap-3 text-xs">
-              <span className="shrink-0 font-[var(--font-mono)] font-semibold text-muted-foreground w-24">
-                {entry.label}
-              </span>
-              <span className="text-foreground">{entry.value}</span>
+            <div key={i} className="kv-row">
+              <span className="kv-key">{entry.label}</span>
+              <span className="kv-val">{entry.value}</span>
             </div>
           ))}
         </div>
@@ -108,10 +80,10 @@ function ArtifactBody({ artifact }: { artifact: ArtifactType }) {
     case 'flow-graph': {
       const data = artifact.data as ArtifactFlowGraphData;
       return (
-        <div className="flex items-center justify-center rounded-[var(--r-md)] border border-dashed border-border bg-muted/20 p-8">
-          <div className="flex flex-col items-center gap-2 text-muted-foreground">
+        <div className="flex items-center justify-center rounded-[var(--r-md)] border border-dashed border-[var(--taupe-2)] bg-[rgba(var(--violet-3-rgb),0.04)] dark:bg-[rgba(var(--violet-3-rgb),0.08)] p-8">
+          <div className="flex flex-col items-center gap-2 text-[var(--taupe-3)]">
             <Workflow className="h-8 w-8 opacity-50" />
-            <span className="font-[var(--font-mono)] text-xs">
+            <span className="font-[family-name:var(--mono)] text-xs">
               Flow Graph: {data.templateId}
             </span>
           </div>
@@ -123,7 +95,7 @@ function ArtifactBody({ artifact }: { artifact: ArtifactType }) {
       const content = artifact.data as string;
       return (
         <div
-          className="text-sm leading-relaxed text-foreground [&_p]:mb-2 [&_p:last-child]:mb-0"
+          className="text-[13px] leading-relaxed font-[family-name:var(--sans)] text-[var(--taupe-5)] dark:text-[var(--taupe-1)] [&_p]:mb-2 [&_p:last-child]:mb-0"
           dangerouslySetInnerHTML={{ __html: content }}
         />
       );

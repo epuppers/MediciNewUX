@@ -1819,6 +1819,151 @@
   border-color: rgba(var(--amber-rgb), 0.3);
 }
 
+/* ======== Chat Artifacts ======== */
+
+.artifact {
+  margin: 10px 0 10px 30px;
+  border: 2px solid;
+  border-color: var(--taupe-2) var(--taupe-4) var(--taupe-4) var(--taupe-2);
+  background: var(--white);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+
+.dark .artifact {
+  border-color: var(--taupe-2);
+  background: var(--surface-1);
+}
+
+.art-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: var(--taupe-5);
+  border-bottom: 1px solid var(--taupe-4);
+  border-radius: var(--r-sm) var(--r-sm) 0 0;
+}
+
+.dark .art-bar {
+  background: var(--surface-2);
+}
+
+.art-close {
+  width: 10px;
+  height: 10px;
+  background: var(--red);
+  border: 1px solid;
+  border-color: var(--red-hi, var(--red)) var(--red-lo, var(--red)) var(--red-lo, var(--red)) var(--red-hi, var(--red));
+  flex-shrink: 0;
+  border-radius: var(--r-md);
+  cursor: pointer;
+}
+
+.art-stripe {
+  flex: 1;
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--taupe-4) 0px,
+    var(--taupe-4) 3px,
+    transparent 3px,
+    transparent 6px
+  );
+}
+
+.dark .art-stripe {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--taupe-3) 0px,
+    var(--taupe-3) 3px,
+    transparent 3px,
+    transparent 6px
+  );
+}
+
+.art-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--taupe-1);
+  white-space: nowrap;
+}
+
+.dark .art-title {
+  color: var(--taupe-4);
+}
+
+.art-live {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--green);
+  border: 1px solid var(--green);
+  padding: 1px 5px;
+  background: rgba(var(--green-rgb), 0.1);
+  flex-shrink: 0;
+  border-radius: var(--r-md);
+}
+
+.art-body {
+  padding: 12px;
+  overflow-x: auto;
+}
+
+.art-toggle {
+  flex-shrink: 0;
+  display: flex;
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-sm);
+  color: var(--taupe-3);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 0.1s;
+}
+
+.art-toggle:hover {
+  color: var(--taupe-1);
+}
+
+/* Data Table */
+.data-tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.data-tbl th {
+  text-align: left;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--taupe-3);
+  border-bottom: 2px solid var(--taupe-2);
+}
+
+.data-tbl td {
+  padding: 6px 10px;
+  color: var(--taupe-5);
+  border-bottom: 1px solid var(--taupe-1);
+}
+
+.dark .data-tbl th {
+  color: var(--taupe-2);
+  border-bottom-color: var(--taupe-3);
+}
+
+.dark .data-tbl td {
+  color: var(--taupe-1);
+  border-bottom-color: var(--surface-3);
+}
+
 /* ======== Blink Cursor (alias for stream-cursor-blink) ======== */
 @keyframes blink-cursor {
   0%, 100% { opacity: 1; }
