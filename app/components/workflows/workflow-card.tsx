@@ -11,10 +11,6 @@ import {
   Link,
   Hand,
 } from 'lucide-react';
-import { Card, CardHeader, CardContent, CardFooter } from '~/components/ui/card';
-import { Badge } from '~/components/ui/badge';
-import { Button } from '~/components/ui/button';
-import { cn } from '~/lib/utils';
 import type { WorkflowTemplate, TriggerType } from '~/services/types';
 
 /** Map of trigger type to icon component and display label */
@@ -27,12 +23,12 @@ const TRIGGER_META: Record<TriggerType, { icon: React.ReactNode; label: string }
   chained: { icon: <Link className="size-3" />, label: 'Chained' },
 };
 
-/** Map of template status to Badge variant */
-const STATUS_VARIANT: Record<WorkflowTemplate['status'], 'default' | 'secondary' | 'outline'> = {
-  active: 'default',
-  draft: 'secondary',
-  paused: 'outline',
-  archived: 'secondary',
+/** Map of template status to CSS class */
+const STATUS_CLASS: Record<WorkflowTemplate['status'], string> = {
+  active: 'status-active',
+  draft: 'status-draft',
+  paused: 'status-paused',
+  archived: 'status-archived',
 };
 
 interface WorkflowCardProps {
@@ -49,7 +45,6 @@ interface WorkflowCardProps {
 /** A library card for a workflow template, showing status, trigger, description, and run stats. */
 export function WorkflowCard({ template, lessonNames, onSelect, onRun }: WorkflowCardProps) {
   const trigger = TRIGGER_META[template.triggerType];
-  const statusVariant = STATUS_VARIANT[template.status];
 
   const handleCardClick = () => {
     onSelect(template.id);
@@ -67,83 +62,60 @@ export function WorkflowCard({ template, lessonNames, onSelect, onRun }: Workflo
     }
   };
 
+  // Determine last run status for the dot indicator
+  const lastRun = template.recentRuns[0];
+  let runDotClass = 'muted';
+  let runLabel = 'No runs';
+  if (lastRun) {
+    runDotClass = lastRun.status === 'success' ? 'green' : lastRun.status === 'failed' ? 'red' : 'muted';
+    runLabel = `${template.runs.total} runs · ${lastRun.time}`;
+  }
+
   return (
-    <Card
-      className="group/wf-card cursor-pointer transition-shadow hover:ring-2 hover:ring-primary/30"
-      size="sm"
+    <div
+      className="wf-card"
       onClick={handleCardClick}
       onKeyDown={handleCardKeyDown}
       role="button"
       tabIndex={0}
     >
-      <CardHeader>
-        {/* Title + Status badge row */}
-        <div className="flex items-start justify-between gap-2">
-          <div className="flex flex-col gap-1.5 min-w-0">
-            <span className="font-mono text-sm font-semibold leading-tight truncate">
-              {template.title}
-            </span>
-            {/* Trigger type chip */}
-            <div className="flex items-center gap-1 text-muted-foreground">
-              <span
-                className={cn(
-                  'inline-flex items-center gap-1 rounded-full px-2 py-0.5',
-                  'bg-muted text-[10px] font-medium text-muted-foreground'
-                )}
-              >
-                {trigger.icon}
-                {trigger.label}
-              </span>
-            </div>
-          </div>
-          <Badge variant={statusVariant} className="shrink-0 capitalize text-[10px]">
+      {/* Header: title + status + trigger + run btn */}
+      <div className="wf-card-header">
+        <div className="wf-card-header-left">
+          <span className="wf-card-title">{template.title}</span>
+          <span className={`wf-card-status label-mono ${STATUS_CLASS[template.status]}`}>
             {template.status}
-          </Badge>
+          </span>
+          <span className="wf-card-trigger-chip">
+            {trigger.icon} {trigger.label}
+          </span>
         </div>
-      </CardHeader>
-
-      <CardContent>
-        <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
-          {template.description}
-        </p>
-      </CardContent>
-
-      <CardFooter className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2 min-w-0 flex-1">
-          {/* Linked lesson chip */}
-          {template.linkedLessons.length > 0 && (
-            <span
-              className={cn(
-                'inline-flex items-center gap-1 rounded-full px-2 py-0.5 truncate max-w-[140px]',
-                'bg-primary/10 text-primary text-[10px] font-medium'
-              )}
-            >
-              <span className="shrink-0">◆</span>
-              <span className="truncate">
-                {lessonNames?.[template.linkedLessons[0]] ?? template.linkedLessons[0]}
-              </span>
-            </span>
-          )}
-
-          {/* Run stats */}
-          {template.runs.total > 0 && (
-            <span className="text-[10px] text-muted-foreground whitespace-nowrap">
-              {template.runs.total} runs · {template.runs.successRate}%
-            </span>
-          )}
-        </div>
-
-        {/* Run button — visible on hover */}
-        <Button
-          variant="outline"
-          size="xs"
-          className="opacity-0 group-hover/wf-card:opacity-100 transition-opacity shrink-0"
+        <button
+          className="wf-card-run-btn"
           onClick={handleRunClick}
+          aria-label={`Run ${template.title}`}
         >
-          <Play className="size-3" />
-          Run
-        </Button>
-      </CardFooter>
-    </Card>
+          ▶ Run
+        </button>
+      </div>
+
+      {/* Body: description */}
+      <div className="wf-card-body">
+        <span className="wf-card-desc">{template.description}</span>
+      </div>
+
+      {/* Footer: lesson chip + run status */}
+      <div className="wf-card-footer">
+        {template.linkedLessons.length > 0 && (
+          <span className="wf-card-lesson-chip" title={lessonNames?.[template.linkedLessons[0]] ?? template.linkedLessons[0]}>
+            ◆ {lessonNames?.[template.linkedLessons[0]] ?? template.linkedLessons[0]}
+          </span>
+        )}
+        <span className="wf-card-run-status">
+          <span className={`wf-run-dot ${runDotClass}`} />
+          {runLabel}
+        </span>
+      </div>
+    </div>
   );
 }

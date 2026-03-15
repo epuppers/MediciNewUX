@@ -59,13 +59,13 @@ export default function WorkflowsRoute({ loaderData }: Route.ComponentProps) {
   };
 
   return (
-    <div className="flex h-full flex-col gap-4 p-6">
+    <div className="wf-listing">
       {/* Stats bar */}
       <WorkflowStats templates={templates} />
 
-      {/* Template card grid */}
+      {/* Template cards */}
       {templates.length > 0 ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div>
           {templates.map((template) => (
             <WorkflowCard
               key={template.id}
@@ -77,9 +77,9 @@ export default function WorkflowsRoute({ loaderData }: Route.ComponentProps) {
           ))}
         </div>
       ) : (
-        <div className="flex flex-1 flex-col items-center justify-center gap-3 text-muted-foreground">
-          <Workflow className="size-10 opacity-30" />
-          <p className="text-sm">No workflows yet</p>
+        <div className="wf-no-results">
+          <Workflow className="size-10 opacity-30" style={{ color: 'var(--taupe-2)' }} />
+          <p className="font-[family-name:var(--pixel)] text-[var(--taupe-3)] dark:text-[var(--taupe-2)]">No workflows yet</p>
         </div>
       )}
     </div>
