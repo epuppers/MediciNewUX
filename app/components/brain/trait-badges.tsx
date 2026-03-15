@@ -6,7 +6,7 @@ interface TraitBadgesProps {
   traits: PersonalityTrait[];
 }
 
-/** Grid of toggleable personality trait badges. Active traits show primary styling. */
+/** Grid of toggleable personality trait badges. Active traits show berry styling. */
 export function TraitBadges({ traits: initialTraits }: TraitBadgesProps) {
   const [traits, setTraits] = useState<PersonalityTrait[]>(initialTraits);
 
@@ -17,21 +17,20 @@ export function TraitBadges({ traits: initialTraits }: TraitBadgesProps) {
   };
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-1.5">
       {traits.map((trait, index) => (
         <button
           key={trait.name}
           type="button"
           onClick={() => handleToggle(index)}
           className={cn(
-            'rounded-full px-3 py-1 text-xs font-medium transition-colors',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-            trait.active
-              ? 'bg-primary text-primary-foreground'
-              : 'bg-muted text-muted-foreground hover:bg-muted/80'
+            'mem-trait-tag',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--violet-3)]',
+            trait.active && 'active'
           )}
         >
           {trait.name}
+          {trait.active && <span className="ml-1 text-[13px] opacity-70">×</span>}
         </button>
       ))}
     </div>

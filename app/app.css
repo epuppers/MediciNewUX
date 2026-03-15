@@ -437,6 +437,347 @@
     font-weight: 600;
     color: var(--taupe-5);
   }
+
+  /* ======== Brain Memory Section ======== */
+
+  .mem-section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--taupe-3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+
+  /* Role Card */
+  .mem-role-card {
+    background: var(--white);
+    border: 2px solid;
+    border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+    border-radius: var(--r-md);
+    padding: 12px 14px;
+  }
+
+  .dark .mem-role-card {
+    background: var(--surface-1);
+    border-color: var(--taupe-3);
+  }
+
+  /* Personality Traits */
+  .mem-personality {
+    background: var(--white);
+    border: 2px solid;
+    border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+    border-radius: var(--r-md);
+    padding: 12px 14px;
+  }
+
+  .dark .mem-personality {
+    background: var(--surface-1);
+    border-color: var(--taupe-3);
+  }
+
+  .mem-trait-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border: 1px solid var(--taupe-2);
+    border-radius: var(--r-md);
+    background: var(--off-white);
+    color: var(--taupe-4);
+    cursor: pointer;
+    transition: all 0.1s;
+    letter-spacing: 0.02em;
+    user-select: none;
+  }
+
+  .mem-trait-tag:hover {
+    border-color: var(--berry-2);
+    color: var(--berry-3);
+  }
+
+  .mem-trait-tag.active {
+    background: var(--berry-3);
+    color: var(--white);
+    border-color: var(--berry-2) var(--berry-5, var(--berry-3)) var(--berry-5, var(--berry-3)) var(--berry-2);
+  }
+
+  .mem-trait-tag.active:hover {
+    background: var(--berry-4, var(--berry-3));
+    color: var(--white);
+  }
+
+  .dark .mem-trait-tag {
+    background: var(--surface-2);
+    border-color: var(--taupe-3);
+    color: var(--taupe-2);
+  }
+
+  .dark .mem-trait-tag:hover {
+    border-color: var(--berry-2);
+    color: var(--berry-2);
+  }
+
+  .dark .mem-trait-tag.active {
+    color: var(--white);
+  }
+
+  /* Category Filter Pills */
+  .mem-cat-pill {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border: 1px solid var(--taupe-2);
+    border-radius: var(--r-md);
+    background: var(--off-white);
+    color: var(--taupe-3);
+    cursor: pointer;
+    transition: all 0.1s;
+    letter-spacing: 0.03em;
+  }
+
+  .mem-cat-pill:hover {
+    border-color: var(--violet-2);
+    color: var(--violet-3);
+  }
+
+  .mem-cat-pill.active {
+    background: var(--violet-3);
+    color: var(--white);
+    border-color: var(--violet-2) var(--violet-4) var(--violet-4) var(--violet-2);
+  }
+
+  .dark .mem-cat-pill {
+    background: var(--surface-2);
+    border-color: var(--taupe-3);
+    color: var(--taupe-2);
+  }
+
+  .dark .mem-cat-pill:hover {
+    border-color: var(--violet-2);
+    color: var(--violet-2);
+  }
+
+  .dark .mem-cat-pill.active {
+    background: var(--violet-3);
+    border-color: var(--violet-2);
+    color: var(--white);
+  }
+
+  /* Search Input */
+  .mem-search-input {
+    width: 100%;
+    padding: 7px 10px 7px 30px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--taupe-5);
+    background: var(--off-white);
+    border: 2px solid;
+    border-color: var(--taupe-3) var(--taupe-1) var(--taupe-1) var(--taupe-3);
+    border-radius: var(--r-md);
+    outline: none;
+  }
+
+  .mem-search-input:focus {
+    border-color: var(--violet-3);
+  }
+
+  .dark .mem-search-input {
+    background: var(--surface-2);
+    border-color: var(--surface-0) var(--surface-3) var(--surface-3) var(--surface-0);
+    color: var(--taupe-1);
+  }
+
+  .dark .mem-search-input:focus {
+    border-color: var(--violet-3);
+  }
+
+  /* Fact Cards */
+  .mem-fact-card {
+    background: var(--white);
+    border: 2px solid;
+    border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+    border-radius: var(--r-md);
+    padding: 10px 14px;
+    transition: border-color 0.15s;
+    border-left: 3px solid var(--taupe-2);
+  }
+
+  .mem-fact-card:hover {
+    border-color: var(--taupe-3) var(--taupe-4) var(--taupe-4) var(--taupe-3);
+  }
+
+  .dark .mem-fact-card {
+    background: var(--surface-1);
+    border-color: var(--taupe-3);
+    border-left-color: var(--taupe-3);
+  }
+
+  .dark .mem-fact-card:hover {
+    border-color: var(--taupe-4);
+  }
+
+  /* Category left-border accents */
+  .mem-fact-card[data-category="preference"] { border-left-color: var(--berry-3); }
+  .mem-fact-card[data-category="workflow"] { border-left-color: var(--green); }
+  .mem-fact-card[data-category="contact"] { border-left-color: var(--blue-3); }
+  .mem-fact-card[data-category="fund"] { border-left-color: var(--violet-3); }
+  .mem-fact-card[data-category="style"] { border-left-color: var(--amber); }
+  .mem-fact-card[data-category="context"] { border-left-color: var(--taupe-3); }
+
+  /* Category badges */
+  .cat-preference {
+    background: var(--berry-1);
+    color: var(--berry-4, var(--berry-3));
+    border: 1px solid var(--berry-2);
+  }
+
+  .cat-workflow {
+    background: rgba(var(--green-rgb), 0.1);
+    color: var(--green);
+    border: 1px solid rgba(var(--green-rgb), 0.25);
+  }
+
+  .cat-contact {
+    background: var(--blue-1);
+    color: var(--blue-3);
+    border: 1px solid var(--blue-2);
+  }
+
+  .cat-fund {
+    background: var(--violet-1);
+    color: var(--violet-3);
+    border: 1px solid var(--violet-2);
+  }
+
+  .cat-style {
+    background: rgba(var(--amber-rgb), 0.1);
+    color: var(--amber);
+    border: 1px solid rgba(var(--amber-rgb), 0.25);
+  }
+
+  .cat-context {
+    background: var(--taupe-1);
+    color: var(--taupe-4);
+    border: 1px solid var(--taupe-2);
+  }
+
+  .dark .cat-workflow {
+    background: rgba(var(--green-rgb), 0.1);
+    border-color: rgba(var(--green-rgb), 0.25);
+  }
+
+  .dark .cat-style {
+    background: rgba(var(--amber-rgb), 0.1);
+    border-color: rgba(var(--amber-rgb), 0.25);
+  }
+
+  /* Fact text & meta */
+  .mem-fact-text {
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--taupe-5);
+    margin-bottom: 6px;
+  }
+
+  .dark .mem-fact-text {
+    color: var(--taupe-1);
+  }
+
+  .mem-fact-source,
+  .mem-fact-date {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--taupe-2);
+  }
+
+  /* Entity chips on facts */
+  .mem-entity-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 7px 2px 5px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--taupe-4);
+    background: var(--off-white);
+    border: 1px solid;
+    border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+    border-radius: var(--r-pill);
+    cursor: pointer;
+    transition: border-color 0.1s, background 0.1s, color 0.1s;
+  }
+
+  .mem-entity-chip:hover {
+    background: var(--violet-1);
+    border-color: var(--violet-2) var(--violet-3) var(--violet-3) var(--violet-2);
+    color: var(--violet-4);
+  }
+
+  .mem-entity-chip:active {
+    background: var(--violet-2);
+  }
+
+  .mem-entity-chip:focus-visible {
+    outline: 2px solid var(--violet-3);
+    outline-offset: 1px;
+  }
+
+  .dark .mem-entity-chip {
+    background: rgba(var(--black-rgb, 0,0,0), 0.15);
+    border-color: var(--taupe-3) var(--taupe-2) var(--taupe-2) var(--taupe-3);
+    color: var(--taupe-3);
+  }
+
+  .dark .mem-entity-chip:hover {
+    background: rgba(var(--violet-3-rgb), 0.15);
+    border-color: var(--violet-3) var(--violet-2) var(--violet-2) var(--violet-3);
+    color: var(--violet-2);
+  }
+
+  .dark .mem-entity-chip:active {
+    background: rgba(var(--violet-3-rgb), 0.25);
+  }
+
+  /* Fact menu button */
+  .mem-fact-menu-btn {
+    background: none;
+    border: none;
+    color: var(--taupe-2);
+    cursor: pointer;
+    padding: 2px 4px;
+    transition: color 0.1s;
+    opacity: 0;
+  }
+
+  .mem-fact-card:hover .mem-fact-menu-btn {
+    opacity: 1;
+    color: var(--taupe-3);
+  }
+
+  .mem-fact-menu-btn:hover {
+    color: var(--taupe-5);
+  }
+
+  .mem-fact-menu-btn:focus-visible {
+    opacity: 1;
+  }
+
+  /* Facts toolbar */
+  .mem-facts-toolbar {
+    margin-bottom: 12px;
+    background: rgba(var(--black-rgb, 0,0,0), 0.02);
+    border-radius: var(--r-md);
+    padding: 10px;
+  }
+
+  .dark .mem-facts-toolbar {
+    background: rgba(var(--black-rgb, 0,0,0), 0.1);
+  }
 }
 
 /* ======== Sidebar Custom Styles ========

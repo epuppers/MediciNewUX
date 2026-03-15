@@ -1,6 +1,5 @@
 import { useState, useMemo } from 'react';
 import { Search } from 'lucide-react';
-import { Input } from '~/components/ui/input';
 import { useBrainStore } from '~/stores/brain-store';
 import { TraitBadges } from './trait-badges';
 import { MemoryFactCard } from './memory-fact';
@@ -60,61 +59,62 @@ export function MemoryList({ memory }: MemoryListProps) {
     <div className="flex h-full flex-col gap-5 overflow-y-auto p-4">
       {/* Role profile */}
       <section>
-        <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          Role Profile
-        </h3>
-        <p className="text-sm leading-relaxed text-foreground">
-          {memory.roleProfile}
-        </p>
+        <h3 className="mem-section-label">Role Profile</h3>
+        <div className="mem-role-card">
+          <p className="font-[family-name:var(--mono)] text-xs leading-[1.7] text-[var(--taupe-5)] dark:text-[var(--taupe-1)]">
+            {memory.roleProfile}
+          </p>
+        </div>
       </section>
 
       {/* Personality traits */}
       <section>
-        <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-          Personality
-        </h3>
-        <TraitBadges traits={traits} />
+        <h3 className="mem-section-label">Personality</h3>
+        <div className="mem-personality">
+          <TraitBadges traits={traits} />
+        </div>
       </section>
 
-      {/* Category filter */}
-      <div className="flex flex-wrap gap-1.5">
-        {CATEGORIES.map((cat) => (
-          <button
-            key={cat.id}
-            type="button"
-            onClick={() => setMemoryCategory(cat.id)}
-            className={cn(
-              'rounded-md px-2.5 py-1 text-xs font-medium transition-colors',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-              memoryCategory === cat.id
-                ? 'bg-primary text-primary-foreground'
-                : 'bg-muted text-muted-foreground hover:bg-muted/80'
-            )}
-          >
-            {cat.label}
-          </button>
-        ))}
-      </div>
+      {/* Search & filter toolbar */}
+      <div className="mem-facts-toolbar">
+        {/* Search */}
+        <div className="relative mb-2">
+          <Search className="absolute left-[10px] top-1/2 size-3.5 -translate-y-1/2 text-[var(--taupe-3)] pointer-events-none" />
+          <input
+            type="search"
+            placeholder="Search memories..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="mem-search-input"
+          />
+        </div>
 
-      {/* Search */}
-      <div className="relative">
-        <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          type="search"
-          placeholder="Search memories..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-8 h-8 text-sm"
-        />
+        {/* Category filter */}
+        <div className="flex flex-wrap gap-1">
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat.id}
+              type="button"
+              onClick={() => setMemoryCategory(cat.id)}
+              className={cn(
+                'mem-cat-pill',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--violet-3)]',
+                memoryCategory === cat.id && 'active'
+              )}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Fact list */}
-      <section className="flex flex-col gap-2">
-        <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+      <section className="flex flex-col gap-1.5">
+        <h3 className="mem-section-label">
           Facts ({filteredFacts.length})
         </h3>
         {filteredFacts.length === 0 ? (
-          <p className="py-4 text-center text-sm text-muted-foreground">
+          <p className="py-4 text-center font-[family-name:var(--mono)] text-xs text-[var(--taupe-3)]">
             No memories match your filter.
           </p>
         ) : (

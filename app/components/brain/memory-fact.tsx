@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router';
 import { MoreHorizontal, Pencil, Trash2, User, Building, FileText, Landmark } from 'lucide-react';
-import { Badge } from '~/components/ui/badge';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -8,6 +7,7 @@ import {
   DropdownMenuItem,
 } from '~/components/ui/dropdown-menu';
 import type { MemoryFact as MemoryFactType, LinkedEntity } from '~/services/types';
+import { cn } from '~/lib/utils';
 
 interface MemoryFactProps {
   fact: MemoryFactType;
@@ -29,6 +29,16 @@ function EntityIcon({ type }: { type: string }) {
   }
 }
 
+/** Category badge class mapping */
+const CAT_CLASS: Record<string, string> = {
+  preference: 'cat-preference',
+  workflow: 'cat-workflow',
+  contact: 'cat-contact',
+  fund: 'cat-fund',
+  style: 'cat-style',
+  context: 'cat-context',
+};
+
 /** A single memory fact card with category badge, entity chips, and edit/delete actions. */
 export function MemoryFactCard({ fact, onEntityClick }: MemoryFactProps) {
   const navigate = useNavigate();
@@ -41,53 +51,69 @@ export function MemoryFactCard({ fact, onEntityClick }: MemoryFactProps) {
   };
 
   return (
-    <div className="group flex items-start gap-3 rounded-lg border border-border bg-card p-3 transition-colors hover:bg-accent/50">
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 mb-1">
-          <Badge variant="secondary" className="text-[10px] capitalize">
-            {fact.category}
-          </Badge>
-          {fact.date && (
-            <span className="text-[10px] text-muted-foreground">{fact.date}</span>
+    <div
+      className="group mem-fact-card"
+      data-category={fact.category}
+    >
+      {/* Top row: category badge + menu */}
+      <div className="flex items-center justify-between mb-1.5 relative">
+        <span
+          className={cn(
+            'font-[family-name:var(--mono)] text-[10px] font-bold uppercase tracking-[0.06em] rounded-[var(--r-md)] px-[7px] py-[2px]',
+            CAT_CLASS[fact.category] || 'cat-context'
           )}
-        </div>
+        >
+          {fact.category}
+        </span>
 
-        <p className="text-sm text-foreground leading-relaxed">{fact.text}</p>
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            className="mem-fact-menu-btn rounded p-1 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--violet-3)]"
+          >
+            <MoreHorizontal className="size-4" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" side="bottom">
+            <DropdownMenuItem>
+              <Pencil className="size-4" />
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem variant="destructive">
+              <Trash2 className="size-4" />
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
 
-        {fact.linkedEntities && fact.linkedEntities.length > 0 && (
-          <div className="mt-2 flex flex-wrap gap-1.5">
-            {fact.linkedEntities.map((entity) => (
-              <button
-                key={entity.name}
-                type="button"
-                onClick={() => handleEntityClick(entity)}
-                className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                <EntityIcon type={entity.type} />
-                {entity.name}
-              </button>
-            ))}
-          </div>
+      {/* Fact text */}
+      <p className="mem-fact-text">{fact.text}</p>
+
+      {/* Meta row: source + date */}
+      <div className="flex justify-between items-center">
+        {fact.source && (
+          <span className="mem-fact-source">{fact.source}</span>
+        )}
+        {fact.date && (
+          <span className="mem-fact-date">{fact.date}</span>
         )}
       </div>
 
-      <DropdownMenu>
-        <DropdownMenuTrigger
-          className="opacity-0 group-hover:opacity-100 transition-opacity rounded p-1 hover:bg-muted focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        >
-          <MoreHorizontal className="size-4 text-muted-foreground" />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" side="bottom">
-          <DropdownMenuItem>
-            <Pencil className="size-4" />
-            Edit
-          </DropdownMenuItem>
-          <DropdownMenuItem variant="destructive">
-            <Trash2 className="size-4" />
-            Delete
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      {/* Entity chips */}
+      {fact.linkedEntities && fact.linkedEntities.length > 0 && (
+        <div className="mt-1.5 flex flex-wrap gap-1">
+          {fact.linkedEntities.map((entity) => (
+            <button
+              key={entity.name}
+              type="button"
+              onClick={() => handleEntityClick(entity)}
+              className="mem-entity-chip"
+            >
+              <EntityIcon type={entity.type} />
+              {entity.name}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
