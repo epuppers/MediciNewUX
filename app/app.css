@@ -5367,6 +5367,225 @@
   outline-color: var(--violet-3);
 }
 
+/* ============================================
+   NODE POPOVER
+   ============================================ */
+
+.node-popover {
+  width: 320px;
+  background: var(--white);
+  border: 1px solid var(--taupe-2);
+  border-radius: var(--r-lg);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  padding: 14px;
+}
+
+.node-popover-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.node-popover-type {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: var(--r-sm);
+}
+
+.node-popover-type--input {
+  color: var(--blue-3);
+  background: rgba(var(--blue-3-rgb), 0.1);
+}
+
+.node-popover-type--action {
+  color: var(--violet-3);
+  background: rgba(var(--violet-3-rgb), 0.1);
+}
+
+.node-popover-type--gate {
+  color: var(--amber);
+  background: rgba(var(--amber-rgb), 0.1);
+}
+
+.node-popover-type--branch {
+  color: var(--taupe-3);
+  background: rgba(var(--taupe-3-rgb), 0.1);
+}
+
+.node-popover-type--output {
+  color: var(--green);
+  background: rgba(var(--green-rgb), 0.1);
+}
+
+.node-popover-close {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--taupe-3);
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: var(--r-sm);
+  line-height: 1;
+}
+
+.node-popover-close:hover {
+  background: var(--taupe-1);
+  color: var(--taupe-4);
+}
+
+.node-popover-close:active {
+  background: var(--taupe-2);
+}
+
+.node-popover-close:focus-visible {
+  outline: 2px solid var(--violet-3);
+  outline-offset: 1px;
+}
+
+.node-popover-title {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--taupe-4);
+  margin-bottom: 6px;
+}
+
+.node-popover-desc {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--taupe-3);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.node-popover-lesson {
+  background: rgba(var(--violet-3-rgb), 0.04);
+  border: 1px solid rgba(var(--violet-3-rgb), 0.12);
+  border-radius: var(--r-md);
+  padding: 10px;
+  margin-bottom: 12px;
+}
+
+.node-popover-lesson-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--violet-3);
+  margin-bottom: 4px;
+}
+
+.node-popover-lesson-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--taupe-4);
+  margin-bottom: 4px;
+}
+
+.node-popover-lesson-diamond {
+  color: var(--violet-3);
+  font-size: 8px;
+}
+
+.node-popover-lesson-preview {
+  font-family: var(--sans);
+  font-size: 11px;
+  color: var(--taupe-3);
+  line-height: 1.4;
+}
+
+.node-popover-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.node-popover-cosimo-btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--white);
+  background: var(--violet-3);
+  border: none;
+  border-radius: var(--r-md);
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: background 0.1s ease;
+}
+
+.node-popover-cosimo-btn:hover {
+  background: var(--violet-4);
+}
+
+.node-popover-cosimo-btn:active {
+  background: var(--berry-3);
+}
+
+.node-popover-cosimo-btn:focus-visible {
+  outline: 2px solid var(--violet-3);
+  outline-offset: 2px;
+}
+
+[data-a11y-motion="reduce"] .node-popover-cosimo-btn {
+  transition: none;
+}
+
+/* Node popover dark mode */
+.dark .node-popover {
+  background: var(--off-white);
+  border-color: var(--taupe-2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.dark .node-popover-close {
+  color: var(--taupe-3);
+}
+
+.dark .node-popover-close:hover {
+  background: var(--taupe-2);
+  color: var(--taupe-4);
+}
+
+.dark .node-popover-close:active {
+  background: var(--taupe-1);
+}
+
+.dark .node-popover-title {
+  color: var(--taupe-5);
+}
+
+.dark .node-popover-desc {
+  color: var(--taupe-4);
+}
+
+.dark .node-popover-lesson {
+  background: rgba(var(--violet-3-rgb), 0.1);
+  border-color: rgba(var(--violet-3-rgb), 0.2);
+}
+
+.dark .node-popover-lesson-title {
+  color: var(--taupe-5);
+}
+
+.dark .node-popover-lesson-preview {
+  color: var(--taupe-4);
+}
+
+.dark .node-popover-type--branch {
+  color: var(--taupe-4);
+  background: rgba(var(--taupe-3-rgb), 0.15);
+}
+
 /* ======== Blink Cursor (alias for stream-cursor-blink) ======== */
 @keyframes blink-cursor {
   0%, 100% { opacity: 1; }
