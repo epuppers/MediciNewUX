@@ -46,14 +46,14 @@
   --ring: #74418F;             /* --violet-3 */
   --radius: 0.375rem;          /* 6px = --r-lg */
 
-  /* Sidebar variables */
-  --sidebar: #F8F6FA;
-  --sidebar-foreground: #2D2D2E;
+  /* Sidebar variables — sidebar is always dark, like desktop app window chrome */
+  --sidebar: #2D2D2E;
+  --sidebar-foreground: #B4B2B9;
   --sidebar-primary: #74418F;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #E8E6EC;
-  --sidebar-accent-foreground: #2D2D2E;
-  --sidebar-border: #B4B2B9;
+  --sidebar-accent: #4A2E50;
+  --sidebar-accent-foreground: #E8E6EC;
+  --sidebar-border: #5A595C;
   --sidebar-ring: #74418F;
 
   /* Chart colors */
@@ -179,13 +179,13 @@
   --ring: #8855a8;
 
   /* Sidebar — dark */
-  --sidebar: #1f1f23;
-  --sidebar-foreground: #e0dee5;
+  --sidebar: #1a1a1d;
+  --sidebar-foreground: #adacb2;
   --sidebar-primary: #8855a8;
   --sidebar-primary-foreground: #FFFFFF;
   --sidebar-accent: #28282d;
   --sidebar-accent-foreground: #e0dee5;
-  --sidebar-border: #36363c;
+  --sidebar-border: #2a2a2f;
   --sidebar-ring: #8855a8;
 
   /* Chart colors — dark */
@@ -437,6 +437,122 @@
     font-weight: 600;
     color: var(--taupe-5);
   }
+}
+
+/* ======== Sidebar Custom Styles ========
+   These styles are outside @layer so they override Tailwind utilities */
+
+/* Sidebar header — dark chrome with bottom border */
+[data-sidebar="header"] {
+  border-bottom: 1px solid var(--taupe-4);
+}
+
+.dark [data-sidebar="header"] {
+  border-bottom-color: var(--surface-3);
+}
+
+/* Sidebar search input — dark inset style */
+.sidebar-search-input {
+  width: 100%;
+  padding: 7px 10px 7px 28px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--taupe-1);
+  background: rgba(var(--black-rgb), 0.25);
+  border: 1px solid;
+  border-color: var(--surface-1) var(--taupe-4) var(--taupe-4) var(--surface-1);
+  outline: none;
+  border-radius: var(--r-sm);
+  height: auto;
+  box-shadow: none;
+}
+
+.sidebar-search-input::placeholder {
+  color: var(--taupe-3);
+}
+
+.sidebar-search-input:focus {
+  border-color: var(--violet-3);
+  box-shadow: 0 0 0 1px var(--violet-3);
+  background: rgba(var(--black-rgb), 0.35);
+}
+
+.dark .sidebar-search-input {
+  background: rgba(var(--black-rgb), 0.4);
+  border-color: var(--surface-0) var(--surface-3) var(--surface-3) var(--surface-0);
+}
+
+.dark .sidebar-search-input:focus {
+  background: rgba(var(--black-rgb), 0.5);
+}
+
+/* Sidebar "New Thread" button */
+.sidebar-new-btn {
+  width: 100%;
+  padding: 7px 10px;
+  background: var(--taupe-4);
+  border: 1px solid;
+  border-color: var(--taupe-3) var(--surface-1) var(--surface-1) var(--taupe-3);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--taupe-1);
+  cursor: pointer;
+  text-align: center;
+  border-radius: var(--r-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.sidebar-new-btn:hover {
+  background: var(--chinese-4);
+}
+
+.sidebar-new-btn:active {
+  border-color: var(--surface-1) var(--taupe-3) var(--taupe-3) var(--surface-1);
+}
+
+.sidebar-new-btn:focus-visible {
+  outline: 2px solid var(--violet-3);
+  outline-offset: 2px;
+}
+
+/* Sidebar section labels */
+.sidebar-section-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--taupe-3);
+  padding: 16px 12px 6px;
+}
+
+/* Thread hover — subtle white overlay instead of full accent */
+[data-slot="sidebar-content"] [data-sidebar="menu-button"]:hover {
+  background: rgba(var(--white-pure-rgb), 0.04) !important;
+  border-color: rgba(var(--white-pure-rgb), 0.06);
+}
+
+/* Active thread — bevel border */
+[data-slot="sidebar-content"] [data-sidebar="menu-button"][data-active] {
+  border: 1px solid;
+  border-color: var(--chinese-3) var(--chinese-5) var(--chinese-5) var(--chinese-3);
+}
+
+.dark [data-slot="sidebar-content"] [data-sidebar="menu-button"][data-active] {
+  border-color: var(--surface-3);
+}
+
+/* Sidebar footer — top border */
+[data-sidebar="footer"] {
+  border-top: 1px solid var(--taupe-4);
+}
+
+.dark [data-sidebar="footer"] {
+  border-top-color: var(--surface-3);
 }
 
 /* ======== Workflow Pulse Animation ======== */
