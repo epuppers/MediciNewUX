@@ -3,9 +3,6 @@
 // ============================================
 
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router';
-import { BookOpen, ExternalLink, Plus } from 'lucide-react';
-import { Badge } from '~/components/ui/badge';
 import { getLessons } from '~/services/brain';
 import type { WorkflowTemplate, Lesson } from '~/services/types';
 
@@ -39,73 +36,54 @@ export function LessonsTab({ template }: LessonsTabProps) {
     };
   }, [template.linkedLessons]);
 
+  if (lessons.length === 0 && template.linkedLessons.length === 0) {
+    return (
+      <div>
+        <div className="lessons-tab-empty">
+          <span className="lessons-tab-empty-text">No linked lessons</span>
+          <span className="lessons-tab-empty-sub">Link lessons to help Cosimo follow your domain rules</span>
+        </div>
+        <button type="button" className="add-source-btn">+ Link Lesson</button>
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-3">
-      <h4 className="mb-2 font-mono text-xs font-semibold text-foreground">
-        Linked Lessons
-      </h4>
-
-      {lessons.length === 0 && template.linkedLessons.length === 0 && (
-        <p className="text-xs text-muted-foreground">
-          No lessons linked to this workflow yet.
-        </p>
-      )}
-
+    <div>
       {lessons.map((lesson) => {
         const referencingNodes = nodesReferencingLesson(template, lesson.id);
 
         return (
-          <div
-            key={lesson.id}
-            className="rounded-md border border-border bg-background p-3"
-          >
-            <div className="flex items-start justify-between gap-2">
-              <div className="flex items-start gap-2">
-                <BookOpen className="mt-0.5 size-3.5 shrink-0 text-violet-500 dark:text-violet-400" />
-                <div className="min-w-0">
-                  <p className="text-xs font-semibold text-foreground">
-                    {lesson.title}
-                  </p>
-                  <p className="mt-0.5 text-[10px] text-muted-foreground">
-                    by {lesson.author} &middot; Updated {lesson.updated}
-                  </p>
-                </div>
-              </div>
-              <Link
-                to={`/brain/lessons/${lesson.id}`}
-                className="shrink-0 text-muted-foreground transition-colors hover:text-foreground"
-                aria-label={`View ${lesson.title}`}
-              >
-                <ExternalLink className="size-3.5" />
-              </Link>
+          <div key={lesson.id} className="lesson-tab-card">
+            <div className="lesson-tab-card-header">
+              <span className="lesson-tab-card-diamond">◆</span>
+              <span className="lesson-tab-card-title">{lesson.title}</span>
+              <span className={`lesson-tab-card-scope lesson-scope-${lesson.scope}`}>
+                {lesson.scope}
+              </span>
             </div>
 
             {referencingNodes.length > 0 && (
-              <div className="mt-2 flex flex-wrap gap-1">
-                <span className="text-[10px] text-muted-foreground">Used by:</span>
-                {referencingNodes.map((nodeName) => (
-                  <Badge
-                    key={nodeName}
-                    variant="secondary"
-                    className="text-[10px]"
-                  >
-                    {nodeName}
-                  </Badge>
+              <div className="lesson-tab-card-nodes">
+                <span className="lesson-tab-card-nodes-label">Used by:</span>
+                {referencingNodes.map((name) => (
+                  <span key={name} className="lesson-tab-card-node-chip">{name}</span>
                 ))}
               </div>
             )}
+
+            <div className="lesson-tab-card-preview">{lesson.preview}</div>
+
+            <div className="lesson-tab-card-meta">
+              <span className="lesson-tab-card-author">{lesson.author}</span>
+              <span className="lesson-tab-card-sep">·</span>
+              <span className="lesson-tab-card-date">Updated {lesson.updated}</span>
+            </div>
           </div>
         );
       })}
 
-      {/* Link Lesson button */}
-      <button
-        type="button"
-        className="flex w-full items-center justify-center gap-1.5 rounded-md border-2 border-dashed border-border p-3 text-xs text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-      >
-        <Plus className="size-3.5" />
-        Link Lesson
-      </button>
+      <button type="button" className="add-source-btn">+ Link Lesson</button>
     </div>
   );
 }
