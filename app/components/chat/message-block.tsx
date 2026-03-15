@@ -1,21 +1,27 @@
-import { Badge } from '~/components/ui/badge';
-import { FileText, FileSpreadsheet, Folder, File, ThumbsUp, ThumbsDown } from 'lucide-react';
+import { Copy, RotateCcw, Pencil, ThumbsUp, ThumbsDown } from 'lucide-react';
 import type { Message, Attachment } from '~/services/types';
 import { Artifact } from '~/components/chat/artifact';
 import { cn } from '~/lib/utils';
 
-/** Returns an icon component for a file attachment based on its type */
-function fileIcon(type: string) {
+/** Returns an icon character for a file attachment based on its type */
+function fileIconChar(type: string): string {
   switch (type) {
-    case 'pdf':
-      return <FileText className="h-4 w-4 text-red-500 dark:text-red-400" />;
+    case 'pdf': return '📄';
     case 'xlsx':
-    case 'spreadsheet':
-      return <FileSpreadsheet className="h-4 w-4 text-green-600 dark:text-green-400" />;
-    case 'folder':
-      return <Folder className="h-4 w-4 text-amber-500 dark:text-amber-400" />;
-    default:
-      return <File className="h-4 w-4 text-muted-foreground" />;
+    case 'spreadsheet': return '📊';
+    case 'folder': return '📁';
+    default: return '📎';
+  }
+}
+
+/** Returns the CSS class for the file icon color by type */
+function fileIconClass(type: string): string {
+  switch (type) {
+    case 'pdf': return 'file-icon-pdf';
+    case 'xlsx':
+    case 'spreadsheet': return 'file-icon-xlsx';
+    case 'folder': return 'file-icon-folder';
+    default: return '';
   }
 }
 
@@ -28,17 +34,17 @@ function FileAttachment({ attachment }: { attachment: Attachment }) {
   if (attachment.size) meta.push(attachment.size);
 
   return (
-    <div className="flex items-center gap-2 rounded-md border border-border bg-background px-3 py-2 text-sm">
-      <div className="flex-shrink-0">{fileIcon(attachment.type)}</div>
-      <div className="min-w-0 flex-1">
-        <div className="truncate font-[var(--font-mono)] text-xs font-medium">
-          {attachment.name}
-        </div>
+    <div className="file-attachment">
+      <div className={cn('file-attachment-icon', fileIconClass(attachment.type))}>
+        {fileIconChar(attachment.type)}
+      </div>
+      <div className="file-attachment-info">
+        <div className="file-attachment-name">{attachment.name}</div>
         {meta.length > 0 && (
-          <div className="text-[10px] text-muted-foreground">{meta.join(' · ')}</div>
+          <div className="file-attachment-meta">{meta.join(' · ')}</div>
         )}
       </div>
-      <span className="flex-shrink-0 text-[10px] text-muted-foreground">Open ↗</span>
+      <span className="file-attachment-action">Open ↗</span>
     </div>
   );
 }
@@ -46,12 +52,16 @@ function FileAttachment({ attachment }: { attachment: Attachment }) {
 /** Renders the workflow file chip style (simpler, used in workflow threads) */
 function WorkflowFileChip({ attachment }: { attachment: Attachment }) {
   return (
-    <div className="inline-flex items-center gap-1.5 rounded border border-border bg-muted/50 px-2 py-1 text-xs">
-      <span>{attachment.type === 'folder' ? '📁' : '📄'}</span>
-      <span className="font-[var(--font-mono)]">
-        {attachment.name}
-        {attachment.fileCount ? ` — ${attachment.fileCount} files` : ''}
-      </span>
+    <div className="file-attachment">
+      <div className={cn('file-attachment-icon', fileIconClass(attachment.type))}>
+        {fileIconChar(attachment.type)}
+      </div>
+      <div className="file-attachment-info">
+        <div className="file-attachment-name">
+          {attachment.name}
+          {attachment.fileCount ? ` — ${attachment.fileCount} files` : ''}
+        </div>
+      </div>
     </div>
   );
 }
@@ -76,39 +86,32 @@ export function MessageBlock({ message, isWorkflowThread }: MessageBlockProps) {
 /** Renders a user message with avatar, name, timestamp, content, and attachments */
 function UserMessage({ message, isWorkflowThread }: { message: Message; isWorkflowThread?: boolean }) {
   return (
-    <div className="mb-4 relative">
-      <div>
+    <div className="msg-block">
+      <div className="user-card">
         {/* Header: avatar + name + timestamp */}
-        <div className="flex items-center gap-2 mb-1.5">
-          <div className="flex h-6 w-6 items-center justify-center rounded-[var(--r-md)] bg-[var(--berry-3)] text-[10px] font-bold text-white border border-[var(--berry-2)] border-b-[var(--berry-5)] border-r-[var(--berry-5)]">
-            E
-          </div>
-          <span className="font-[var(--font-sans)] text-sm font-medium text-foreground">
-            Eliot Puplett
-          </span>
+        <div className="msg-header">
+          <div className="msg-badge msg-badge-human">E</div>
+          <span className="msg-sender">Eliot Puplett</span>
           {message.timestamp && (
-            <span className="text-xs text-muted-foreground">{message.timestamp}</span>
+            <span className="msg-timestamp">{message.timestamp}</span>
           )}
         </div>
 
         {/* Message body */}
-        <div className="pl-8">
+        <div className="msg-body">
           {message.commandChip && (
-            <span className="mr-2 inline-block rounded-[var(--r-sm)] bg-[var(--violet-3)] px-2 py-0.5 font-[var(--font-mono)] text-xs font-semibold text-white">
+            <span className="mr-2 inline-block rounded-[var(--r-sm)] bg-[var(--violet-3)] px-2 py-0.5 font-[family-name:var(--mono)] text-[11px] font-semibold text-white">
               {message.commandChip}
             </span>
           )}
           {message.content && (
-            <div
-              className="text-sm leading-relaxed text-foreground [&_p]:mb-2 [&_p:last-child]:mb-0"
-              dangerouslySetInnerHTML={{ __html: message.content }}
-            />
+            <div dangerouslySetInnerHTML={{ __html: message.content }} />
           )}
         </div>
 
         {/* File attachments */}
         {message.attachments && message.attachments.length > 0 && (
-          <div className="pl-8 mt-2 flex flex-col gap-1.5">
+          <div className="msg-file-attachments">
             {message.attachments.map((att, i) =>
               isWorkflowThread ? (
                 <WorkflowFileChip key={i} attachment={att} />
@@ -119,6 +122,16 @@ function UserMessage({ message, isWorkflowThread }: { message: Message; isWorkfl
           </div>
         )}
       </div>
+
+      {/* Hover actions */}
+      <div className="msg-actions">
+        <button className="msg-action-btn" title="Copy" aria-label="Copy message">
+          <Copy />
+        </button>
+        <button className="msg-action-btn" title="Edit" aria-label="Edit message">
+          <Pencil />
+        </button>
+      </div>
     </div>
   );
 }
@@ -128,52 +141,33 @@ function AIMessage({ message }: { message: Message }) {
   const isGate = message.isGate;
 
   return (
-    <div className="mb-4 relative">
-      <div
-        className={cn(
-          isGate &&
-            'border-l-[3px] border-l-[var(--amber)] bg-[rgba(var(--amber-rgb),0.05)] dark:bg-[rgba(var(--amber-rgb),0.08)] rounded-r-[var(--r-md)] pl-3'
-        )}
-      >
+    <div className="msg-block">
+      <div className={cn('ai-block', isGate && 'msg-gate')}>
         {/* Header: avatar + name + timestamp + model badge + gate chip */}
-        <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-          <div className="flex h-6 w-6 items-center justify-center rounded-[var(--r-md)] bg-[var(--violet-3)] text-[10px] font-bold text-white border border-[var(--violet-2)] border-b-[var(--violet-5)] border-r-[var(--violet-5)]">
-            ◆
-          </div>
-          <span className="font-[var(--font-sans)] text-sm font-medium text-foreground">
-            Cosimo
-          </span>
+        <div className="msg-header flex-wrap">
+          <div className="msg-badge msg-badge-ai">◆</div>
+          <span className="msg-sender">Cosimo</span>
           {message.timestamp && (
-            <span className="text-xs text-muted-foreground">{message.timestamp}</span>
+            <span className="msg-timestamp">{message.timestamp}</span>
           )}
           {message.model && (
-            <Badge
-              variant="outline"
-              className="font-[var(--font-mono)] text-[10px] px-1.5 py-0 h-4 border-border text-muted-foreground"
-            >
-              {message.model}
-            </Badge>
+            <span className="model-badge">{message.model}</span>
           )}
           {isGate && message.gateStatus === 'awaiting' && (
-            <span className="inline-flex items-center gap-1 rounded-[var(--r-sm)] border border-[rgba(var(--amber-rgb),0.3)] bg-[rgba(var(--amber-rgb),0.1)] px-1.5 py-0 font-[var(--font-mono)] text-[10px] font-semibold text-[var(--amber)] dark:bg-[rgba(var(--amber-rgb),0.15)]">
-              ⏸ Awaiting Review
-            </span>
+            <span className="msg-gate-chip">⏸ Awaiting Review</span>
           )}
         </div>
 
         {/* Message body */}
         {message.content && (
-          <div className="pl-8">
-            <div
-              className="text-sm leading-relaxed text-foreground [&_p]:mb-2 [&_p:last-child]:mb-0 [&_strong]:font-semibold"
-              dangerouslySetInnerHTML={{ __html: message.content }}
-            />
+          <div className="msg-body">
+            <div dangerouslySetInnerHTML={{ __html: message.content }} />
           </div>
         )}
 
         {/* Artifacts */}
         {message.artifacts && message.artifacts.length > 0 && (
-          <div className="pl-8">
+          <div className="ml-[30px]">
             {message.artifacts.map((art, i) => (
               <Artifact key={i} artifact={art} />
             ))}
@@ -182,23 +176,33 @@ function AIMessage({ message }: { message: Message }) {
 
         {/* Feedback buttons (AI messages only, non-gate) */}
         {!isGate && (
-          <div className="pl-8 mt-1.5 flex gap-1">
+          <div className="msg-feedback">
             <button
-              className="flex h-6 w-6 items-center justify-center rounded-[var(--r-md)] border border-transparent text-muted-foreground transition-colors hover:border-border hover:text-green-500 hover:bg-green-500/10 dark:hover:text-green-400 dark:hover:bg-green-500/20"
+              className="feedback-btn up"
               title="Good response"
               aria-label="Good response"
             >
-              <ThumbsUp className="h-3 w-3" />
+              <ThumbsUp />
             </button>
             <button
-              className="flex h-6 w-6 items-center justify-center rounded-[var(--r-md)] border border-transparent text-muted-foreground transition-colors hover:border-border hover:text-red-500 hover:bg-red-500/10 dark:hover:text-red-400 dark:hover:bg-red-500/20"
+              className="feedback-btn down"
               title="Poor response"
               aria-label="Poor response"
             >
-              <ThumbsDown className="h-3 w-3" />
+              <ThumbsDown />
             </button>
           </div>
         )}
+      </div>
+
+      {/* Hover actions */}
+      <div className="msg-actions">
+        <button className="msg-action-btn" title="Copy" aria-label="Copy message">
+          <Copy />
+        </button>
+        <button className="msg-action-btn" title="Regenerate" aria-label="Regenerate response">
+          <RotateCcw />
+        </button>
       </div>
     </div>
   );

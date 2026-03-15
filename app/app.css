@@ -1449,6 +1449,376 @@
   animation: profile-slide-left 0.15s ease-out;
 }
 
+/* ======== Chat Message Styles ======== */
+
+.msg-block {
+  margin-bottom: 16px;
+  position: relative;
+}
+
+/* Hover actions toolbar — appears on message hover */
+.msg-actions {
+  display: none;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  gap: 2px;
+  z-index: 5;
+  background: var(--white);
+  border: 1px solid;
+  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+  padding: 2px;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.08);
+  border-radius: var(--r-md);
+}
+
+.msg-block:hover .msg-actions {
+  display: flex;
+}
+
+.dark .msg-actions {
+  background: var(--surface-2);
+  border-color: var(--taupe-3);
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+}
+
+.msg-action-btn {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  color: var(--taupe-3);
+  transition: all 0.1s;
+  padding: 0;
+  border-radius: var(--r-md);
+}
+
+.msg-action-btn:hover {
+  color: var(--taupe-5);
+  background: var(--berry-1);
+  border-color: var(--taupe-2);
+}
+
+.dark .msg-action-btn:hover {
+  color: var(--taupe-1);
+}
+
+.msg-action-btn svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* Message header row */
+.msg-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+/* Avatar badge — 22x22 mono icon */
+.msg-badge {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  border-radius: var(--r-md);
+}
+
+.msg-badge-human {
+  background: var(--berry-3);
+  border: 1px solid;
+  border-color: var(--berry-2) var(--berry-5) var(--berry-5) var(--berry-2);
+  color: var(--white);
+}
+
+.msg-badge-ai {
+  background: var(--violet-3);
+  border: 1px solid;
+  border-color: var(--violet-2) var(--violet-5) var(--violet-5) var(--violet-2);
+  color: var(--white);
+}
+
+/* Sender name */
+.msg-sender {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--taupe-5);
+}
+
+.dark .msg-sender {
+  color: var(--taupe-1);
+}
+
+/* Timestamp */
+.msg-timestamp {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--taupe-3);
+}
+
+/* Model badge on AI messages */
+.model-badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--taupe-3);
+  background: var(--off-white);
+  border: 1px solid var(--taupe-2);
+  padding: 1px 6px;
+  border-radius: var(--r-md);
+}
+
+.dark .model-badge {
+  background: var(--surface-2);
+  border-color: var(--taupe-3);
+}
+
+/* Message body content */
+.msg-body {
+  margin-left: 30px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--taupe-5);
+}
+
+.dark .msg-body {
+  color: var(--taupe-1);
+}
+
+.msg-body p { margin-bottom: 8px; }
+.msg-body p:last-child { margin-bottom: 0; }
+
+/* User card — berry tinted background */
+.user-card {
+  background: rgba(var(--berry-3-rgb), 0.05);
+  border: 1px solid rgba(var(--berry-3-rgb), 0.12);
+  padding: 10px 12px;
+  border-radius: var(--r-md);
+}
+
+.dark .user-card {
+  background: rgba(var(--violet-3-rgb), 0.08);
+  border-color: rgba(var(--violet-3-rgb), 0.15);
+}
+
+/* AI block — transparent by default */
+.ai-block {
+  padding: 10px 12px;
+  border: 1px solid transparent;
+}
+
+/* Feedback buttons */
+.msg-feedback {
+  display: flex;
+  gap: 4px;
+  margin: 6px 0 0 30px;
+}
+
+.feedback-btn {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  color: var(--taupe-3);
+  transition: all 0.1s;
+  padding: 0;
+  border-radius: var(--r-md);
+}
+
+.feedback-btn:hover {
+  border-color: var(--taupe-2);
+}
+
+.feedback-btn.up:hover,
+.feedback-btn.up.active {
+  color: var(--green);
+  background: rgba(var(--green-rgb), 0.08);
+  border-color: var(--green);
+}
+
+.feedback-btn.down:hover,
+.feedback-btn.down.active {
+  color: var(--red);
+  background: rgba(var(--red-rgb), 0.08);
+  border-color: var(--red);
+}
+
+.feedback-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Date separator */
+.date-separator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.date-separator-line {
+  flex: 1;
+  height: 1px;
+  background: var(--taupe-2);
+}
+
+.dark .date-separator-line {
+  background: var(--taupe-3);
+}
+
+.date-separator-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--taupe-3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  flex-shrink: 0;
+}
+
+/* File attachment (inline in messages) */
+.file-attachment {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--off-white);
+  border: 2px solid;
+  border-color: var(--taupe-2) var(--taupe-4) var(--taupe-4) var(--taupe-2);
+  cursor: pointer;
+  transition: all 0.15s;
+  border-radius: var(--r-md);
+}
+
+.file-attachment:hover {
+  background: var(--berry-1);
+  border-color: var(--berry-2) var(--berry-4) var(--berry-4) var(--berry-2);
+}
+
+.dark .file-attachment {
+  background: var(--surface-1);
+  border-color: var(--taupe-3);
+}
+
+.dark .file-attachment:hover {
+  background: var(--berry-1);
+  border-color: var(--berry-2);
+}
+
+.file-attachment-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--white);
+  flex-shrink: 0;
+  border-radius: var(--r-md);
+  background: var(--green);
+  border: 1px solid;
+  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+}
+
+.file-attachment-icon.file-icon-pdf {
+  background: var(--blue-3);
+  border-color: var(--blue-2) var(--blue-3) var(--blue-3) var(--blue-2);
+}
+
+.file-attachment-icon.file-icon-xlsx {
+  background: var(--green);
+}
+
+.file-attachment-icon.file-icon-folder {
+  background: var(--amber);
+}
+
+.file-attachment-info { flex: 1; }
+
+.file-attachment-name {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--taupe-5);
+}
+
+.dark .file-attachment-name {
+  color: var(--taupe-1);
+}
+
+.file-attachment-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--taupe-3);
+  margin-top: 2px;
+}
+
+.file-attachment-action {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--violet-3);
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+/* File attachments container in messages */
+.msg-file-attachments {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 8px 0 0 30px;
+}
+
+/* Gate message styling — amber left border + tint background */
+.msg-gate {
+  border-left: 3px solid var(--amber);
+  background: rgba(var(--amber-rgb), 0.05);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  padding-left: 12px;
+}
+
+.dark .msg-gate {
+  background: rgba(var(--amber-rgb), 0.08);
+}
+
+.msg-gate-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--amber);
+  background: rgba(var(--amber-rgb), 0.1);
+  border: 1px solid rgba(var(--amber-rgb), 0.25);
+  border-radius: var(--r-sm);
+  padding: 1px 7px;
+  white-space: nowrap;
+}
+
+.dark .msg-gate-chip {
+  background: rgba(var(--amber-rgb), 0.15);
+  border-color: rgba(var(--amber-rgb), 0.3);
+}
+
 /* ======== Blink Cursor (alias for stream-cursor-blink) ======== */
 @keyframes blink-cursor {
   0%, 100% { opacity: 1; }
