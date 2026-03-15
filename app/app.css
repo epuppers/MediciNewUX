@@ -3074,6 +3074,338 @@
   opacity: 1;
 }
 
+/* ============================================
+   WORKFLOW CONTEXT PANEL
+   ============================================ */
+.workflow-panel {
+  width: 0;
+  overflow: hidden;
+  border-left: 2px solid transparent;
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  transition: width 0.2s ease, border-color 0.2s ease;
+  border-radius: var(--r-lg);
+}
+
+.workflow-panel.no-transition {
+  transition: none;
+}
+
+.workflow-panel.open {
+  border-left-color: var(--taupe-2);
+}
+
+.workflow-panel.dragging {
+  min-width: 280px;
+}
+
+.workflow-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  min-height: 38px;
+  background: var(--white);
+  border-bottom: 1px solid var(--taupe-2);
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.workflow-panel-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.workflow-panel-name {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--taupe-5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.workflow-panel-run-id {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--taupe-3);
+  white-space: nowrap;
+}
+
+.workflow-panel-header-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.workflow-panel-status {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--r-sm);
+  white-space: nowrap;
+}
+
+.workflow-panel-status.status-completed {
+  color: var(--green);
+  background: rgba(var(--green-rgb), 0.08);
+}
+
+.workflow-panel-status.status-running {
+  color: var(--violet-3);
+  background: rgba(var(--violet-3-rgb), 0.08);
+}
+
+.workflow-panel-status.status-waiting {
+  color: var(--amber);
+  background: rgba(var(--amber-rgb), 0.08);
+}
+
+.workflow-panel-status.status-failed {
+  color: var(--red);
+  background: rgba(var(--red-rgb), 0.08);
+}
+
+.workflow-panel-close {
+  padding: 4px 8px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--taupe-3);
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--r-sm);
+}
+
+.workflow-panel-close:hover {
+  color: var(--red);
+  background: rgba(var(--red-rgb), 0.08);
+}
+
+.workflow-panel-close:active {
+  opacity: 0.7;
+}
+
+.workflow-panel-close:focus-visible {
+  outline: 2px solid var(--violet-3);
+  outline-offset: 1px;
+}
+
+.workflow-panel-graph {
+  padding: 12px;
+  border-bottom: 1px solid var(--taupe-2);
+  flex-shrink: 0;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--off-white);
+  overflow: hidden;
+}
+
+.workflow-panel-graph .flow-graph-compact {
+  max-width: 100%;
+  height: auto;
+}
+
+.workflow-panel-details {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.workflow-panel-section {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--taupe-1);
+}
+
+.workflow-panel-section:last-child {
+  border-bottom: none;
+}
+
+.workflow-panel-section-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--taupe-3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.workflow-panel-section-body {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--taupe-5);
+}
+
+.wf-panel-file-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+}
+
+.wf-panel-file-icon {
+  font-size: 11px;
+  color: var(--taupe-3);
+  flex-shrink: 0;
+}
+
+.wf-panel-file-name {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--taupe-5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wf-panel-file-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--taupe-3);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.wf-panel-exception {
+  display: flex;
+  gap: 6px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--taupe-1);
+}
+
+.wf-panel-exception:last-child {
+  border-bottom: none;
+}
+
+.wf-panel-exception-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--amber);
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+.wf-panel-exception-dot.type-inference {
+  background: var(--blue-3);
+}
+
+.wf-panel-exception-dot.type-low-confidence {
+  background: var(--amber);
+}
+
+.wf-panel-exception-dot.type-conflicting-value {
+  background: var(--red);
+}
+
+.wf-panel-exception-dot.type-format-unknown {
+  background: var(--taupe-3);
+}
+
+.wf-panel-exception-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.wf-panel-exception-type {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--taupe-3);
+  letter-spacing: 0.03em;
+}
+
+.wf-panel-exception-desc {
+  font-family: var(--sans);
+  font-size: 11px;
+  color: var(--taupe-4);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+.wf-panel-exception-confidence {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--taupe-3);
+  margin-top: 2px;
+}
+
+.wf-panel-empty {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--taupe-3);
+  font-style: italic;
+}
+
+/* Workflow Context Panel — Dark Mode */
+.dark .workflow-panel.open {
+  border-left-color: var(--surface-0);
+}
+
+.dark .workflow-panel-header {
+  background: var(--off-white);
+  border-bottom-color: var(--surface-3);
+}
+
+.dark .workflow-panel-graph {
+  background: var(--surface-0);
+  border-bottom-color: var(--surface-3);
+}
+
+.dark .workflow-panel-section {
+  border-bottom-color: var(--surface-3);
+}
+
+.dark .workflow-panel-status.status-completed {
+  background: rgba(var(--green-rgb), 0.12);
+}
+
+.dark .workflow-panel-status.status-running {
+  background: rgba(var(--violet-3-rgb), 0.12);
+}
+
+.dark .workflow-panel-status.status-waiting {
+  background: rgba(var(--amber-rgb), 0.12);
+}
+
+.dark .workflow-panel-status.status-failed {
+  background: rgba(var(--red-rgb), 0.12);
+}
+
+.dark .wf-panel-exception {
+  border-bottom-color: var(--surface-3);
+}
+
+.dark .workflow-panel-name {
+  color: var(--taupe-1);
+}
+
+.dark .wf-panel-file-name {
+  color: var(--taupe-1);
+}
+
+.dark .wf-panel-exception-desc {
+  color: var(--taupe-2);
+}
+
+.dark .workflow-panel-section-body {
+  color: var(--taupe-1);
+}
+
 /* ======== Blink Cursor (alias for stream-cursor-blink) ======== */
 @keyframes blink-cursor {
   0%, 100% { opacity: 1; }
