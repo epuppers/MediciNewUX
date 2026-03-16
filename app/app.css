@@ -3333,6 +3333,145 @@
   color: var(--amber);
 }
 
+/* ======== Cosimo Error State ======== */
+
+.error-state,
+.cosimo-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  margin: 4px 0;
+  background: rgba(var(--red-rgb), 0.05);
+  border: 2px solid;
+  border-color: var(--taupe-2) var(--taupe-4) var(--taupe-4) var(--taupe-2);
+  border-left: 3px solid var(--red);
+  border-radius: var(--r-md);
+}
+
+.error-state-icon,
+.cosimo-error-icon {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--white);
+  background: var(--red);
+  border: 1px solid;
+  border-color: var(--red-hi) var(--red-lo) var(--red-lo) var(--red-hi);
+  flex-shrink: 0;
+  border-radius: var(--r-md);
+}
+
+.error-state-content,
+.cosimo-error-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.error-state-title,
+.cosimo-error-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--red);
+  margin-bottom: 6px;
+}
+
+.error-state-detail,
+.cosimo-error-detail {
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--taupe-4);
+  margin-bottom: 8px;
+}
+
+.error-state-meta,
+.cosimo-error-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--taupe-3);
+  letter-spacing: 0.05em;
+}
+
+.error-state-retry,
+.cosimo-error-retry {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--taupe-5);
+  background: var(--taupe-1);
+  border: 1px solid;
+  border-color: var(--white) var(--taupe-3) var(--taupe-3) var(--white);
+  cursor: pointer;
+  flex-shrink: 0;
+  align-self: center;
+  transition: all 0.15s;
+  border-radius: var(--r-md);
+}
+
+.error-state-retry:hover,
+.cosimo-error-retry:hover {
+  background: var(--berry-1);
+  color: var(--berry-5);
+  border-color: var(--berry-2) var(--berry-4) var(--berry-4) var(--berry-2);
+}
+
+.error-state-retry:active,
+.cosimo-error-retry:active {
+  border-color: var(--taupe-3) var(--white) var(--white) var(--taupe-3);
+}
+
+.error-state-retry:focus-visible,
+.cosimo-error-retry:focus-visible {
+  outline: 2px solid var(--violet-3);
+  outline-offset: 2px;
+}
+
+.retry-icon {
+  width: 12px;
+  height: 12px;
+}
+
+.cosimo-error-retry.retrying .retry-icon {
+  animation: spin-retry 0.8s linear infinite;
+}
+
+/* Dark mode — error state */
+.dark .error-state,
+.dark .cosimo-error {
+  background: rgba(var(--red-rgb), 0.08);
+  border-color: var(--taupe-2);
+  border-left-color: var(--red);
+}
+
+.dark .error-state-icon,
+.dark .cosimo-error-icon {
+  color: var(--off-white);
+}
+
+.dark .error-state-detail,
+.dark .cosimo-error-detail {
+  color: var(--taupe-2);
+}
+
+.dark .error-state-retry,
+.dark .cosimo-error-retry {
+  color: var(--taupe-4);
+}
+
+.dark .error-state-retry:hover,
+.dark .cosimo-error-retry:hover {
+  color: var(--berry-3);
+}
+
 /* ======== Empty Thread State ======== */
 
 .empty-thread {
