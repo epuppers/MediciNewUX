@@ -2281,6 +2281,11 @@
   width: 100%;
 }
 
+.profile-menu-theme:focus-visible {
+  outline: 2px solid var(--violet-3);
+  outline-offset: -2px;
+}
+
 .profile-menu-theme:hover {
   background: var(--berry-1);
 }
@@ -2390,6 +2395,11 @@
   display: flex;
   align-items: center;
   gap: 4px;
+}
+
+.profile-menu-font-size-btn:focus-visible {
+  outline: 2px solid var(--violet-3);
+  outline-offset: 1px;
 }
 
 .profile-menu-font-size-btn:hover {
@@ -2609,6 +2619,11 @@
   border-color: var(--taupe-2);
 }
 
+.msg-action-btn:focus-visible {
+  outline: 2px solid var(--violet-3);
+  outline-offset: 1px;
+}
+
 .dark .msg-action-btn:hover {
   color: var(--taupe-1);
 }
@@ -2746,6 +2761,11 @@
   transition: all 0.1s;
   padding: 0;
   border-radius: var(--r-md);
+}
+
+.feedback-btn:focus-visible {
+  outline: 2px solid var(--violet-3);
+  outline-offset: 1px;
 }
 
 .feedback-btn:hover {
@@ -3909,6 +3929,11 @@
   border-bottom: none;
 }
 
+.model-option:focus-visible {
+  outline: 2px solid var(--violet-3);
+  outline-offset: -2px;
+}
+
 .model-option:hover {
   background: var(--berry-1);
 }
@@ -3977,6 +4002,11 @@
   font-size: 11px;
   transition: all 0.1s;
   border-radius: var(--r-md);
+}
+
+.attach-option:focus-visible {
+  outline: 2px solid var(--violet-3);
+  outline-offset: -2px;
 }
 
 .attach-option:hover {
@@ -4506,6 +4536,11 @@
   align-items: center;
   position: relative;
   z-index: 1;
+}
+
+.file-panel-tab:focus-visible {
+  outline: 2px solid var(--violet-3);
+  outline-offset: -2px;
 }
 
 .file-panel-tab:hover {
