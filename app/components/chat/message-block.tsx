@@ -183,6 +183,7 @@ function AIMessage({ message }: { message: Message }) {
               aria-label="Good response"
             >
               <ThumbsUp />
+              <span className="a11y-label">Good</span>
             </button>
             <button
               className="feedback-btn down"
@@ -190,6 +191,7 @@ function AIMessage({ message }: { message: Message }) {
               aria-label="Poor response"
             >
               <ThumbsDown />
+              <span className="a11y-label">Bad</span>
             </button>
           </div>
         )}

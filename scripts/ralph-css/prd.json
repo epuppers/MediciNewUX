@@ -215,19 +215,19 @@
       "id": "CSS-36",
       "title": "Panel Overlay Backdrop and Input Area Gradient Border",
       "description": "Read reference/css/components.css PANEL OVERLAY section (~lines 2601-2617). Read reference/css/chat.css input-area gradient (~lines 1625-1632). Restore: (1) Panel overlay (.panel-overlay): fixed position, full screen, background rgba(0,0,0,0.2), z-index above main content but below panel, opacity 0 by default, .show state opacity 1 with transition. (2) Apply overlay behind Cosimo panel when open. (3) Input area top border: border-image with linear-gradient across var(--violet-3), var(--berry-2), var(--taupe-2) — creates a subtle decorative gradient line above the chat input. (4) Dark mode: overlay slightly more opaque (0.3), gradient colors adjusted for dark mode. (5) Overlay transition gated by [data-a11y-motion='reduce'].",
-      "passes": false
+      "passes": true
     },
     {
       "id": "CSS-37",
       "title": "Missing Keyframes Audit: add all remaining animations to app.css",
       "description": "Read ALL reference CSS files and catalog every @keyframes animation. Read app/app.css and check which are already present. The following should already exist: wf-pulse, thinking-cube, reasoning-pulse, stream-cursor-blink. Add ALL that are missing. The full list from the original: (1) blink-cursor — chat.css (2) wf-pulse-node — components.css (3) pulse-step — components.css (4) typing-bounce — components.css (5) youPulse — components.css (6) cube-wave — components.css (7) reason-pulse — components.css (8) spin-retry — components.css (9) pulse-step-dark — components.css (10) profile-slide-right — layout.css (11) profile-slide-left — layout.css. For each missing one, copy the keyframe definition from the reference CSS, add a corresponding .animate-X utility class, and ensure [data-a11y-motion='reduce'] disables it in a11y.css. Do NOT duplicate any that already exist.",
-      "passes": false
+      "passes": true
     },
     {
       "id": "CSS-38",
       "title": "Final Code Audit: full app walkthrough",
       "description": "Final CODE AUDIT pass. Read ALL reference CSS files. Read EVERY component TSX file in app/components/ and app/routes/. For each one, systematically check: (1) grep for raw hex colors (#xxx) in className — replace all with var(--token). (2) grep for Tailwind color classes (bg-blue, text-green, border-gray etc.) — replace with var(--token) pattern. (3) Verify 'bevel' or 'bevel-inset' class on cards, panels, containers, buttons, inputs, dropdowns, artifacts. (4) Verify font tokens: headings/labels use var(--pixel), data/metadata use var(--mono), body text uses var(--sans). (5) Verify every bg-[var(--X)] has a dark: variant. (6) Check app.css has all needed custom classes and keyframes — compare against reference CSS @keyframes count. (7) Check a11y.css gates ALL animations with [data-a11y-motion='reduce']. (8) Verify :focus-visible styles on all interactive elements (buttons, links, inputs). Fix ANY remaining issues. Run npx tsc --noEmit to confirm no type errors. This story should only be marked as passed when all code checks are clean.",
-      "passes": false
+      "passes": true
     }
   ]
 }

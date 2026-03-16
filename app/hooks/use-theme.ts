@@ -30,6 +30,7 @@ export function useTheme(): void {
   const dyslexiaFont = useThemeStore((s) => s.dyslexiaFont);
   const reducedMotion = useThemeStore((s) => s.reducedMotion);
   const highContrast = useThemeStore((s) => s.highContrast);
+  const iconLabels = useThemeStore((s) => s.iconLabels);
 
   // Dark mode — toggle .dark class on <html>
   useEffect(() => {
@@ -88,5 +89,11 @@ export function useTheme(): void {
     } else {
       root.removeAttribute('data-a11y-contrast');
     }
-  }, [dyslexiaFont, reducedMotion, highContrast]);
+
+    if (iconLabels) {
+      root.setAttribute('data-a11y-labels', 'show');
+    } else {
+      root.removeAttribute('data-a11y-labels');
+    }
+  }, [dyslexiaFont, reducedMotion, highContrast, iconLabels]);
 }

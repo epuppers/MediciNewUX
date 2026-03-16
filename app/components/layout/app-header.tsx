@@ -246,6 +246,7 @@ function TaskButton() {
         aria-label="Assigned Tasks"
       >
         <CheckSquare className="size-3.5" />
+        <span className="a11y-label">Tasks</span>
         {tasks.length > 0 && (
           <span className="absolute -right-0.5 -top-0.5 flex min-w-[14px] h-[14px] items-center justify-center rounded-[var(--r-sm)] bg-[var(--red)] border border-solid border-[var(--red-hi)] font-[family-name:var(--mono)] text-[9px] font-bold text-white px-0.5"
             style={{ borderColor: 'var(--red-hi) var(--red-lo) var(--red-lo) var(--red-hi)' }}>
@@ -277,6 +278,7 @@ function CalendarButton() {
         aria-label="Calendar"
       >
         <Calendar className="size-3.5" />
+        <span className="a11y-label">Calendar</span>
       </PopoverTrigger>
       <PopoverContent align="end" className="th-dropdown-panel w-[280px] p-0">
         {calendar ? (
@@ -306,6 +308,7 @@ function UsageButton() {
         aria-label="Usage"
       >
         <BarChart3 className="size-3.5" />
+        <span className="a11y-label">Usage</span>
       </PopoverTrigger>
       <PopoverContent align="end" className="th-dropdown-panel w-[300px] p-0">
         {usage ? (
