@@ -2,7 +2,7 @@
 // ChatInput — Rich text input area with file strip, model selector, attach menu
 // ============================================
 
-import { useState, useRef, useCallback, useEffect, type KeyboardEvent } from 'react';
+import { useState, useRef, useCallback, useEffect, type KeyboardEvent, type DragEvent } from 'react';
 import {
   ArrowUp,
   Paperclip,
@@ -180,8 +180,43 @@ export function ChatInput({
 
   const activeModel = MODEL_OPTIONS.find((m) => m.name === modelName) ?? MODEL_OPTIONS[1];
 
+  // Drop zone state
+  const [isDragOver, setIsDragOver] = useState(false);
+  const dragCounterRef = useRef(0);
+
+  const handleDragEnter = useCallback((e: DragEvent) => {
+    e.preventDefault();
+    dragCounterRef.current++;
+    setIsDragOver(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: DragEvent) => {
+    e.preventDefault();
+    dragCounterRef.current--;
+    if (dragCounterRef.current === 0) {
+      setIsDragOver(false);
+    }
+  }, []);
+
+  const handleDragOver = useCallback((e: DragEvent) => {
+    e.preventDefault();
+  }, []);
+
+  const handleDrop = useCallback((e: DragEvent) => {
+    e.preventDefault();
+    dragCounterRef.current = 0;
+    setIsDragOver(false);
+    // TODO: handle dropped files via onAttach
+  }, []);
+
   return (
-    <div className="input-area">
+    <div
+      className={cn('input-area', isDragOver && 'drop-active')}
+      onDragEnter={handleDragEnter}
+      onDragLeave={handleDragLeave}
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}
+    >
       {/* File strip */}
       {stagedFiles.length > 0 && (
         <div className="input-file-strip">
@@ -263,6 +298,7 @@ export function ChatInput({
             aria-label="Attach file"
           >
             <Paperclip className="h-4 w-4" />
+            <span className="a11y-label">Attach</span>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" side="top" className="attach-dropdown p-0">
             <button
@@ -294,6 +330,7 @@ export function ChatInput({
           aria-label="Send message"
         >
           <ArrowUp className="h-4 w-4" />
+          <span className="a11y-label">Send</span>
         </button>
       </div>
 

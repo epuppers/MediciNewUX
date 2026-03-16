@@ -3333,6 +3333,110 @@
   color: var(--amber);
 }
 
+/* ======== Empty Thread State ======== */
+
+.empty-thread {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.empty-thread-icon {
+  font-size: 28px;
+  color: var(--violet-2);
+  margin-bottom: 12px;
+}
+
+.empty-thread-title {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--taupe-5);
+  margin-bottom: 6px;
+}
+
+.dark .empty-thread-title {
+  color: var(--taupe-1);
+}
+
+.empty-thread-sub {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--taupe-3);
+  max-width: 320px;
+  line-height: 1.6;
+}
+
+.empty-thread-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 16px;
+  justify-content: center;
+}
+
+.empty-thread-chip {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 5px 12px;
+  color: var(--taupe-4);
+  background: var(--off-white);
+  border: 1px solid;
+  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
+  cursor: pointer;
+  transition: all 0.12s;
+  border-radius: var(--r-md);
+}
+
+.empty-thread-chip:hover {
+  background: var(--berry-1);
+  color: var(--berry-5);
+  border-color: var(--berry-2) var(--berry-4) var(--berry-4) var(--berry-2);
+}
+
+.dark .empty-thread-chip {
+  background: var(--surface-1);
+  border-color: var(--taupe-2);
+  color: var(--taupe-2);
+}
+
+.dark .empty-thread-chip:hover {
+  background: var(--berry-1);
+  color: var(--berry-3);
+  border-color: var(--berry-2) var(--berry-4) var(--berry-4) var(--berry-2);
+}
+
+/* ======== Drop Zone ======== */
+
+.input-area.drop-active {
+  position: relative;
+}
+
+.input-area.drop-active::after {
+  content: 'Drop files here';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--violet-3);
+  background: rgba(var(--violet-3-rgb), 0.08);
+  border: 2px dashed var(--violet-3);
+  z-index: 5;
+  letter-spacing: 0.05em;
+}
+
+.dark .input-area.drop-active::after {
+  background: rgba(var(--violet-3-rgb), 0.12);
+}
+
 /* ======== Chat Input Area ======== */
 
 .input-area {

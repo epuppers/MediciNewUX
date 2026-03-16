@@ -1,6 +1,13 @@
 import { Outlet, useMatches } from "react-router";
-import { MessageSquare } from "lucide-react";
 import { Skeleton } from "~/components/ui/skeleton";
+
+/** Suggestion chips for the empty thread state */
+const SUGGESTIONS = [
+  { label: 'Distribution comparison', prompt: 'Compare Q3 and Q4 distributions across all active funds' },
+  { label: 'NAV review', prompt: 'Pull the latest NAV report for Fund IV and flag any valuation changes above 10%' },
+  { label: 'Covenant check', prompt: 'Summarize all outstanding covenant violations across the loan book' },
+  { label: 'Capital call', prompt: 'Generate a capital call notice for the next tranche' },
+];
 
 /**
  * Chat layout route — wraps thread detail routes.
@@ -15,9 +22,24 @@ export default function ChatRoute() {
 
   if (!hasChildRoute) {
     return (
-      <div className="flex h-full flex-col items-center justify-center gap-3 text-muted-foreground">
-        <MessageSquare className="size-10 opacity-30" />
-        <p className="text-sm">Select a thread or start a new conversation</p>
+      <div className="empty-thread">
+        <div className="empty-thread-icon">◆</div>
+        <div className="empty-thread-title">What can Cosimo help with?</div>
+        <div className="empty-thread-sub">
+          Ask about fund performance, document analysis, compliance checks, or anything across your portfolio.
+        </div>
+        <div className="empty-thread-suggestions">
+          {SUGGESTIONS.map((s) => (
+            <button
+              key={s.label}
+              type="button"
+              className="empty-thread-chip"
+              data-suggestion={s.prompt}
+            >
+              {s.label}
+            </button>
+          ))}
+        </div>
       </div>
     );
   }
