@@ -6,6 +6,12 @@ interface TraitBadgesProps {
   presetTraits: string[];
 }
 
+const TAG_BASE = 'font-mono text-[0.6875rem] font-semibold px-[10px] py-1 border border-taupe-2 rounded-[var(--r-md)] bg-off-white text-taupe-4 cursor-pointer transition-all duration-100 tracking-[0.02em] select-none hover:border-berry-2 hover:text-berry-3 dark:bg-surface-2 dark:border-taupe-3 dark:text-taupe-3 dark:hover:border-berry-2 dark:hover:text-berry-2';
+
+const TAG_ACTIVE = 'bg-berry-3 text-white border-t-berry-2 border-l-berry-2 border-b-berry-5 border-r-berry-5 hover:bg-berry-4 hover:text-white dark:text-white';
+
+const TAG_DISABLED = 'opacity-35 cursor-default hover:border-taupe-2 hover:text-taupe-4';
+
 /** Personality trait badges split into selected / presets / custom input sections. */
 export function TraitBadges({ selectedTraits: initialSelected, presetTraits }: TraitBadgesProps) {
   const [selected, setSelected] = useState<string[]>(initialSelected);
@@ -39,25 +45,26 @@ export function TraitBadges({ selectedTraits: initialSelected, presetTraits }: T
   return (
     <>
       {/* Selected traits */}
-      <div className="mem-trait-selected">
+      <div className="flex flex-wrap gap-1.5 mb-2.5 min-h-[28px]">
         {selected.map((name) => (
           <button
             key={name}
             type="button"
             onClick={() => removeTrait(name)}
             className={cn(
-              'mem-trait-tag active',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--violet-3)]'
+              TAG_BASE,
+              TAG_ACTIVE,
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-3'
             )}
           >
             {name}
-            <span className="trait-x">&times;</span>
+            <span className="ml-1 text-[0.8125rem] opacity-70">&times;</span>
           </button>
         ))}
       </div>
 
       {/* Preset traits */}
-      <div className="mem-trait-presets">
+      <div className="flex flex-wrap gap-1.5 mb-2.5 pt-2.5 border-t border-taupe-1">
         {presetTraits.map((name) => {
           const isSelected = selected.includes(name);
           return (
@@ -66,9 +73,9 @@ export function TraitBadges({ selectedTraits: initialSelected, presetTraits }: T
               type="button"
               onClick={() => !isSelected && addTrait(name)}
               className={cn(
-                'mem-trait-tag',
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--violet-3)]',
-                isSelected && 'disabled'
+                TAG_BASE,
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-3',
+                isSelected && TAG_DISABLED
               )}
             >
               {name}
@@ -78,10 +85,10 @@ export function TraitBadges({ selectedTraits: initialSelected, presetTraits }: T
       </div>
 
       {/* Custom trait input */}
-      <div className="mem-trait-custom">
+      <div className="flex gap-1.5 pt-2.5 border-t border-taupe-1">
         <input
           type="text"
-          className="mem-trait-input"
+          className="flex-1 px-[10px] py-[5px] font-mono text-xs text-taupe-5 bg-off-white border border-taupe-2 rounded-[var(--r-md)] outline-none focus:border-violet-3 dark:bg-surface-2 dark:border-taupe-3 dark:text-taupe-3"
           placeholder="Add a custom trait..."
           value={customInput}
           onChange={(e) => setCustomInput(e.target.value)}
@@ -90,8 +97,8 @@ export function TraitBadges({ selectedTraits: initialSelected, presetTraits }: T
         <button
           type="button"
           className={cn(
-            'mem-trait-add-btn',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--violet-3)]'
+            'px-3 py-[5px] font-mono text-[0.6875rem] font-semibold text-taupe-5 bg-off-white border border-t-taupe-1 border-l-taupe-1 border-b-taupe-2 border-r-taupe-2 rounded-[var(--r-md)] cursor-pointer hover:bg-berry-1 hover:text-berry-5 dark:bg-surface-2 dark:border-taupe-3 dark:text-taupe-3 dark:hover:bg-[rgba(var(--berry-3-rgb),0.12)] dark:hover:text-berry-2',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-3'
           )}
           onClick={addCustomTrait}
         >

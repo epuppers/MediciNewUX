@@ -1,10 +1,8 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "./a11y.css";
-
-/* Google Fonts: IBM Plex Mono + DM Sans */
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap");
 
 /* ChicagoFLF pixel font */
 @font-face {
@@ -292,6 +290,52 @@
 }
 
 @theme inline {
+  /* Medici design tokens — colors */
+  --color-taupe-1: var(--taupe-1);
+  --color-taupe-2: var(--taupe-2);
+  --color-taupe-3: var(--taupe-3);
+  --color-taupe-4: var(--taupe-4);
+  --color-taupe-5: var(--taupe-5);
+  --color-berry-1: var(--berry-1);
+  --color-berry-2: var(--berry-2);
+  --color-berry-3: var(--berry-3);
+  --color-berry-4: var(--berry-4);
+  --color-berry-5: var(--berry-5);
+  --color-blue-1: var(--blue-1);
+  --color-blue-2: var(--blue-2);
+  --color-blue-3: var(--blue-3);
+  --color-violet-1: var(--violet-1);
+  --color-violet-2: var(--violet-2);
+  --color-violet-3: var(--violet-3);
+  --color-violet-4: var(--violet-4);
+  --color-violet-5: var(--violet-5);
+  --color-chinese-1: var(--chinese-1);
+  --color-chinese-2: var(--chinese-2);
+  --color-chinese-3: var(--chinese-3);
+  --color-chinese-4: var(--chinese-4);
+  --color-chinese-5: var(--chinese-5);
+  --color-white: var(--white);
+  --color-off-white: var(--off-white);
+  --color-green: var(--green);
+  --color-red: var(--red);
+  --color-amber: var(--amber);
+  --color-surface-0: var(--surface-0);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+
+  /* Medici design tokens — fonts */
+  --font-pixel: 'ChicagoFLF', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-sans: 'DM Sans', sans-serif;
+
+  /* Medici design tokens — border radii */
+  --radius-r-xs: 2px;
+  --radius-r-sm: 3px;
+  --radius-r-md: 4px;
+  --radius-r-lg: 6px;
+  --radius-r-pill: 9px;
+
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -402,37 +446,6 @@
 }
 
 @layer components {
-  /* ======== Beveled 3D Borders ======== */
-
-  /* Raised bevel — light top-left, dark bottom-right */
-  .bevel {
-    border-style: solid;
-    border-width: 1px;
-    border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
-  }
-
-  /* Inset/pressed bevel — dark top-left, light bottom-right */
-  .bevel-inset {
-    border-style: solid;
-    border-width: 1px;
-    border-color: var(--taupe-3) var(--taupe-1) var(--taupe-1) var(--taupe-3);
-  }
-
-  /* Dark mode: flatten bevels — 3D effect is subtle on dark surfaces */
-  .dark .bevel,
-  .dark .bevel-inset {
-    border-color: var(--taupe-2);
-  }
-
-  /* ======== Label Mono ======== */
-  .label-mono {
-    font-family: var(--mono);
-    font-size: 0.625rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--taupe-3);
-  }
-
   /* ======== Overview Grid & Key-Value Rows ======== */
   .overview-grid {
     display: grid;
@@ -440,65 +453,14 @@
     gap: 12px;
   }
 
-  .overview-grid .detail-section {
-    margin-bottom: 0;
-  }
 
   .overview-full {
     grid-column: 1 / -1;
   }
 
-  .kv-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 6px 0;
-    border-bottom: 1px solid var(--taupe-1);
-  }
-
-  .kv-row:last-child {
-    border-bottom: none;
-  }
-
-  .kv-key {
-    font-family: var(--mono);
-    font-size: 0.6875rem;
-    color: var(--taupe-3);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-  .kv-val {
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--taupe-5);
-  }
 
   /* ======== Brain Memory Section ======== */
 
-  .mem-section-label {
-    font-family: var(--mono);
-    font-size: 0.6875rem;
-    font-weight: 700;
-    color: var(--taupe-3);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-bottom: 8px;
-  }
-
-  /* Role Card */
-  .mem-role-card {
-    background: var(--white);
-    border: 2px solid;
-    border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
-    border-radius: var(--r-md);
-    padding: 12px 14px;
-  }
-
-  .dark .mem-role-card {
-    background: var(--surface-1);
-    border-color: var(--taupe-3);
-  }
 
   /* Personality Traits */
   .mem-personality {
@@ -513,155 +475,6 @@
     background: var(--surface-1);
     border-color: var(--taupe-3);
   }
-
-  .mem-trait-tag {
-    font-family: var(--mono);
-    font-size: 0.6875rem;
-    font-weight: 600;
-    padding: 4px 10px;
-    border: 1px solid var(--taupe-2);
-    border-radius: var(--r-md);
-    background: var(--off-white);
-    color: var(--taupe-4);
-    cursor: pointer;
-    transition: all 0.1s;
-    letter-spacing: 0.02em;
-    user-select: none;
-  }
-
-  .mem-trait-tag:hover {
-    border-color: var(--berry-2);
-    color: var(--berry-3);
-  }
-
-  .mem-trait-tag.active {
-    background: var(--berry-3);
-    color: var(--white);
-    border-color: var(--berry-2) var(--berry-5, var(--berry-3)) var(--berry-5, var(--berry-3)) var(--berry-2);
-  }
-
-  .mem-trait-tag.active:hover {
-    background: var(--berry-4, var(--berry-3));
-    color: var(--white);
-  }
-
-  .dark .mem-trait-tag {
-    background: var(--surface-2);
-    border-color: var(--taupe-3);
-    color: var(--taupe-3);
-  }
-
-  .dark .mem-trait-tag:hover {
-    border-color: var(--berry-2);
-    color: var(--berry-2);
-  }
-
-  .dark .mem-trait-tag.active {
-    color: var(--white);
-  }
-
-  /* Category Filter Pills */
-  .mem-cat-pill {
-    font-family: var(--mono);
-    font-size: 0.6875rem;
-    font-weight: 600;
-    padding: 3px 10px;
-    border: 1px solid var(--taupe-2);
-    border-radius: var(--r-md);
-    background: var(--off-white);
-    color: var(--taupe-3);
-    cursor: pointer;
-    transition: all 0.1s;
-    letter-spacing: 0.03em;
-  }
-
-  .mem-cat-pill:hover {
-    border-color: var(--violet-2);
-    color: var(--violet-3);
-  }
-
-  .mem-cat-pill.active {
-    background: var(--violet-3);
-    color: var(--white);
-    border-color: var(--violet-2) var(--violet-4) var(--violet-4) var(--violet-2);
-  }
-
-  .dark .mem-cat-pill {
-    background: var(--surface-2);
-    border-color: var(--taupe-3);
-    color: var(--taupe-3);
-  }
-
-  .dark .mem-cat-pill:hover {
-    border-color: var(--violet-2);
-    color: var(--violet-2);
-  }
-
-  .dark .mem-cat-pill.active {
-    background: var(--violet-3);
-    border-color: var(--violet-2);
-    color: var(--white);
-  }
-
-  /* Search Input */
-  .mem-search-input {
-    width: 100%;
-    padding: 7px 10px 7px 30px;
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    color: var(--taupe-5);
-    background: var(--off-white);
-    border: 2px solid;
-    border-color: var(--taupe-3) var(--taupe-1) var(--taupe-1) var(--taupe-3);
-    border-radius: var(--r-md);
-    outline: none;
-  }
-
-  .mem-search-input:focus {
-    border-color: var(--violet-3);
-  }
-
-  .dark .mem-search-input {
-    background: var(--surface-2);
-    border-color: var(--surface-0) var(--surface-3) var(--surface-3) var(--surface-0);
-  }
-
-  .dark .mem-search-input:focus {
-    border-color: var(--violet-3);
-  }
-
-  /* Fact Cards */
-  .mem-fact-card {
-    background: var(--white);
-    border: 2px solid;
-    border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
-    border-radius: var(--r-md);
-    padding: 10px 14px;
-    transition: border-color 0.15s;
-    border-left: 3px solid var(--taupe-2);
-  }
-
-  .mem-fact-card:hover {
-    border-color: var(--taupe-3) var(--taupe-4) var(--taupe-4) var(--taupe-3);
-  }
-
-  .dark .mem-fact-card {
-    background: var(--surface-1);
-    border-color: var(--taupe-3);
-    border-left-color: var(--taupe-3);
-  }
-
-  .dark .mem-fact-card:hover {
-    border-color: var(--taupe-4);
-  }
-
-  /* Category left-border accents */
-  .mem-fact-card[data-category="preference"] { border-left-color: var(--berry-3); }
-  .mem-fact-card[data-category="workflow"] { border-left-color: var(--green); }
-  .mem-fact-card[data-category="contact"] { border-left-color: var(--blue-3); }
-  .mem-fact-card[data-category="fund"] { border-left-color: var(--violet-3); }
-  .mem-fact-card[data-category="style"] { border-left-color: var(--amber); }
-  .mem-fact-card[data-category="context"] { border-left-color: var(--taupe-3); }
 
   /* Category badges */
   .cat-preference {
@@ -730,94 +543,6 @@
     border-color: var(--taupe-3);
   }
 
-  /* Fact text & meta */
-  .mem-fact-text {
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    line-height: 1.6;
-    color: var(--taupe-5);
-    margin-bottom: 6px;
-  }
-
-  .mem-fact-source,
-  .mem-fact-date {
-    font-family: var(--mono);
-    font-size: 0.625rem;
-    color: var(--taupe-2);
-  }
-
-  /* Entity chips on facts */
-  .mem-entity-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 2px 7px 2px 5px;
-    font-family: var(--mono);
-    font-size: 0.625rem;
-    color: var(--taupe-4);
-    background: var(--off-white);
-    border: 1px solid;
-    border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
-    border-radius: var(--r-pill);
-    cursor: pointer;
-    transition: border-color 0.1s, background 0.1s, color 0.1s;
-  }
-
-  .mem-entity-chip:hover {
-    background: var(--violet-1);
-    border-color: var(--violet-2) var(--violet-3) var(--violet-3) var(--violet-2);
-    color: var(--violet-4);
-  }
-
-  .mem-entity-chip:active {
-    background: var(--violet-2);
-  }
-
-  .mem-entity-chip:focus-visible {
-    outline: 2px solid var(--violet-3);
-    outline-offset: 1px;
-  }
-
-  .dark .mem-entity-chip {
-    background: rgba(var(--black-rgb, 0,0,0), 0.15);
-    border-color: var(--taupe-3) var(--taupe-2) var(--taupe-2) var(--taupe-3);
-    color: var(--taupe-3);
-  }
-
-  .dark .mem-entity-chip:hover {
-    background: rgba(var(--violet-3-rgb), 0.15);
-    border-color: var(--violet-3) var(--violet-2) var(--violet-2) var(--violet-3);
-    color: var(--violet-2);
-  }
-
-  .dark .mem-entity-chip:active {
-    background: rgba(var(--violet-3-rgb), 0.25);
-  }
-
-  /* Fact menu button */
-  .mem-fact-menu-btn {
-    background: none;
-    border: none;
-    color: var(--taupe-2);
-    cursor: pointer;
-    padding: 2px 4px;
-    transition: color 0.1s;
-    opacity: 0;
-  }
-
-  .mem-fact-card:hover .mem-fact-menu-btn {
-    opacity: 1;
-    color: var(--taupe-3);
-  }
-
-  .mem-fact-menu-btn:hover {
-    color: var(--taupe-5);
-  }
-
-  .mem-fact-menu-btn:focus-visible {
-    opacity: 1;
-  }
-
   /* Facts toolbar */
   .mem-facts-toolbar {
     margin-bottom: 12px;
@@ -838,97 +563,6 @@
   }
   .header-btn.primary:hover { background: var(--violet-4, var(--violet-3)); }
   .dark .header-btn.primary { color: var(--text-light, var(--white)); }
-
-  /* Trait sections: selected / presets / custom */
-  .mem-trait-selected {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 10px;
-    min-height: 28px;
-  }
-
-  .mem-trait-tag.disabled {
-    opacity: 0.35;
-    cursor: default;
-  }
-  .mem-trait-tag.disabled:hover {
-    border-color: var(--taupe-2);
-    color: var(--taupe-4);
-  }
-
-  .trait-x {
-    margin-left: 4px;
-    font-size: 0.8125rem;
-    opacity: 0.7;
-  }
-
-  .mem-trait-presets {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 10px;
-    padding-top: 10px;
-    border-top: 1px solid var(--taupe-1);
-  }
-
-  .mem-trait-custom {
-    display: flex;
-    gap: 6px;
-    padding-top: 10px;
-    border-top: 1px solid var(--taupe-1);
-  }
-
-  .mem-trait-input {
-    flex: 1;
-    padding: 5px 10px;
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    color: var(--taupe-5);
-    background: var(--off-white);
-    border: 1px solid var(--taupe-2);
-    border-radius: var(--r-md);
-    outline: none;
-  }
-
-  .mem-trait-input:focus {
-    border-color: var(--violet-3);
-  }
-
-  .dark .mem-trait-input {
-    background: var(--surface-2);
-    border-color: var(--taupe-3);
-    color: var(--taupe-3);
-  }
-
-  .mem-trait-add-btn {
-    padding: 5px 12px;
-    font-family: var(--mono);
-    font-size: 0.6875rem;
-    font-weight: 600;
-    color: var(--taupe-5);
-    background: var(--off-white);
-    border: 1px solid;
-    border-color: var(--taupe-1) var(--taupe-2) var(--taupe-2) var(--taupe-1);
-    border-radius: var(--r-md);
-    cursor: pointer;
-  }
-
-  .mem-trait-add-btn:hover {
-    background: var(--berry-1);
-    color: var(--berry-5, var(--berry-3));
-  }
-
-  .dark .mem-trait-add-btn {
-    background: var(--surface-2);
-    border-color: var(--taupe-3);
-    color: var(--taupe-3);
-  }
-
-  .dark .mem-trait-add-btn:hover {
-    background: rgba(var(--berry-3-rgb), 0.12);
-    color: var(--berry-2);
-  }
 
   /* Add Memory form */
   .mem-add-form {
@@ -1056,49 +690,7 @@
     color: var(--taupe-3);
   }
 
-  /* Memory empty state */
-  .mem-no-results {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 40px 20px;
-  }
-
-  .mem-no-results .brain-empty-icon {
-    color: var(--taupe-2);
-    margin-bottom: 16px;
-  }
-
-  .mem-no-results .brain-empty-title {
-    font-family: var(--pixel);
-    font-size: 1rem;
-    color: var(--taupe-5);
-    letter-spacing: 0.5px;
-    margin-bottom: 10px;
-  }
-
-  .mem-no-results .brain-empty-desc {
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    color: var(--taupe-3);
-    line-height: 1.6;
-  }
-
-  /* Role text (contenteditable) */
-  .mem-role-text {
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    line-height: 1.7;
-    color: var(--taupe-5);
-    outline: none;
-    min-height: 40px;
-  }
-
-  .mem-role-text:focus {
-    border-color: var(--violet-3);
-  }
-
+  /* Role text placeholder (contentEditable :empty pseudo — can't be done in Tailwind) */
   .mem-role-text:empty::before {
     content: attr(data-placeholder);
     color: var(--taupe-2);
@@ -3183,6 +2775,29 @@
 
 .msg-body p { margin-bottom: 8px; }
 .msg-body p:last-child { margin-bottom: 0; }
+
+/* Inline citation superscript */
+.cite-ref {
+  font-family: var(--mono);
+  font-size: 0.6em;
+  color: var(--violet-3);
+  cursor: pointer;
+  vertical-align: super;
+  line-height: 0;
+  padding: 0 1px;
+  border-radius: var(--r-sm);
+  transition: color 0.15s, background-color 0.15s;
+}
+.cite-ref:hover,
+.cite-ref:focus-visible {
+  background: rgba(var(--violet-3-rgb), 0.12);
+}
+.cite-ref:focus-visible {
+  outline: 2px solid var(--violet-3);
+  outline-offset: 1px;
+}
+[data-a11y-motion="reduce"] .cite-ref { transition: none; }
+[data-a11y-contrast="high"] .cite-ref { text-decoration: underline; }
 
 /* User card — berry tinted background */
 .user-card {
@@ -5861,15 +5476,6 @@
   border-bottom: 1px solid var(--taupe-4);
 }
 
-.detail-section-title {
-  font-family: var(--mono);
-  font-size: 0.6875rem;
-  font-weight: 600;
-  color: var(--taupe-1);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
 .wf-stats-body {
   display: flex;
   align-items: center;
@@ -6145,10 +5751,6 @@
   border-bottom-color: var(--taupe-2);
 }
 
-.dark .detail-section-title {
-  color: var(--taupe-4);
-}
-
 .dark .wf-stats-sep {
   background: var(--surface-3);
 }
@@ -6402,14 +6004,16 @@
   background: var(--berry-1);
 }
 
-.tab-btn.active {
+.tab-btn.active,
+.tab-btn[data-active] {
   color: var(--violet-3);
   background: var(--off-white);
   border-color: var(--taupe-2) var(--taupe-2) transparent var(--taupe-2);
   z-index: 2;
 }
 
-.tab-btn.active::before {
+.tab-btn.active::before,
+.tab-btn[data-active]::before {
   content: '';
   position: absolute;
   top: 0;
@@ -6430,28 +6034,6 @@
   flex: 1;
   overflow-y: auto;
   padding: 14px 0;
-}
-
-/* Detail sections (used in tabs) */
-.detail-section {
-  background: var(--white);
-  border: 2px solid;
-  border-color: var(--taupe-2) var(--taupe-3) var(--taupe-3) var(--taupe-2);
-  margin-bottom: 12px;
-  border-radius: var(--r-md);
-}
-
-.detail-section-bar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  background: var(--taupe-5);
-  border-bottom: 1px solid var(--taupe-4);
-}
-
-.detail-section-body {
-  padding: 14px;
 }
 
 /* Config rows (for key-value pairs in detail sections) */
@@ -6596,26 +6178,15 @@
   background: var(--berry-1);
 }
 
-.dark .tab-btn.active {
+.dark .tab-btn.active,
+.dark .tab-btn[data-active] {
   background: var(--off-white);
   border-color: var(--surface-3) var(--surface-3) transparent var(--surface-3);
 }
 
-.dark .tab-btn.active::before {
+.dark .tab-btn.active::before,
+.dark .tab-btn[data-active]::before {
   background: var(--violet-2);
-}
-
-.dark .detail-section {
-  border-color: var(--taupe-2);
-}
-
-.dark .detail-section-bar {
-  background: var(--surface-2);
-  border-bottom-color: var(--taupe-2);
-}
-
-.dark .detail-section-body {
-  background: var(--surface-1);
 }
 
 .dark .config-row {
