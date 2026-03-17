@@ -74,9 +74,9 @@ function PanelMessageBubble({ message }: { message: PanelMessage }) {
 function ThinkingIndicator() {
   return (
     <div className="flex gap-1 px-3 py-2">
-      <span className="cosimo-typing-dot h-1.5 w-1.5 rounded-full bg-violet-3" />
-      <span className="cosimo-typing-dot h-1.5 w-1.5 rounded-full bg-violet-3 [animation-delay:0.2s]" />
-      <span className="cosimo-typing-dot h-1.5 w-1.5 rounded-full bg-violet-3 [animation-delay:0.4s]" />
+      <span className="h-1.5 w-1.5 rounded-full animate-[typing-bounce_1.4s_ease-in-out_infinite] shadow-[inset_0_-1px_2px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.08)] bg-[radial-gradient(circle_at_35%_30%,var(--violet-3),var(--violet-4))] dark:shadow-[inset_0_-1px_2px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.12)] motion-reduce:animate-none" />
+      <span className="h-1.5 w-1.5 rounded-full animate-[typing-bounce_1.4s_ease-in-out_infinite] shadow-[inset_0_-1px_2px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.08)] bg-[radial-gradient(circle_at_35%_30%,var(--violet-3),var(--violet-4))] dark:shadow-[inset_0_-1px_2px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.12)] motion-reduce:animate-none [animation-delay:0.2s]" />
+      <span className="h-1.5 w-1.5 rounded-full animate-[typing-bounce_1.4s_ease-in-out_infinite] shadow-[inset_0_-1px_2px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.08)] bg-[radial-gradient(circle_at_35%_30%,var(--violet-3),var(--violet-4))] dark:shadow-[inset_0_-1px_2px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.12)] motion-reduce:animate-none [animation-delay:0.4s]" />
     </div>
   );
 }

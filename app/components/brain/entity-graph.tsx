@@ -529,7 +529,7 @@ function GraphNode({ node, anim, onClick, onHover, onLeave, isClusterYou }: Grap
           cx={0}
           cy={0}
           fill="none"
-          className="graph-you-pulse"
+          className="graph-you-pulse animate-[graph-you-pulse_2.5s_ease-in-out_infinite]"
           stroke="rgba(180,120,216,0.4)"
           strokeWidth={1}
           style={{

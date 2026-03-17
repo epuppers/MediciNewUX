@@ -209,7 +209,11 @@ export function ChatInput({
 
   return (
     <div
-      className={cn('input-area', isDragOver && 'drop-active')}
+      className={cn(
+        'relative px-4 py-3 border-t-2 border-solid bg-white dark:bg-surface-1',
+        isDragOver && 'after:content-["Drop_files_here"] after:absolute after:inset-0 after:flex after:items-center after:justify-center after:font-[family-name:var(--mono)] after:text-xs after:font-semibold after:text-violet-3 after:bg-[rgba(var(--violet-3-rgb),0.08)] after:dark:bg-[rgba(var(--violet-3-rgb),0.12)] after:border-2 after:border-dashed after:border-violet-3 after:z-5 after:tracking-[0.05em]',
+      )}
+      style={{ borderImage: 'linear-gradient(90deg, var(--violet-2), var(--berry-2), var(--taupe-2)) 1' }}
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDragOver={handleDragOver}
@@ -217,17 +221,17 @@ export function ChatInput({
     >
       {/* File strip */}
       {stagedFiles.length > 0 && (
-        <div className="input-file-strip">
+        <div className="flex gap-1.5 mb-2 overflow-x-auto pb-0.5">
           {stagedFiles.map((file, i) => (
-            <div key={`${file.name}-${i}`} className="input-file-chip">
-              <span className="input-file-chip-icon">{getFileIconEmoji(file.name)}</span>
-              <span className="input-file-chip-name">{file.name}</span>
-              <span className="input-file-chip-size">{file.size}</span>
+            <div key={`${file.name}-${i}`} className="inline-flex items-center gap-1.5 shrink-0 px-2 py-1 bg-off-white border border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 rounded-[var(--r-sm)] hover:bg-taupe-1 dark:bg-surface-2 dark:border-t-taupe-3 dark:border-l-taupe-3 dark:border-b-taupe-4 dark:border-r-taupe-4 dark:hover:bg-surface-3">
+              <span className="text-xs shrink-0">{getFileIconEmoji(file.name)}</span>
+              <span className="font-[family-name:var(--mono)] text-[0.6875rem] font-semibold text-taupe-5 max-w-40 overflow-hidden text-ellipsis whitespace-nowrap">{file.name}</span>
+              <span className="font-[family-name:var(--mono)] text-[0.625rem] text-taupe-3 shrink-0">{file.size}</span>
               {onRemoveFile && (
                 <button
                   type="button"
                   onClick={() => onRemoveFile(i)}
-                  className="input-file-chip-remove"
+                  className="flex items-center justify-center w-4 h-4 p-0 bg-transparent border border-transparent rounded-[var(--r-sm)] text-xs leading-none text-taupe-3 cursor-pointer shrink-0 hover:bg-[rgba(var(--red-rgb),0.1)] hover:border-red hover:text-red active:bg-[rgba(var(--red-rgb),0.2)] focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-1 dark:hover:bg-[rgba(var(--red-rgb),0.15)]"
                   title={`Remove ${file.name}`}
                   aria-label={`Remove ${file.name}`}
                 >
@@ -244,7 +248,7 @@ export function ChatInput({
       {autocomplete.isOpen && autocomplete.filteredItems.length > 0 && (
         <div
           ref={autocompleteRef}
-          className="wf-command-autocomplete"
+          className="absolute bottom-full left-0 right-0 max-h-60 overflow-y-auto mb-1 py-1 bg-white border-2 border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-4 border-r-taupe-4 rounded-[var(--r-md)] shadow-[2px_2px_0_rgba(var(--black-rgb),0.08)] z-200 dark:bg-surface-2 dark:border-t-[var(--surface-4,var(--taupe-3))] dark:border-l-[var(--surface-4,var(--taupe-3))] dark:border-b-surface-1 dark:border-r-surface-1 dark:shadow-[2px_2px_0_rgba(var(--black-rgb),0.2)]"
           role="listbox"
           aria-label="Workflow commands"
         >
@@ -255,23 +259,26 @@ export function ChatInput({
               data-ac-item
               role="option"
               aria-selected={i === autocomplete.selectedIndex}
-              className={cn('wf-ac-item', i === autocomplete.selectedIndex && 'active')}
+              className={cn(
+                'flex flex-col gap-px px-3 py-2 cursor-pointer border-none bg-transparent w-full text-left transition-[background] duration-100 hover:bg-[rgba(var(--violet-3-rgb),0.06)] active:bg-[rgba(var(--violet-3-rgb),0.12)] focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-[-2px] focus-visible:rounded-[var(--r-sm)] dark:hover:bg-[rgba(var(--violet-3-rgb),0.1)] dark:active:bg-[rgba(var(--violet-3-rgb),0.18)]',
+                i === autocomplete.selectedIndex && 'bg-[rgba(var(--violet-3-rgb),0.06)] dark:bg-[rgba(var(--violet-3-rgb),0.1)]',
+              )}
               onClick={() => handleSelectCommand(i)}
             >
-              <span className="wf-ac-cmd">
+              <span className="font-[family-name:var(--mono)] text-xs font-bold text-violet-3 flex items-center gap-1.5">
                 {cmd.command}
                 {cmd.argPlaceholder && (
-                  <span className="wf-ac-label">{cmd.argPlaceholder}</span>
+                  <span className="font-[family-name:var(--sans)] text-[0.6875rem] font-normal text-taupe-4 dark:text-taupe-3">{cmd.argPlaceholder}</span>
                 )}
               </span>
-              <span className="wf-ac-desc">{cmd.description}</span>
+              <span className="font-[family-name:var(--sans)] text-[0.625rem] text-taupe-3 leading-[1.3]">{cmd.description}</span>
             </button>
           ))}
         </div>
       )}
 
       {/* Input row */}
-      <div className="input-row">
+      <div className="flex gap-1.5 items-end">
         {/* Text input */}
         <textarea
           ref={textareaRef}
@@ -285,7 +292,10 @@ export function ChatInput({
           disabled={disabled}
           rows={1}
           aria-label="Message input"
-          className={cn('text-input', disabled && 'disabled')}
+          className={cn(
+            'flex-1 px-2.5 py-2 font-[family-name:var(--mono)] text-[0.8125rem] leading-[1.5] text-taupe-5 bg-off-white border border-solid border-t-taupe-3 border-l-taupe-3 border-b-taupe-1 border-r-taupe-1 outline-none overflow-y-auto min-h-9 max-h-40 break-words whitespace-pre-wrap rounded-[var(--r-md)] resize-none focus:border-violet-3 focus:shadow-[0_0_0_1px_var(--violet-3)] placeholder:text-taupe-3 dark:bg-surface-0 dark:border-taupe-3',
+            disabled && 'opacity-50 pointer-events-none bg-taupe-1 cursor-not-allowed dark:bg-surface-2',
+          )}
         />
 
         {/* Attach button with dropdown */}
@@ -296,28 +306,31 @@ export function ChatInput({
       </div>
 
       {/* Footer */}
-      <div className="input-footer">
+      <div className="flex justify-between items-center mt-1.5 font-[family-name:var(--mono)] text-xs text-taupe-3">
         {/* Model selector */}
         <DropdownMenu>
-          <DropdownMenuTrigger className="model-selector-btn">
+          <DropdownMenuTrigger className="flex items-center gap-[5px] px-2 py-0.5 font-[family-name:var(--mono)] text-[0.6875rem] font-semibold text-taupe-4 bg-transparent border border-solid border-taupe-2 cursor-pointer transition-all duration-100 whitespace-nowrap rounded-[var(--r-md)] hover:border-t-violet-2 hover:border-l-violet-2 hover:border-b-violet-4 hover:border-r-violet-4 hover:text-violet-3 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-1 dark:border-taupe-2 dark:text-taupe-3 dark:hover:border-violet-3 dark:hover:text-violet-3 [&_svg]:block [&_svg]:w-2 [&_svg]:h-2 [&_svg]:transition-transform [&_svg]:duration-150">
             <span>{activeModel.name}</span>
             <ChevronDown className="h-2 w-2" />
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" side="top" className="model-dropdown p-0">
+          <DropdownMenuContent align="start" side="top" className="min-w-[260px] bg-white border-2 border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-4 border-r-taupe-4 shadow-[2px_2px_0_rgba(var(--black-rgb),0.08)] rounded-[var(--r-md)] p-0 overflow-hidden dark:bg-surface-2 dark:border-taupe-2 dark:shadow-[2px_2px_0_rgba(var(--black-rgb),0.3)]">
             {MODEL_OPTIONS.map((model) => (
               <button
                 key={model.id}
                 type="button"
-                className={cn('model-option', model.id === activeModel.id && 'selected')}
+                className={cn(
+                  'flex flex-col gap-0.5 w-full px-3 py-2 border-none border-b border-b-taupe-1 bg-transparent cursor-pointer text-left transition-[background] duration-100 last:border-b-0 hover:bg-berry-1 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-[-2px] dark:border-b-surface-3 dark:hover:bg-[rgba(var(--violet-3-rgb),0.1)]',
+                  model.id === activeModel.id && 'bg-[rgba(var(--violet-3-rgb),0.06)] dark:bg-[rgba(var(--violet-3-rgb),0.08)]',
+                )}
                 onClick={() => onModelChange?.(model.id)}
               >
-                <span className="model-option-name">
+                <span className="font-[family-name:var(--mono)] text-xs font-semibold text-taupe-5">
                   {model.name}
                   {model.id === activeModel.id && (
                     <span className="ml-1.5 text-violet-3">●</span>
                   )}
                 </span>
-                <span className="model-option-desc">{model.description}</span>
+                <span className="font-[family-name:var(--mono)] text-[0.625rem] text-taupe-3 leading-[1.3]">{model.description}</span>
               </button>
             ))}
           </DropdownMenuContent>

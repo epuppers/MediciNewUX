@@ -23,18 +23,18 @@ export function Artifact({ artifact, className }: ArtifactProps) {
   }
 
   return (
-    <div className={cn('artifact', className)}>
+    <div className={cn('m-[10px_0_10px_30px] border-2 border-t-taupe-2 border-l-taupe-2 border-b-taupe-4 border-r-taupe-4 bg-white dark:bg-surface-1 dark:border-taupe-2 rounded-[var(--r-md)] overflow-hidden', className)}>
       {/* Art bar — title bar with stripes */}
-      <div className="art-bar">
-        <div className="art-close" />
+      <div className="flex items-center gap-2 p-[6px_10px] bg-taupe-5 dark:bg-surface-2 border-b border-taupe-4 rounded-t-[var(--r-sm)]">
+        <div className="w-2.5 h-2.5 bg-red border border-t-[var(--red-hi,var(--red))] border-l-[var(--red-hi,var(--red))] border-b-[var(--red-lo,var(--red))] border-r-[var(--red-lo,var(--red))] shrink-0 rounded-[var(--r-md)] cursor-pointer" />
         <div className="art-stripe" />
-        <span className="art-title">
+        <span className="font-mono text-[0.6875rem] font-semibold text-taupe-1 dark:text-taupe-4 whitespace-nowrap">
           {artifact.title}
         </span>
         <div className="art-stripe" />
         <button
           onClick={handleToggle}
-          className="art-toggle"
+          className="shrink-0 flex w-5 h-5 items-center justify-center rounded-[var(--r-sm)] text-taupe-3 bg-transparent border-none cursor-pointer transition-colors duration-100 hover:text-taupe-1"
           aria-label={collapsed ? 'Expand artifact' : 'Collapse artifact'}
         >
           {collapsed ? (
@@ -48,7 +48,7 @@ export function Artifact({ artifact, className }: ArtifactProps) {
 
       {/* Art body */}
       {!collapsed && (
-        <div className="art-body">
+        <div className="p-3 overflow-x-auto">
           <ArtifactBody artifact={artifact} />
         </div>
       )}

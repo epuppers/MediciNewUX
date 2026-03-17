@@ -17,11 +17,11 @@ interface DataTableProps {
 export function DataTable({ columns, rows, className }: DataTableProps) {
   return (
     <div className={className}>
-      <Table className="data-tbl">
+      <Table className="font-[family-name:var(--mono)] text-xs">
         <TableHeader>
           <TableRow>
             {columns.map((col, i) => (
-              <TableHead key={i}>{col}</TableHead>
+              <TableHead key={i} className="text-left px-2.5 py-1.5 text-xs font-semibold tracking-widest uppercase text-[var(--taupe-3)] border-b-2 border-[var(--taupe-2)] dark:border-[var(--taupe-3)]">{col}</TableHead>
             ))}
           </TableRow>
         </TableHeader>
@@ -29,7 +29,7 @@ export function DataTable({ columns, rows, className }: DataTableProps) {
           {rows.map((row, rowIdx) => (
             <TableRow key={rowIdx}>
               {row.map((cell, cellIdx) => (
-                <TableCell key={cellIdx} dangerouslySetInnerHTML={{ __html: cell }} />
+                <TableCell key={cellIdx} className="px-2.5 py-1.5 text-[var(--taupe-5)] border-b border-[var(--taupe-1)] dark:border-[var(--surface-3)]" dangerouslySetInnerHTML={{ __html: cell }} />
               ))}
             </TableRow>
           ))}

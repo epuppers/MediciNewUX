@@ -17,7 +17,7 @@ export function AttachButton({ onAttach, disabled = false, className }: AttachBu
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        className={cn('cmd-btn', disabled && 'disabled', className)}
+        className={cn('p-[8px_12px] min-h-9 text-xs font-semibold text-taupe-4 bg-taupe-1 border border-t-white border-l-white border-b-taupe-3 border-r-taupe-3 cursor-pointer flex items-center justify-center rounded-[var(--r-md)] hover:bg-berry-1 active:border-t-taupe-3 active:border-l-taupe-3 active:border-b-white active:border-r-white focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2 disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none [&_svg]:block dark:bg-surface-2 dark:text-taupe-3 dark:border-taupe-3 dark:hover:bg-[rgba(var(--violet-3-rgb),0.12)]', className)}
         disabled={disabled}
         title="Attach file"
         aria-label="Attach file"
@@ -25,10 +25,10 @@ export function AttachButton({ onAttach, disabled = false, className }: AttachBu
         <Paperclip className="h-4 w-4" />
         <span className="a11y-label">Attach</span>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" side="top" className="attach-dropdown p-0">
+      <DropdownMenuContent align="end" side="top" className="bg-white border-2 border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-4 border-r-taupe-4 shadow-[2px_2px_0_rgba(var(--black-rgb),0.08)] rounded-[var(--r-md)] p-[3px] dark:bg-surface-2 dark:border-taupe-2 dark:shadow-[2px_2px_0_rgba(var(--black-rgb),0.3)]">
         <button
           type="button"
-          className="attach-option"
+          className="flex items-center gap-2 w-full px-2.5 py-1.5 bg-transparent border border-transparent cursor-pointer text-taupe-4 font-[family-name:var(--mono)] text-[0.6875rem] transition-all duration-100 rounded-[var(--r-md)] hover:bg-berry-1 hover:border-berry-2 hover:text-violet-3 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-[-2px] dark:hover:bg-[rgba(var(--violet-3-rgb),0.12)] dark:hover:border-violet-3 [&_svg]:block [&_svg]:w-4 [&_svg]:h-4"
           onClick={() => onAttach?.('computer')}
         >
           <Monitor className="h-4 w-4" />
@@ -36,7 +36,7 @@ export function AttachButton({ onAttach, disabled = false, className }: AttachBu
         </button>
         <button
           type="button"
-          className="attach-option"
+          className="flex items-center gap-2 w-full px-2.5 py-1.5 bg-transparent border border-transparent cursor-pointer text-taupe-4 font-[family-name:var(--mono)] text-[0.6875rem] transition-all duration-100 rounded-[var(--r-md)] hover:bg-berry-1 hover:border-berry-2 hover:text-violet-3 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-[-2px] dark:hover:bg-[rgba(var(--violet-3-rgb),0.12)] dark:hover:border-violet-3 [&_svg]:block [&_svg]:w-4 [&_svg]:h-4"
           onClick={() => onAttach?.('drive')}
         >
           <Cloud className="h-4 w-4" />

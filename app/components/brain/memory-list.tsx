@@ -80,7 +80,7 @@ export function MemoryList({ memory }: MemoryListProps) {
       {/* Personality traits */}
       <div className="mb-6">
         <h3 className="font-mono text-[0.6875rem] font-bold text-taupe-3 uppercase tracking-[0.08em] mb-2">What Traits Should Cosimo Have?</h3>
-        <div className="mem-personality">
+        <div className="bg-white dark:bg-surface-1 border-2 border-t-taupe-2 border-l-taupe-2 border-r-taupe-3 border-b-taupe-3 dark:border-taupe-3 rounded-[var(--r-md)] p-[12px_14px]">
           <TraitBadges
             selectedTraits={memory.selectedTraits}
             presetTraits={memory.presetTraits}
@@ -93,7 +93,7 @@ export function MemoryList({ memory }: MemoryListProps) {
         <h3 className="font-mono text-[0.6875rem] font-bold text-taupe-3 uppercase tracking-[0.08em] mb-2">Core Memories</h3>
 
         {/* Search & filter toolbar */}
-        <div className="mem-facts-toolbar">
+        <div className="mb-3 bg-black/[0.02] dark:bg-black/10 rounded-[var(--r-md)] p-2.5">
           <SearchFilterBar
             placeholder="Search memories..."
             searchValue={searchQuery}
@@ -108,11 +108,11 @@ export function MemoryList({ memory }: MemoryListProps) {
 
         {/* Add Memory form */}
         {showAddMemoryForm && (
-          <div className="mem-add-form">
-            <div className="mem-add-form-inner">
+          <div className="mb-3">
+            <div className="bg-white dark:bg-surface-1 border-2 border-t-violet-2 border-l-violet-2 border-r-violet-3 border-b-violet-3 dark:border-violet-2 rounded-[var(--r-md)] p-[12px_14px]">
               <input
                 type="text"
-                className="mem-add-input"
+                className="w-full p-[8px_10px] font-mono text-xs text-taupe-5 bg-off-white dark:bg-surface-2 border border-taupe-2 dark:border-taupe-3 rounded-[var(--r-md)] outline-none mb-2 focus:border-violet-3 dark:text-taupe-3"
                 placeholder="Type a fact Cosimo should remember..."
                 value={newFactText}
                 onChange={(e) => setNewFactText(e.target.value)}
@@ -124,9 +124,9 @@ export function MemoryList({ memory }: MemoryListProps) {
                 }}
                 autoFocus
               />
-              <div className="mem-add-form-row">
+              <div className="flex items-center justify-between">
                 <select
-                  className="mem-add-category"
+                  className="p-[4px_8px] font-mono text-[0.6875rem] text-taupe-5 dark:text-taupe-3 bg-off-white dark:bg-surface-2 border border-taupe-2 dark:border-taupe-3 rounded-[var(--r-md)] outline-none cursor-pointer"
                   value={newFactCategory}
                   onChange={(e) => setNewFactCategory(e.target.value)}
                 >
@@ -134,7 +134,7 @@ export function MemoryList({ memory }: MemoryListProps) {
                     <option key={c.id} value={c.id}>{c.label}</option>
                   ))}
                 </select>
-                <div className="mem-add-actions">
+                <div className="flex gap-1.5">
                   <Button variant="ghost" size="sm" className="header-btn border border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 dark:border-taupe-2 font-mono text-[0.625rem] uppercase tracking-[0.05em] text-taupe-3" onClick={handleCancelAdd}>Cancel</Button>
                   <Button variant="default" size="sm" className="header-btn border border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 dark:border-taupe-2 font-mono text-[0.625rem] uppercase tracking-[0.05em] text-taupe-3 primary" onClick={handleSaveMemory}>Save</Button>
                 </div>

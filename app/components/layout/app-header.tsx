@@ -80,15 +80,21 @@ function TaskPanelContent({ tasks }: { tasks: TaskData[] }) {
         {tasks.map((task, i) => (
           <div
             key={i}
-            className={`task-item${task.urgent ? " urgent" : ""}`}
+            className={cn(
+              "flex items-start gap-2 p-[8px_12px] border-b border-taupe-2 dark:border-surface-3 cursor-pointer transition-[background] duration-100 hover:bg-off-white dark:hover:bg-surface-2",
+              task.urgent && "border-l-[3px] border-l-red"
+            )}
           >
-            <div className={`task-dot`} />
+            <div className={cn(
+              "w-[7px] h-[7px] bg-taupe-3 border border-t-taupe-2 border-l-taupe-2 border-b-taupe-4 border-r-taupe-4 shrink-0 mt-1 rounded-[var(--r-md)]",
+              task.urgent && "bg-red border-t-[var(--red-hi)] border-l-[var(--red-hi)] border-b-[var(--red-lo)] border-r-[var(--red-lo)]"
+            )} />
             <div className="min-w-0 flex-1">
-              <div className="task-title">{task.title}</div>
-              <div className="task-meta">{task.meta}</div>
+              <div className="font-mono text-[0.6875rem] font-semibold text-taupe-5">{task.title}</div>
+              <div className="font-mono text-[0.625rem] text-taupe-3 mt-0.5">{task.meta}</div>
             </div>
             {task.urgent && (
-              <span className="task-priority urgent-label">Urgent</span>
+              <span className="font-mono text-[0.5625rem] font-bold shrink-0 tracking-[0.05em] rounded-[var(--r-sm)] uppercase text-red">Urgent</span>
             )}
           </div>
         ))}
@@ -149,23 +155,22 @@ function CalendarPanelContent({ calendar }: { calendar: CalendarData }) {
       </div>
 
       {/* Mini calendar grid */}
-      <div className="mini-cal">
-        <div className="mini-cal-days">
+      <div className="p-[8px_12px]">
+        <div className="font-mono text-[0.5625rem] font-bold text-taupe-3 tracking-[0.1em] grid grid-cols-7 text-center mb-1">
           {weekDays.map((d) => (
             <div key={d}>{d}</div>
           ))}
         </div>
-        <div className="mini-cal-grid">
+        <div className="grid grid-cols-7 gap-0.5">
           {cells.map((cell, i) => (
             <div
               key={i}
-              className={`mcg-day${
-                cell.day === null
-                  ? " empty"
-                  : cell.isToday
-                    ? " today"
-                    : ""
-              }${cell.hasEvent && !cell.isToday ? " has-event" : ""}`}
+              className={cn(
+                "h-[22px] w-[22px] flex items-center justify-center font-mono text-[0.625rem] text-taupe-5 cursor-pointer mx-auto border border-transparent transition-all duration-100 rounded-[var(--r-md)] hover:bg-berry-1 hover:border-taupe-2",
+                cell.day === null && "text-transparent pointer-events-none",
+                cell.isToday && "bg-violet-3 text-white font-bold border-t-violet-2 border-l-violet-2 border-b-[var(--violet-5)] border-r-[var(--violet-5)]",
+                cell.hasEvent && !cell.isToday && "border-b-2 border-b-blue-3"
+              )}
             >
               {cell.day}
             </div>
@@ -177,14 +182,14 @@ function CalendarPanelContent({ calendar }: { calendar: CalendarData }) {
       <div>
         <div className="px-3 py-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.12em] text-taupe-3 bg-off-white border-b border-taupe-2 dark:bg-surface-2 dark:border-b-surface-3">Upcoming</div>
         {calendar.events.map((ev, i) => (
-          <div key={i} className="cal-event">
+          <div key={i} className="flex items-start gap-2 p-[7px_12px] border-b border-taupe-2 dark:border-surface-3">
             <div
-              className="cal-event-dot"
+              className="w-[7px] h-[7px] shrink-0 mt-1 border border-black/15 rounded-[var(--r-md)]"
               style={{ background: ev.color }}
             />
             <div>
-              <div className="cal-event-title">{ev.title}</div>
-              <div className="cal-event-meta">{ev.meta}</div>
+              <div className="font-mono text-[0.6875rem] font-semibold text-taupe-5">{ev.title}</div>
+              <div className="font-mono text-[0.625rem] text-taupe-3 mt-px">{ev.meta}</div>
             </div>
           </div>
         ))}
@@ -207,10 +212,10 @@ function UsagePanelContent({ usage }: { usage: UsageData }) {
       </div>
 
       {/* Usage gauge readout */}
-      <div className="usage-meter-wrap">
-        <div className="usage-gauge">
-          <div className="usage-gauge-value">{usage.percentUsed}</div>
-          <div className="usage-gauge-unit">used this period</div>
+      <div className="p-[8px_12px_4px]">
+        <div className="relative flex flex-col items-center">
+          <div className="font-pixel text-[1.375rem] text-taupe-5 tracking-[0.5px]">{usage.percentUsed}</div>
+          <div className="font-mono text-[0.625rem] text-taupe-3 uppercase tracking-[0.05em]">used this period</div>
         </div>
         {/* Progress bar */}
         <div className="mt-2 h-2 w-full overflow-hidden rounded-[var(--r-sm)] bg-taupe-1">
@@ -222,27 +227,27 @@ function UsagePanelContent({ usage }: { usage: UsageData }) {
       </div>
 
       {/* Stats rows */}
-      <div className="usage-stats pb-2">
-        <div className="usage-stat-row">
-          <span className="usage-stat-label">Plan Limit</span>
-          <span className="usage-stat-value">{usage.planLimit}</span>
+      <div className="p-[4px_12px_2px] pb-2">
+        <div className="flex justify-between items-center p-[3px_0]">
+          <span className="font-mono text-[0.6875rem] text-taupe-3 uppercase tracking-[0.05em]">Plan Limit</span>
+          <span className="font-mono text-[0.6875rem] font-semibold text-taupe-5">{usage.planLimit}</span>
         </div>
-        <div className="usage-stat-row">
-          <span className="usage-stat-label">Used</span>
-          <span className="usage-stat-value">{usage.used}</span>
+        <div className="flex justify-between items-center p-[3px_0]">
+          <span className="font-mono text-[0.6875rem] text-taupe-3 uppercase tracking-[0.05em]">Used</span>
+          <span className="font-mono text-[0.6875rem] font-semibold text-taupe-5">{usage.used}</span>
         </div>
-        <div className="usage-stat-row">
-          <span className="usage-stat-label">Remaining</span>
-          <span className="usage-stat-value usage-stat-highlight">{usage.remaining}</span>
+        <div className="flex justify-between items-center p-[3px_0]">
+          <span className="font-mono text-[0.6875rem] text-taupe-3 uppercase tracking-[0.05em]">Remaining</span>
+          <span className="font-mono text-[0.6875rem] font-semibold text-violet-3">{usage.remaining}</span>
         </div>
-        <div className="usage-stat-divider" />
-        <div className="usage-stat-row">
-          <span className="usage-stat-label">Overage</span>
-          <span className="usage-stat-value">{usage.overage}</span>
+        <div className="h-px bg-taupe-1 my-1" />
+        <div className="flex justify-between items-center p-[3px_0]">
+          <span className="font-mono text-[0.6875rem] text-taupe-3 uppercase tracking-[0.05em]">Overage</span>
+          <span className="font-mono text-[0.6875rem] font-semibold text-taupe-5">{usage.overage}</span>
         </div>
-        <div className="usage-stat-row">
-          <span className="usage-stat-label">Renews</span>
-          <span className="usage-stat-value">{usage.renews}</span>
+        <div className="flex justify-between items-center p-[3px_0]">
+          <span className="font-mono text-[0.6875rem] text-taupe-3 uppercase tracking-[0.05em]">Renews</span>
+          <span className="font-mono text-[0.6875rem] font-semibold text-taupe-5">{usage.renews}</span>
         </div>
       </div>
     </div>
@@ -366,24 +371,24 @@ function AppearancePanel({ onBack }: { onBack: () => void }) {
   const toggleIconLabels = useThemeStore((s) => s.toggleIconLabels);
 
   return (
-    <div className="profile-menu-subpanel" style={{ display: 'flex' }}>
+    <div className="flex flex-col" style={{ display: 'flex' }}>
       {/* Back header */}
       <button
         type="button"
         onClick={onBack}
-        className="profile-menu-subpanel-header"
+        className="flex items-center gap-2 p-[8px_12px] cursor-pointer transition-[background] duration-100 bg-transparent border-none w-full hover:bg-berry-1 dark:hover:bg-[rgba(var(--berry-3-rgb),0.1)] active:bg-berry-2 dark:active:bg-[rgba(var(--berry-3-rgb),0.15)] focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-[-2px]"
       >
-        <span className="profile-menu-back-icon">
+        <span className="text-taupe-4 dark:text-taupe-3 flex items-center">
           <ArrowLeft className="size-3.5" />
         </span>
-        <span className="profile-menu-subpanel-title">Appearance &amp; Accessibility</span>
+        <span className="font-mono text-[0.6875rem] font-bold text-taupe-5">Appearance &amp; Accessibility</span>
       </button>
 
-      <div className="profile-menu-divider" />
+      <div className="h-px bg-taupe-1 dark:bg-taupe-2 my-0.5" />
 
       {/* Dark mode toggle */}
-      <div className="profile-menu-theme" role="button" tabIndex={0} onClick={toggleTheme} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') toggleTheme(); }}>
-        <span className="profile-menu-theme-label">
+      <div className="flex items-center justify-between p-[8px_12px] cursor-pointer bg-transparent border-none w-full focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-[-2px] hover:bg-berry-1 dark:hover:bg-[rgba(var(--berry-3-rgb),0.1)]" role="button" tabIndex={0} onClick={toggleTheme} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') toggleTheme(); }}>
+        <span className="font-mono text-[0.6875rem] font-semibold text-taupe-5 flex items-center gap-1.5">
           {theme === "dark" ? <Moon className="size-3.5" /> : <Sun className="size-3.5" />}
           Dark mode
         </span>
@@ -395,10 +400,10 @@ function AppearancePanel({ onBack }: { onBack: () => void }) {
       </div>
 
       {/* Purple intensity slider */}
-      <div className="profile-menu-contrast">
-        <div className="profile-menu-contrast-header">
-          <span className="profile-menu-theme-label">Purple intensity</span>
-          <span className="profile-menu-contrast-value">{purpleIntensity}%</span>
+      <div className="p-[8px_12px_10px]">
+        <div className="flex justify-between items-center mb-1.5">
+          <span className="font-mono text-[0.6875rem] font-semibold text-taupe-5 flex items-center gap-1.5">Purple intensity</span>
+          <span className="font-mono text-[0.625rem] font-semibold text-violet-3">{purpleIntensity}%</span>
         </div>
         <input
           type="range"
@@ -408,7 +413,7 @@ function AppearancePanel({ onBack }: { onBack: () => void }) {
           value={purpleIntensity}
           onChange={(e) => setPurpleIntensity(Number(e.target.value))}
         />
-        <div className="profile-menu-slider-labels">
+        <div className="flex justify-between mt-1 font-mono text-[0.5625rem] text-taupe-3 tracking-[0.04em]">
           <span>Subtle</span>
           <span>Default</span>
           <span>Vivid</span>
@@ -416,10 +421,10 @@ function AppearancePanel({ onBack }: { onBack: () => void }) {
       </div>
 
       {/* Text size slider */}
-      <div className="profile-menu-contrast">
-        <div className="profile-menu-contrast-header">
-          <span className="profile-menu-theme-label">Text size</span>
-          <span className="profile-menu-contrast-value">{FONT_SIZE_LABELS[fontSizeLevel]}</span>
+      <div className="p-[8px_12px_10px]">
+        <div className="flex justify-between items-center mb-1.5">
+          <span className="font-mono text-[0.6875rem] font-semibold text-taupe-5 flex items-center gap-1.5">Text size</span>
+          <span className="font-mono text-[0.625rem] font-semibold text-violet-3">{FONT_SIZE_LABELS[fontSizeLevel]}</span>
         </div>
         <input
           type="range"
@@ -430,21 +435,21 @@ function AppearancePanel({ onBack }: { onBack: () => void }) {
           value={fontSizeLevel}
           onChange={(e) => setFontSizeLevel(Number(e.target.value))}
         />
-        <div className="profile-menu-slider-labels">
+        <div className="flex justify-between mt-1 font-mono text-[0.5625rem] text-taupe-3 tracking-[0.04em]">
           <span>100%</span>
           <span>110%</span>
           <span>120%</span>
         </div>
       </div>
 
-      <div className="profile-menu-divider" />
+      <div className="h-px bg-taupe-1 dark:bg-taupe-2 my-0.5" />
 
       {/* Accessibility section */}
-      <div className="profile-menu-section-label">Accessibility</div>
+      <div className="p-[8px_12px_4px] font-mono text-[9px] font-bold text-taupe-3 uppercase tracking-[0.1em]">Accessibility</div>
 
       {/* Dyslexia-friendly font */}
-      <div className="profile-menu-theme">
-        <span className="profile-menu-theme-label">Dyslexia-friendly font</span>
+      <div className="flex items-center justify-between p-[8px_12px] cursor-pointer bg-transparent border-none w-full focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-[-2px] hover:bg-berry-1 dark:hover:bg-[rgba(var(--berry-3-rgb),0.1)]">
+        <span className="font-mono text-[0.6875rem] font-semibold text-taupe-5 flex items-center gap-1.5">Dyslexia-friendly font</span>
         <Switch
           size="sm"
           checked={dyslexiaFont}
@@ -453,8 +458,8 @@ function AppearancePanel({ onBack }: { onBack: () => void }) {
       </div>
 
       {/* Reduced motion */}
-      <div className="profile-menu-theme">
-        <span className="profile-menu-theme-label">Reduced motion</span>
+      <div className="flex items-center justify-between p-[8px_12px] cursor-pointer bg-transparent border-none w-full focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-[-2px] hover:bg-berry-1 dark:hover:bg-[rgba(var(--berry-3-rgb),0.1)]">
+        <span className="font-mono text-[0.6875rem] font-semibold text-taupe-5 flex items-center gap-1.5">Reduced motion</span>
         <Switch
           size="sm"
           checked={reducedMotion}
@@ -463,8 +468,8 @@ function AppearancePanel({ onBack }: { onBack: () => void }) {
       </div>
 
       {/* High contrast & focus */}
-      <div className="profile-menu-theme">
-        <span className="profile-menu-theme-label">High contrast &amp; focus</span>
+      <div className="flex items-center justify-between p-[8px_12px] cursor-pointer bg-transparent border-none w-full focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-[-2px] hover:bg-berry-1 dark:hover:bg-[rgba(var(--berry-3-rgb),0.1)]">
+        <span className="font-mono text-[0.6875rem] font-semibold text-taupe-5 flex items-center gap-1.5">High contrast &amp; focus</span>
         <Switch
           size="sm"
           checked={highContrast}
@@ -473,8 +478,8 @@ function AppearancePanel({ onBack }: { onBack: () => void }) {
       </div>
 
       {/* Icon labels */}
-      <div className="profile-menu-theme">
-        <span className="profile-menu-theme-label">Icon labels</span>
+      <div className="flex items-center justify-between p-[8px_12px] cursor-pointer bg-transparent border-none w-full focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-[-2px] hover:bg-berry-1 dark:hover:bg-[rgba(var(--berry-3-rgb),0.1)]">
+        <span className="font-mono text-[0.6875rem] font-semibold text-taupe-5 flex items-center gap-1.5">Icon labels</span>
         <Switch
           size="sm"
           checked={iconLabels}
@@ -529,35 +534,35 @@ function ProfileAvatar() {
           style={{ width: view === "appearance" ? 240 : 200 }}
         >
         {view === "main" ? (
-          <div className="profile-menu-view">
+          <div className="flex flex-col animate-[profile-slide-right_0.15s_ease-out]">
             {/* User info */}
-            <div className="profile-menu-user-info">
-              <div className="profile-menu-user-avatar">E</div>
+            <div className="flex items-center gap-2.5 p-[12px_12px_10px]">
+              <div className="w-8 h-8 rounded-full bg-violet-3 text-white font-mono text-[0.8125rem] font-bold flex items-center justify-center shrink-0">E</div>
               <div className="min-w-0">
-                <div className="profile-menu-user-name">Eliot Puplett</div>
-                <div className="profile-menu-user-email">e.puplett@medici.com</div>
+                <div className="font-mono text-[0.6875rem] font-bold text-taupe-5 leading-[1.3]">Eliot Puplett</div>
+                <div className="font-mono text-[0.625rem] text-taupe-3 leading-[1.3] overflow-hidden text-ellipsis whitespace-nowrap">e.puplett@medici.com</div>
               </div>
             </div>
 
-            <div className="profile-menu-divider" />
+            <div className="h-px bg-taupe-1 dark:bg-taupe-2 my-0.5" />
 
             {/* Appearance & Accessibility */}
-            <button type="button" className="profile-menu-item" onClick={() => setView("appearance")}>
+            <button type="button" className="p-[8px_12px] font-mono text-[0.6875rem] font-semibold text-taupe-4 cursor-pointer transition-all duration-100 flex items-center justify-between uppercase tracking-[0.05em] bg-transparent border-none w-full text-left hover:bg-berry-1 hover:text-taupe-5 dark:hover:text-berry-3 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-[-2px]" onClick={() => setView("appearance")}>
               <span>Appearance &amp; Accessibility</span>
-              <span className="profile-menu-item-chevron">
+              <span className="text-taupe-3 flex items-center">
                 <ChevronRight className="size-3.5" />
               </span>
             </button>
 
             {/* Account Settings */}
-            <button type="button" className="profile-menu-item" onClick={handleAccountSettings}>
+            <button type="button" className="p-[8px_12px] font-mono text-[0.6875rem] font-semibold text-taupe-4 cursor-pointer transition-all duration-100 flex items-center justify-between uppercase tracking-[0.05em] bg-transparent border-none w-full text-left hover:bg-berry-1 hover:text-taupe-5 dark:hover:text-berry-3 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-[-2px]" onClick={handleAccountSettings}>
               <span>Account Settings</span>
             </button>
 
-            <div className="profile-menu-divider" />
+            <div className="h-px bg-taupe-1 dark:bg-taupe-2 my-0.5" />
 
             {/* Sign Out */}
-            <button type="button" className="profile-menu-item profile-menu-signout" onClick={() => navigate("/login")}>
+            <button type="button" className="p-[8px_12px] font-mono text-[0.6875rem] font-semibold text-red cursor-pointer transition-all duration-100 flex items-center justify-between uppercase tracking-[0.05em] bg-transparent border-none w-full text-left hover:bg-[rgba(var(--red-rgb),0.08)] hover:text-red focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-[-2px]" onClick={() => navigate("/login")}>
               <span>Sign Out</span>
             </button>
           </div>

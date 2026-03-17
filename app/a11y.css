@@ -73,10 +73,7 @@ html[data-a11y-font="dyslexia"] .model-badge {
   letter-spacing: 0.06em;
 }
 
-html[data-a11y-font="dyslexia"] .sidebar-section-label {
-  font-weight: 700;
-  letter-spacing: 0.12em;
-}
+/* sidebar-section-label dyslexia override — ported to Tailwind inline */
 
 html[data-a11y-font="dyslexia"] .msg-timestamp {
   font-size: 0.625rem;
@@ -94,17 +91,10 @@ html[data-a11y-font="dyslexia"] .msg-body {
   word-spacing: 0.05em;
 }
 
-html[data-a11y-font="dyslexia"] .wf-card-desc,
 html[data-a11y-font="dyslexia"] .lesson-block p,
 html[data-a11y-font="dyslexia"] .lesson-block li {
   line-height: 1.65;
   word-spacing: 0.05em;
-}
-
-/* ---- Card/list title differentiation ---- */
-html[data-a11y-font="dyslexia"] .wf-card-title {
-  font-weight: 700;
-  letter-spacing: 0.02em;
 }
 
 /* ---- Data tables ---- */

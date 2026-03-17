@@ -31,25 +31,25 @@ export default function ChatRoute() {
   const run = threadData?.run;
 
   return (
-    <div className="chat-with-panel">
-      <div className="chat-main">
+    <div className="flex flex-1 overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden min-w-0">
         {thread && <ChatHeader thread={thread} />}
-        <div className="chat-scroll">
+        <div className="flex-1 flex flex-col overflow-y-auto px-6 py-5">
           {hasChildRoute ? (
             <Outlet />
           ) : (
-            <div className="empty-thread">
-              <div className="empty-thread-icon">◆</div>
-              <div className="empty-thread-title">What can Cosimo help with?</div>
-              <div className="empty-thread-sub">
+            <div className="flex flex-col items-center justify-center flex-1 px-5 py-10 text-center">
+              <div className="text-[1.75rem] text-[var(--violet-2)] mb-3">◆</div>
+              <div className="font-[family-name:var(--mono)] text-sm font-bold text-[var(--taupe-5)] mb-1.5">What can Cosimo help with?</div>
+              <div className="font-[family-name:var(--mono)] text-[0.6875rem] text-[var(--taupe-3)] max-w-xs leading-relaxed">
                 Ask about fund performance, document analysis, compliance checks, or anything across your portfolio.
               </div>
-              <div className="empty-thread-suggestions">
+              <div className="flex flex-wrap gap-1.5 mt-4 justify-center">
                 {SUGGESTIONS.map((s) => (
                   <button
                     key={s.label}
                     type="button"
-                    className="empty-thread-chip"
+                    className="font-[family-name:var(--mono)] text-[0.6875rem] py-[5px] px-3 text-[var(--taupe-4)] bg-[var(--off-white)] border border-[var(--taupe-2)] border-r-[var(--taupe-3)] border-b-[var(--taupe-3)] cursor-pointer transition-all duration-[120ms] rounded-[var(--r-md)] hover:bg-[var(--berry-1)] hover:text-[var(--berry-5)] hover:border-[var(--berry-2)] hover:border-r-[var(--berry-4)] hover:border-b-[var(--berry-4)] dark:bg-[var(--surface-1)] dark:border-[var(--taupe-2)] dark:text-[var(--taupe-3)] dark:hover:bg-[var(--berry-1)] dark:hover:text-[var(--berry-3)] dark:hover:border-[var(--berry-2)] dark:hover:border-r-[var(--berry-4)] dark:hover:border-b-[var(--berry-4)]"
                     data-suggestion={s.prompt}
                   >
                     {s.label}

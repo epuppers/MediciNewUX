@@ -58,7 +58,7 @@ export default function WorkflowsRoute({ loaderData }: Route.ComponentProps) {
   };
 
   return (
-    <div className="wf-listing">
+    <div className="flex-1 overflow-y-auto p-5 px-6">
       {/* Stats bar */}
       <WorkflowStats templates={templates} />
 
@@ -76,7 +76,7 @@ export default function WorkflowsRoute({ loaderData }: Route.ComponentProps) {
           ))}
         </div>
       ) : (
-        <div className="wf-no-results">
+        <div className="flex flex-col items-center text-center py-10 px-5">
           <Workflow className="size-10 opacity-30" style={{ color: 'var(--taupe-2)' }} />
           <p className="font-[family-name:var(--pixel)] text-taupe-3 dark:text-taupe-3">No workflows yet</p>
         </div>

@@ -19,7 +19,7 @@ export function SidebarResizeHandle() {
   return (
     <div
       className={cn(
-        "resize-handle resize-handle-sidebar",
+        "resize-handle w-[5px] cursor-col-resize shrink-0 relative z-10 ml-[-3px] mr-[-2px]",
         dragState !== "idle" && "dragging"
       )}
       onMouseDown={handleMouseDown}

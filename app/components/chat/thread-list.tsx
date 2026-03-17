@@ -158,7 +158,7 @@ export function ThreadList({ threads, runs = {} }: ThreadListProps) {
       {activeRuns.length > 0 && (
         <SidebarMenu>
           <div className="mb-1 rounded-[var(--r-md)] bg-[rgba(var(--violet-3-rgb),0.04)] px-1.5 py-1.5 dark:bg-[rgba(var(--violet-3-rgb),0.06)] border-b border-chinese-4 dark:border-chinese-5">
-            <div className="sidebar-section-label px-2 pt-1 pb-0.5">
+            <div className="font-[family-name:var(--mono)] text-[0.6875rem] font-semibold tracking-[0.18em] uppercase text-taupe-3 px-3 pt-4 pb-1.5 px-2 pt-1 pb-0.5">
               Active
             </div>
             {activeRuns.map(({ thread, status }) => (
@@ -174,7 +174,7 @@ export function ThreadList({ threads, runs = {} }: ThreadListProps) {
       )}
 
       {/* Recent label */}
-      <div className="sidebar-section-label">Recent</div>
+      <div className="font-[family-name:var(--mono)] text-[0.6875rem] font-semibold tracking-[0.18em] uppercase text-taupe-3 px-3 pt-4 pb-1.5">Recent</div>
 
       {/* Regular Threads */}
       <SidebarMenu>

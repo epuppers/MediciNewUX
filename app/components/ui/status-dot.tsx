@@ -28,7 +28,7 @@ export function StatusDot({ status, pulse, size = 'sm', className }: StatusDotPr
         'inline-block rounded-full',
         SIZE_MAP[size],
         STATUS_COLORS[status],
-        shouldPulse && 'animate-wf-pulse motion-reduce:animate-none',
+        shouldPulse && 'animate-[wf-pulse_2s_ease-in-out_infinite] motion-reduce:animate-none',
         className,
       )}
     />

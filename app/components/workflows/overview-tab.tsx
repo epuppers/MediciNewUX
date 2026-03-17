@@ -19,7 +19,7 @@ export function OverviewTab({ template }: { template: WorkflowTemplate }) {
   const lastRunStatusLabel = lastRunStatus.charAt(0).toUpperCase() + lastRunStatus.slice(1);
 
   return (
-    <div className="overview-grid">
+    <div className="grid grid-cols-2 gap-3">
       {/* Status section */}
       <SectionPanel title="Status" className="!mb-0">
         <KVRow label="State" value={<>● {statusLabel}</>} valueClassName={`status-${template.status}`} />
@@ -38,7 +38,7 @@ export function OverviewTab({ template }: { template: WorkflowTemplate }) {
 
       {/* Recent Activity section */}
       {recentRuns.length > 0 && (
-        <SectionPanel title="Recent Activity" className="overview-full !mb-0">
+        <SectionPanel title="Recent Activity" className="col-span-full !mb-0">
           {recentRuns.map((run) => (
             <RunRow key={run.id} run={run} />
           ))}

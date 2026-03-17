@@ -68,15 +68,15 @@ function LessonSectionBlock({ section, isEditing }: { section: LessonSection; is
       )}
 
       {section.type === 'colors' && section.swatches && (
-        <div className="lesson-color-grid">
+        <div className="flex flex-wrap gap-3">
           {section.swatches.map((swatch) => (
-            <div key={swatch.label} className="lesson-color-swatch">
+            <div key={swatch.label} className="flex flex-col items-center gap-1">
               <div
-                className="swatch-box"
+                className="w-12 h-12 border-2 rounded-[var(--r-md)] border-t-[rgba(var(--white-pure-rgb),0.3)] border-l-[rgba(var(--white-pure-rgb),0.3)] border-r-[rgba(var(--black-rgb),0.15)] border-b-[rgba(var(--black-rgb),0.15)] dark:border-t-[rgba(var(--white-pure-rgb),0.1)] dark:border-l-[rgba(var(--white-pure-rgb),0.1)] dark:border-r-[rgba(var(--black-rgb),0.3)] dark:border-b-[rgba(var(--black-rgb),0.3)]"
                 style={{ backgroundColor: swatch.color }}
               />
-              <div className="swatch-label">{swatch.label}</div>
-              <div className="swatch-value">{swatch.value}</div>
+              <div className="font-mono text-[10px] font-semibold text-taupe-5">{swatch.label}</div>
+              <div className="font-mono text-[10px] text-taupe-3">{swatch.value}</div>
             </div>
           ))}
         </div>
@@ -131,8 +131,8 @@ export function LessonDetail({ lesson, onBack }: LessonDetailProps) {
             variant="ghost"
             size="icon-sm"
             className={cn(
-              'header-btn border border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 dark:border-taupe-2 font-mono text-[0.625rem] uppercase tracking-[0.05em] text-taupe-3 icon-btn',
-              isEditing && 'primary'
+              'px-1.5 py-1 flex items-center justify-center text-[0.6875rem] font-semibold text-taupe-4 bg-off-white border border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 cursor-pointer rounded-[var(--r-md)] hover:bg-berry-1 hover:text-berry-5 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2 dark:border-taupe-2 dark:hover:text-berry-3 dark:hover:bg-berry-1 [&_svg]:block font-mono text-[0.625rem] uppercase tracking-[0.05em] text-taupe-3',
+              isEditing && 'bg-violet-3 text-white border-t-violet-2 border-l-violet-2 border-b-[var(--violet-5,var(--violet-3))] border-r-[var(--violet-5,var(--violet-3))] hover:bg-[var(--violet-4,var(--violet-3))] dark:text-[var(--text-light,var(--white))]'
             )}
             onClick={handleToggleEdit}
             title={isEditing ? 'Save Changes' : 'Edit Directly'}
@@ -144,7 +144,7 @@ export function LessonDetail({ lesson, onBack }: LessonDetailProps) {
           <Button
             variant="ghost"
             size="icon-sm"
-            className="header-btn border border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 dark:border-taupe-2 font-mono text-[0.625rem] uppercase tracking-[0.05em] text-taupe-3 icon-btn"
+            className="px-1.5 py-1 flex items-center justify-center text-[0.6875rem] font-semibold text-taupe-4 bg-off-white border border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 cursor-pointer rounded-[var(--r-md)] hover:bg-berry-1 hover:text-berry-5 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2 dark:border-taupe-2 dark:hover:text-berry-3 dark:hover:bg-berry-1 [&_svg]:block font-mono text-[0.625rem] uppercase tracking-[0.05em] text-taupe-3"
             onClick={handleEditWithCosimo}
             title="Edit with Cosimo"
             aria-label="Edit with Cosimo"
@@ -155,7 +155,7 @@ export function LessonDetail({ lesson, onBack }: LessonDetailProps) {
           <Button
             variant="ghost"
             size="icon-sm"
-            className="header-btn border border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 dark:border-taupe-2 font-mono text-[0.625rem] uppercase tracking-[0.05em] text-taupe-3 icon-btn text-red"
+            className="px-1.5 py-1 flex items-center justify-center text-[0.6875rem] font-semibold text-red bg-off-white border border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 cursor-pointer rounded-[var(--r-md)] hover:bg-berry-1 hover:text-berry-5 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2 dark:border-taupe-2 dark:hover:text-berry-3 dark:hover:bg-berry-1 [&_svg]:block font-mono text-[0.625rem] uppercase tracking-[0.05em]"
             title="Delete Lesson"
             aria-label="Delete Lesson"
           >

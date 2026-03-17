@@ -40,6 +40,13 @@ function statusLabel(status: string): string {
   return status.charAt(0).toUpperCase() + status.slice(1);
 }
 
+const STATUS_COLORS: Record<string, string> = {
+  active: 'text-green border-green bg-[rgba(var(--green-rgb),0.1)]',
+  draft: 'text-amber border-amber bg-[rgba(var(--amber-rgb),0.1)]',
+  paused: 'text-taupe-3 border-taupe-3 bg-[rgba(var(--taupe-3-rgb),0.1)]',
+  archived: 'text-taupe-3 border-taupe-3 bg-[rgba(var(--taupe-3-rgb),0.06)]',
+};
+
 const TAB_KEYS = ['overview', 'schema', 'triggers', 'runs', 'lessons'] as const;
 const TAB_LABELS: Record<string, string> = {
   overview: 'Overview',
@@ -121,47 +128,56 @@ export function TemplateDetail({ template, run }: TemplateDetailProps) {
   const triggerLabelText = TRIGGER_CONFIG[template.triggerType]?.label ?? template.triggerType;
 
   return (
-    <div className="wf-detail">
+    <div className="flex-1 flex flex-col overflow-hidden">
       {/* Header */}
-      <div className="wf-detail-header">
-        <div className="wf-detail-top">
-          <button className="back-btn" onClick={handleBack}>
-            <span className="icon-char">←</span> Back
+      <div className="px-5 pt-[14px] bg-white dark:bg-surface-1">
+        <div className="flex items-center gap-3 mb-3">
+          <button
+            className="px-2 py-[3px] font-mono text-[0.6875rem] text-taupe-3 bg-transparent border border-taupe-2 dark:border-taupe-2 cursor-pointer transition-all duration-100 rounded-r-sm hover:text-taupe-5 hover:border-taupe-4 dark:hover:text-taupe-5 dark:hover:border-taupe-3 active:border-t-taupe-4 active:border-l-taupe-4 active:border-b-taupe-1 active:border-r-taupe-1 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2"
+            onClick={handleBack}
+          >
+            ← Back
           </button>
-          <span className="wf-detail-name">{template.title}</span>
+          <span className="font-pixel text-[1.375rem] text-taupe-5 tracking-[0.5px]">{template.title}</span>
         </div>
 
-        <div className="wf-detail-desc">{template.description}</div>
+        <div className="text-[0.8125rem] text-taupe-3 mb-3 ml-0.5">{template.description}</div>
 
-        <div className="wf-detail-meta">
+        <div className="flex items-center gap-2 flex-wrap mb-3">
           {/* Status badge */}
-          <span className={cn('wf-detail-meta-badge', `status-${template.status}`)}>
+          <span className={cn(
+            'font-mono text-[0.625rem] font-semibold px-2 py-[2px] border rounded-r-sm',
+            STATUS_COLORS[template.status],
+          )}>
             {statusLabel(template.status)}
           </span>
 
           {/* Version badge */}
-          <span className="wf-detail-meta-badge wf-detail-meta-badge-muted">
+          <span className="font-mono text-[0.625rem] font-semibold px-2 py-[2px] border rounded-r-sm text-taupe-3 border-taupe-2 dark:text-taupe-4 dark:border-taupe-3">
             v{template.version}
           </span>
 
-          <div className="wf-detail-meta-sep" />
+          <div className="w-px h-3.5 bg-taupe-2 dark:bg-surface-3" />
 
           {/* Trigger chip */}
-          <span className="wf-detail-meta-chip">
+          <span className="inline-flex items-center gap-1 font-mono text-[0.625rem] text-taupe-3 bg-[rgba(var(--taupe-3-rgb),0.08)] dark:bg-[rgba(var(--taupe-3-rgb),0.12)] px-2 py-[2px] rounded-r-sm">
             {TriggerIcon && <TriggerIcon className="size-3.5" />} {triggerLabelText}
           </span>
 
-          <div className="wf-detail-meta-sep" />
+          <div className="w-px h-3.5 bg-taupe-2 dark:bg-surface-3" />
 
           {/* Created by */}
-          <span className="wf-detail-meta-text">
+          <span className="font-mono text-[0.625rem] text-taupe-3">
             by {template.createdBy} · {template.createdDate}
           </span>
 
           {/* Spacer + actions */}
           <div className="ml-auto flex items-center gap-2">
             <DropdownMenu>
-              <DropdownMenuTrigger className="wf-detail-actions-btn" aria-label="Template actions">
+              <DropdownMenuTrigger
+                className="font-mono text-[0.6875rem] py-[5px] px-2 text-taupe-3 bg-transparent border border-taupe-2 dark:border-taupe-3 cursor-pointer rounded-r-sm inline-flex items-center transition-all duration-100"
+                aria-label="Template actions"
+              >
                 <MoreHorizontal className="size-4" />
                 <span className="a11y-label">Actions</span>
               </DropdownMenuTrigger>
@@ -182,7 +198,10 @@ export function TemplateDetail({ template, run }: TemplateDetailProps) {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <button className="wf-detail-run-btn" onClick={handleRun}>
+            <button
+              className="font-mono text-[0.6875rem] font-semibold py-[5px] px-3.5 text-white bg-violet-3 border cursor-pointer rounded-r-sm inline-flex items-center gap-1.5 transition-colors duration-150 border-t-violet-2 border-l-violet-2 border-b-violet-4 border-r-violet-4 dark:border-violet-3"
+              onClick={handleRun}
+            >
               <Play className="size-3.5" />
               <span>Run</span>
             </button>
@@ -191,10 +210,10 @@ export function TemplateDetail({ template, run }: TemplateDetailProps) {
       </div>
 
       {/* Two-column layout */}
-      <div className="wf-detail-columns">
+      <div className="flex-1 flex gap-0 overflow-hidden">
         {/* Left column — Flow graph */}
-        <div className="wf-detail-graph-col" ref={graphContainerRef}>
-          <div className="flow-graph-container">
+        <div className="relative flex-[0_0_60%] flex flex-col py-4 pl-4 pr-0" ref={graphContainerRef}>
+          <div className="flex-1 border-2 border-solid [border-color:var(--taupe-3)_var(--taupe-1)_var(--taupe-1)_var(--taupe-3)] bg-[var(--off-white)] overflow-hidden relative rounded-[var(--r-lg)] cursor-grab active:cursor-grabbing dark:[border-color:var(--surface-3)] dark:bg-[var(--surface-1)]">
             <FlowGraph
               nodes={template.nodes}
               edges={template.edges}
@@ -217,20 +236,20 @@ export function TemplateDetail({ template, run }: TemplateDetailProps) {
         </div>
 
         {/* Right column — Tabs */}
-        <div className="wf-detail-info-col">
-          <Tabs value={activeTab} onValueChange={(val) => setTab(val as typeof activeTab)} className="wf-detail-tabs">
-            <TabsList variant="line" className="tab-bar">
+        <div className="flex-[0_0_40%] flex flex-col overflow-hidden pt-3.5 px-4 pb-0 border-l border-taupe-1 dark:border-surface-3">
+          <Tabs value={activeTab} onValueChange={(val) => setTab(val as typeof activeTab)}>
+            <TabsList variant="line" className="flex gap-0 border-b border-taupe-2 dark:border-surface-3 relative">
               {TAB_KEYS.map((key) => (
-                <TabsTrigger key={key} value={key} className="tab-btn">
+                <TabsTrigger key={key} value={key} className="tab-btn p-[8px_16px] font-mono text-[0.6875rem] font-semibold text-taupe-3 bg-taupe-1 dark:bg-black/25 border border-taupe-2 dark:border-surface-3 border-b-taupe-2 cursor-pointer uppercase tracking-[0.08em] transition-[color,background] duration-150 rounded-t-[var(--r-md)] mb-[-1px] relative z-[1] hover:text-taupe-5 hover:bg-berry-1 dark:hover:text-taupe-5 dark:hover:bg-berry-1 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-[-2px] data-active:text-violet-3 data-active:bg-off-white dark:data-active:bg-off-white data-active:border-taupe-2 data-active:border-b-transparent dark:data-active:border-surface-3 dark:data-active:border-b-transparent data-active:z-[2]">
                   {TAB_LABELS[key]}
                 </TabsTrigger>
               ))}
             </TabsList>
-            <TabsContent value="overview" className="tab-content"><OverviewTab template={template} /></TabsContent>
-            <TabsContent value="schema" className="tab-content"><SchemaTab template={template} /></TabsContent>
-            <TabsContent value="triggers" className="tab-content"><TriggersTab template={template} /></TabsContent>
-            <TabsContent value="runs" className="tab-content"><RunsTab template={template} /></TabsContent>
-            <TabsContent value="lessons" className="tab-content"><LessonsTab template={template} /></TabsContent>
+            <TabsContent value="overview" className="flex-1 overflow-y-auto py-3.5"><OverviewTab template={template} /></TabsContent>
+            <TabsContent value="schema" className="flex-1 overflow-y-auto py-3.5"><SchemaTab template={template} /></TabsContent>
+            <TabsContent value="triggers" className="flex-1 overflow-y-auto py-3.5"><TriggersTab template={template} /></TabsContent>
+            <TabsContent value="runs" className="flex-1 overflow-y-auto py-3.5"><RunsTab template={template} /></TabsContent>
+            <TabsContent value="lessons" className="flex-1 overflow-y-auto py-3.5"><LessonsTab template={template} /></TabsContent>
           </Tabs>
         </div>
       </div>

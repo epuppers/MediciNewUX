@@ -52,33 +52,42 @@ export function FilePanel() {
     <>
       {/* Resize handle */}
       <div
-        className={cn('resize-handle resize-handle-filepanel visible', isDragging && 'dragging')}
+        className={cn('resize-handle resize-handle-filepanel w-[5px] cursor-col-resize shrink-0 relative z-10 block', isDragging && 'dragging')}
         onMouseDown={handleMouseDown}
       />
 
       <div
-        className={cn('file-panel h-full', isDragging && 'dragging select-none')}
+        className={cn(
+          'flex flex-col shrink-0 bg-white dark:bg-surface-1 border-l-2 border-l-taupe-2 dark:border-l-surface-0 rounded-[var(--r-lg)] h-full',
+          isDragging && 'min-w-[300px] select-none'
+        )}
         style={{ width: currentWidth }}
         aria-label="File panel"
       >
         {/* Header with tabs */}
-        <div className="file-panel-header">
-          <div className="file-panel-tabs">
+        <div className="flex items-stretch justify-between px-1.5 min-h-[38px] bg-white dark:bg-surface-1 border-b border-taupe-2 dark:border-surface-3 shrink-0 relative">
+          <div className="flex gap-0">
             <button
-              className={cn('file-panel-tab', activeTab === 'spreadsheet' && 'active')}
+              className={cn(
+                'file-panel-tab px-3 font-mono text-[0.625rem] font-semibold uppercase tracking-[0.05em] text-taupe-3 bg-taupe-1 dark:bg-black/25 border border-taupe-2 dark:border-surface-3 border-b-taupe-2 cursor-pointer mb-[-1px] mt-1.5 rounded-t-[var(--r-md)] rounded-b-none transition-[color,background] duration-150 flex items-center relative z-[1] hover:text-taupe-5 hover:bg-berry-1 dark:hover:text-taupe-5 dark:hover:bg-berry-1 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-[-2px]',
+                activeTab === 'spreadsheet' && 'active text-berry-3 !bg-off-white dark:!text-taupe-5 dark:!bg-off-white !border-taupe-2 !border-b-transparent dark:!border-surface-3 dark:!border-b-transparent z-[2] !mt-1'
+              )}
               onClick={() => setActiveTab('spreadsheet')}
             >
               Viewer
             </button>
             <button
-              className={cn('file-panel-tab', activeTab === 'folder' && 'active')}
+              className={cn(
+                'file-panel-tab px-3 font-mono text-[0.625rem] font-semibold uppercase tracking-[0.05em] text-taupe-3 bg-taupe-1 dark:bg-black/25 border border-taupe-2 dark:border-surface-3 border-b-taupe-2 cursor-pointer mb-[-1px] mt-1.5 rounded-t-[var(--r-md)] rounded-b-none transition-[color,background] duration-150 flex items-center relative z-[1] hover:text-taupe-5 hover:bg-berry-1 dark:hover:text-taupe-5 dark:hover:bg-berry-1 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-[-2px]',
+                activeTab === 'folder' && 'active text-berry-3 !bg-off-white dark:!text-taupe-5 dark:!bg-off-white !border-taupe-2 !border-b-transparent dark:!border-surface-3 dark:!border-b-transparent z-[2] !mt-1'
+              )}
               onClick={() => setActiveTab('folder')}
             >
               Files
             </button>
           </div>
           <button
-            className="file-panel-close"
+            className="p-[4px_8px] font-mono text-[0.6875rem] font-semibold text-taupe-4 bg-transparent border border-transparent cursor-pointer transition-all duration-150 flex items-center hover:text-red hover:bg-[rgba(var(--red-rgb),0.08)] hover:border-red"
             onClick={close}
             aria-label="Close file panel"
           >
@@ -129,20 +138,20 @@ function SpreadsheetView({ data, selectedCell, onSelectCell, cellRef, cellFormul
   return (
     <>
       {/* Dark file bar */}
-      <div className="fp-file-bar">
-        <span className="fp-file-icon">▦</span>
-        <span className="fp-file-name">Hilgard_Fund_II_Fee_Analysis.xlsx</span>
+      <div className="flex items-center gap-2 p-[8px_12px] bg-taupe-5 dark:bg-surface-2 border-b border-taupe-4">
+        <span className="text-xs text-green">▦</span>
+        <span className="font-mono text-[0.6875rem] font-semibold text-taupe-1 dark:text-taupe-4">Hilgard_Fund_II_Fee_Analysis.xlsx</span>
       </div>
 
       {/* Formula bar */}
-      <div className="fp-formula-bar">
-        <span className="fp-cell-ref border border-solid border-t-taupe-3 border-l-taupe-3 border-b-taupe-1 border-r-taupe-1 dark:border-taupe-2">{cellRef}</span>
-        <span className="fp-formula">{cellFormula}</span>
+      <div className="flex items-center gap-2 p-[4px_8px] bg-off-white dark:bg-surface-1 border-b border-taupe-2 dark:border-surface-3 min-h-7">
+        <span className="font-mono text-[0.6875rem] font-bold text-taupe-5 bg-white dark:bg-surface-0 border border-solid border-t-taupe-3 border-l-taupe-3 border-b-taupe-1 border-r-taupe-1 dark:border-taupe-2 p-[2px_8px] min-w-9 text-center rounded-[var(--r-md)]">{cellRef}</span>
+        <span className="font-mono text-[0.6875rem] text-taupe-4 dark:text-taupe-3 flex-1">{cellFormula}</span>
       </div>
 
       {/* Spreadsheet grid */}
-      <div className="fp-sheet-wrap">
-        <table className="fp-sheet">
+      <div className="flex-1 overflow-auto">
+        <table className="fp-sheet min-w-[600px] border-collapse font-mono text-[0.6875rem]">
           <thead>
             <tr>
               <th className="fp-row-header"></th>
@@ -198,16 +207,19 @@ function SpreadsheetView({ data, selectedCell, onSelectCell, cellRef, cellFormul
 function FolderView({ onFileClick }: { onFileClick: () => void }) {
   return (
     <>
-      <div className="fp-folder-header">
-        <span className="fp-folder-title">Thread Files</span>
-        <span className="fp-folder-count">1 file</span>
+      <div className="flex items-center justify-between p-[10px_12px] bg-off-white dark:bg-surface-1 border-b border-taupe-2 dark:border-surface-3">
+        <span className="font-mono text-[0.6875rem] font-bold uppercase tracking-[0.1em] text-taupe-3">Thread Files</span>
+        <span className="font-mono text-[0.625rem] text-taupe-3">1 file</span>
       </div>
-      <div className="fp-file-list">
-        <div className="fp-file-item active" onClick={onFileClick} style={{ cursor: 'pointer' }}>
-          <div className="fp-file-item-icon">▦</div>
-          <div className="fp-file-item-info">
-            <div className="fp-file-item-name">Hilgard_Fund_II_Fee_Analysis.xlsx</div>
-            <div className="fp-file-item-meta">Generated by Cosimo · Feb 22, 4:16 PM · 12 rows</div>
+      <div className="p-1.5">
+        <div
+          className="flex items-center gap-2.5 p-2.5 border border-solid cursor-pointer transition-all duration-[120ms] rounded-[var(--r-md)] bg-off-white dark:bg-surface-2 border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 dark:border-taupe-2 hover:bg-berry-1 hover:border-taupe-2 dark:hover:bg-surface-2 dark:hover:border-surface-3"
+          onClick={onFileClick}
+        >
+          <div className="w-7 h-7 bg-green flex items-center justify-center text-xs text-white dark:text-off-white shrink-0 rounded-[var(--r-md)]">▦</div>
+          <div className="flex-1">
+            <div className="font-mono text-[0.6875rem] font-semibold text-taupe-5">Hilgard_Fund_II_Fee_Analysis.xlsx</div>
+            <div className="font-mono text-[0.625rem] text-taupe-3 mt-0.5">Generated by Cosimo · Feb 22, 4:16 PM · 12 rows</div>
           </div>
         </div>
       </div>

@@ -10,6 +10,8 @@ import { FlowNodeComponent } from './flow-node';
 import type { FlowGraphConfig } from './flow-node';
 import { FlowEdgeComponent } from './flow-edge';
 
+// old CSS: .flow-graph-svg, .flow-graph-compact, .flow-edge-arrow → ported to Tailwind below
+
 interface FlowGraphProps {
   nodes: FlowNode[];
   edges: FlowEdge[];
@@ -60,7 +62,7 @@ export function FlowGraph({
   return (
     <svg
       viewBox={viewBox}
-      className={cn('flow-graph-svg', compact && 'flow-graph-compact')}
+      className={cn('block max-w-full h-auto', compact && 'cursor-default')}
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label="Workflow flow graph"
@@ -78,7 +80,7 @@ export function FlowGraph({
         >
           <path
             d="M 0 0 L 8 3 L 0 6 Z"
-            className="flow-edge-arrow"
+            className="[fill:var(--taupe-3)] [stroke:none]"
           />
         </marker>
       </defs>
@@ -90,6 +92,7 @@ export function FlowGraph({
           edge={edge}
           nodes={nodes}
           config={config}
+          compact={compact}
         />
       ))}
 

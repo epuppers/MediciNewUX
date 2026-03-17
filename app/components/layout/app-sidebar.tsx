@@ -109,7 +109,7 @@ function BrainNav() {
   return (
     <div className="brain-nav mt-auto flex flex-col border-t border-taupe-4 px-1.5 pb-1" style={{ minHeight: '91px' }}>
       <div className="flex items-center justify-between">
-        <div className="sidebar-section-label px-2 pt-0.5 pb-0.5">Brain</div>
+        <div className="font-[family-name:var(--mono)] text-[0.6875rem] font-semibold tracking-[0.18em] uppercase text-taupe-3 px-3 pt-4 pb-1.5 group-data-[collapsible=icon]:hidden px-2 pt-0.5 pb-0.5">Brain</div>
         <button
           onClick={toggleBrainNav}
           aria-label={brainNavCollapsed ? "Expand Brain nav" : "Collapse Brain nav"}
@@ -178,7 +178,18 @@ export function AppSidebar({ threads, runs, templates }: AppSidebarProps) {
         {/* Search + New button — inside header like the original */}
         {!isCollapsed && (
           <div className="mt-2.5">
-            <button className="sidebar-new-btn" onClick={() => navigate("/chat")}>
+            <button
+              className={cn(
+                "sidebar-new-btn w-full px-2.5 py-[7px] bg-taupe-4 border border-solid rounded-[var(--r-sm)]",
+                "font-[family-name:var(--mono)] text-xs font-semibold uppercase text-taupe-1",
+                "cursor-pointer text-center flex items-center justify-center gap-1.5",
+                "[border-color:var(--taupe-3)_var(--surface-1)_var(--surface-1)_var(--taupe-3)]",
+                "hover:bg-chinese-4",
+                "active:[border-color:var(--surface-1)_var(--taupe-3)_var(--taupe-3)_var(--surface-1)]",
+                "focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2"
+              )}
+              onClick={() => navigate("/chat")}
+            >
               <Plus className="size-3.5" />
               {isWorkflowsView ? "New Workflow" : "New Thread"}
             </button>
@@ -187,7 +198,16 @@ export function AppSidebar({ threads, runs, templates }: AppSidebarProps) {
               <input
                 type="text"
                 placeholder="Search..."
-                className="sidebar-search-input"
+                className={cn(
+                  "sidebar-search-input w-full py-[7px] pr-2.5 pl-7 font-[family-name:var(--mono)] text-xs",
+                  "text-taupe-1 bg-[rgba(var(--black-rgb),0.25)] border border-solid rounded-[var(--r-sm)]",
+                  "[border-color:var(--surface-1)_var(--taupe-4)_var(--taupe-4)_var(--surface-1)]",
+                  "outline-none h-auto shadow-none",
+                  "placeholder:text-taupe-3",
+                  "focus:border-violet-3 focus:shadow-[0_0_0_1px_var(--violet-3)] focus:bg-[rgba(var(--black-rgb),0.35)]",
+                  "dark:bg-[rgba(var(--black-rgb),0.4)] dark:[border-color:var(--surface-0)_var(--surface-3)_var(--surface-3)_var(--surface-0)]",
+                  "dark:focus:bg-[rgba(var(--black-rgb),0.5)]"
+                )}
               />
             </div>
           </div>
@@ -198,7 +218,7 @@ export function AppSidebar({ threads, runs, templates }: AppSidebarProps) {
       <SidebarContent>
         <SidebarGroup className="flex-1 px-1.5">
           {!isCollapsed && isWorkflowsView && (
-            <div className="sidebar-section-label">Templates</div>
+            <div className="font-[family-name:var(--mono)] text-[0.6875rem] font-semibold tracking-[0.18em] uppercase text-taupe-3 px-3 pt-4 pb-1.5 group-data-[collapsible=icon]:hidden">Templates</div>
           )}
           <SidebarGroupContent>
             {isWorkflowsView ? (
