@@ -1,6 +1,7 @@
 import { X } from 'lucide-react';
+import { Button } from '~/components/ui/button';
 import type { GraphNode, GraphData } from '~/services/types';
-import { cn } from '~/lib/utils';
+import { GRAPH_CATEGORY_COLORS, GRAPH_CATEGORY_LABELS } from '~/lib/brain-constants';
 
 // ============================================
 // Entity Detail — Graph entity info panel
@@ -14,26 +15,6 @@ interface EntityDetailProps {
   onClose: () => void;
 }
 
-/** Category color tokens for the icon border — uses CSS custom properties */
-const CATEGORY_CSS_COLORS: Record<string, string> = {
-  funds: 'var(--violet-3)',
-  contacts: 'var(--berry-3)',
-  documents: 'var(--blue-3)',
-  workflows: 'var(--green)',
-  systems: 'var(--amber)',
-  entities: 'var(--taupe-3)',
-};
-
-/** Category labels for badge display */
-const CATEGORY_LABELS: Record<string, string> = {
-  funds: 'Fund',
-  contacts: 'Contact',
-  documents: 'Document',
-  workflows: 'Workflow',
-  systems: 'System',
-  entities: 'Entity',
-};
-
 /** Detail panel for a selected graph entity — shows name, type, facts, and related entities. */
 export function EntityDetail({
   entity,
@@ -42,7 +23,7 @@ export function EntityDetail({
   onNavigate,
   onClose,
 }: EntityDetailProps) {
-  const color = CATEGORY_CSS_COLORS[entityCategory] ?? 'var(--taupe-3)';
+  const color = GRAPH_CATEGORY_COLORS[entityCategory] ?? 'var(--taupe-3)';
 
   // Resolve related entities to full node data
   const relatedNodes = entity.related
@@ -56,48 +37,49 @@ export function EntityDetail({
     .filter(Boolean) as { node: GraphNode; category: string }[];
 
   return (
-    <div className="graph-detail-pane open">
+    <div className="absolute inset-x-0 bottom-0 h-[35%] min-h-[120px] max-h-[80%] bg-white dark:bg-surface-1 border-t-2 border-violet-3 rounded-tl-r-md rounded-tr-r-md flex flex-col z-[5] shadow-[0_-8px_30px_rgba(var(--black-rgb),0.3)] translate-y-0 transition-transform duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none">
       {/* Resize handle */}
-      <div className="graph-detail-resize" />
+      <div className="absolute -top-1.5 inset-x-0 h-3 cursor-ns-resize z-[6] flex items-center justify-center after:content-[''] after:w-9 after:h-1 after:rounded-r-xs after:bg-taupe-2 after:transition-colors hover:after:bg-violet-3 dark:after:bg-taupe-3 dark:hover:after:bg-violet-2" />
 
       {/* Header */}
-      <div className="graph-detail-header">
-        <div className="graph-detail-title-row">
+      <div className="flex items-center justify-between px-4 py-2.5 border-b border-taupe-1 dark:border-taupe-3 shrink-0">
+        <div className="flex items-center gap-2.5">
           <div
-            className="graph-detail-icon"
+            className="size-8 rounded-full flex items-center justify-center text-sm shrink-0 border-2 border-solid"
             style={{ borderColor: color, color }}
           >
             <span>&#9670;</span>
           </div>
           <div>
-            <div className="graph-detail-name">{entity.label}</div>
-            <div className="graph-detail-type label-mono">
-              {CATEGORY_LABELS[entityCategory] ?? entityCategory}
+            <div className="font-mono text-[0.8125rem] font-bold text-taupe-5">{entity.label}</div>
+            <div className="font-mono text-[0.625rem] uppercase tracking-[0.05em] text-taupe-3">
+              {GRAPH_CATEGORY_LABELS[entityCategory] ?? entityCategory}
             </div>
           </div>
         </div>
-        <div className="graph-detail-actions">
-          <button
-            type="button"
+        <div className="flex gap-1">
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            className="header-btn border border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 dark:border-taupe-2"
             onClick={onClose}
-            className="header-btn bevel"
             title="Close"
             aria-label="Close entity detail"
           >
             <X className="size-4" />
             <span className="a11y-label">Close</span>
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* Body */}
-      <div className="graph-detail-body">
+      <div className="flex-1 overflow-y-auto px-4 py-3">
         {/* Facts */}
-        <div className="graph-detail-facts">
+        <div className="flex flex-col gap-1 mb-3">
           {entity.facts.map((fact, i) => (
-            <div key={i} className="graph-fact-row">
-              <span className="graph-fact-bullet">&bull;</span>
-              <span className="graph-fact-text">{fact}</span>
+            <div key={i} className="flex items-start gap-2 px-2.5 py-1.5 bg-off-white dark:bg-surface-2 border border-taupe-1 dark:border-taupe-3 rounded-r-md font-mono text-[0.6875rem] text-taupe-4 dark:text-taupe-3 leading-relaxed transition-colors hover:border-taupe-2">
+              <span className="text-taupe-2 shrink-0 leading-relaxed">&bull;</span>
+              <span className="flex-1">{fact}</span>
             </div>
           ))}
         </div>
@@ -105,18 +87,18 @@ export function EntityDetail({
         {/* Related Entities */}
         {relatedNodes.length > 0 && (
           <div>
-            <div className="graph-detail-related-label">
+            <div className="font-mono text-[0.625rem] font-bold text-taupe-3 uppercase tracking-wide mb-1.5">
               Related ({relatedNodes.length})
             </div>
-            <div className="graph-detail-related">
+            <div className="flex flex-wrap gap-1.5">
               {relatedNodes.map(({ node, category }) => {
-                const relColor = CATEGORY_CSS_COLORS[category] ?? 'var(--taupe-3)';
+                const relColor = GRAPH_CATEGORY_COLORS[category] ?? 'var(--taupe-3)';
                 return (
                   <button
                     key={node.id}
                     type="button"
                     onClick={() => onNavigate(node.id)}
-                    className="graph-related-pill"
+                    className="font-mono text-[0.625rem] font-semibold px-2 py-0.5 border border-taupe-2 dark:border-taupe-3 rounded-r-md bg-white dark:bg-surface-2 text-taupe-4 dark:text-taupe-3 cursor-pointer transition-all hover:border-violet-2 hover:text-violet-3 hover:bg-violet-1 dark:hover:bg-[rgba(var(--violet-3-rgb),0.12)] dark:hover:border-violet-2 dark:hover:text-violet-2"
                   >
                     <span
                       className="inline-block size-2 rounded-full mr-1.5"

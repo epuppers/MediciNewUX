@@ -1,5 +1,6 @@
 import { useBrainStore } from '~/stores/brain-store';
 import type { GraphData } from '~/services/types';
+import { cn } from '~/lib/utils';
 
 // ============================================
 // Graph Breadcrumb — You > Category > Entity
@@ -28,10 +29,15 @@ export function GraphBreadcrumb({ graphData }: GraphBreadcrumbProps) {
   }
 
   return (
-    <nav className="graph-breadcrumb" aria-label="Graph navigation">
+    <nav className="flex items-center gap-0.5" aria-label="Graph navigation">
       <button
         type="button"
-        className={`graph-crumb ${graphLevel === 'root' ? 'active' : ''}`}
+        className={cn(
+          'font-mono text-[0.6875rem] font-semibold bg-transparent border-none px-1 py-0.5 transition-colors',
+          graphLevel === 'root'
+            ? 'text-taupe-5 cursor-default'
+            : 'text-taupe-3 cursor-pointer hover:text-taupe-5'
+        )}
         onClick={() => navigateGraph('root')}
         data-nav="root"
       >
@@ -40,12 +46,17 @@ export function GraphBreadcrumb({ graphData }: GraphBreadcrumbProps) {
 
       {(graphLevel === 'cluster' || graphLevel === 'entity') && categoryLabel && (
         <>
-          <span className="graph-crumb-sep" aria-hidden="true">
+          <span className="font-mono text-[0.6875rem] text-taupe-2 pointer-events-none" aria-hidden="true">
             &rsaquo;
           </span>
           <button
             type="button"
-            className={`graph-crumb ${graphLevel === 'cluster' ? 'active' : ''}`}
+            className={cn(
+              'font-mono text-[0.6875rem] font-semibold bg-transparent border-none px-1 py-0.5 transition-colors',
+              graphLevel === 'cluster'
+                ? 'text-taupe-5 cursor-default'
+                : 'text-taupe-3 cursor-pointer hover:text-taupe-5'
+            )}
             onClick={() => navigateGraph(graphActiveCategory!)}
             data-nav={graphActiveCategory}
           >
@@ -56,10 +67,10 @@ export function GraphBreadcrumb({ graphData }: GraphBreadcrumbProps) {
 
       {graphLevel === 'entity' && entityLabel && (
         <>
-          <span className="graph-crumb-sep" aria-hidden="true">
+          <span className="font-mono text-[0.6875rem] text-taupe-2 pointer-events-none" aria-hidden="true">
             &rsaquo;
           </span>
-          <span className="graph-crumb active">{entityLabel}</span>
+          <span className="font-mono text-[0.6875rem] font-semibold text-taupe-5 cursor-default px-1 py-0.5">{entityLabel}</span>
         </>
       )}
     </nav>

@@ -4,10 +4,6 @@
 
 import { useState, useRef, useCallback, useEffect, type KeyboardEvent, type DragEvent } from 'react';
 import {
-  ArrowUp,
-  Paperclip,
-  Monitor,
-  Cloud,
   ChevronDown,
   X,
 } from 'lucide-react';
@@ -17,6 +13,8 @@ import {
   DropdownMenuContent,
 } from '~/components/ui/dropdown-menu';
 import { cn } from '~/lib/utils';
+import { SendButton } from '~/components/ui/send-button';
+import { AttachButton } from '~/components/ui/attach-button';
 import { useCommandAutocomplete } from '~/hooks/use-command-autocomplete';
 import type { WorkflowCommand } from '~/services/types';
 
@@ -291,48 +289,10 @@ export function ChatInput({
         />
 
         {/* Attach button with dropdown */}
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            className={cn('cmd-btn', disabled && 'disabled')}
-            disabled={disabled}
-            title="Attach file"
-            aria-label="Attach file"
-          >
-            <Paperclip className="h-4 w-4" />
-            <span className="a11y-label">Attach</span>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" side="top" className="attach-dropdown p-0">
-            <button
-              type="button"
-              className="attach-option"
-              onClick={() => onAttach?.('computer')}
-            >
-              <Monitor className="h-4 w-4" />
-              From computer
-            </button>
-            <button
-              type="button"
-              className="attach-option"
-              onClick={() => onAttach?.('drive')}
-            >
-              <Cloud className="h-4 w-4" />
-              From cloud drive
-            </button>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <AttachButton onAttach={onAttach} disabled={disabled} />
 
         {/* Send button */}
-        <button
-          type="button"
-          className="cmd-btn cmd-primary"
-          onClick={handleSend}
-          disabled={disabled || !text.trim()}
-          title="Send"
-          aria-label="Send message"
-        >
-          <ArrowUp className="h-4 w-4" />
-          <span className="a11y-label">Send</span>
-        </button>
+        <SendButton onClick={handleSend} disabled={disabled || !text.trim()} />
       </div>
 
       {/* Footer */}
@@ -354,7 +314,7 @@ export function ChatInput({
                 <span className="model-option-name">
                   {model.name}
                   {model.id === activeModel.id && (
-                    <span className="ml-1.5 text-[var(--violet-3)]">●</span>
+                    <span className="ml-1.5 text-violet-3">●</span>
                   )}
                 </span>
                 <span className="model-option-desc">{model.description}</span>

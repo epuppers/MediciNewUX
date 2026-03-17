@@ -1,4 +1,4 @@
-import { cn } from '~/lib/utils';
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '~/components/ui/table';
 
 interface DataTableProps {
   /** Column header labels */
@@ -16,25 +16,25 @@ interface DataTableProps {
  */
 export function DataTable({ columns, rows, className }: DataTableProps) {
   return (
-    <div className={cn('overflow-x-auto', className)}>
-      <table className="data-tbl">
-        <thead>
-          <tr>
+    <div className={className}>
+      <Table className="data-tbl">
+        <TableHeader>
+          <TableRow>
             {columns.map((col, i) => (
-              <th key={i}>{col}</th>
+              <TableHead key={i}>{col}</TableHead>
             ))}
-          </tr>
-        </thead>
-        <tbody>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {rows.map((row, rowIdx) => (
-            <tr key={rowIdx}>
+            <TableRow key={rowIdx}>
               {row.map((cell, cellIdx) => (
-                <td key={cellIdx} dangerouslySetInnerHTML={{ __html: cell }} />
+                <TableCell key={cellIdx} dangerouslySetInnerHTML={{ __html: cell }} />
               ))}
-            </tr>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   );
 }

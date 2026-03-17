@@ -2,26 +2,8 @@
 // WorkflowCard — Library card for a workflow template
 // ============================================
 
-import {
-  FolderOpen,
-  Play,
-  Clock,
-  Mail,
-  MessageSquare,
-  Link,
-  Hand,
-} from 'lucide-react';
-import type { WorkflowTemplate, TriggerType } from '~/services/types';
-
-/** Map of trigger type to icon component and display label */
-const TRIGGER_META: Record<TriggerType, { icon: React.ReactNode; label: string }> = {
-  'folder-watch': { icon: <FolderOpen className="size-3" />, label: 'Folder Watch' },
-  manual: { icon: <Hand className="size-3" />, label: 'Manual' },
-  schedule: { icon: <Clock className="size-3" />, label: 'Schedule' },
-  email: { icon: <Mail className="size-3" />, label: 'Email' },
-  'chat-command': { icon: <MessageSquare className="size-3" />, label: 'Chat Command' },
-  chained: { icon: <Link className="size-3" />, label: 'Chained' },
-};
+import type { WorkflowTemplate } from '~/services/types';
+import { TriggerChip } from './trigger-chip';
 
 /** Map of template status to CSS class */
 const STATUS_CLASS: Record<WorkflowTemplate['status'], string> = {
@@ -44,8 +26,6 @@ interface WorkflowCardProps {
 
 /** A library card for a workflow template, showing status, trigger, description, and run stats. */
 export function WorkflowCard({ template, lessonNames, onSelect, onRun }: WorkflowCardProps) {
-  const trigger = TRIGGER_META[template.triggerType];
-
   const handleCardClick = () => {
     onSelect(template.id);
   };
@@ -83,12 +63,10 @@ export function WorkflowCard({ template, lessonNames, onSelect, onRun }: Workflo
       <div className="wf-card-header">
         <div className="wf-card-header-left">
           <span className="wf-card-title">{template.title}</span>
-          <span className={`wf-card-status label-mono ${STATUS_CLASS[template.status]}`}>
+          <span className={`wf-card-status font-mono text-[0.625rem] uppercase tracking-[0.05em] text-taupe-3 ${STATUS_CLASS[template.status]}`}>
             {template.status}
           </span>
-          <span className="wf-card-trigger-chip">
-            {trigger.icon} {trigger.label}
-          </span>
+          <TriggerChip type={template.triggerType} className="wf-card-trigger-chip" />
         </div>
         <button
           className="wf-card-run-btn"

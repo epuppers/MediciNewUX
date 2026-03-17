@@ -5,21 +5,14 @@ import { useBrainStore } from '~/stores/brain-store';
 import { TraitBadges } from './trait-badges';
 import { MemoryFactCard } from './memory-fact';
 import type { MemoryData } from '~/services/types';
-import { cn } from '~/lib/utils';
+import { MEMORY_CATEGORIES } from '~/lib/brain-constants';
+import { SearchFilterBar } from '~/components/ui/search-filter-bar';
+import { Button } from '~/components/ui/button';
+import { EmptyState } from '~/components/ui/empty-state';
 
 interface MemoryListProps {
   memory: MemoryData;
 }
-
-const CATEGORIES = [
-  { id: 'all', label: 'All' },
-  { id: 'preference', label: 'Preference' },
-  { id: 'workflow', label: 'Workflow' },
-  { id: 'contact', label: 'Contact' },
-  { id: 'fund', label: 'Fund' },
-  { id: 'style', label: 'Style' },
-  { id: 'context', label: 'Context' },
-];
 
 /** Full memory view: role profile, personality traits, category filter, search, and fact list. */
 export function MemoryList({ memory }: MemoryListProps) {
@@ -69,10 +62,10 @@ export function MemoryList({ memory }: MemoryListProps) {
     <div className="h-full overflow-y-auto p-6">
       {/* Role profile */}
       <div className="mb-6">
-        <h3 className="mem-section-label">What Describes Your Work</h3>
-        <div className="mem-role-card">
+        <h3 className="font-mono text-[0.6875rem] font-bold text-taupe-3 uppercase tracking-[0.08em] mb-2">What Describes Your Work</h3>
+        <div className="bg-white border-2 border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 rounded-[var(--r-md)] px-3.5 py-3 dark:bg-surface-1 dark:border-taupe-3">
           <div
-            className="mem-role-text"
+            className="mem-role-text font-mono text-xs leading-[1.7] text-taupe-5 outline-none min-h-[40px] focus:border-violet-3"
             contentEditable
             suppressContentEditableWarning
             role="textbox"
@@ -86,7 +79,7 @@ export function MemoryList({ memory }: MemoryListProps) {
 
       {/* Personality traits */}
       <div className="mb-6">
-        <h3 className="mem-section-label">What Traits Should Cosimo Have?</h3>
+        <h3 className="font-mono text-[0.6875rem] font-bold text-taupe-3 uppercase tracking-[0.08em] mb-2">What Traits Should Cosimo Have?</h3>
         <div className="mem-personality">
           <TraitBadges
             selectedTraits={memory.selectedTraits}
@@ -97,37 +90,20 @@ export function MemoryList({ memory }: MemoryListProps) {
 
       {/* Core Memories */}
       <div className="mb-6">
-        <h3 className="mem-section-label">Core Memories</h3>
+        <h3 className="font-mono text-[0.6875rem] font-bold text-taupe-3 uppercase tracking-[0.08em] mb-2">Core Memories</h3>
 
         {/* Search & filter toolbar */}
         <div className="mem-facts-toolbar">
-          <div className="relative mb-2">
-            <Search className="absolute left-[10px] top-1/2 size-3.5 -translate-y-1/2 text-[var(--taupe-3)] pointer-events-none" />
-            <input
-              type="search"
-              placeholder="Search memories..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="mem-search-input"
-            />
-          </div>
-
-          <div className="flex flex-wrap gap-1">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat.id}
-                type="button"
-                onClick={() => setMemoryCategory(cat.id)}
-                className={cn(
-                  'mem-cat-pill',
-                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--violet-3)]',
-                  memoryCategory === cat.id && 'active'
-                )}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
+          <SearchFilterBar
+            placeholder="Search memories..."
+            searchValue={searchQuery}
+            onSearchChange={setSearchQuery}
+            filters={{
+              options: MEMORY_CATEGORIES,
+              value: memoryCategory,
+              onChange: setMemoryCategory,
+            }}
+          />
         </div>
 
         {/* Add Memory form */}
@@ -154,28 +130,13 @@ export function MemoryList({ memory }: MemoryListProps) {
                   value={newFactCategory}
                   onChange={(e) => setNewFactCategory(e.target.value)}
                 >
-                  <option value="preference">Preference</option>
-                  <option value="workflow">Workflow</option>
-                  <option value="contact">Contact</option>
-                  <option value="fund">Fund</option>
-                  <option value="style">Style</option>
-                  <option value="context">Context</option>
+                  {MEMORY_CATEGORIES.filter((c) => c.id !== 'all').map((c) => (
+                    <option key={c.id} value={c.id}>{c.label}</option>
+                  ))}
                 </select>
                 <div className="mem-add-actions">
-                  <button
-                    type="button"
-                    className="header-btn bevel label-mono"
-                    onClick={handleCancelAdd}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    className="header-btn bevel label-mono primary"
-                    onClick={handleSaveMemory}
-                  >
-                    Save
-                  </button>
+                  <Button variant="ghost" size="sm" className="header-btn border border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 dark:border-taupe-2 font-mono text-[0.625rem] uppercase tracking-[0.05em] text-taupe-3" onClick={handleCancelAdd}>Cancel</Button>
+                  <Button variant="default" size="sm" className="header-btn border border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 dark:border-taupe-2 font-mono text-[0.625rem] uppercase tracking-[0.05em] text-taupe-3 primary" onClick={handleSaveMemory}>Save</Button>
                 </div>
               </div>
             </div>
@@ -185,15 +146,7 @@ export function MemoryList({ memory }: MemoryListProps) {
         {/* Fact list */}
         <div className="flex flex-col gap-1.5">
           {filteredFacts.length === 0 ? (
-            <div className="mem-no-results">
-              <div className="brain-empty-icon">
-                <Search size={32} />
-              </div>
-              <div className="brain-empty-title">No memories found</div>
-              <div className="brain-empty-desc">
-                Try a different search or category filter.
-              </div>
-            </div>
+            <EmptyState icon={<Search size={32} />} title="No memories found" description="Try a different search or category filter." />
           ) : (
             filteredFacts.map((fact, index) => (
               <MemoryFactCard key={`${fact.category}-${index}`} fact={fact} />

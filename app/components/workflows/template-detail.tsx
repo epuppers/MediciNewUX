@@ -24,7 +24,9 @@ import { LessonsTab } from '~/components/workflows/lessons-tab';
 import { useWorkflowStore } from '~/stores/workflow-store';
 import { useUIStore } from '~/stores/ui-store';
 import type { WorkflowTemplate, WorkflowRun, FlowNode } from '~/services/types';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '~/components/ui/tabs';
 import { cn } from '~/lib/utils';
+import { TRIGGER_CONFIG } from '~/lib/workflow-constants';
 
 interface TemplateDetailProps {
   /** The workflow template to display */
@@ -36,32 +38,6 @@ interface TemplateDetailProps {
 /** Capitalizes the first letter of a status string */
 function statusLabel(status: string): string {
   return status.charAt(0).toUpperCase() + status.slice(1);
-}
-
-/** Maps trigger type to display icon */
-function triggerIcon(type: string): string {
-  const icons: Record<string, string> = {
-    'folder-watch': '📁',
-    'manual': '▶',
-    'schedule': '🕐',
-    'email': '✉',
-    'chat-command': '💬',
-    'chained': '🔗',
-  };
-  return icons[type] || '▶';
-}
-
-/** Maps trigger type to display label */
-function triggerLabel(type: string): string {
-  const labels: Record<string, string> = {
-    'folder-watch': 'Folder Watch',
-    'manual': 'Manual',
-    'schedule': 'Schedule',
-    'email': 'Email',
-    'chat-command': 'Chat Command',
-    'chained': 'Chained',
-  };
-  return labels[type] || type;
 }
 
 const TAB_KEYS = ['overview', 'schema', 'triggers', 'runs', 'lessons'] as const;
@@ -141,6 +117,9 @@ export function TemplateDetail({ template, run }: TemplateDetailProps) {
     ? template.nodes.find((n) => n.id === selectedNodeId)
     : undefined;
 
+  const TriggerIcon = TRIGGER_CONFIG[template.triggerType]?.icon;
+  const triggerLabelText = TRIGGER_CONFIG[template.triggerType]?.label ?? template.triggerType;
+
   return (
     <div className="wf-detail">
       {/* Header */}
@@ -169,7 +148,7 @@ export function TemplateDetail({ template, run }: TemplateDetailProps) {
 
           {/* Trigger chip */}
           <span className="wf-detail-meta-chip">
-            {triggerIcon(template.triggerType)} {triggerLabel(template.triggerType)}
+            {TriggerIcon && <TriggerIcon className="size-3.5" />} {triggerLabelText}
           </span>
 
           <div className="wf-detail-meta-sep" />
@@ -239,27 +218,20 @@ export function TemplateDetail({ template, run }: TemplateDetailProps) {
 
         {/* Right column — Tabs */}
         <div className="wf-detail-info-col">
-          {/* Tab bar */}
-          <div className="tab-bar">
-            {TAB_KEYS.map((key) => (
-              <button
-                key={key}
-                className={cn('tab-btn', activeTab === key && 'active')}
-                onClick={() => setTab(key)}
-              >
-                {TAB_LABELS[key]}
-              </button>
-            ))}
-          </div>
-
-          {/* Tab content */}
-          <div className="tab-content">
-            {activeTab === 'overview' && <OverviewTab template={template} />}
-            {activeTab === 'schema' && <SchemaTab template={template} />}
-            {activeTab === 'triggers' && <TriggersTab template={template} />}
-            {activeTab === 'runs' && <RunsTab template={template} />}
-            {activeTab === 'lessons' && <LessonsTab template={template} />}
-          </div>
+          <Tabs value={activeTab} onValueChange={(val) => setTab(val as typeof activeTab)} className="wf-detail-tabs">
+            <TabsList variant="line" className="tab-bar">
+              {TAB_KEYS.map((key) => (
+                <TabsTrigger key={key} value={key} className="tab-btn">
+                  {TAB_LABELS[key]}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            <TabsContent value="overview" className="tab-content"><OverviewTab template={template} /></TabsContent>
+            <TabsContent value="schema" className="tab-content"><SchemaTab template={template} /></TabsContent>
+            <TabsContent value="triggers" className="tab-content"><TriggersTab template={template} /></TabsContent>
+            <TabsContent value="runs" className="tab-content"><RunsTab template={template} /></TabsContent>
+            <TabsContent value="lessons" className="tab-content"><LessonsTab template={template} /></TabsContent>
+          </Tabs>
         </div>
       </div>
     </div>

@@ -49,6 +49,14 @@ export interface ArtifactFlowGraphData {
   compact?: boolean;
 }
 
+/** A source citation referenced from message content */
+export interface Citation {
+  id: number;
+  title: string;
+  url: string;
+  source?: 'file' | 'web' | 'document';
+}
+
 /** A single message in a chat thread */
 export interface Message {
   id: string;
@@ -69,6 +77,8 @@ export interface Message {
     detail: string;
     meta: string;
   };
+  /** Source citations referenced by inline <sup class="cite-ref"> markers in content */
+  citations?: Citation[];
 }
 
 /** A chat thread containing messages */

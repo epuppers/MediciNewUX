@@ -53,7 +53,6 @@ html[data-a11y-font="dyslexia"] h4 {
 }
 
 html[data-a11y-font="dyslexia"] .header-title,
-html[data-a11y-font="dyslexia"] .brain-empty-title,
 html[data-a11y-font="dyslexia"] .lesson-block h3 {
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -74,8 +73,7 @@ html[data-a11y-font="dyslexia"] .model-badge {
   letter-spacing: 0.06em;
 }
 
-html[data-a11y-font="dyslexia"] .sidebar-section-label,
-html[data-a11y-font="dyslexia"] .mem-section-label {
+html[data-a11y-font="dyslexia"] .sidebar-section-label {
   font-weight: 700;
   letter-spacing: 0.12em;
 }
@@ -86,10 +84,6 @@ html[data-a11y-font="dyslexia"] .msg-timestamp {
   opacity: 0.7;
 }
 
-html[data-a11y-font="dyslexia"] .label-mono {
-  font-weight: 600;
-  letter-spacing: 0.08em;
-}
 
 /* ---- Dyslexia hierarchy: Body tier (was --sans) ---- */
 /* Message content and descriptions — prioritise readability.
@@ -205,7 +199,6 @@ html[data-a11y-font="dyslexia"] [data-sidebar="header"] .font-\[family-name\:var
 [data-a11y-labels="show"] .lesson-action-btn svg:not(.a11y-keep),
 [data-a11y-labels="show"] .node-popover-cosimo-btn svg:not(.a11y-keep),
 [data-a11y-labels="show"] .back-btn svg:not(.a11y-keep),
-[data-a11y-labels="show"] .lesson-back-btn svg:not(.a11y-keep),
 [data-a11y-labels="show"] .brain-nav-btn svg:not(.a11y-keep),
 [data-a11y-labels="show"] .mem-entity-chip svg:not(.a11y-keep) {
   display: none;
@@ -216,8 +209,7 @@ html[data-a11y-font="dyslexia"] [data-sidebar="header"] .font-\[family-name\:var
 [data-a11y-labels="show"] .file-panel-close .icon-char,
 [data-a11y-labels="show"] .node-popover-close .icon-char,
 [data-a11y-labels="show"] .node-popover-cosimo-btn .icon-char,
-[data-a11y-labels="show"] .back-btn .icon-char,
-[data-a11y-labels="show"] .lesson-back-btn .icon-char {
+[data-a11y-labels="show"] .back-btn .icon-char {
   display: none;
 }
 

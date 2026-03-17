@@ -68,9 +68,9 @@ function useActiveTab() {
 function TaskPanelContent({ tasks }: { tasks: TaskData[] }) {
   return (
     <div>
-      <div className="th-dropdown-header flex items-center justify-between">
+      <div className="flex items-center justify-between px-3 py-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.12em] text-taupe-3 bg-off-white border-b border-taupe-2 dark:bg-surface-2 dark:border-b-surface-3">
         <span>Assigned Tasks</span>
-        <span className="inline-flex min-w-[14px] items-center justify-center rounded-[var(--r-sm)] bg-[var(--red)] px-[5px] font-[family-name:var(--mono)] text-[9px] font-bold text-white"
+        <span className="inline-flex min-w-[14px] items-center justify-center rounded-[var(--r-sm)] bg-red px-[5px] font-[family-name:var(--mono)] text-[9px] font-bold text-white"
           style={{ border: '1px solid', borderColor: 'var(--red-hi) var(--red-lo) var(--red-lo) var(--red-hi)' }}>
           {tasks.length}
         </span>
@@ -94,7 +94,7 @@ function TaskPanelContent({ tasks }: { tasks: TaskData[] }) {
         ))}
       </div>
 
-      <button type="button" className="th-dropdown-footer">
+      <button type="button" className="px-3 py-2 font-mono text-[0.6875rem] font-semibold text-violet-3 cursor-pointer border-t border-taupe-2 text-center uppercase tracking-[0.05em] bg-transparent w-full hover:bg-berry-1 hover:text-berry-5 dark:border-t-surface-3 dark:hover:text-berry-3">
         View all tasks
       </button>
     </div>
@@ -144,7 +144,7 @@ function CalendarPanelContent({ calendar }: { calendar: CalendarData }) {
 
   return (
     <div>
-      <div className="th-dropdown-header">
+      <div className="px-3 py-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.12em] text-taupe-3 bg-off-white border-b border-taupe-2 dark:bg-surface-2 dark:border-b-surface-3">
         {calendar.month}
       </div>
 
@@ -175,7 +175,7 @@ function CalendarPanelContent({ calendar }: { calendar: CalendarData }) {
 
       {/* Events list */}
       <div>
-        <div className="th-dropdown-header">Upcoming</div>
+        <div className="px-3 py-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.12em] text-taupe-3 bg-off-white border-b border-taupe-2 dark:bg-surface-2 dark:border-b-surface-3">Upcoming</div>
         {calendar.events.map((ev, i) => (
           <div key={i} className="cal-event">
             <div
@@ -202,7 +202,7 @@ function UsagePanelContent({ usage }: { usage: UsageData }) {
 
   return (
     <div>
-      <div className="th-dropdown-header">
+      <div className="px-3 py-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.12em] text-taupe-3 bg-off-white border-b border-taupe-2 dark:bg-surface-2 dark:border-b-surface-3">
         Credit Usage — March 2026
       </div>
 
@@ -213,9 +213,9 @@ function UsagePanelContent({ usage }: { usage: UsageData }) {
           <div className="usage-gauge-unit">used this period</div>
         </div>
         {/* Progress bar */}
-        <div className="mt-2 h-2 w-full overflow-hidden rounded-[var(--r-sm)] bg-[var(--taupe-1)]">
+        <div className="mt-2 h-2 w-full overflow-hidden rounded-[var(--r-sm)] bg-taupe-1">
           <div
-            className="h-full rounded-[var(--r-sm)] bg-gradient-to-r from-[var(--violet-3)] via-[var(--berry-3)] to-[var(--red)] transition-all"
+            className="h-full rounded-[var(--r-sm)] bg-gradient-to-r from-violet-3 via-berry-3 to-red transition-all"
             style={{ width: `${Math.min(percent, 100)}%` }}
           />
         </div>
@@ -265,19 +265,19 @@ function TaskButton() {
   return (
     <Popover open={taskPanelOpen} onOpenChange={(open) => { if (open !== taskPanelOpen) toggleTaskPanel(); }}>
       <PopoverTrigger
-        className="top-icon-btn"
+        className="relative size-7 flex items-center justify-center bg-transparent border border-transparent cursor-pointer transition-all duration-150 rounded-[var(--r-md)] p-0 text-taupe-4 hover:bg-berry-1 hover:border-t-taupe-2 hover:border-l-taupe-2 hover:border-b-taupe-3 hover:border-r-taupe-3 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2 dark:hover:bg-berry-1"
         aria-label="Assigned Tasks"
       >
-        <span className="th-icon">◈</span>
+        <span className="text-sm text-taupe-4">◈</span>
         <span className="a11y-label">Tasks</span>
         {tasks.length > 0 && (
-          <span className="th-badge absolute -right-0.5 -top-0.5 flex min-w-[14px] h-[14px] items-center justify-center rounded-[var(--r-sm)] bg-[var(--red)] border border-solid border-[var(--red-hi)] font-[family-name:var(--mono)] text-[9px] font-bold text-white px-0.5"
+          <span className="th-badge absolute -right-0.5 -top-0.5 flex min-w-[14px] h-[14px] items-center justify-center rounded-[var(--r-sm)] bg-red border border-solid border-[var(--red-hi)] font-[family-name:var(--mono)] text-[9px] font-bold text-white px-0.5"
             style={{ borderColor: 'var(--red-hi) var(--red-lo) var(--red-lo) var(--red-hi)' }}>
             {tasks.length}
           </span>
         )}
       </PopoverTrigger>
-      <PopoverContent align="end" className="th-dropdown-panel w-[300px] p-0">
+      <PopoverContent align="end" className="bg-white border-2 border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 rounded-[var(--r-md)] overflow-hidden dark:border-surface-0 w-[300px] p-0">
         <TaskPanelContent tasks={tasks} />
       </PopoverContent>
     </Popover>
@@ -297,17 +297,17 @@ function CalendarButton() {
   return (
     <Popover open={calendarPanelOpen} onOpenChange={(open) => { if (open !== calendarPanelOpen) toggleCalendarPanel(); }}>
       <PopoverTrigger
-        className="top-icon-btn"
+        className="relative size-7 flex items-center justify-center bg-transparent border border-transparent cursor-pointer transition-all duration-150 rounded-[var(--r-md)] p-0 text-taupe-4 hover:bg-berry-1 hover:border-t-taupe-2 hover:border-l-taupe-2 hover:border-b-taupe-3 hover:border-r-taupe-3 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2 dark:hover:bg-berry-1"
         aria-label="Calendar"
       >
-        <span className="th-icon">▦</span>
+        <span className="text-sm text-taupe-4">▦</span>
         <span className="a11y-label">Calendar</span>
       </PopoverTrigger>
-      <PopoverContent align="end" className="th-dropdown-panel w-[280px] p-0">
+      <PopoverContent align="end" className="bg-white border-2 border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 rounded-[var(--r-md)] overflow-hidden dark:border-surface-0 w-[280px] p-0">
         {calendar ? (
           <CalendarPanelContent calendar={calendar} />
         ) : (
-          <div className="p-3 font-[family-name:var(--mono)] text-[11px] text-[var(--taupe-3)]">Loading...</div>
+          <div className="p-3 font-[family-name:var(--mono)] text-[11px] text-taupe-3">Loading...</div>
         )}
       </PopoverContent>
     </Popover>
@@ -327,17 +327,17 @@ function UsageButton() {
   return (
     <Popover open={usagePanelOpen} onOpenChange={(open) => { if (open !== usagePanelOpen) toggleUsagePanel(); }}>
       <PopoverTrigger
-        className="top-icon-btn"
+        className="relative size-7 flex items-center justify-center bg-transparent border border-transparent cursor-pointer transition-all duration-150 rounded-[var(--r-md)] p-0 text-taupe-4 hover:bg-berry-1 hover:border-t-taupe-2 hover:border-l-taupe-2 hover:border-b-taupe-3 hover:border-r-taupe-3 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2 dark:hover:bg-berry-1"
         aria-label="Usage"
       >
         <GaugeIcon />
         <span className="a11y-label">Usage</span>
       </PopoverTrigger>
-      <PopoverContent align="end" className="th-dropdown-panel w-[300px] p-0">
+      <PopoverContent align="end" className="bg-white border-2 border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 rounded-[var(--r-md)] overflow-hidden dark:border-surface-0 w-[300px] p-0">
         {usage ? (
           <UsagePanelContent usage={usage} />
         ) : (
-          <div className="p-3 font-[family-name:var(--mono)] text-[11px] text-[var(--taupe-3)]">Loading...</div>
+          <div className="p-3 font-[family-name:var(--mono)] text-[11px] text-taupe-3">Loading...</div>
         )}
       </PopoverContent>
     </Popover>
@@ -509,19 +509,19 @@ function ProfileAvatar() {
     <Popover open={profileMenuOpen} onOpenChange={handleOpenChange}>
       <PopoverTrigger
         aria-label="Profile menu"
-        className="top-profile"
+        className="flex items-center gap-2 cursor-pointer py-[3px] px-1.5 border border-transparent transition-all duration-150 rounded-[var(--r-md)] hover:bg-berry-1 hover:border-t-taupe-2 hover:border-l-taupe-2 hover:border-b-taupe-3 hover:border-r-taupe-3 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2 dark:hover:bg-berry-1"
       >
-        <div className="top-profile-avatar">E</div>
-        <span className="top-profile-name">Eliot Puplett</span>
+        <div className="size-6 bg-berry-3 border border-berry-2 flex items-center justify-center font-mono text-[0.6875rem] font-bold text-white shrink-0 rounded-[var(--r-md)] dark:text-[var(--text-light)]">E</div>
+        <span className="font-mono text-[0.6875rem] font-semibold text-taupe-4 dark:text-taupe-5">Eliot Puplett</span>
       </PopoverTrigger>
       <PopoverContent
           align="end"
           sideOffset={6}
           className={cn(
             "border-2 border-solid",
-            "border-t-[var(--taupe-2)] border-r-[var(--taupe-3)] border-b-[var(--taupe-3)] border-l-[var(--taupe-2)]",
-            "dark:border-[var(--surface-0)]",
-            "bg-[var(--white)] dark:bg-[var(--surface-2)]",
+            "border-t-taupe-2 border-r-taupe-3 border-b-taupe-3 border-l-taupe-2",
+            "dark:border-surface-0",
+            "bg-white dark:bg-surface-2",
             "shadow-none dark:shadow-none",
             "data-open:animate-none data-closed:animate-none duration-0",
             "overflow-hidden p-0 gap-0 w-auto",
@@ -576,7 +576,7 @@ export function AppHeader() {
   const activeTab = useActiveTab();
 
   return (
-    <header className="top-tab-bar" role="banner">
+    <header className="flex items-stretch bg-white border-b border-taupe-2 min-h-[38px] shrink-0 pl-1.5 gap-0 relative dark:border-surface-3" role="banner">
       {/* Left: Mode tabs */}
       <nav className="contents" aria-label="Main navigation">
         {TABS.map((tab) => {
@@ -586,9 +586,18 @@ export function AppHeader() {
             <Link
               key={tab.path}
               to={tab.path}
-              className={`top-tab${isActive ? " active" : ""}`}
+              className={cn(
+                "top-tab px-4 font-mono text-[0.6875rem] font-semibold tracking-[0.05em] uppercase text-taupe-3 bg-taupe-1 border border-taupe-2 cursor-pointer flex items-center gap-1.5 transition-[color,background] duration-150 -mb-px mt-1.5 rounded-t-[var(--r-md)] relative z-[1] no-underline",
+                "hover:text-taupe-5 hover:bg-berry-1",
+                "dark:bg-[rgba(var(--black-rgb),0.25)] dark:border-surface-3 dark:text-taupe-3",
+                "dark:hover:text-taupe-5 dark:hover:bg-berry-1",
+                isActive && "active text-berry-5 bg-off-white border-t-taupe-2 border-r-taupe-2 border-b-transparent border-l-taupe-2 z-[2] mt-1 dark:text-taupe-5 dark:bg-off-white dark:border-t-surface-3 dark:border-r-surface-3 dark:border-b-transparent dark:border-l-surface-3",
+              )}
             >
-              <span className="top-tab-icon"><TabIcon /></span>
+              <span className={cn(
+                "text-[0.6875rem] opacity-50 inline-flex align-middle [&_svg]:block",
+                isActive && "opacity-100 text-violet-3",
+              )}><TabIcon /></span>
               {tab.label}
             </Link>
           );
@@ -605,7 +614,7 @@ export function AppHeader() {
         <UsageButton />
 
         {/* Divider */}
-        <div className="th-divider" />
+        <div className="w-px h-5 bg-taupe-2 mx-0.5" />
 
         <ProfileAvatar />
       </div>

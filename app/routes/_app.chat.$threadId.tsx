@@ -1,10 +1,8 @@
 import { useEffect, useRef } from "react";
 import { isRouteErrorResponse, useRouteError } from "react-router";
 import { toast } from "sonner";
-import { AlertCircle } from "lucide-react";
 import { Skeleton } from "~/components/ui/skeleton";
-import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
-import { Button } from "~/components/ui/button";
+import { ErrorBoundaryContent } from "~/components/ui/error-boundary-content";
 import { getThread } from "~/services/threads";
 import { getRun } from "~/services/workflows";
 import { MessageBlock } from "~/components/chat/message-block";
@@ -106,41 +104,8 @@ export function HydrateFallback() {
 export function ErrorBoundary() {
   const error = useRouteError();
   console.error('Thread route error:', error);
-
   if (isRouteErrorResponse(error) && error.status === 404) {
-    return (
-      <div className="flex h-full items-center justify-center p-8">
-        <Alert variant="destructive" className="max-w-md">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Thread not found</AlertTitle>
-          <AlertDescription className="mt-2">
-            The thread you&apos;re looking for doesn&apos;t exist or has been
-            removed.
-          </AlertDescription>
-          <div className="mt-4">
-            <Button variant="outline" size="sm" onClick={() => window.location.reload()}>
-              Try again
-            </Button>
-          </div>
-        </Alert>
-      </div>
-    );
+    return <ErrorBoundaryContent title="Thread not found" message="The thread you're looking for doesn't exist or has been removed." />;
   }
-
-  return (
-    <div className="flex h-full items-center justify-center p-8">
-      <Alert variant="destructive" className="max-w-md">
-        <AlertCircle className="h-4 w-4" />
-        <AlertTitle>Something went wrong</AlertTitle>
-        <AlertDescription className="mt-2">
-          An unexpected error occurred while loading this thread.
-        </AlertDescription>
-        <div className="mt-4">
-          <Button variant="outline" size="sm" onClick={() => window.location.reload()}>
-            Try again
-          </Button>
-        </div>
-      </Alert>
-    </div>
-  );
+  return <ErrorBoundaryContent message="An unexpected error occurred while loading this thread." />;
 }

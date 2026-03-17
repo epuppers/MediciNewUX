@@ -38,11 +38,11 @@ function SidebarToggle() {
       onClick={toggleSidebar}
       aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
       className={cn(
-        "sidebar-toggle-btn flex size-[22px] shrink-0 items-center justify-center rounded-[var(--r-sm)] border border-transparent bg-transparent text-[var(--taupe-3)] transition-all",
-        "hover:border-[var(--taupe-2)] hover:bg-[rgba(var(--violet-3-rgb),0.08)] hover:text-[var(--violet-3)]",
+        "sidebar-toggle-btn flex size-[22px] shrink-0 items-center justify-center rounded-[var(--r-sm)] border border-transparent bg-transparent text-taupe-3 transition-all",
+        "hover:border-taupe-2 hover:bg-[rgba(var(--violet-3-rgb),0.08)] hover:text-violet-3",
         "active:bg-[rgba(var(--violet-3-rgb),0.14)]",
-        "focus-visible:outline-2 focus-visible:outline-[var(--violet-3)] focus-visible:outline-offset-1",
-        "dark:hover:border-[var(--taupe-3)] dark:hover:bg-[rgba(var(--violet-3-rgb),0.12)] dark:active:bg-[rgba(var(--violet-3-rgb),0.2)]",
+        "focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-1",
+        "dark:hover:border-taupe-3 dark:hover:bg-[rgba(var(--violet-3-rgb),0.12)] dark:active:bg-[rgba(var(--violet-3-rgb),0.2)]",
         isCollapsed ? "mx-auto" : "ml-auto"
       )}
     >
@@ -63,7 +63,7 @@ function LogoRow() {
       <button
         onClick={toggleSidebar}
         aria-label="Expand sidebar"
-        className="flex min-h-[33px] items-center justify-center bg-transparent border-none cursor-pointer rounded-[var(--r-sm)] transition-colors hover:bg-[rgba(var(--violet-3-rgb),0.08)] focus-visible:outline-2 focus-visible:outline-[var(--violet-3)] focus-visible:outline-offset-1"
+        className="flex min-h-[33px] items-center justify-center bg-transparent border-none cursor-pointer rounded-[var(--r-sm)] transition-colors hover:bg-[rgba(var(--violet-3-rgb),0.08)] focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-1"
       >
         <LogoMark />
       </button>
@@ -74,10 +74,10 @@ function LogoRow() {
     <div className="flex items-center gap-2 overflow-hidden">
       <LogoMark />
       <div className="min-w-0 flex-1 overflow-hidden whitespace-nowrap">
-        <div className="font-[family-name:var(--pixel)] text-[22px] leading-none tracking-[1px] text-[var(--taupe-1)] [text-shadow:1px_1px_0_rgba(0,0,0,0.4)] dark:text-[var(--taupe-5)] dark:[text-shadow:1px_1px_0_rgba(0,0,0,0.6)]">
+        <div className="font-[family-name:var(--pixel)] text-[22px] leading-none tracking-[1px] text-taupe-1 [text-shadow:1px_1px_0_rgba(0,0,0,0.4)] dark:text-taupe-5 dark:[text-shadow:1px_1px_0_rgba(0,0,0,0.6)]">
           COSIMO
         </div>
-        <div className="mt-px font-[family-name:var(--mono)] text-[9px] tracking-[0.1em] text-[var(--taupe-3)]">
+        <div className="mt-px font-[family-name:var(--mono)] text-[9px] tracking-[0.1em] text-taupe-3">
           MEDICI &amp; COMPANY
         </div>
       </div>
@@ -107,13 +107,13 @@ function BrainNav() {
   }
 
   return (
-    <div className="brain-nav mt-auto flex flex-col border-t border-[var(--taupe-4)] px-1.5 pb-1" style={{ minHeight: '91px' }}>
+    <div className="brain-nav mt-auto flex flex-col border-t border-taupe-4 px-1.5 pb-1" style={{ minHeight: '91px' }}>
       <div className="flex items-center justify-between">
         <div className="sidebar-section-label px-2 pt-0.5 pb-0.5">Brain</div>
         <button
           onClick={toggleBrainNav}
           aria-label={brainNavCollapsed ? "Expand Brain nav" : "Collapse Brain nav"}
-          className="brain-nav-toggle mr-1.5 flex size-5 items-center justify-center rounded-[var(--r-sm)] border-none bg-transparent text-[var(--taupe-3)] transition-colors hover:bg-[rgba(var(--white-pure-rgb),0.08)] hover:text-[var(--taupe-1)] focus-visible:outline-2 focus-visible:outline-[var(--violet-3)] focus-visible:outline-offset-1 active:bg-[rgba(var(--white-pure-rgb),0.12)]"
+          className="brain-nav-toggle mr-1.5 flex size-5 items-center justify-center rounded-[var(--r-sm)] border-none bg-transparent text-taupe-3 transition-colors hover:bg-[rgba(var(--white-pure-rgb),0.08)] hover:text-taupe-1 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-1 active:bg-[rgba(var(--white-pure-rgb),0.12)]"
         >
           <ChevronDown className={cn("size-2.5 a11y-keep transition-transform", brainNavCollapsed && "rotate-180")} />
         </button>
@@ -127,10 +127,10 @@ function BrainNav() {
                 key={item.path}
                 to={item.path}
                 className={cn(
-                  "brain-nav-btn flex items-center gap-2 rounded-[var(--r-md)] px-2.5 py-[7px] font-[family-name:var(--mono)] text-[11px] text-[var(--taupe-2)] dark:text-[var(--taupe-4)] no-underline transition-colors",
-                  "hover:bg-[rgba(var(--white-pure-rgb),0.06)] hover:text-[var(--taupe-1)] dark:hover:text-[var(--taupe-5)]",
-                  "focus-visible:outline-2 focus-visible:outline-[var(--violet-3)] focus-visible:outline-offset-1",
-                  isActive && "bg-[var(--berry-5)] text-[var(--berry-1)] dark:text-[var(--berry-3)]"
+                  "brain-nav-btn flex items-center gap-2 rounded-[var(--r-md)] px-2.5 py-[7px] font-[family-name:var(--mono)] text-[11px] text-taupe-2 dark:text-taupe-4 no-underline transition-colors",
+                  "hover:bg-[rgba(var(--white-pure-rgb),0.06)] hover:text-taupe-1 dark:hover:text-taupe-5",
+                  "focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-1",
+                  isActive && "bg-berry-5 text-berry-1 dark:text-berry-3"
                 )}
               >
                 <item.icon className={cn("size-3.5 shrink-0 opacity-70", isActive && "opacity-100")} />
@@ -140,7 +140,7 @@ function BrainNav() {
           })}
         </div>
       )}
-      <div className="mt-auto px-2 pb-1 font-[family-name:var(--mono)] text-[9px] uppercase tracking-[0.1em] text-[var(--taupe-3)] opacity-60">
+      <div className="mt-auto px-2 pb-1 font-[family-name:var(--mono)] text-[9px] uppercase tracking-[0.1em] text-taupe-3 opacity-60">
         Cosimo v2.1
       </div>
     </div>
@@ -183,7 +183,7 @@ export function AppSidebar({ threads, runs, templates }: AppSidebarProps) {
               {isWorkflowsView ? "New Workflow" : "New Thread"}
             </button>
             <div className="relative mt-2.5">
-              <Search className="pointer-events-none absolute left-2 top-1/2 size-3.5 -translate-y-1/2 text-[var(--taupe-3)]" />
+              <Search className="pointer-events-none absolute left-2 top-1/2 size-3.5 -translate-y-1/2 text-taupe-3" />
               <input
                 type="text"
                 placeholder="Search..."
@@ -205,7 +205,7 @@ export function AppSidebar({ threads, runs, templates }: AppSidebarProps) {
               templates && templates.length > 0 ? (
                 <WorkflowList templates={templates} runs={runs} />
               ) : (
-                <div className="px-2 py-1 font-[family-name:var(--mono)] text-xs text-[var(--taupe-3)]">
+                <div className="px-2 py-1 font-[family-name:var(--mono)] text-xs text-taupe-3">
                   {isCollapsed ? "" : "No templates yet"}
                 </div>
               )
@@ -213,7 +213,7 @@ export function AppSidebar({ threads, runs, templates }: AppSidebarProps) {
               threads && threads.length > 0 ? (
                 <ThreadList threads={threads} runs={runs} />
               ) : (
-                <div className="px-2 py-1 font-[family-name:var(--mono)] text-xs text-[var(--taupe-3)]">
+                <div className="px-2 py-1 font-[family-name:var(--mono)] text-xs text-taupe-3">
                   {isCollapsed ? "" : "No threads yet"}
                 </div>
               )

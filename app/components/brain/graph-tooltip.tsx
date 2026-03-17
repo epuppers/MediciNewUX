@@ -1,4 +1,5 @@
 import { useState, useCallback, useImperativeHandle, forwardRef } from 'react';
+import { cn } from '~/lib/utils';
 
 // ============================================
 // Graph Tooltip — hover info above nodes
@@ -60,11 +61,15 @@ export const GraphTooltip = forwardRef<TooltipHandle, GraphTooltipProps>(
 
     return (
       <div
-        className={`graph-tooltip ${state.visible ? 'show' : ''}`}
+        className={cn(
+          'absolute -translate-x-1/2 bg-[rgba(var(--surface-tooltip-rgb),0.92)] text-taupe-5 font-mono text-[0.6875rem] px-2.5 py-[5px] rounded-r-md pointer-events-none z-10 whitespace-nowrap backdrop-blur-[4px] border border-[rgba(var(--white-pure-rgb),0.08)] transition-[opacity,transform] duration-150 ease-out',
+          state.visible
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 translate-y-1'
+        )}
         style={{
           left: state.x,
           top: state.y,
-          transform: 'translateX(-50%)',
         }}
       >
         {state.text}

@@ -4,10 +4,9 @@
 
 import { Outlet, useMatches, useNavigate, useRouteError } from "react-router";
 import { toast } from "sonner";
-import { AlertCircle, Workflow } from "lucide-react";
+import { Workflow } from "lucide-react";
 import { Skeleton } from "~/components/ui/skeleton";
-import { Alert, AlertDescription, AlertTitle } from "~/components/ui/alert";
-import { Button } from "~/components/ui/button";
+import { ErrorBoundaryContent } from "~/components/ui/error-boundary-content";
 import { getTemplates, findRunThread } from "~/services/workflows";
 import { getLessons } from "~/services/brain";
 import { WorkflowStats } from "~/components/workflows/workflow-stats";
@@ -79,7 +78,7 @@ export default function WorkflowsRoute({ loaderData }: Route.ComponentProps) {
       ) : (
         <div className="wf-no-results">
           <Workflow className="size-10 opacity-30" style={{ color: 'var(--taupe-2)' }} />
-          <p className="font-[family-name:var(--pixel)] text-[var(--taupe-3)] dark:text-[var(--taupe-3)]">No workflows yet</p>
+          <p className="font-[family-name:var(--pixel)] text-taupe-3 dark:text-taupe-3">No workflows yet</p>
         </div>
       )}
     </div>
@@ -90,23 +89,7 @@ export default function WorkflowsRoute({ loaderData }: Route.ComponentProps) {
 export function ErrorBoundary() {
   const error = useRouteError();
   console.error('Workflows route error:', error);
-
-  return (
-    <div className="flex h-full items-center justify-center p-8">
-      <Alert variant="destructive" className="max-w-md">
-        <AlertCircle className="h-4 w-4" />
-        <AlertTitle>Something went wrong</AlertTitle>
-        <AlertDescription className="mt-2">
-          An unexpected error occurred while loading workflows.
-        </AlertDescription>
-        <div className="mt-4">
-          <Button variant="outline" size="sm" onClick={() => window.location.reload()}>
-            Try again
-          </Button>
-        </div>
-      </Alert>
-    </div>
-  );
+  return <ErrorBoundaryContent message="An unexpected error occurred while loading workflows." />;
 }
 
 /** Loading skeleton — grid of 6 workflow cards */

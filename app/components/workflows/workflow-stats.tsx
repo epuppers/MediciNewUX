@@ -29,10 +29,10 @@ export function WorkflowStats({ templates }: WorkflowStatsProps) {
   ];
 
   return (
-    <div className="wf-stats-section bevel">
+    <div className="wf-stats-section border border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 dark:border-taupe-2">
       <div className="wf-stats-section-bar">
         <div className="art-stripe" />
-        <span className="detail-section-title">Overview</span>
+        <span className="font-mono text-[0.6875rem] font-semibold text-taupe-1 uppercase tracking-[0.1em] dark:text-taupe-4">Overview</span>
         <div className="art-stripe" />
       </div>
       <div className="wf-stats-body">

@@ -6,30 +6,12 @@
 
 import { Link, useLocation } from "react-router";
 import {
-  FolderOpen,
-  Clock,
-  MessageSquare,
-  Mail,
-  Hand,
-  Link as LinkIcon,
-} from "lucide-react";
-import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
 } from "~/components/ui/sidebar";
 import type { WorkflowTemplate, WorkflowRun } from "~/services/types";
-
-// ======== Trigger Icon Map ========
-
-const TRIGGER_ICONS: Record<string, React.ElementType> = {
-  "folder-watch": FolderOpen,
-  schedule: Clock,
-  "chat-command": MessageSquare,
-  email: Mail,
-  manual: Hand,
-  chained: LinkIcon,
-};
+import { TRIGGER_CONFIG } from "~/lib/workflow-constants";
 
 // ======== Status Badge ========
 
@@ -37,13 +19,13 @@ const TRIGGER_ICONS: Record<string, React.ElementType> = {
 function StatusBadge({ status }: { status: string }) {
   const colorMap: Record<string, string> = {
     active:
-      "text-[var(--green)] border-[var(--green)] bg-[rgba(var(--green-rgb),0.1)]",
+      "text-green border-green bg-[rgba(var(--green-rgb),0.1)]",
     draft:
-      "text-[var(--amber)] border-[var(--amber)] bg-[rgba(var(--amber-rgb),0.1)]",
+      "text-amber border-amber bg-[rgba(var(--amber-rgb),0.1)]",
     paused:
-      "text-[var(--taupe-3)] border-[var(--taupe-3)] bg-[rgba(var(--taupe-3-rgb),0.1)]",
+      "text-taupe-3 border-taupe-3 bg-[rgba(var(--taupe-3-rgb),0.1)]",
     archived:
-      "text-[var(--taupe-3)] border-[var(--taupe-3)] bg-[rgba(var(--taupe-3-rgb),0.06)]",
+      "text-taupe-3 border-taupe-3 bg-[rgba(var(--taupe-3-rgb),0.06)]",
   };
 
   const label = status.charAt(0).toUpperCase() + status.slice(1);
@@ -70,8 +52,8 @@ function ActiveRunItem({
   const statusType = run.status === "running" ? "running" : "waiting";
   const statusLabel = run.status === "running" ? "Running" : "Waiting";
   const colorMap: Record<string, string> = {
-    running: "text-[var(--violet-3)] border-[var(--violet-3)] bg-[rgba(var(--violet-3-rgb),0.15)] animate-[wf-pulse_2s_infinite] motion-reduce:animate-none",
-    waiting: "text-[var(--amber)] border-[var(--amber)] bg-[rgba(var(--amber-rgb),0.15)]",
+    running: "text-violet-3 border-violet-3 bg-[rgba(var(--violet-3-rgb),0.15)] animate-[wf-pulse_2s_infinite] motion-reduce:animate-none",
+    waiting: "text-amber border-amber bg-[rgba(var(--amber-rgb),0.15)]",
   };
 
   return (
@@ -79,10 +61,10 @@ function ActiveRunItem({
       <SidebarMenuButton
         render={<Link to={`/chat/${run.threadId}`} />}
         size="sm"
-        className="h-auto items-start rounded-[var(--r-md)] border border-transparent py-1.5 px-2 font-[family-name:var(--mono)] text-xs text-[var(--taupe-2)] dark:text-[var(--taupe-4)]"
+        className="h-auto items-start rounded-[var(--r-md)] border border-transparent py-1.5 px-2 font-[family-name:var(--mono)] text-xs text-taupe-2 dark:text-taupe-4"
       >
         <div className="min-w-0 flex-1">
-          <div className="text-[11px] font-semibold text-[var(--taupe-1)] dark:text-[var(--taupe-5)]">
+          <div className="text-[11px] font-semibold text-taupe-1 dark:text-taupe-5">
             {templateName}
           </div>
           <div className="mt-1">
@@ -106,7 +88,7 @@ function TemplateItem({
   template: WorkflowTemplate;
   isActive: boolean;
 }) {
-  const TriggerIcon = TRIGGER_ICONS[template.triggerType] ?? Hand;
+  const TriggerIcon = TRIGGER_CONFIG[template.triggerType].icon;
 
   const lastRunInfo =
     template.recentRuns.length > 0
@@ -119,14 +101,14 @@ function TemplateItem({
         isActive={isActive}
         render={<Link to={`/workflows/${template.id}`} />}
         size="sm"
-        className="h-auto items-start rounded-[var(--r-md)] border border-transparent py-2 px-2 font-[family-name:var(--mono)] text-xs leading-[1.3] text-[var(--taupe-2)] dark:text-[var(--taupe-4)]"
+        className="h-auto items-start rounded-[var(--r-md)] border border-transparent py-2 px-2 font-[family-name:var(--mono)] text-xs leading-[1.3] text-taupe-2 dark:text-taupe-4"
       >
         <div className="min-w-0 flex-1">
-          <span className="mr-[5px] inline-flex align-middle text-[var(--taupe-3)]">
+          <span className="mr-[5px] inline-flex align-middle text-taupe-3">
             <TriggerIcon className="size-3" />
           </span>
           <span className="text-xs">{template.title}</span>
-          <div className="mt-0.5 flex items-center gap-1.5 text-xs text-[var(--taupe-3)]">
+          <div className="mt-0.5 flex items-center gap-1.5 text-xs text-taupe-3">
             <StatusBadge status={template.status} />
             <span>{lastRunInfo}</span>
           </div>
@@ -167,8 +149,8 @@ export function WorkflowList({ templates, runs = {} }: WorkflowListProps) {
       {/* Active Runs Section */}
       {activeRuns.length > 0 && (
         <SidebarMenu>
-          <div className="mb-1 rounded-[var(--r-md)] bg-[rgba(var(--violet-3-rgb),0.04)] px-1.5 py-1.5 dark:bg-[rgba(var(--violet-3-rgb),0.06)] border-b border-[var(--chinese-4)] dark:border-[var(--chinese-5)]">
-            <div className="mb-1 px-0.5 font-[family-name:var(--mono)] text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--taupe-3)]">
+          <div className="mb-1 rounded-[var(--r-md)] bg-[rgba(var(--violet-3-rgb),0.04)] px-1.5 py-1.5 dark:bg-[rgba(var(--violet-3-rgb),0.06)] border-b border-chinese-4 dark:border-chinese-5">
+            <div className="mb-1 px-0.5 font-[family-name:var(--mono)] text-[10px] font-semibold uppercase tracking-[0.18em] text-taupe-3">
               Active Runs
             </div>
             {activeRuns.map((run) => (

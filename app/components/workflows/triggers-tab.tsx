@@ -2,44 +2,11 @@
 // TriggersTab — Workflow trigger configuration
 // ============================================
 
-import {
-  FolderOpen,
-  Terminal,
-  Clock,
-  Mail,
-  MousePointerClick,
-  Link2,
-} from 'lucide-react';
 import type { WorkflowTemplate, TriggerType } from '~/services/types';
+import { TRIGGER_CONFIG } from '~/lib/workflow-constants';
 
 interface TriggersTabProps {
   template: WorkflowTemplate;
-}
-
-/** Icon component for a given trigger type */
-function triggerIcon(type: TriggerType) {
-  const icons: Record<TriggerType, React.ReactNode> = {
-    'folder-watch': <FolderOpen className="size-3.5" />,
-    'chat-command': <Terminal className="size-3.5" />,
-    schedule: <Clock className="size-3.5" />,
-    email: <Mail className="size-3.5" />,
-    manual: <MousePointerClick className="size-3.5" />,
-    chained: <Link2 className="size-3.5" />,
-  };
-  return icons[type] ?? null;
-}
-
-/** Human-readable label for a trigger type */
-function triggerLabel(type: TriggerType): string {
-  const labels: Record<TriggerType, string> = {
-    'folder-watch': 'Folder Watch',
-    'chat-command': 'Chat Command',
-    schedule: 'Schedule',
-    email: 'Email',
-    manual: 'Manual',
-    chained: 'Chained',
-  };
-  return labels[type] ?? type;
 }
 
 interface TriggerEntry {
@@ -106,14 +73,16 @@ export function TriggersTab({ template }: TriggersTabProps) {
         <div className="trigger-empty">No triggers configured</div>
       )}
 
-      {triggers.map((trigger, index) => (
+      {triggers.map((trigger, index) => {
+        const TriggerIcon = TRIGGER_CONFIG[trigger.type]?.icon;
+        return (
         <div key={`${trigger.type}-${index}`} className="trigger-item">
           <div className="trigger-item-icon">
-            {triggerIcon(trigger.type)}
+            {TriggerIcon && <TriggerIcon className="size-3.5" />}
           </div>
           <div className="trigger-item-body">
             <div className="trigger-item-header">
-              <span className="trigger-item-type">{triggerLabel(trigger.type)}</span>
+              <span className="trigger-item-type">{TRIGGER_CONFIG[trigger.type]?.label ?? trigger.type}</span>
               {trigger.isPrimary && (
                 <span className="trigger-item-badge trigger-primary">Primary</span>
               )}
@@ -123,7 +92,8 @@ export function TriggersTab({ template }: TriggersTabProps) {
             </div>
           </div>
         </div>
-      ))}
+        );
+      })}
 
       <button type="button" className="add-source-btn">+ Add Trigger</button>
     </div>

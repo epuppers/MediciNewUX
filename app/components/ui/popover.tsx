@@ -37,7 +37,7 @@ function PopoverContent({
         <PopoverPrimitive.Popup
           data-slot="popover-content"
           className={cn(
-            "z-50 flex w-72 origin-(--transform-origin) flex-col gap-2.5 rounded-[var(--r-md)] bg-[var(--white)] dark:bg-[var(--surface-2)] p-2.5 text-[var(--taupe-5)] border-2 border-solid border-[var(--taupe-2)] dark:border-[var(--taupe-2)] shadow-[3px_3px_0_rgba(0,0,0,0.15)] dark:shadow-[3px_3px_0_rgba(0,0,0,0.3)] bevel outline-hidden duration-100 data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+            "z-50 flex w-72 origin-(--transform-origin) flex-col gap-2.5 rounded-[var(--r-md)] bg-white dark:bg-surface-2 p-2.5 text-taupe-5 border-2 border-solid border-taupe-2 dark:border-taupe-2 shadow-[3px_3px_0_rgba(0,0,0,0.15)] dark:shadow-[3px_3px_0_rgba(0,0,0,0.3)] outline-hidden duration-100 data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
             className
           )}
           {...props}
@@ -74,7 +74,7 @@ function PopoverDescription({
   return (
     <PopoverPrimitive.Description
       data-slot="popover-description"
-      className={cn("text-[var(--taupe-3)] font-[family-name:var(--sans)] text-[11px]", className)}
+      className={cn("text-taupe-3 font-[family-name:var(--sans)] text-[11px]", className)}
       {...props}
     />
   )

@@ -120,7 +120,7 @@ interface SpreadsheetViewProps {
 function SpreadsheetView({ data, selectedCell, onSelectCell, cellRef, cellFormula }: SpreadsheetViewProps) {
   if (!data) {
     return (
-      <div className="flex flex-1 items-center justify-center font-[family-name:var(--mono)] text-[11px] text-[var(--taupe-3)]">
+      <div className="flex flex-1 items-center justify-center font-[family-name:var(--mono)] text-[11px] text-taupe-3">
         Loading…
       </div>
     );
@@ -136,7 +136,7 @@ function SpreadsheetView({ data, selectedCell, onSelectCell, cellRef, cellFormul
 
       {/* Formula bar */}
       <div className="fp-formula-bar">
-        <span className="fp-cell-ref bevel-inset">{cellRef}</span>
+        <span className="fp-cell-ref border border-solid border-t-taupe-3 border-l-taupe-3 border-b-taupe-1 border-r-taupe-1 dark:border-taupe-2">{cellRef}</span>
         <span className="fp-formula">{cellFormula}</span>
       </div>
 

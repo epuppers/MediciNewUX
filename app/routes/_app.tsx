@@ -33,7 +33,7 @@ export default function AppLayout({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className={cn(
-      "app-frame",
+      "app-frame flex w-screen h-screen p-1 overflow-hidden bg-taupe-4",
       sidebarDragState === "narrow" && "sidebar-narrow",
       sidebarDragState !== "idle" && "sidebar-dragging"
     )}>

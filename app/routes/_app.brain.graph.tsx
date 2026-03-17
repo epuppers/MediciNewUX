@@ -4,10 +4,8 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams, useRouteError } from 'react-router';
-import { AlertCircle } from 'lucide-react';
 import { Skeleton } from '~/components/ui/skeleton';
-import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
-import { Button } from '~/components/ui/button';
+import { ErrorBoundaryContent } from '~/components/ui/error-boundary-content';
 import { getGraphData } from '~/services/brain';
 import { EntityGraph } from '~/components/brain/entity-graph';
 import { EntityDetail } from '~/components/brain/entity-detail';
@@ -128,23 +126,7 @@ export default function BrainGraphRoute({ loaderData }: Route.ComponentProps) {
 export function ErrorBoundary() {
   const error = useRouteError();
   console.error('Graph route error:', error);
-
-  return (
-    <div className="flex h-full items-center justify-center p-8">
-      <Alert variant="destructive" className="max-w-md">
-        <AlertCircle className="h-4 w-4" />
-        <AlertTitle>Something went wrong</AlertTitle>
-        <AlertDescription className="mt-2">
-          An unexpected error occurred while loading the knowledge graph.
-        </AlertDescription>
-        <div className="mt-4">
-          <Button variant="outline" size="sm" onClick={() => window.location.reload()}>
-            Try again
-          </Button>
-        </div>
-      </Alert>
-    </div>
-  );
+  return <ErrorBoundaryContent message="An unexpected error occurred while loading the knowledge graph." />;
 }
 
 /** Loading skeleton — graph area + detail panel */

@@ -27,16 +27,16 @@ interface ThreadListProps {
 /** Thread indicator badge (ready, error, waiting, running, etc.) */
 function ThreadIndicatorBadge({ type, label }: { type: string; label: string }) {
   const colorMap: Record<string, string> = {
-    ready: "text-[var(--green)] border-[var(--green)] bg-[rgba(var(--green-rgb),0.15)]",
-    error: "text-[var(--red)] border-[var(--red)] bg-[rgba(var(--red-rgb),0.15)]",
-    waiting: "text-[var(--amber)] border-[var(--amber)] bg-[rgba(var(--amber-rgb),0.15)]",
-    running: "text-[var(--violet-3)] border-[var(--violet-3)] bg-[rgba(var(--violet-3-rgb),0.15)] animate-[wf-pulse_2s_infinite] motion-reduce:animate-none",
-    streaming: "text-[var(--violet-3)] border-[var(--violet-3)] bg-[rgba(var(--violet-3-rgb),0.15)]",
+    ready: "text-green border-green bg-[rgba(var(--green-rgb),0.15)]",
+    error: "text-red border-red bg-[rgba(var(--red-rgb),0.15)]",
+    waiting: "text-amber border-amber bg-[rgba(var(--amber-rgb),0.15)]",
+    running: "text-violet-3 border-violet-3 bg-[rgba(var(--violet-3-rgb),0.15)] animate-[wf-pulse_2s_infinite] motion-reduce:animate-none",
+    streaming: "text-violet-3 border-violet-3 bg-[rgba(var(--violet-3-rgb),0.15)]",
   };
 
   return (
     <span
-      className={`inline-block rounded-[var(--r-md)] border px-[5px] py-px font-[family-name:var(--mono)] text-[9px] font-semibold leading-none ${colorMap[type] ?? "text-[var(--taupe-3)] border-[var(--taupe-3)] bg-[rgba(var(--taupe-3-rgb),0.1)]"}`}
+      className={`inline-block rounded-[var(--r-md)] border px-[5px] py-px font-[family-name:var(--mono)] text-[9px] font-semibold leading-none ${colorMap[type] ?? "text-taupe-3 border-taupe-3 bg-[rgba(var(--taupe-3-rgb),0.1)]"}`}
     >
       {label}
     </span>
@@ -62,19 +62,19 @@ function ThreadItem({
         isActive={isActive}
         render={<Link to={`/chat/${thread.id}`} />}
         size="sm"
-        className="h-auto items-start rounded-[var(--r-md)] border border-transparent py-2 px-2 font-[family-name:var(--mono)] text-xs leading-[1.3] text-[var(--taupe-2)] dark:text-[var(--taupe-4)]"
+        className="h-auto items-start rounded-[var(--r-md)] border border-transparent py-2 px-2 font-[family-name:var(--mono)] text-xs leading-[1.3] text-taupe-2 dark:text-taupe-4"
       >
         <div className="min-w-0 flex-1">
           {isWorkflowThread && (
             <span
-              className="mr-[3px] inline text-[10px] text-[var(--taupe-3)]"
+              className="mr-[3px] inline text-[10px] text-taupe-3"
               aria-label="Workflow thread"
             >
               ⚙
             </span>
           )}
           <span className="text-xs">{thread.title}</span>
-          <div className="mt-0.5 text-xs text-[var(--taupe-3)]">
+          <div className="mt-0.5 text-xs text-taupe-3">
             {thread.timestamp}
           </div>
           {thread.indicators.length > 0 && (
@@ -109,12 +109,12 @@ function ActiveRunItem({
         isActive={isActive}
         render={<Link to={`/chat/${thread.id}`} />}
         size="sm"
-        className="h-auto items-start rounded-[var(--r-md)] border border-transparent py-1.5 px-2 font-[family-name:var(--mono)] text-xs text-[var(--taupe-2)] dark:text-[var(--taupe-4)]"
+        className="h-auto items-start rounded-[var(--r-md)] border border-transparent py-1.5 px-2 font-[family-name:var(--mono)] text-xs text-taupe-2 dark:text-taupe-4"
       >
         <div className="min-w-0 flex-1">
-          <span className="mr-[3px] inline text-[10px] text-[var(--taupe-3)]" aria-label="Workflow thread">⚙</span>
-          <span className="text-xs text-[var(--taupe-1)] dark:text-[var(--taupe-5)]">{thread.title}</span>
-          <div className="mt-0.5 text-xs text-[var(--taupe-3)]">
+          <span className="mr-[3px] inline text-[10px] text-taupe-3" aria-label="Workflow thread">⚙</span>
+          <span className="text-xs text-taupe-1 dark:text-taupe-5">{thread.title}</span>
+          <div className="mt-0.5 text-xs text-taupe-3">
             {thread.timestamp}
           </div>
           <div className="mt-0.5">
@@ -157,7 +157,7 @@ export function ThreadList({ threads, runs = {} }: ThreadListProps) {
       {/* Active Runs Section */}
       {activeRuns.length > 0 && (
         <SidebarMenu>
-          <div className="mb-1 rounded-[var(--r-md)] bg-[rgba(var(--violet-3-rgb),0.04)] px-1.5 py-1.5 dark:bg-[rgba(var(--violet-3-rgb),0.06)] border-b border-[var(--chinese-4)] dark:border-[var(--chinese-5)]">
+          <div className="mb-1 rounded-[var(--r-md)] bg-[rgba(var(--violet-3-rgb),0.04)] px-1.5 py-1.5 dark:bg-[rgba(var(--violet-3-rgb),0.06)] border-b border-chinese-4 dark:border-chinese-5">
             <div className="sidebar-section-label px-2 pt-1 pb-0.5">
               Active
             </div>

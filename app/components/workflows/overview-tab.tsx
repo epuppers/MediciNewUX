@@ -3,6 +3,9 @@
 // ============================================
 
 import type { WorkflowTemplate } from '~/services/types';
+import { KVRow } from '~/components/ui/kv-row';
+import { SectionPanel } from '~/components/ui/section-panel';
+import { RunRow } from './run-row';
 
 /** Displays template overview with Status, Performance, and Recent Activity sections */
 export function OverviewTab({ template }: { template: WorkflowTemplate }) {
@@ -12,92 +15,34 @@ export function OverviewTab({ template }: { template: WorkflowTemplate }) {
   const lastRunStatus = lastRun ? lastRun.status : '—';
   const lastRunStatusClass =
     lastRunStatus === 'success' ? 'text-green' : lastRunStatus === 'failed' ? 'text-red' : '';
+  const statusLabel = template.status.charAt(0).toUpperCase() + template.status.slice(1);
+  const lastRunStatusLabel = lastRunStatus.charAt(0).toUpperCase() + lastRunStatus.slice(1);
 
   return (
     <div className="overview-grid">
       {/* Status section */}
-      <div className="detail-section bevel">
-        <div className="detail-section-bar">
-          <div className="art-stripe" />
-          <span className="detail-section-title">Status</span>
-          <div className="art-stripe" />
-        </div>
-        <div className="detail-section-body">
-          <div className="kv-row">
-            <span className="kv-key">State</span>
-            <span className={`kv-val status-${template.status}`}>
-              ● {template.status.charAt(0).toUpperCase() + template.status.slice(1)}
-            </span>
-          </div>
-          <div className="kv-row">
-            <span className="kv-key">Last Run</span>
-            <span className="kv-val">{lastRunTime}</span>
-          </div>
-          <div className="kv-row">
-            <span className="kv-key">Last Result</span>
-            <span className={`kv-val ${lastRunStatusClass}`}>
-              {lastRunStatus.charAt(0).toUpperCase() + lastRunStatus.slice(1)}
-            </span>
-          </div>
-          <div className="kv-row">
-            <span className="kv-key">Avg Duration</span>
-            <span className="kv-val">{runs.avgDuration || '—'}</span>
-          </div>
-        </div>
-      </div>
+      <SectionPanel title="Status" className="!mb-0">
+        <KVRow label="State" value={<>● {statusLabel}</>} valueClassName={`status-${template.status}`} />
+        <KVRow label="Last Run" value={lastRunTime} />
+        <KVRow label="Last Result" value={lastRunStatusLabel} valueClassName={lastRunStatusClass} />
+        <KVRow label="Avg Duration" value={runs.avgDuration || '—'} />
+      </SectionPanel>
 
       {/* Performance section */}
-      <div className="detail-section bevel">
-        <div className="detail-section-bar">
-          <div className="art-stripe" />
-          <span className="detail-section-title">Performance</span>
-          <div className="art-stripe" />
-        </div>
-        <div className="detail-section-body">
-          <div className="kv-row">
-            <span className="kv-key">Total Runs</span>
-            <span className="kv-val">{runs.total || 0}</span>
-          </div>
-          <div className="kv-row">
-            <span className="kv-key">Success Rate</span>
-            <span className="kv-val text-green">
-              {runs.successRate ? `${runs.successRate}%` : '—'}
-            </span>
-          </div>
-          <div className="kv-row">
-            <span className="kv-key">Files Processed</span>
-            <span className="kv-val">{runs.filesProcessed || 0}</span>
-          </div>
-          <div className="kv-row">
-            <span className="kv-key">Created</span>
-            <span className="kv-val">{template.createdDate}</span>
-          </div>
-        </div>
-      </div>
+      <SectionPanel title="Performance" className="!mb-0">
+        <KVRow label="Total Runs" value={runs.total || 0} />
+        <KVRow label="Success Rate" value={runs.successRate ? `${runs.successRate}%` : '—'} valueClassName="text-green" />
+        <KVRow label="Files Processed" value={runs.filesProcessed || 0} />
+        <KVRow label="Created" value={template.createdDate} />
+      </SectionPanel>
 
       {/* Recent Activity section */}
       {recentRuns.length > 0 && (
-        <div className="detail-section bevel overview-full">
-          <div className="detail-section-bar">
-            <div className="art-stripe" />
-            <span className="detail-section-title">Recent Activity</span>
-            <div className="art-stripe" />
-          </div>
-          <div className="detail-section-body">
-            {recentRuns.map((run) => {
-              const dotClass = run.status === 'success' ? 'success' : 'failed';
-              return (
-                <div key={run.id} className="run-row">
-                  <div className={`run-status-dot ${dotClass}`} />
-                  <span className="run-id">{run.id}</span>
-                  <span className="run-trigger">{run.trigger}</span>
-                  <span className="run-time">{run.time}</span>
-                  <span className="run-duration">{run.duration}</span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        <SectionPanel title="Recent Activity" className="overview-full !mb-0">
+          {recentRuns.map((run) => (
+            <RunRow key={run.id} run={run} />
+          ))}
+        </SectionPanel>
       )}
     </div>
   );

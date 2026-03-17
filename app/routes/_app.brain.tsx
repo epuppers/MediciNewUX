@@ -3,6 +3,7 @@
 // ============================================
 
 import { Outlet, useLocation } from 'react-router';
+import { Button } from '~/components/ui/button';
 import { useBrainStore } from '~/stores/brain-store';
 import { useUIStore } from '~/stores/ui-store';
 
@@ -21,15 +22,16 @@ export default function BrainRoute() {
   ) ?? BRAIN_SECTIONS[0];
 
   return (
-    <div className="flex h-full flex-col bg-[var(--off-white)] dark:bg-[var(--surface-0)]">
+    <div className="flex h-full flex-col bg-off-white dark:bg-surface-0">
       {/* Section header */}
       <div className="main-header">
         <span className="header-title">{currentSection.label}</span>
         <div className="header-actions">
           {currentSection.action && (
-            <button
-              type="button"
-              className="header-btn bevel label-mono primary"
+            <Button
+              variant="default"
+              size="sm"
+              className="header-btn border border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 dark:border-taupe-2 font-mono text-[0.625rem] uppercase tracking-[0.05em] text-taupe-3 primary"
               onClick={() => {
                 if (currentSection.label === 'Memory') {
                   useBrainStore.getState().toggleAddMemoryForm();
@@ -39,7 +41,7 @@ export default function BrainRoute() {
               }}
             >
               {currentSection.action}
-            </button>
+            </Button>
           )}
         </div>
       </div>

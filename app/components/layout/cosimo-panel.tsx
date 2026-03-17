@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { X, Send, Sparkles, FileText, GitBranch, BookOpen } from 'lucide-react';
-import { Button } from '~/components/ui/button';
+import { X, Sparkles, FileText, GitBranch, BookOpen } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
@@ -8,6 +7,8 @@ import {
 import { Badge } from '~/components/ui/badge';
 import { useUIStore, type CosimoContextType } from '~/stores/ui-store';
 import { cn } from '~/lib/utils';
+import { SendButton } from '~/components/ui/send-button';
+import { AttachButton } from '~/components/ui/attach-button';
 
 // ======== Types ========
 
@@ -50,16 +51,16 @@ function PanelMessageBubble({ message }: { message: PanelMessage }) {
     <div className={cn(
       'cosimo-panel-msg rounded-[var(--r-md)] px-3 py-2.5 text-[13px] leading-[1.5] mb-3',
       isAI
-        ? 'cosimo-panel-msg-ai bg-[rgba(var(--violet-3-rgb),0.06)] dark:bg-[rgba(var(--violet-3-rgb),0.1)] border border-[rgba(var(--violet-3-rgb),0.12)] dark:border-[rgba(var(--violet-3-rgb),0.18)] text-[var(--taupe-5)]'
-        : 'cosimo-panel-msg-user bg-[rgba(var(--berry-3-rgb),0.05)] dark:bg-[rgba(var(--berry-3-rgb),0.1)] border border-[rgba(var(--berry-3-rgb),0.12)] dark:border-[rgba(var(--berry-3-rgb),0.15)] text-[var(--taupe-5)] text-right'
+        ? 'cosimo-panel-msg-ai bg-[rgba(var(--violet-3-rgb),0.06)] dark:bg-[rgba(var(--violet-3-rgb),0.1)] border border-[rgba(var(--violet-3-rgb),0.12)] dark:border-[rgba(var(--violet-3-rgb),0.18)] text-taupe-5'
+        : 'cosimo-panel-msg-user bg-[rgba(var(--berry-3-rgb),0.05)] dark:bg-[rgba(var(--berry-3-rgb),0.1)] border border-[rgba(var(--berry-3-rgb),0.12)] dark:border-[rgba(var(--berry-3-rgb),0.15)] text-taupe-5 text-right'
     )}>
       <div className={cn('mb-1.5 flex items-center gap-1.5', !isAI && 'justify-end')}>
         {isAI && (
-          <span className="flex h-4 w-4 items-center justify-center rounded-sm bg-[var(--violet-3)] text-white">
+          <span className="flex h-4 w-4 items-center justify-center rounded-sm bg-violet-3 text-white">
             <Sparkles className="h-2.5 w-2.5" />
           </span>
         )}
-        <span className="font-[family-name:var(--mono)] text-[12px] font-semibold uppercase tracking-[0.05em] text-[var(--taupe-3)]">
+        <span className="font-[family-name:var(--mono)] text-[12px] font-semibold uppercase tracking-[0.05em] text-taupe-3">
           {isAI ? 'Cosimo' : 'You'}
         </span>
       </div>
@@ -73,9 +74,9 @@ function PanelMessageBubble({ message }: { message: PanelMessage }) {
 function ThinkingIndicator() {
   return (
     <div className="flex gap-1 px-3 py-2">
-      <span className="cosimo-typing-dot h-1.5 w-1.5 rounded-full bg-[var(--violet-3)]" />
-      <span className="cosimo-typing-dot h-1.5 w-1.5 rounded-full bg-[var(--violet-3)] [animation-delay:0.2s]" />
-      <span className="cosimo-typing-dot h-1.5 w-1.5 rounded-full bg-[var(--violet-3)] [animation-delay:0.4s]" />
+      <span className="cosimo-typing-dot h-1.5 w-1.5 rounded-full bg-violet-3" />
+      <span className="cosimo-typing-dot h-1.5 w-1.5 rounded-full bg-violet-3 [animation-delay:0.2s]" />
+      <span className="cosimo-typing-dot h-1.5 w-1.5 rounded-full bg-violet-3 [animation-delay:0.4s]" />
     </div>
   );
 }
@@ -161,22 +162,22 @@ export function CosimoPanel() {
         side="right"
         showCloseButton={false}
         className={cn(
-          'cosimo-panel-sheet flex w-[420px] flex-col gap-0 p-0 sm:max-w-[420px]',
-          'bg-[var(--off-white)] dark:bg-[var(--surface-1)]',
+          'cosimo-panel-sheet flex w-[520px] flex-col gap-0 p-0 sm:max-w-[520px]',
+          'bg-off-white dark:bg-surface-1',
           'border-l-2 border-solid',
-          'border-l-[var(--taupe-2)] dark:border-l-[var(--surface-3)]',
+          'border-l-taupe-2 dark:border-l-surface-3',
           'shadow-[-4px_0_20px_rgba(0,0,0,0.15)] dark:shadow-[-4px_0_20px_rgba(0,0,0,0.5)]',
         )}
       >
         {/* Header */}
         <div className={cn(
           'flex min-h-[38px] items-center justify-between gap-2 px-3 py-2 shrink-0',
-          'bg-[var(--white)] dark:bg-[var(--surface-1)]',
-          'border-b border-[var(--taupe-2)] dark:border-[var(--surface-3)]',
+          'bg-white dark:bg-surface-1',
+          'border-b border-taupe-2 dark:border-surface-3',
         )}>
           <div className="flex items-center gap-2 min-w-0 overflow-hidden">
-            <Sparkles className="h-4 w-4 shrink-0 text-[var(--violet-3)]" />
-            <span className="font-[family-name:var(--mono)] text-[11px] font-semibold text-[var(--taupe-5)] dark:text-[var(--taupe-4)] whitespace-nowrap overflow-hidden text-ellipsis">
+            <Sparkles className="h-4 w-4 shrink-0 text-violet-3" />
+            <span className="font-[family-name:var(--mono)] text-[11px] font-semibold text-taupe-5 dark:text-taupe-4 whitespace-nowrap overflow-hidden text-ellipsis">
               Ask Cosimo
             </span>
           </div>
@@ -185,12 +186,12 @@ export function CosimoPanel() {
             aria-label="Close Cosimo panel"
             className={cn(
               'cosimo-close-btn shrink-0 px-2 py-0.5',
-              'font-[family-name:var(--mono)] text-[11px] text-[var(--taupe-3)]',
-              'bg-transparent border border-[var(--taupe-2)] dark:border-[var(--surface-3)] rounded-[var(--r-md)]',
+              'font-[family-name:var(--mono)] text-[11px] text-taupe-3',
+              'bg-transparent border border-taupe-2 dark:border-surface-3 rounded-[var(--r-md)]',
               'cursor-pointer',
-              'hover:text-[var(--taupe-5)] hover:border-[var(--taupe-3)]',
-              'dark:hover:text-[var(--taupe-5)] dark:hover:border-[var(--taupe-2)]',
-              'focus-visible:outline-2 focus-visible:outline-[var(--violet-3)] focus-visible:outline-offset-2',
+              'hover:text-taupe-5 hover:border-taupe-3',
+              'dark:hover:text-taupe-5 dark:hover:border-taupe-2',
+              'focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2',
             )}
           >
             <X className="h-3.5 w-3.5" />
@@ -200,10 +201,10 @@ export function CosimoPanel() {
 
         {/* Context chip */}
         {context && (
-          <div className="border-b border-[var(--taupe-2)] dark:border-[var(--surface-3)] px-3 py-2">
+          <div className="border-b border-taupe-2 dark:border-surface-3 px-3 py-2">
             <Badge
               variant="secondary"
-              className="gap-1.5 font-[family-name:var(--mono)] text-[10px] bg-[rgba(var(--violet-3-rgb),0.08)] dark:bg-[rgba(var(--violet-3-rgb),0.12)] text-[var(--violet-3)] border border-[rgba(var(--violet-3-rgb),0.15)]"
+              className="gap-1.5 font-[family-name:var(--mono)] text-[10px] bg-[rgba(var(--violet-3-rgb),0.08)] dark:bg-[rgba(var(--violet-3-rgb),0.12)] text-violet-3 border border-[rgba(var(--violet-3-rgb),0.15)]"
             >
               {ContextIcon && <ContextIcon className="h-3 w-3" />}
               {context.text}
@@ -223,7 +224,7 @@ export function CosimoPanel() {
         </div>
 
         {/* Input area */}
-        <div className="border-t border-[var(--taupe-2)] dark:border-[var(--surface-3)] px-3.5 py-2.5 bg-[var(--white)] dark:bg-[var(--surface-1)]">
+        <div className="border-t border-taupe-2 dark:border-surface-3 px-3.5 py-2.5 bg-white dark:bg-surface-1">
           <div className="flex items-end gap-1.5">
             <textarea
               ref={inputRef}
@@ -235,31 +236,18 @@ export function CosimoPanel() {
               rows={1}
               className={cn(
                 'min-h-[32px] max-h-[120px] flex-1 resize-none',
-                'rounded-[var(--r-md)] bevel-inset',
-                'bg-[var(--off-white)] dark:bg-[var(--surface-0)]',
+                'rounded-[var(--r-md)] border border-solid border-t-taupe-3 border-l-taupe-3 border-b-taupe-1 border-r-taupe-1 dark:border-taupe-2',
+                'bg-off-white dark:bg-surface-0',
                 'px-2.5 py-[7px]',
                 'font-[family-name:var(--mono)] text-[12px] leading-[1.5]',
-                'text-[var(--taupe-5)]',
-                'placeholder:text-[var(--taupe-3)]',
-                'focus:outline-none focus:border-[var(--violet-3)]',
+                'text-taupe-5',
+                'placeholder:text-taupe-3',
+                'focus:outline-none focus:border-violet-3',
                 'overflow-y-auto whitespace-pre-wrap break-words',
               )}
             />
-            <Button
-              size="icon-sm"
-              onClick={handleSend}
-              disabled={!inputValue.trim()}
-              aria-label="Send message"
-              className={cn(
-                'panel-send-btn shrink-0 h-[28px] w-[28px] rounded-[var(--r-md)]',
-                'bg-[var(--violet-3)] text-white border-0',
-                'hover:bg-[var(--violet-4)]',
-                'disabled:bg-[var(--taupe-2)] disabled:text-[var(--taupe-3)] disabled:opacity-60',
-              )}
-            >
-              <Send className="h-3.5 w-3.5" />
-              <span className="a11y-label">Send</span>
-            </Button>
+            <AttachButton disabled={isThinking} />
+            <SendButton onClick={handleSend} disabled={!inputValue.trim()} />
           </div>
         </div>
       </SheetContent>

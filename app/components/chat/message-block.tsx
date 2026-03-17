@@ -1,6 +1,8 @@
+import { useRef } from 'react';
 import { Copy, RotateCcw, Pencil, ThumbsUp, ThumbsDown, RotateCw } from 'lucide-react';
 import type { Message, Attachment } from '~/services/types';
 import { Artifact } from '~/components/chat/artifact';
+import { Footnotes, CitationTooltip, useCitationClick } from '~/components/chat/citations';
 import { useChatStore } from '~/stores/chat-store';
 import { cn } from '~/lib/utils';
 
@@ -143,10 +145,14 @@ function UserMessage({ message, isWorkflowThread }: { message: Message; isWorkfl
 /** Renders an AI message with Cosimo avatar, model badge, content, artifacts, and feedback */
 function AIMessage({ message }: { message: Message }) {
   const isGate = message.isGate;
+  const hasCitations = message.citations && message.citations.length > 0;
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useCitationClick(containerRef, message.citations ?? []);
 
   return (
     <div className="msg-block">
-      <div className={cn('ai-block', isGate && 'msg-gate')}>
+      <div ref={containerRef} className={cn('ai-block', isGate && 'msg-gate')}>
         {/* Header: avatar + name + timestamp + model badge + gate chip */}
         <div className="msg-header flex-wrap">
           <div className="msg-badge msg-badge-ai">◆</div>
@@ -171,11 +177,11 @@ function AIMessage({ message }: { message: Message }) {
             <div className="cosimo-error">
               <div className="cosimo-error-icon">!</div>
               <div className="cosimo-error-content">
-                <div className="cosimo-error-title label-mono">{message.error.title}</div>
+                <div className="cosimo-error-title font-mono text-[0.625rem] uppercase tracking-[0.05em] text-taupe-3">{message.error.title}</div>
                 <div className="cosimo-error-detail">{message.error.detail}</div>
                 <div className="cosimo-error-meta">{message.error.meta}</div>
               </div>
-              <button className="cosimo-error-retry label-mono" aria-label="Retry request">
+              <button className="cosimo-error-retry font-mono text-[0.625rem] uppercase tracking-[0.05em] text-taupe-3" aria-label="Retry request">
                 <RotateCw className="retry-icon" size={12} />
                 Retry
               </button>
@@ -189,6 +195,9 @@ function AIMessage({ message }: { message: Message }) {
             <div dangerouslySetInnerHTML={{ __html: message.content }} />
           </div>
         )}
+
+        {/* Footnotes (citation sources) */}
+        {hasCitations && <Footnotes citations={message.citations!} />}
 
         {/* File attachments (AI-generated files) */}
         {message.attachments && message.attachments.length > 0 && (
@@ -228,6 +237,11 @@ function AIMessage({ message }: { message: Message }) {
           </div>
         )}
       </div>
+
+      {/* Citation tooltip (event-delegated, portaled to body) */}
+      {hasCitations && (
+        <CitationTooltip containerRef={containerRef} citations={message.citations!} />
+      )}
 
       {/* Hover actions */}
       <div className="msg-actions">

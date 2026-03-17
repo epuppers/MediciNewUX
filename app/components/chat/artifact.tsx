@@ -69,9 +69,9 @@ function ArtifactBody({ artifact }: { artifact: ArtifactType }) {
       return (
         <div className="space-y-0">
           {data.entries.map((entry, i) => (
-            <div key={i} className="kv-row">
-              <span className="kv-key">{entry.label}</span>
-              <span className="kv-val">{entry.value}</span>
+            <div key={i} className="flex justify-between py-1.5 border-b border-taupe-1 last:border-b-0">
+              <span className="font-mono text-[0.6875rem] text-taupe-3 uppercase tracking-[0.08em]">{entry.label}</span>
+              <span className="font-mono text-xs font-semibold text-taupe-5">{entry.value}</span>
             </div>
           ))}
         </div>
@@ -81,8 +81,8 @@ function ArtifactBody({ artifact }: { artifact: ArtifactType }) {
     case 'flow-graph': {
       const data = artifact.data as ArtifactFlowGraphData;
       return (
-        <div className="flex items-center justify-center rounded-[var(--r-md)] border border-dashed border-[var(--taupe-2)] bg-[rgba(var(--violet-3-rgb),0.04)] dark:bg-[rgba(var(--violet-3-rgb),0.08)] p-8">
-          <div className="flex flex-col items-center gap-2 text-[var(--taupe-3)]">
+        <div className="flex items-center justify-center rounded-[var(--r-md)] border border-dashed border-taupe-2 bg-[rgba(var(--violet-3-rgb),0.04)] dark:bg-[rgba(var(--violet-3-rgb),0.08)] p-8">
+          <div className="flex flex-col items-center gap-2 text-taupe-3">
             <Workflow className="h-8 w-8 opacity-50" />
             <span className="font-[family-name:var(--mono)] text-xs">
               Flow Graph: {data.templateId}
@@ -96,7 +96,7 @@ function ArtifactBody({ artifact }: { artifact: ArtifactType }) {
       const content = artifact.data as string;
       return (
         <div
-          className="text-[13px] leading-relaxed font-[family-name:var(--sans)] text-[var(--taupe-5)] [&_p]:mb-2 [&_p:last-child]:mb-0"
+          className="text-[13px] leading-relaxed font-[family-name:var(--sans)] text-taupe-5 [&_p]:mb-2 [&_p:last-child]:mb-0"
           dangerouslySetInnerHTML={{ __html: content }}
         />
       );

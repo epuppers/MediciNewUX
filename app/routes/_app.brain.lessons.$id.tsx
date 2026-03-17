@@ -3,10 +3,8 @@
 // ============================================
 
 import { useNavigate, isRouteErrorResponse, useRouteError } from 'react-router';
-import { AlertCircle } from 'lucide-react';
 import { Skeleton } from '~/components/ui/skeleton';
-import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
-import { Button } from '~/components/ui/button';
+import { ErrorBoundaryContent } from '~/components/ui/error-boundary-content';
 import { getLesson } from '~/services/brain';
 import { LessonDetail } from '~/components/brain/lesson-detail';
 import type { Route } from './+types/_app.brain.lessons.$id';
@@ -36,42 +34,10 @@ export default function BrainLessonDetailRoute({ loaderData }: Route.ComponentPr
 export function ErrorBoundary() {
   const error = useRouteError();
   console.error('Lesson route error:', error);
-
   if (isRouteErrorResponse(error) && error.status === 404) {
-    return (
-      <div className="flex h-full items-center justify-center p-8">
-        <Alert variant="destructive" className="max-w-md">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Lesson not found</AlertTitle>
-          <AlertDescription className="mt-2">
-            The lesson you&apos;re looking for doesn&apos;t exist or has been removed.
-          </AlertDescription>
-          <div className="mt-4">
-            <Button variant="outline" size="sm" onClick={() => window.location.reload()}>
-              Try again
-            </Button>
-          </div>
-        </Alert>
-      </div>
-    );
+    return <ErrorBoundaryContent title="Lesson not found" message="The lesson you're looking for doesn't exist or has been removed." />;
   }
-
-  return (
-    <div className="flex h-full items-center justify-center p-8">
-      <Alert variant="destructive" className="max-w-md">
-        <AlertCircle className="h-4 w-4" />
-        <AlertTitle>Something went wrong</AlertTitle>
-        <AlertDescription className="mt-2">
-          An unexpected error occurred while loading this lesson.
-        </AlertDescription>
-        <div className="mt-4">
-          <Button variant="outline" size="sm" onClick={() => window.location.reload()}>
-            Try again
-          </Button>
-        </div>
-      </Alert>
-    </div>
-  );
+  return <ErrorBoundaryContent message="An unexpected error occurred while loading this lesson." />;
 }
 
 /** Loading skeleton — header + content block */

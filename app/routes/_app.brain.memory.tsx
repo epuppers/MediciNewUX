@@ -1,8 +1,6 @@
 import { useRouteError } from 'react-router';
-import { AlertCircle } from 'lucide-react';
 import { Skeleton } from '~/components/ui/skeleton';
-import { Alert, AlertDescription, AlertTitle } from '~/components/ui/alert';
-import { Button } from '~/components/ui/button';
+import { ErrorBoundaryContent } from '~/components/ui/error-boundary-content';
 import { getMemory } from '~/services/brain';
 import { MemoryList } from '~/components/brain/memory-list';
 import type { Route } from './+types/_app.brain.memory';
@@ -23,23 +21,7 @@ export default function BrainMemoryRoute({ loaderData }: Route.ComponentProps) {
 export function ErrorBoundary() {
   const error = useRouteError();
   console.error('Memory route error:', error);
-
-  return (
-    <div className="flex h-full items-center justify-center p-8">
-      <Alert variant="destructive" className="max-w-md">
-        <AlertCircle className="h-4 w-4" />
-        <AlertTitle>Something went wrong</AlertTitle>
-        <AlertDescription className="mt-2">
-          An unexpected error occurred while loading memory data.
-        </AlertDescription>
-        <div className="mt-4">
-          <Button variant="outline" size="sm" onClick={() => window.location.reload()}>
-            Try again
-          </Button>
-        </div>
-      </Alert>
-    </div>
-  );
+  return <ErrorBoundaryContent message="An unexpected error occurred while loading memory data." />;
 }
 
 /** Loading skeleton — trait section + 5 fact cards */

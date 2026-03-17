@@ -51,10 +51,14 @@ export const MOCK_THREADS: Record<string, Thread> = {
       {
         id: 'fund3-m2',
         type: 'ai',
-        content: '<p><strong>Primary issue:</strong> US Large Cap is up 3.2 points since June, driven by the tech rally. International Developed is the mirror underweight.</p><p><strong>Recommendation:</strong> Paired trade — trim the S&P 500 position and rotate into the EAFE sleeve. I\'ve drafted the rebalancing memo for the IC. Want me to pull it up, or look at tax implications first?</p>',
+        content: '<p><strong>Primary issue:</strong> US Large Cap is up 3.2 points since June, driven by the tech rally.<sup class="cite-ref" data-cite-id="2" tabindex="0" role="link" aria-label="Citation 2">2</sup> International Developed is the mirror underweight.</p><p><strong>Recommendation:</strong> Paired trade — trim the S&P 500 position and rotate into the EAFE sleeve. I\'ve drafted the rebalancing memo for the IC.<sup class="cite-ref" data-cite-id="1" tabindex="0" role="link" aria-label="Citation 1">1</sup> Want me to pull it up, or look at tax implications first?</p>',
         model: 'Analyst',
         timestamp: '2:32 PM',
         latency: '3.2s',
+        citations: [
+          { id: 1, title: 'Fund III — IPS Mandate (2024)', url: '/docs/fund3-ips-mandate-2024.pdf', source: 'file' },
+          { id: 2, title: 'Q4 Holdings Report — NAV Summary', url: '/docs/q4-holdings-report.pdf', source: 'file' },
+        ],
         artifacts: [
           {
             title: 'Fund III — Allocation Drift Analysis',
@@ -81,10 +85,14 @@ export const MOCK_THREADS: Record<string, Thread> = {
       {
         id: 'fund3-m4',
         type: 'ai',
-        content: '<p>Lot-level analysis against the 30-day wash sale window complete. Two positions flagged:</p><div class="flag-box safe"><div class="flag-label"><span class="ticker">MSFT</span><span class="status status-safe">SAFE</span></div><div class="flag-detail">Loss harvested <strong>August 8</strong>. Repurchase window closes <strong>March 7</strong>. Safe to include in the rebalance.</div></div><div class="flag-box warn"><div class="flag-label"><span class="ticker">AAPL</span><span class="status status-warn">CAUTION</span></div><div class="flag-detail">Loss harvested <strong>September 14</strong>. Window open until <strong>October 14</strong>. Trim + index reconstitution risks wash sale on <strong>~$340K</strong> of harvested losses. Recommend excluding AAPL lots and trimming through other large-cap names.</div></div><div class="summary-bar"><div class="summary-item"><span class="summary-label">ST Gains</span><span class="summary-value neg">$18.2K</span></div><div class="summary-divider"></div><div class="summary-item"><span class="summary-label">LT Losses Avail</span><span class="summary-value pos">$42.6K</span></div><div class="summary-divider"></div><div class="summary-item"><span class="summary-label">Net Tax Benefit</span><span class="summary-value net">~$24.4K</span></div></div>',
+        content: '<p>Lot-level analysis against the 30-day wash sale window complete.<sup class="cite-ref" data-cite-id="1" tabindex="0" role="link" aria-label="Citation 1">1</sup> Two positions flagged:</p><div class="flag-box safe"><div class="flag-label"><span class="ticker">MSFT</span><span class="status status-safe">SAFE</span></div><div class="flag-detail">Loss harvested <strong>August 8</strong>. Repurchase window closes <strong>March 7</strong>. Safe to include in the rebalance.</div></div><div class="flag-box warn"><div class="flag-label"><span class="ticker">AAPL</span><span class="status status-warn">CAUTION</span></div><div class="flag-detail">Loss harvested <strong>September 14</strong>. Window open until <strong>October 14</strong>. Trim + index reconstitution risks wash sale<sup class="cite-ref" data-cite-id="2" tabindex="0" role="link" aria-label="Citation 2">2</sup> on <strong>~$340K</strong> of harvested losses. Recommend excluding AAPL lots and trimming through other large-cap names.</div></div><div class="summary-bar"><div class="summary-item"><span class="summary-label">ST Gains</span><span class="summary-value neg">$18.2K</span></div><div class="summary-divider"></div><div class="summary-item"><span class="summary-label">LT Losses Avail</span><span class="summary-value pos">$42.6K</span></div><div class="summary-divider"></div><div class="summary-item"><span class="summary-label">Net Tax Benefit</span><span class="summary-value net">~$24.4K</span></div></div>',
         model: 'Expert',
         timestamp: '2:35 PM',
         latency: '4.8s',
+        citations: [
+          { id: 1, title: 'Fund III — Lot-Level Tax Basis', url: '/docs/fund3-tax-basis.xlsx', source: 'file' },
+          { id: 2, title: 'IRS Wash Sale Rule — IRC 1091', url: 'https://www.law.cornell.edu/uscode/text/26/1091', source: 'web' },
+        ],
       },
       {
         id: 'fund3-m5',
@@ -138,10 +146,13 @@ export const MOCK_THREADS: Record<string, Thread> = {
       {
         id: 'hilgard-m4',
         type: 'ai',
-        content: '<p>Cross-referenced against <strong>Hilgard_Monitoring_Fees_2025.pdf</strong> from your Feb 15 upload. Both offset amounts match — $42,000 (Q2, Brightfield advisory) and $18,500 (Q3, Crestline consulting). The xlsx is accurate. No discrepancies found.</p>',
+        content: '<p>Cross-referenced against <strong>Hilgard_Monitoring_Fees_2025.pdf</strong> from your Feb 15 upload.<sup class="cite-ref" data-cite-id="1" tabindex="0" role="link" aria-label="Citation 1">1</sup> Both offset amounts match — $42,000 (Q2, Brightfield advisory) and $18,500 (Q3, Crestline consulting). The xlsx is accurate. No discrepancies found.</p>',
         model: 'Analyst',
         timestamp: '4:19 PM',
         latency: '1.4s',
+        citations: [
+          { id: 1, title: 'Hilgard_Monitoring_Fees_2025.pdf', url: '/docs/hilgard-monitoring-fees-2025.pdf', source: 'file' },
+        ],
       },
     ],
   },
@@ -234,11 +245,16 @@ export const MOCK_THREADS: Record<string, Thread> = {
       {
         id: 'erabor-m2',
         type: 'ai',
-        content: '<p>I\'ve pulled the executed Erabor Partners LP Agreement dated December 14, 2024 and cross-referenced all economic terms against our Fund III standard template. The agreement covers a $200M closed-end vehicle with a 7-year investment period and two 1-year extensions at GP discretion, subject to advisory committee consent.</p>' +
-          '<p>Overall, the structure is largely in line with institutional norms for a fund of this size and strategy. However, I\'ve identified three provisions that deviate from our standard terms in ways that could create friction or optionality issues down the road. I\'ve detailed each section below with flagged items highlighted.</p>',
+        content: '<p>I\'ve pulled the executed Erabor Partners LP Agreement dated December 14, 2024<sup class="cite-ref" data-cite-id="1" tabindex="0" role="link" aria-label="Citation 1">1</sup> and cross-referenced all economic terms against our Fund III standard template.<sup class="cite-ref" data-cite-id="2" tabindex="0" role="link" aria-label="Citation 2">2</sup> The agreement covers a $200M closed-end vehicle with a 7-year investment period and two 1-year extensions at GP discretion, subject to advisory committee consent.</p>' +
+          '<p>Overall, the structure is largely in line with institutional norms for a fund of this size and strategy. However, I\'ve identified three provisions that deviate from our standard terms in ways that could create friction or optionality issues down the road.<sup class="cite-ref" data-cite-id="3" tabindex="0" role="link" aria-label="Citation 3">3</sup> I\'ve detailed each section below with flagged items highlighted.</p>',
         model: 'Expert',
         timestamp: '3:30 PM',
         latency: '6.4s',
+        citations: [
+          { id: 1, title: 'Erabor Partners LP Agreement (Dec 2024)', url: '/docs/erabor-lpa-dec2024.pdf', source: 'file' },
+          { id: 2, title: 'Fund III — Standard Template v3.1', url: '/docs/fund3-standard-template-v3.pdf', source: 'file' },
+          { id: 3, title: 'Northgate Capital Side Letter', url: '/docs/northgate-side-letter.pdf', source: 'file' },
+        ],
         artifacts: [
           {
             title: 'Erabor Partnership — Economic Terms',

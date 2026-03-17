@@ -7,6 +7,7 @@ import { GraphBreadcrumb } from './graph-breadcrumb';
 import { GraphTooltip } from './graph-tooltip';
 import type { TooltipHandle } from './graph-tooltip';
 import type { NodeRenderState } from '~/hooks/use-graph-layout';
+import { GRAPH_CATEGORY_COLORS, GRAPH_CATEGORY_RGB } from '~/lib/brain-constants';
 
 // ============================================
 // Entity Graph — SVG knowledge graph with
@@ -16,27 +17,6 @@ import type { NodeRenderState } from '~/hooks/use-graph-layout';
 interface EntityGraphProps {
   graphData: GraphData;
 }
-
-/** Category RGB hex values for SVG radialGradient (can't use CSS vars in SVG) */
-const CATEGORY_RGB: Record<string, { core: string; mid: string; dim: string }> = {
-  funds: { core: '#9b6bc2', mid: '#74418F', dim: '#4D2B5F' },
-  contacts: { core: '#c278c4', mid: '#8B4F8D', dim: '#5D355E' },
-  documents: { core: '#7bb8d9', mid: '#5a9fc2', dim: '#3a7a9e' },
-  workflows: { core: '#6abf6e', mid: '#3D8B40', dim: '#2a6b2c' },
-  systems: { core: '#d4a646', mid: '#B8862B', dim: '#8a6518' },
-  entities: { core: '#9e9ca3', mid: '#6a6870', dim: '#4a484f' },
-  you: { core: '#b478d8', mid: '#8855a8', dim: '#5a3070' },
-};
-
-/** Category CSS color vars for legend display */
-const CATEGORY_COLORS: Record<string, string> = {
-  funds: 'var(--violet-3)',
-  contacts: 'var(--berry-3)',
-  documents: 'var(--blue-3)',
-  workflows: 'var(--green)',
-  systems: 'var(--amber)',
-  entities: 'var(--taupe-3)',
-};
 
 /** Animation constants matching prototype */
 const ANIM_DURATION = 500;
@@ -247,7 +227,7 @@ export function EntityGraph({ graphData }: EntityGraphProps) {
   }, [layout.nodes]);
 
   return (
-    <div ref={containerRef} className="graph-container relative h-full w-full overflow-hidden">
+    <div ref={containerRef} className="graph-container h-full w-full">
       {/* Breadcrumb */}
       <GraphBreadcrumb graphData={graphData} />
 
@@ -255,30 +235,29 @@ export function EntityGraph({ graphData }: EntityGraphProps) {
       <GraphTooltip ref={tooltipRef} svgRef={svgRef} viewBox={viewBox} />
 
       {/* Category legend */}
-      <div className="graph-legend">
+      <div className="absolute left-3 top-3 z-[4] flex flex-wrap gap-1.5">
         {graphData.categories.map((cat) => (
           <button
             key={cat.id}
             type="button"
-            className="graph-legend-item"
+            className="flex items-center gap-[5px] px-2 py-0.5 rounded-r-md bg-[rgba(var(--black-rgb),0.4)] backdrop-blur-[4px] border border-[rgba(var(--white-pure-rgb),0.06)] cursor-pointer"
             onClick={() => handleLegendClick(cat.id)}
-            style={{ cursor: 'pointer' }}
           >
             <span
-              className="graph-legend-dot"
-              style={{ backgroundColor: CATEGORY_COLORS[cat.id] ?? 'var(--taupe-3)' }}
+              className="size-2 rounded-full"
+              style={{ backgroundColor: GRAPH_CATEGORY_COLORS[cat.id] ?? 'var(--taupe-3)' }}
             />
-            <span className="graph-legend-label">{cat.label}</span>
-            <span className="graph-legend-count">{cat.count}</span>
+            <span className="font-mono text-[0.625rem] font-semibold text-[rgba(var(--white-pure-rgb),0.7)]">{cat.label}</span>
+            <span className="font-mono text-[0.5625rem] text-[rgba(var(--white-pure-rgb),0.4)]">{cat.count}</span>
           </button>
         ))}
       </div>
 
       {/* Zoom controls */}
-      <div className="graph-zoom-controls">
+      <div className="absolute bottom-3 right-3 flex flex-col gap-0.5 z-[4]">
         <button
           type="button"
-          className="graph-zoom-btn"
+          className="size-7 flex items-center justify-center bg-white dark:bg-surface-2 border border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 dark:border-taupe-2 rounded-r-md font-mono text-sm font-bold text-taupe-4 cursor-pointer transition-all hover:bg-violet-1 hover:text-violet-3 hover:border-violet-2"
           onClick={() => handleZoom('in')}
           aria-label="Zoom in"
         >
@@ -286,7 +265,7 @@ export function EntityGraph({ graphData }: EntityGraphProps) {
         </button>
         <button
           type="button"
-          className="graph-zoom-btn"
+          className="size-7 flex items-center justify-center bg-white dark:bg-surface-2 border border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 dark:border-taupe-2 rounded-r-md font-mono text-sm font-bold text-taupe-4 cursor-pointer transition-all hover:bg-violet-1 hover:text-violet-3 hover:border-violet-2"
           onClick={() => handleZoom('out')}
           aria-label="Zoom out"
         >
@@ -297,7 +276,7 @@ export function EntityGraph({ graphData }: EntityGraphProps) {
       <svg
         ref={svgRef}
         viewBox={`${viewBox.x} ${viewBox.y} ${viewBox.w} ${viewBox.h}`}
-        className={cn('graph-svg', isPanning ? 'cursor-grabbing' : 'cursor-grab')}
+        className={cn('absolute inset-0 w-full h-full z-[1]', isPanning ? 'cursor-grabbing' : 'cursor-grab')}
         onWheel={handleWheel}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
@@ -306,7 +285,7 @@ export function EntityGraph({ graphData }: EntityGraphProps) {
       >
         <defs>
           {/* Radial gradients for each category + YOU */}
-          {Object.entries(CATEGORY_RGB).map(([id, colors]) => (
+          {Object.entries(GRAPH_CATEGORY_RGB).map(([id, colors]) => (
             <radialGradient
               key={id}
               id={`grad-${id}`}
@@ -324,7 +303,7 @@ export function EntityGraph({ graphData }: EntityGraphProps) {
           ))}
 
           {/* Glow filters */}
-          {Object.entries(CATEGORY_RGB).map(([id, colors]) => (
+          {Object.entries(GRAPH_CATEGORY_RGB).map(([id, colors]) => (
             <filter key={`glow-${id}`} id={`glow-${id}`} x="-50%" y="-50%" width="200%" height="200%">
               <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur" />
               <feFlood floodColor={colors.core} floodOpacity="0.3" result="color" />
@@ -478,7 +457,7 @@ function GraphNode({ node, anim, onClick, onHover, onLeave, isClusterYou }: Grap
             cx={0}
             cy={0}
             fill="none"
-            stroke={CATEGORY_RGB[colorId]?.core ?? '#666'}
+            stroke={GRAPH_CATEGORY_RGB[colorId]?.core ?? '#666'}
             strokeWidth={2}
             opacity={0.5}
             style={{ r: node.radius + 6, transition: circleTransition }}
