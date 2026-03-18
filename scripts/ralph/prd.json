@@ -101,8 +101,8 @@
         "npx tsc --noEmit passes with zero errors"
       ],
       "priority": 6,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "CloudFileList component with type icons, metadata rows, attach-mode checkboxes, loading skeletons, empty state. Matches FolderView beveled border pattern. Typecheck clean."
     },
     {
       "id": "US-007",
