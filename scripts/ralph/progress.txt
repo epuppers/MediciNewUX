@@ -104,3 +104,15 @@ Learnings:
 - Checkbox visual: 14px box with bg-violet-3 border-violet-3 when checked, SVG checkmark path
 - Selected row state: bg-berry-1 border-berry-2 (light), bg-[rgba(var(--violet-3-rgb),0.08)] border-violet-3 (dark)
 - Attach mode: clicking file row toggles selection, clicking folder row navigates
+
+---
+[Iteration 7] Story US-007: Cloud navigation bar component
+Date: 2026-03-18
+Summary: Created /app/components/chat/cloud-nav-bar.tsx with CloudNavBar component. Breadcrumb navigation with clickable segments (provider as first crumb, last segment bold/non-clickable), › separators, and compact search input with Search icon and X clear button. Inset border style on search input matching existing patterns.
+Files modified:
+- /app/components/chat/cloud-nav-bar.tsx
+Learnings:
+- Search input inset border: border-t-taupe-3 border-l-taupe-3 border-b-taupe-1 border-r-taupe-1 (dark uses surface-0/surface-3)
+- SearchFilterBar pattern: Search icon absolute positioned left, input with pl for icon space
+- Breadcrumb segments use array index for navigation callback
+- searchActive state swaps breadcrumb display to "Search results" text
