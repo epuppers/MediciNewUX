@@ -1,0 +1,50 @@
+## Codebase Patterns
+
+### File Conventions
+- Mock data files: `/app/data/mock-*.ts` with MOCK_* exports, typed imports from `~/services/types`
+- Service files: `/app/services/*.ts` with async functions wrapping mock data
+- UI components: `/app/components/ui/*.tsx` — 34 existing ShadCN components
+- Chat components: `/app/components/chat/*.tsx`
+- Stores: `/app/stores/*-store.ts` using Zustand
+
+### Styling Patterns
+- Beveled 3D borders: border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3
+- Mono labels: font-[family-name:var(--mono)] or font-mono
+- Small labels: text-[0.625rem] or text-[0.6875rem]
+- File panel tab active: text-berry-3 !bg-off-white with transparent bottom border
+- Hover states: hover:bg-berry-1 hover:text-berry-5 (light), dark:hover:bg-[rgba(var(--violet-3-rgb),0.12)]
+- Focus: focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2
+- Shadows: shadow-[3px_3px_0_rgba(0,0,0,0.15)] dark:shadow-[3px_3px_0_rgba(0,0,0,0.3)]
+
+### Component Patterns
+- All components use data-slot attributes
+- Props typed with interfaces, JSDoc on exports
+- Sub-components (SpreadsheetView, FolderView) defined in same file as parent
+- Conditional rendering with cn() from ~/lib/utils
+- Switch component from ~/components/ui/switch for toggles
+- Dialog from ~/components/ui/dialog for modals
+- Skeleton from ~/components/ui/skeleton for loading states
+
+### Existing Key Components to Reuse
+- AttachButton: ~/components/ui/attach-button.tsx — already has 'computer' | 'drive' types
+- FilePanel: ~/components/chat/file-panel.tsx — has 'spreadsheet' | 'folder' tabs
+- ChatInput: ~/components/chat/chat-input.tsx — has staged files strip, onAttach prop
+- Switch: ~/components/ui/switch.tsx — toggle component with size variants
+- Dialog: ~/components/ui/dialog.tsx — modal dialog
+- Skeleton: ~/components/ui/skeleton.tsx — loading placeholder
+
+---
+
+## Iteration Log
+
+---
+[Iteration 1] Story US-001: Cloud storage TypeScript types
+Date: 2026-03-18
+Summary: Added CLOUD STORAGE section to /app/services/types.ts with all 9 interfaces (CloudProvider, SharePointSite, SharePointLibrary, GoogleDriveConfig, GoogleSharedFolder, CloudStorageSettings, CloudFile, CloudSource, DataScopeToggle). Matched existing section header style (// ==== blocks) and JSDoc comment patterns.
+Files modified:
+- /app/services/types.ts
+Learnings:
+- types.ts uses /** JSDoc */ on each interface and each field
+- Section headers use // ==== with ALL CAPS section names
+- Existing pattern: type unions for status/category fields, optional fields with ?
+

@@ -415,3 +415,123 @@ export interface PurpleBaseColors {
 
 /** RGB companion token mapping */
 export type RGBCompanions = Record<string, string>;
+
+// ============================================
+// CLOUD STORAGE
+// ============================================
+
+/** A cloud storage provider connection */
+export interface CloudProvider {
+  /** Unique provider identifier (e.g., 'sharepoint', 'google-drive') */
+  id: string;
+  /** Display name (e.g., 'SharePoint', 'Google Drive') */
+  name: string;
+  /** Provider platform type */
+  type: 'microsoft' | 'google' | 'dropbox';
+  /** Current connection status */
+  status: 'connected' | 'disconnected' | 'error';
+  /** Short identifier mapped to Lucide icons later */
+  icon: string;
+}
+
+/** A SharePoint site containing document libraries */
+export interface SharePointSite {
+  /** Unique site identifier */
+  id: string;
+  /** Site display name (e.g., 'Market Finance', 'HR') */
+  name: string;
+  /** Full site URL */
+  url: string;
+  /** Document libraries within this site */
+  libraries: SharePointLibrary[];
+}
+
+/** A document library within a SharePoint site */
+export interface SharePointLibrary {
+  /** Unique library identifier */
+  id: string;
+  /** Library display name (e.g., 'Documents', 'Shared Reports') */
+  name: string;
+  /** Whether Cosimo can access this library */
+  enabled: boolean;
+}
+
+/** Google Drive service account configuration */
+export interface GoogleDriveConfig {
+  /** Service account email address */
+  serviceAccount: string;
+  /** Shared folders accessible via the service account */
+  sharedFolders: GoogleSharedFolder[];
+}
+
+/** A shared folder in Google Drive */
+export interface GoogleSharedFolder {
+  /** Unique folder identifier */
+  id: string;
+  /** Folder display name (e.g., 'Monthly Reports', 'Tax Documents 2025') */
+  name: string;
+  /** Number of files in the folder */
+  fileCount: number;
+  /** Whether Cosimo can access this folder */
+  enabled: boolean;
+}
+
+/** Top-level cloud storage settings combining all providers */
+export interface CloudStorageSettings {
+  /** Connected cloud storage providers */
+  providers: CloudProvider[];
+  /** SharePoint configuration, or null if not connected */
+  sharepoint: { sites: SharePointSite[] } | null;
+  /** Google Drive configuration, or null if not connected */
+  googleDrive: GoogleDriveConfig | null;
+}
+
+/** A file or folder in cloud storage */
+export interface CloudFile {
+  /** Unique file identifier */
+  id: string;
+  /** File or folder name */
+  name: string;
+  /** MIME type or extension (e.g., 'docx', 'xlsx', 'pdf', 'folder') */
+  type: string;
+  /** Human-readable size (e.g., '245 KB', '1.2 MB') */
+  size: string;
+  /** Human-readable last modified date (e.g., 'Mar 10') */
+  lastModified: string;
+  /** Which provider this file belongs to */
+  provider: 'sharepoint' | 'google-drive';
+  /** Breadcrumb path (e.g., 'Documents > Finance > Q4') */
+  path: string;
+  /** Whether this entry is a folder */
+  isFolder: boolean;
+  /** Number of children (for folders only) */
+  itemCount?: number;
+}
+
+/** A navigable source in the cloud source tree */
+export interface CloudSource {
+  /** Unique source identifier */
+  id: string;
+  /** Which provider this source belongs to */
+  provider: 'sharepoint' | 'google-drive';
+  /** Display name in the source tree */
+  label: string;
+  /** Source hierarchy type */
+  type: 'site' | 'library' | 'shared-folder' | 'root';
+  /** Nested child sources (e.g., libraries under a site) */
+  children?: CloudSource[];
+}
+
+/** Toggle for a data scope (files, email, calendar) — used in settings */
+export interface DataScopeToggle {
+  /** Unique toggle identifier */
+  id: string;
+  /** Display label (e.g., 'Outlook Mail', 'Gmail') */
+  label: string;
+  /** Data scope category */
+  type: 'files' | 'email' | 'calendar';
+  /** Whether this scope is currently enabled */
+  enabled: boolean;
+  /** Provider platform this scope belongs to */
+  provider: 'microsoft' | 'google';
+}
