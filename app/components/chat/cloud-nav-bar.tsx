@@ -49,7 +49,7 @@ export function CloudNavBar({
       {/* Row 1 — Breadcrumb */}
       <div className="flex items-center gap-1 min-h-5 overflow-hidden">
         {searchActive ? (
-          <span className="font-mono text-[0.6875rem] font-semibold text-taupe-5 dark:text-taupe-4">
+          <span className="font-[family-name:var(--mono)] text-[0.6875rem] font-semibold text-taupe-5 dark:text-taupe-4">
             Search results
           </span>
         ) : (
@@ -58,19 +58,19 @@ export function CloudNavBar({
             return (
               <span key={i} className="flex items-center gap-1 min-w-0">
                 {i > 0 && (
-                  <span className="font-mono text-[0.6875rem] text-taupe-3 dark:text-taupe-3 shrink-0">
+                  <span className="font-[family-name:var(--mono)] text-[0.6875rem] text-taupe-3 dark:text-taupe-3 shrink-0">
                     ›
                   </span>
                 )}
                 {isLast ? (
-                  <span className="font-mono text-[0.6875rem] font-semibold text-taupe-5 dark:text-taupe-4 truncate">
+                  <span className="font-[family-name:var(--mono)] text-[0.6875rem] font-semibold text-taupe-5 dark:text-taupe-4 truncate">
                     {segment}
                   </span>
                 ) : (
                   <button
                     type="button"
                     className={cn(
-                      'font-mono text-[0.6875rem] text-taupe-4 dark:text-taupe-3 cursor-pointer truncate',
+                      'font-[family-name:var(--mono)] text-[0.6875rem] text-taupe-4 dark:text-taupe-3 cursor-pointer truncate',
                       'hover:text-violet-3 dark:hover:text-violet-3',
                       'focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2'
                     )}
@@ -94,7 +94,7 @@ export function CloudNavBar({
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
           className={cn(
-            'w-full min-h-7 pl-7 pr-7 font-mono text-[0.6875rem] text-taupe-5 dark:text-taupe-4',
+            'w-full min-h-7 pl-7 pr-7 font-[family-name:var(--mono)] text-[0.6875rem] text-taupe-5 dark:text-taupe-4',
             'bg-off-white dark:bg-surface-0 border',
             'border-t-taupe-3 border-l-taupe-3 border-b-taupe-1 border-r-taupe-1',
             'dark:border-t-surface-0 dark:border-l-surface-0 dark:border-b-surface-3 dark:border-r-surface-3',

@@ -4,6 +4,7 @@
 // Renders a grouped tree of cloud sources by provider.
 // Used inside the FilePanel cloud tab.
 
+import { History } from 'lucide-react';
 import { cn } from '~/lib/utils';
 import type { CloudSource } from '~/services/types';
 
@@ -18,6 +19,8 @@ interface CloudSourceTreeProps {
   activeSourceId: string | null;
   /** Callback when a source is selected */
   onSelectSource: (sourceId: string) => void;
+  /** Callback when "Recent" is clicked (clears source selection) */
+  onSelectRecent?: () => void;
 }
 
 // ============================================
@@ -25,9 +28,25 @@ interface CloudSourceTreeProps {
 // ============================================
 
 /** CloudSourceTree — left rail provider/source navigation tree. */
-export function CloudSourceTree({ sources, activeSourceId, onSelectSource }: CloudSourceTreeProps) {
+export function CloudSourceTree({ sources, activeSourceId, onSelectSource, onSelectRecent }: CloudSourceTreeProps) {
   return (
     <nav data-slot="cloud-source-tree" className="py-1.5">
+      {onSelectRecent && (
+        <button
+          data-slot="cloud-source-item"
+          className={cn(
+            'w-full text-left px-2.5 py-1.5 font-[family-name:var(--mono)] text-[0.6875rem] cursor-pointer transition-[color,background] duration-150 flex items-center gap-1.5 mb-1',
+            'focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-[-2px]',
+            'pl-3.5',
+            activeSourceId === null && 'bg-berry-1 text-berry-5 dark:bg-[rgba(var(--violet-3-rgb),0.08)] dark:text-violet-3',
+            activeSourceId !== null && 'text-taupe-4 dark:text-taupe-3 hover:bg-off-white hover:text-taupe-5 dark:hover:bg-surface-2 dark:hover:text-taupe-4'
+          )}
+          onClick={onSelectRecent}
+        >
+          <History className="size-3 shrink-0" />
+          <span className="truncate">Recent</span>
+        </button>
+      )}
       {sources.map((root) => (
         <div key={root.id} className="mb-2">
           {/* Provider header */}
@@ -89,7 +108,7 @@ function SourceItem({ source, isActive, onSelect, depth }: SourceItemProps) {
     <button
       data-slot="cloud-source-item"
       className={cn(
-        'w-full text-left px-2.5 py-1 font-[family-name:var(--mono)] text-[0.6875rem] cursor-pointer transition-[color,background] duration-150 flex items-center gap-1.5 border-none bg-transparent',
+        'w-full text-left px-2.5 py-1 font-[family-name:var(--mono)] text-[0.6875rem] cursor-pointer transition-[color,background] duration-150 flex items-center gap-1.5',
         'focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-[-2px]',
         depth === 0 && 'pl-3.5',
         depth === 1 && 'pl-6',

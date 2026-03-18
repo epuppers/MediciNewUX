@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import { Outlet, useMatches } from "react-router";
 import { ChatHeader } from "~/components/chat/chat-header";
 import { ChatInput } from "~/components/chat/chat-input";
@@ -31,6 +31,7 @@ export default function ChatRoute() {
   const thread = threadData?.thread;
   const run = threadData?.run;
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const openCloudDrive = useChatStore((s) => s.openCloudDrive);
 
   const handleAttach = useCallback(
@@ -38,7 +39,7 @@ export default function ChatRoute() {
       if (type === 'drive') {
         openCloudDrive('attach');
       } else {
-        console.log('Native file picker — TODO');
+        fileInputRef.current?.click();
       }
     },
     [openCloudDrive],
@@ -79,6 +80,15 @@ export default function ChatRoute() {
           placeholder="Ask Cosimo anything..."
         />
       </div>
+      <input
+        ref={fileInputRef}
+        type="file"
+        multiple
+        className="hidden"
+        onChange={() => {
+          // TODO: handle selected files
+        }}
+      />
       <FilePanel />
       {run && <WorkflowPanel run={run} />}
     </div>

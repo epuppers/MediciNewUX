@@ -40,7 +40,7 @@ export function AttachButton({ onAttach, disabled = false, className }: AttachBu
           onClick={() => onAttach?.('drive')}
         >
           <Cloud className="h-4 w-4" />
-          From cloud drive
+          From cloud
         </button>
       </DropdownMenuContent>
     </DropdownMenu>

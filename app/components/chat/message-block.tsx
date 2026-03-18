@@ -5,26 +5,7 @@ import { Artifact } from '~/components/chat/artifact';
 import { Footnotes, CitationTooltip, useCitationClick } from '~/components/chat/citations';
 import { useChatStore } from '~/stores/chat-store';
 import { cn } from '~/lib/utils';
-
-/** Returns an icon character for a file attachment based on its type */
-function fileIconChar(type: string): string {
-  switch (type) {
-    case 'pdf': return '📄';
-    case 'xlsx':
-    case 'spreadsheet': return '📊';
-    case 'folder': return '📁';
-    default: return '📎';
-  }
-}
-
-/** Returns Tailwind classes for the file icon background/border colors by type */
-function fileIconClasses(type: string): string {
-  switch (type) {
-    case 'pdf': return 'bg-blue-3 border-t-blue-2 border-l-blue-2 border-r-blue-3 border-b-blue-3';
-    case 'folder': return 'bg-amber border-t-taupe-2 border-l-taupe-2 border-r-taupe-3 border-b-taupe-3';
-    default: return 'bg-green border-t-taupe-2 border-l-taupe-2 border-r-taupe-3 border-b-taupe-3';
-  }
-}
+import { getFileTypeIcon, fileIconBevelClasses } from '~/components/chat/file-panel';
 
 /** Returns Tailwind grid classes for file attachment layout based on count */
 function attachmentGridCols(count: number): string {
@@ -36,6 +17,7 @@ function attachmentGridCols(count: number): string {
 /** Renders a file attachment chip */
 function FileAttachment({ attachment, compact }: { attachment: Attachment; compact?: boolean }) {
   const openFilePanel = useChatStore((s) => s.openFilePanel);
+  const Icon = getFileTypeIcon(attachment.type);
   const meta: string[] = [];
   if (attachment.pages) meta.push(`${attachment.pages} pages`);
   if (attachment.sheets?.length) meta.push(`${attachment.sheets.length} sheets`);
@@ -48,10 +30,10 @@ function FileAttachment({ attachment, compact }: { attachment: Attachment; compa
       onClick={() => openFilePanel('spreadsheet')}
     >
       <div className={cn(
-        'w-8 h-8 flex items-center justify-center text-sm text-white shrink-0 rounded-r-md border',
-        fileIconClasses(attachment.type)
+        'w-8 h-8 flex items-center justify-center text-white shrink-0 rounded-r-md border',
+        fileIconBevelClasses(attachment.type)
       )}>
-        {fileIconChar(attachment.type)}
+        <Icon className="h-4 w-4" />
       </div>
       <div className="flex-1 overflow-hidden">
         <div className="font-mono text-xs font-semibold text-taupe-5 truncate">{attachment.name}</div>
@@ -68,13 +50,14 @@ function FileAttachment({ attachment, compact }: { attachment: Attachment; compa
 
 /** Renders the workflow file chip style (simpler, used in workflow threads) */
 function WorkflowFileChip({ attachment }: { attachment: Attachment }) {
+  const Icon = getFileTypeIcon(attachment.type);
   return (
     <div className="flex items-center gap-2.5 px-3 py-2 bg-off-white border-2 rounded-r-md cursor-pointer transition-all duration-150 border-t-taupe-2 border-l-taupe-2 border-r-taupe-4 border-b-taupe-4 hover:bg-berry-1 hover:border-t-berry-2 hover:border-l-berry-2 hover:border-r-berry-4 hover:border-b-berry-4 dark:bg-surface-1 dark:border-taupe-3 dark:hover:bg-berry-1 dark:hover:border-berry-2">
       <div className={cn(
-        'w-8 h-8 flex items-center justify-center text-sm text-white shrink-0 rounded-r-md border',
-        fileIconClasses(attachment.type)
+        'w-8 h-8 flex items-center justify-center text-white shrink-0 rounded-r-md border',
+        fileIconBevelClasses(attachment.type)
       )}>
-        {fileIconChar(attachment.type)}
+        <Icon className="h-4 w-4" />
       </div>
       <div className="flex-1">
         <div className="font-mono text-xs font-semibold text-taupe-5">

@@ -2,6 +2,9 @@ import { create } from 'zustand';
 
 type FilePanelTab = 'spreadsheet' | 'folder' | 'cloud';
 
+/** A breadcrumb segment with both display name and source ID */
+export type BreadcrumbSegment = { id: string; name: string };
+
 interface ChatState {
   /** Currently selected thread ID */
   activeThreadId: string | null;
@@ -25,8 +28,8 @@ interface ChatState {
   selectedCloudFiles: string[];
   /** Currently selected source in the cloud source tree */
   cloudActiveSourceId: string | null;
-  /** Array of folder names for breadcrumb display */
-  cloudBreadcrumb: string[];
+  /** Array of breadcrumb segments with IDs and display names */
+  cloudBreadcrumb: BreadcrumbSegment[];
   /** Current search input value in cloud drive */
   cloudSearchQuery: string;
   /** Whether search results are being shown in cloud drive */
@@ -44,7 +47,7 @@ interface ChatState {
   setStreaming: (streaming: boolean) => void;
   openCloudDrive: (mode: 'browse' | 'attach') => void;
   setCloudActiveSource: (sourceId: string | null) => void;
-  setCloudBreadcrumb: (crumbs: string[]) => void;
+  setCloudBreadcrumb: (crumbs: BreadcrumbSegment[]) => void;
   toggleCloudFileSelection: (fileId: string) => void;
   clearCloudSelection: () => void;
   setCloudSearchQuery: (query: string) => void;

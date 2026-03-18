@@ -4,11 +4,13 @@
 // Shows spreadsheet data or a placeholder folder tree.
 // Opens via useChatStore.filePanelOpen.
 
-import { useEffect, useState } from 'react';
-import { useChatStore } from '~/stores/chat-store';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMatches } from 'react-router';
+import { FileCheck, FileCode, FileImage, FileSpreadsheet, FileText, Folder, Mail, Paperclip, Presentation, type LucideIcon } from 'lucide-react';
+import { useChatStore, type BreadcrumbSegment } from '~/stores/chat-store';
 import { useResizePanel } from '~/hooks/use-resize-panel';
 import { getSpreadsheet } from '~/services/panels';
-import type { SpreadsheetData, CloudSource, CloudFile } from '~/services/types';
+import type { SpreadsheetData, CloudSource, CloudFile, Attachment, Thread } from '~/services/types';
 import { cn } from '~/lib/utils';
 import { CloudSourceTree } from '~/components/chat/cloud-source-tree';
 import { CloudFileList } from '~/components/chat/cloud-file-list';
@@ -25,27 +27,21 @@ export function FilePanel() {
   const close = useChatStore((s) => s.closeFilePanel);
   const activeTab = useChatStore((s) => s.filePanelTab);
   const setActiveTab = useChatStore((s) => s.setFilePanelTab);
+
+  // Get thread data from route match (same pattern as _app.chat.tsx)
+  const matches = useMatches();
+  const threadMatch = matches.find((m) => m.id === 'routes/_app.chat.$threadId');
+  const thread = (threadMatch?.data as { thread?: Thread } | undefined)?.thread;
+
+  // Collect all attachments from the active thread's messages
+  const threadAttachments = useMemo(() => {
+    if (!thread) return [];
+    return thread.messages.flatMap((m) => m.attachments ?? []);
+  }, [thread]);
+
   const [spreadsheet, setSpreadsheet] = useState<SpreadsheetData | null>(null);
   const [selectedCell, setSelectedCell] = useState<{ row: number; col: number } | null>(null);
-
-  // Cloud drive state from store
-  const cloudDriveMode = useChatStore((s) => s.cloudDriveMode);
-  const selectedCloudFiles = useChatStore((s) => s.selectedCloudFiles);
-  const cloudActiveSourceId = useChatStore((s) => s.cloudActiveSourceId);
-  const cloudBreadcrumb = useChatStore((s) => s.cloudBreadcrumb);
-  const cloudSearchQuery = useChatStore((s) => s.cloudSearchQuery);
-  const cloudSearchActive = useChatStore((s) => s.cloudSearchActive);
-  const setCloudActiveSource = useChatStore((s) => s.setCloudActiveSource);
-  const setCloudBreadcrumb = useChatStore((s) => s.setCloudBreadcrumb);
-  const toggleCloudFileSelection = useChatStore((s) => s.toggleCloudFileSelection);
-  const clearCloudSelection = useChatStore((s) => s.clearCloudSelection);
-  const setCloudSearchQuery = useChatStore((s) => s.setCloudSearchQuery);
-  const setCloudSearchActive = useChatStore((s) => s.setCloudSearchActive);
-
-  // Cloud drive local state
-  const [cloudSources, setCloudSources] = useState<CloudSource[]>([]);
-  const [cloudFiles, setCloudFiles] = useState<CloudFile[]>([]);
-  const [cloudLoading, setCloudLoading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<Attachment | null>(null);
 
   const { currentWidth, isDragging, handleMouseDown } = useResizePanel({
     initialWidth: 560,
@@ -62,37 +58,6 @@ export function FilePanel() {
     });
     return () => { cancelled = true; };
   }, []);
-
-  // Load cloud sources on mount
-  useEffect(() => {
-    let cancelled = false;
-    getCloudSources().then((data) => {
-      if (!cancelled) setCloudSources(data);
-    });
-    return () => { cancelled = true; };
-  }, []);
-
-  // Load cloud files when source or search changes
-  useEffect(() => {
-    let cancelled = false;
-    setCloudLoading(true);
-    const load = async () => {
-      let result: CloudFile[];
-      if (cloudSearchActive && cloudSearchQuery) {
-        result = await searchCloudFiles(cloudSearchQuery);
-      } else if (cloudActiveSourceId) {
-        result = await getCloudFiles(cloudActiveSourceId);
-      } else {
-        result = await getRecentCloudFiles();
-      }
-      if (!cancelled) {
-        setCloudFiles(result);
-        setCloudLoading(false);
-      }
-    };
-    load();
-    return () => { cancelled = true; };
-  }, [cloudActiveSourceId, cloudSearchActive, cloudSearchQuery]);
 
   if (!isOpen) return null;
 
@@ -163,67 +128,48 @@ export function FilePanel() {
 
         {/* Content */}
         {activeTab === 'spreadsheet' && (
-          <SpreadsheetView
-            data={spreadsheet}
-            selectedCell={selectedCell}
-            onSelectCell={setSelectedCell}
-            cellRef={cellRef}
-            cellFormula={cellFormula}
-          />
+          selectedFile && selectedFile.name !== 'Hilgard_Fund_II_Fee_Analysis.xlsx' ? (
+            <FilePlaceholder file={selectedFile} />
+          ) : (
+            <SpreadsheetView
+              data={spreadsheet}
+              selectedCell={selectedCell}
+              onSelectCell={setSelectedCell}
+              cellRef={cellRef}
+              cellFormula={cellFormula}
+            />
+          )
         )}
         {activeTab === 'folder' && (
-          <FolderView onFileClick={() => setActiveTab('spreadsheet')} />
+          <FolderView attachments={threadAttachments} onFileClick={(att) => { setSelectedFile(att); setActiveTab('spreadsheet'); }} />
         )}
         {activeTab === 'cloud' && (
-          <CloudDriveContent
-            sources={cloudSources}
-            files={cloudFiles}
-            isLoading={cloudLoading}
-            mode={cloudDriveMode}
-            activeSourceId={cloudActiveSourceId}
-            selectedFileIds={selectedCloudFiles}
-            breadcrumb={cloudBreadcrumb}
-            searchQuery={cloudSearchQuery}
-            searchActive={cloudSearchActive}
-            onSelectSource={(sourceId) => {
-              setCloudActiveSource(sourceId);
-              setCloudBreadcrumb(buildSourceBreadcrumb(cloudSources, sourceId));
-              setCloudSearchQuery('');
-              setCloudSearchActive(false);
-            }}
-            onFileClick={(file) => {
-              if (file.isFolder) {
-                setCloudActiveSource(file.id);
-                setCloudBreadcrumb([...cloudBreadcrumb, file.name]);
-              } else {
-                setActiveTab('spreadsheet');
-              }
-            }}
-            onToggleSelect={toggleCloudFileSelection}
-            onBreadcrumbClick={(index) => {
-              if (index === 0) {
-                setCloudActiveSource(null);
-                setCloudBreadcrumb([]);
-              } else {
-                setCloudBreadcrumb(cloudBreadcrumb.slice(0, index));
-              }
-            }}
-            onSearchChange={(query) => {
-              setCloudSearchQuery(query);
-              setCloudSearchActive(query.length > 0);
-            }}
-            onClearSearch={() => {
-              setCloudSearchQuery('');
-              setCloudSearchActive(false);
-            }}
-            onAttach={() => {
-              console.log('Attaching cloud files:', selectedCloudFiles);
-              clearCloudSelection();
-            }}
-            onClearSelection={clearCloudSelection}
-            providerLabel={findProviderLabel(cloudSources, cloudActiveSourceId)}
-            selectedFiles={cloudFiles.filter((f) => selectedCloudFiles.includes(f.id))}
-          />
+          <CloudDriveContent />
+        )}
+      </div>
+    </>
+  );
+}
+
+// ============================================
+// FilePlaceholder — shown when no mock viewer data exists
+// ============================================
+
+/** Placeholder for files that don't have mock viewer data. */
+function FilePlaceholder({ file }: { file: Attachment }) {
+  const Icon = getFileTypeIcon(file.type);
+  return (
+    <>
+      <div className="flex items-center gap-2 p-[8px_12px] bg-taupe-5 dark:bg-surface-2 border-b border-taupe-4">
+        <Icon className="h-3.5 w-3.5 text-taupe-1 dark:text-taupe-4" />
+        <span className="font-mono text-[0.6875rem] font-semibold text-taupe-1 dark:text-taupe-4 truncate">{file.name}</span>
+      </div>
+      <div className="flex flex-1 flex-col items-center justify-center gap-2 p-6">
+        <Icon className="h-8 w-8 text-taupe-3" />
+        <span className="font-mono text-[0.6875rem] font-semibold text-taupe-4">{file.name}</span>
+        <span className="font-mono text-[0.625rem] text-taupe-3">File preview would appear here</span>
+        {fileSubtitle(file) && (
+          <span className="font-mono text-[0.625rem] text-taupe-3">{fileSubtitle(file)}</span>
         )}
       </div>
     </>
@@ -256,7 +202,7 @@ function SpreadsheetView({ data, selectedCell, onSelectCell, cellRef, cellFormul
     <>
       {/* Dark file bar */}
       <div className="flex items-center gap-2 p-[8px_12px] bg-taupe-5 dark:bg-surface-2 border-b border-taupe-4">
-        <span className="text-xs text-green">▦</span>
+        <FileSpreadsheet className="h-3.5 w-3.5 text-green" />
         <span className="font-mono text-[0.6875rem] font-semibold text-taupe-1 dark:text-taupe-4">Hilgard_Fund_II_Fee_Analysis.xlsx</span>
       </div>
 
@@ -320,26 +266,149 @@ function SpreadsheetView({ data, selectedCell, onSelectCell, cellRef, cellFormul
 // FolderView — file list with icons
 // ============================================
 
-/** Folder file list matching reference design. */
-function FolderView({ onFileClick }: { onFileClick: () => void }) {
+/** Returns the Lucide icon component for a file type */
+export function getFileTypeIcon(type: string): LucideIcon {
+  switch (type) {
+    case 'pdf': return FileCheck;
+    case 'xlsx':
+    case 'csv':
+    case 'spreadsheet': return FileSpreadsheet;
+    case 'docx':
+    case 'doc': return FileText;
+    case 'pptx':
+    case 'ppt': return Presentation;
+    case 'jpg':
+    case 'jpeg':
+    case 'png':
+    case 'gif':
+    case 'svg': return FileImage;
+    case 'html':
+    case 'md':
+    case 'tsx':
+    case 'ts':
+    case 'js':
+    case 'css':
+    case 'py':
+    case 'code': return FileCode;
+    case 'eml':
+    case 'msg':
+    case 'email': return Mail;
+    case 'folder': return Folder;
+    default: return Paperclip;
+  }
+}
+
+/** Icon background color class for file type */
+export function fileIconBg(type: string): string {
+  switch (type) {
+    case 'pdf': return 'bg-red';
+    case 'xlsx':
+    case 'csv':
+    case 'spreadsheet': return 'bg-green';
+    case 'docx':
+    case 'doc': return 'bg-blue-3';
+    case 'pptx':
+    case 'ppt': return 'bg-amber';
+    case 'jpg':
+    case 'jpeg':
+    case 'png':
+    case 'gif':
+    case 'svg': return 'bg-violet-3';
+    case 'html':
+    case 'md':
+    case 'tsx':
+    case 'ts':
+    case 'js':
+    case 'css':
+    case 'py':
+    case 'code': return 'bg-taupe-4';
+    case 'eml':
+    case 'msg':
+    case 'email': return 'bg-chinese-3';
+    case 'folder': return 'bg-taupe-3';
+    default: return 'bg-taupe-3';
+  }
+}
+
+/** Icon background + bevel border classes for file type (retro 3D style) */
+export function fileIconBevelClasses(type: string): string {
+  switch (type) {
+    case 'pdf': return 'bg-red border-t-[var(--red-hi)] border-l-[var(--red-hi)] border-r-[var(--red-lo)] border-b-[var(--red-lo)]';
+    case 'xlsx':
+    case 'csv':
+    case 'spreadsheet': return 'bg-green border-t-taupe-2 border-l-taupe-2 border-r-taupe-3 border-b-taupe-3';
+    case 'docx':
+    case 'doc': return 'bg-blue-3 border-t-blue-2 border-l-blue-2 border-r-blue-3 border-b-blue-3';
+    case 'pptx':
+    case 'ppt': return 'bg-amber border-t-taupe-2 border-l-taupe-2 border-r-taupe-3 border-b-taupe-3';
+    case 'jpg':
+    case 'jpeg':
+    case 'png':
+    case 'gif':
+    case 'svg': return 'bg-violet-3 border-t-violet-2 border-l-violet-2 border-r-violet-3 border-b-violet-3';
+    case 'html':
+    case 'md':
+    case 'tsx':
+    case 'ts':
+    case 'js':
+    case 'css':
+    case 'py':
+    case 'code': return 'bg-taupe-4 border-t-taupe-3 border-l-taupe-3 border-r-taupe-4 border-b-taupe-4';
+    case 'eml':
+    case 'msg':
+    case 'email': return 'bg-chinese-3 border-t-chinese-2 border-l-chinese-2 border-r-chinese-3 border-b-chinese-3';
+    case 'folder': return 'bg-taupe-3 border-t-taupe-2 border-l-taupe-2 border-r-taupe-3 border-b-taupe-3';
+    default: return 'bg-taupe-3 border-t-taupe-2 border-l-taupe-2 border-r-taupe-3 border-b-taupe-3';
+  }
+}
+
+/** Build subtitle string from attachment metadata */
+function fileSubtitle(att: Attachment): string {
+  const parts: string[] = [];
+  if (att.size) parts.push(att.size);
+  if (att.pages) parts.push(`${att.pages} pages`);
+  if (att.sheets) parts.push(`${att.sheets.length} sheets`);
+  if (att.fileCount) parts.push(`${att.fileCount} files`);
+  return parts.join(' \u00B7 ');
+}
+
+/** Folder file list filtered to current thread's attachments. */
+function FolderView({ attachments, onFileClick }: { attachments: Attachment[]; onFileClick: (att: Attachment) => void }) {
+  const fileCount = attachments.length;
+
   return (
     <>
       <div className="flex items-center justify-between p-[10px_12px] bg-off-white dark:bg-surface-1 border-b border-taupe-2 dark:border-surface-3">
         <span className="font-mono text-[0.6875rem] font-bold uppercase tracking-[0.1em] text-taupe-3">Thread Files</span>
-        <span className="font-mono text-[0.625rem] text-taupe-3">1 file</span>
+        <span className="font-mono text-[0.625rem] text-taupe-3">{fileCount} {fileCount === 1 ? 'file' : 'files'}</span>
       </div>
-      <div className="p-1.5">
-        <div
-          className="flex items-center gap-2.5 p-2.5 border border-solid cursor-pointer transition-all duration-[120ms] rounded-[var(--r-md)] bg-off-white dark:bg-surface-2 border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 dark:border-taupe-2 hover:bg-berry-1 hover:border-taupe-2 dark:hover:bg-surface-2 dark:hover:border-surface-3"
-          onClick={onFileClick}
-        >
-          <div className="w-7 h-7 bg-green flex items-center justify-center text-xs text-white dark:text-off-white shrink-0 rounded-[var(--r-md)]">▦</div>
-          <div className="flex-1">
-            <div className="font-mono text-[0.6875rem] font-semibold text-taupe-5">Hilgard_Fund_II_Fee_Analysis.xlsx</div>
-            <div className="font-mono text-[0.625rem] text-taupe-3 mt-0.5">Generated by Cosimo · Feb 22, 4:16 PM · 12 rows</div>
-          </div>
+      {fileCount === 0 ? (
+        <div className="flex flex-1 items-center justify-center p-6">
+          <span className="font-mono text-[0.6875rem] text-taupe-3">No files in this thread</span>
         </div>
-      </div>
+      ) : (
+        <div className="p-1.5 flex flex-col gap-1.5">
+          {attachments.map((att, i) => {
+            const Icon = getFileTypeIcon(att.type);
+            return (
+            <div
+              key={`${att.name}-${i}`}
+              className="flex items-center gap-2.5 p-2.5 border border-solid cursor-pointer transition-all duration-[120ms] rounded-[var(--r-md)] bg-off-white dark:bg-surface-2 border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 dark:border-taupe-2 hover:bg-berry-1 hover:border-taupe-2 dark:hover:bg-surface-2 dark:hover:border-surface-3"
+              onClick={() => onFileClick(att)}
+            >
+              <div className={cn('w-7 h-7 flex items-center justify-center text-white dark:text-off-white shrink-0 rounded-[var(--r-md)]', fileIconBg(att.type))}>
+                <Icon className="h-3.5 w-3.5" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="font-mono text-[0.6875rem] font-semibold text-taupe-5 truncate">{att.name}</div>
+                {fileSubtitle(att) && (
+                  <div className="font-mono text-[0.625rem] text-taupe-3 mt-0.5">{fileSubtitle(att)}</div>
+                )}
+              </div>
+            </div>
+            ); })}
+        </div>
+      )}
     </>
   );
 }
@@ -359,6 +428,15 @@ function findProviderLabel(sources: CloudSource[], sourceId: string | null): str
   return 'Cloud';
 }
 
+/** Find the root source ID for the provider containing the given source */
+function findProviderRoot(sources: CloudSource[], activeSourceId: string | null): string | null {
+  if (!activeSourceId) return null;
+  for (const root of sources) {
+    if (containsSource(root, activeSourceId)) return root.id;
+  }
+  return null;
+}
+
 /** Check if a source tree contains a given ID */
 function containsSource(node: CloudSource, id: string): boolean {
   if (node.id === id) return true;
@@ -366,12 +444,12 @@ function containsSource(node: CloudSource, id: string): boolean {
 }
 
 /** Build breadcrumb path for a source from the tree */
-function buildSourceBreadcrumb(sources: CloudSource[], targetId: string): string[] {
+function buildSourceBreadcrumb(sources: CloudSource[], targetId: string): BreadcrumbSegment[] {
   for (const root of sources) {
     for (const child of root.children ?? []) {
-      if (child.id === targetId) return [child.label];
+      if (child.id === targetId) return [{ id: child.id, name: child.label }];
       for (const grandchild of child.children ?? []) {
-        if (grandchild.id === targetId) return [child.label, grandchild.label];
+        if (grandchild.id === targetId) return [{ id: child.id, name: child.label }, { id: grandchild.id, name: grandchild.label }];
       }
     }
   }
@@ -382,50 +460,134 @@ function buildSourceBreadcrumb(sources: CloudSource[], targetId: string): string
 // CloudDriveContent — cloud drive tab layout
 // ============================================
 
-interface CloudDriveContentProps {
-  sources: CloudSource[];
-  files: CloudFile[];
-  isLoading: boolean;
-  mode: 'browse' | 'attach';
-  activeSourceId: string | null;
-  selectedFileIds: string[];
-  breadcrumb: string[];
-  searchQuery: string;
-  searchActive: boolean;
-  onSelectSource: (sourceId: string) => void;
-  onFileClick: (file: CloudFile) => void;
-  onToggleSelect: (fileId: string) => void;
-  onBreadcrumbClick: (index: number) => void;
-  onSearchChange: (query: string) => void;
-  onClearSearch: () => void;
-  onAttach: () => void;
-  onClearSelection: () => void;
-  providerLabel: string;
-  selectedFiles: CloudFile[];
-}
-
 /** Cloud drive tab layout: left source tree rail + right content area */
-function CloudDriveContent({
-  sources,
-  files,
-  isLoading,
-  mode,
-  activeSourceId,
-  selectedFileIds,
-  breadcrumb,
-  searchQuery,
-  searchActive,
-  onSelectSource,
-  onFileClick,
-  onToggleSelect,
-  onBreadcrumbClick,
-  onSearchChange,
-  onClearSearch,
-  onAttach,
-  onClearSelection,
-  providerLabel,
-  selectedFiles,
-}: CloudDriveContentProps) {
+function CloudDriveContent() {
+  // Store state
+  const mode = useChatStore((s) => s.cloudDriveMode);
+  const selectedFileIds = useChatStore((s) => s.selectedCloudFiles);
+  const activeSourceId = useChatStore((s) => s.cloudActiveSourceId);
+  const breadcrumb = useChatStore((s) => s.cloudBreadcrumb);
+  const searchQuery = useChatStore((s) => s.cloudSearchQuery);
+  const searchActive = useChatStore((s) => s.cloudSearchActive);
+  const setCloudActiveSource = useChatStore((s) => s.setCloudActiveSource);
+  const setCloudBreadcrumb = useChatStore((s) => s.setCloudBreadcrumb);
+  const toggleCloudFileSelection = useChatStore((s) => s.toggleCloudFileSelection);
+  const clearCloudSelection = useChatStore((s) => s.clearCloudSelection);
+  const setCloudSearchQuery = useChatStore((s) => s.setCloudSearchQuery);
+  const setCloudSearchActive = useChatStore((s) => s.setCloudSearchActive);
+  const setFilePanelTab = useChatStore((s) => s.setFilePanelTab);
+
+  // Local state
+  const [sources, setSources] = useState<CloudSource[]>([]);
+  const [files, setFiles] = useState<CloudFile[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
+  const searchDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Sync local search query when store changes externally (e.g. clear button)
+  useEffect(() => {
+    setLocalSearchQuery(searchQuery);
+  }, [searchQuery]);
+
+  // Clean up debounce timer on unmount
+  useEffect(() => {
+    return () => {
+      if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current);
+    };
+  }, []);
+
+  // Load cloud sources on mount
+  useEffect(() => {
+    let cancelled = false;
+    getCloudSources().then((data) => {
+      if (!cancelled) setSources(data);
+    });
+    return () => { cancelled = true; };
+  }, []);
+
+  // Load cloud files when source or search changes
+  useEffect(() => {
+    let cancelled = false;
+    setIsLoading(true);
+    const load = async () => {
+      let result: CloudFile[];
+      if (searchActive && searchQuery) {
+        result = await searchCloudFiles(searchQuery);
+      } else if (activeSourceId) {
+        result = await getCloudFiles(activeSourceId);
+      } else {
+        result = await getRecentCloudFiles();
+      }
+      if (!cancelled) {
+        setFiles(result);
+        setIsLoading(false);
+      }
+    };
+    load();
+    return () => { cancelled = true; };
+  }, [activeSourceId, searchActive, searchQuery]);
+
+  // Derived values
+  const providerLabel = findProviderLabel(sources, activeSourceId);
+  const selectedFiles = files.filter((f) => selectedFileIds.includes(f.id));
+
+  // Callbacks
+  const handleSelectSource = (sourceId: string) => {
+    setCloudActiveSource(sourceId);
+    setCloudBreadcrumb(buildSourceBreadcrumb(sources, sourceId));
+    setCloudSearchQuery('');
+    setCloudSearchActive(false);
+  };
+
+  const handleSelectRecent = () => {
+    setCloudActiveSource(null);
+    setCloudBreadcrumb([]);
+    setCloudSearchQuery('');
+    setCloudSearchActive(false);
+  };
+
+  const handleFileClick = (file: CloudFile) => {
+    if (file.isFolder) {
+      setCloudActiveSource(file.id);
+      setCloudBreadcrumb([...breadcrumb, { id: file.id, name: file.name }]);
+    } else {
+      setFilePanelTab('spreadsheet');
+    }
+  };
+
+  const handleBreadcrumbClick = (index: number) => {
+    if (index === 0) {
+      const rootId = findProviderRoot(sources, activeSourceId);
+      if (rootId) {
+        setCloudActiveSource(rootId);
+        setCloudBreadcrumb([]);
+      }
+    } else {
+      const target = breadcrumb[index - 1];
+      setCloudActiveSource(target.id);
+      setCloudBreadcrumb(breadcrumb.slice(0, index));
+    }
+  };
+
+  const handleSearchChange = (query: string) => {
+    setLocalSearchQuery(query);
+    if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current);
+    searchDebounceRef.current = setTimeout(() => {
+      setCloudSearchQuery(query);
+      setCloudSearchActive(query.length > 0);
+    }, 300);
+  };
+
+  const handleClearSearch = () => {
+    setCloudSearchQuery('');
+    setCloudSearchActive(false);
+  };
+
+  const handleAttach = () => {
+    console.log('Attaching cloud files:', selectedFileIds);
+    clearCloudSelection();
+  };
+
   return (
     <div className="flex flex-1 overflow-hidden">
       {/* Source tree — left rail */}
@@ -433,18 +595,19 @@ function CloudDriveContent({
         <CloudSourceTree
           sources={sources}
           activeSourceId={activeSourceId}
-          onSelectSource={onSelectSource}
+          onSelectSource={handleSelectSource}
+          onSelectRecent={handleSelectRecent}
         />
       </div>
       {/* Main content — right side */}
       <div className="flex-1 flex flex-col overflow-hidden min-w-0">
         <CloudNavBar
-          breadcrumb={breadcrumb}
+          breadcrumb={breadcrumb.map((s) => s.name)}
           provider={providerLabel}
-          searchQuery={searchQuery}
-          onSearchChange={onSearchChange}
-          onBreadcrumbClick={onBreadcrumbClick}
-          onClearSearch={onClearSearch}
+          searchQuery={localSearchQuery}
+          onSearchChange={handleSearchChange}
+          onBreadcrumbClick={handleBreadcrumbClick}
+          onClearSearch={handleClearSearch}
           searchActive={searchActive}
         />
         <div className="flex-1 overflow-y-auto">
@@ -452,16 +615,17 @@ function CloudDriveContent({
             files={files}
             mode={mode}
             selectedFileIds={selectedFileIds}
-            onFileClick={onFileClick}
-            onToggleSelect={onToggleSelect}
+            onFileClick={handleFileClick}
+            onToggleSelect={toggleCloudFileSelection}
             isLoading={isLoading}
+            showRecentLabel={activeSourceId === null && !searchActive}
           />
         </div>
         {mode === 'attach' && (
           <CloudSelectionBar
             selectedFiles={selectedFiles}
-            onAttach={onAttach}
-            onClear={onClearSelection}
+            onAttach={handleAttach}
+            onClear={clearCloudSelection}
           />
         )}
       </div>

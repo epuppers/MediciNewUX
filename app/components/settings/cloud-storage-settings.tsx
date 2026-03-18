@@ -384,7 +384,7 @@ function ProviderCard({
   subtitle: string;
   children: React.ReactNode;
 }) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(provider.status === 'connected');
 
   return (
     <div
@@ -411,7 +411,7 @@ function ProviderCard({
         </div>
         {/* Connected badge */}
         {provider.status === 'connected' && (
-          <span className="shrink-0 rounded-[var(--r-pill)] border border-green-500/30 bg-[rgba(var(--green-rgb,34,197,94),0.1)] px-2 py-0.5 font-mono text-[0.625rem] font-semibold text-green-600 dark:border-green-400/30 dark:bg-[rgba(34,197,94,0.1)] dark:text-green-400">
+          <span className="shrink-0 rounded-[var(--r-pill)] border border-green/30 bg-[rgba(var(--green-rgb),0.1)] px-2 py-0.5 font-mono text-[0.625rem] font-semibold text-green">
             Connected
           </span>
         )}

@@ -15,7 +15,7 @@ import type { CloudStorageSettings, CloudSource, CloudFile, DataScopeToggle } fr
 
 /** Returns the full cloud storage settings (providers, sites, config). */
 export async function getCloudStorageSettings(): Promise<CloudStorageSettings> {
-  return MOCK_CLOUD_STORAGE_SETTINGS;
+  return { ...MOCK_CLOUD_STORAGE_SETTINGS };
 }
 
 /** Returns the cloud source navigation tree. */
