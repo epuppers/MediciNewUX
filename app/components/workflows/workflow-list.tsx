@@ -32,7 +32,7 @@ function StatusBadge({ status }: { status: string }) {
 
   return (
     <span
-      className={`inline-block rounded-[var(--r-md)] border px-[6px] py-[2px] font-[family-name:var(--mono)] text-[11px] font-semibold leading-none ${colorMap[status] ?? colorMap.archived}`}
+      className={`inline-block rounded-[var(--r-md)] border px-[5px] py-px font-[family-name:var(--mono)] text-[9px] font-semibold leading-none ${colorMap[status] ?? colorMap.archived}`}
     >
       {label}
     </span>
@@ -64,10 +64,12 @@ function ActiveRunItem({
         className="h-auto items-start rounded-[var(--r-md)] border border-transparent py-1.5 px-2 font-[family-name:var(--mono)] text-xs text-taupe-2 dark:text-taupe-4"
       >
         <div className="min-w-0 flex-1">
-          <div className="text-[11px] font-semibold text-taupe-1 dark:text-taupe-5">
-            {templateName}
+          <span className="mr-[3px] inline text-[10px] text-taupe-3" aria-label="Workflow">⚙</span>
+          <span className="text-xs text-taupe-1 dark:text-taupe-5">{templateName}</span>
+          <div className="mt-0.5 text-xs text-taupe-3">
+            {run.startTime}
           </div>
-          <div className="mt-1">
+          <div className="mt-0.5">
             <span className={`inline-block rounded-[var(--r-md)] border px-[5px] py-px font-[family-name:var(--mono)] text-[9px] font-semibold leading-none ${colorMap[statusType]}`}>
               {statusLabel}
             </span>
@@ -108,9 +110,11 @@ function TemplateItem({
             <TriggerIcon className="size-3" />
           </span>
           <span className="text-xs">{template.title}</span>
-          <div className="mt-0.5 flex items-center gap-1.5 text-xs text-taupe-3">
+          <div className="mt-0.5 text-xs text-taupe-3">
+            {lastRunInfo}
+          </div>
+          <div className="mt-0.5">
             <StatusBadge status={template.status} />
-            <span>{lastRunInfo}</span>
           </div>
         </div>
       </SidebarMenuButton>
@@ -150,8 +154,8 @@ export function WorkflowList({ templates, runs = {} }: WorkflowListProps) {
       {activeRuns.length > 0 && (
         <SidebarMenu>
           <div className="mb-1 rounded-[var(--r-md)] bg-[rgba(var(--violet-3-rgb),0.04)] px-1.5 py-1.5 dark:bg-[rgba(var(--violet-3-rgb),0.06)] border-b border-chinese-4 dark:border-chinese-5">
-            <div className="mb-1 px-0.5 font-[family-name:var(--mono)] text-[10px] font-semibold uppercase tracking-[0.18em] text-taupe-3">
-              Active Runs
+            <div className="font-[family-name:var(--mono)] text-[0.6875rem] font-semibold tracking-[0.18em] uppercase text-taupe-3 px-2 pt-1 pb-0.5">
+              Active
             </div>
             {activeRuns.map((run) => (
               <ActiveRunItem
