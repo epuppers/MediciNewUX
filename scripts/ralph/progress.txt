@@ -152,3 +152,16 @@ Learnings:
 - ChatInput already has onAttach prop typed as (type: 'computer' | 'drive') => void and passes it through to AttachButton
 - No changes needed in chat-input.tsx or attach-button.tsx — just wire at the route level
 - useCallback with openCloudDrive dependency for stable reference
+
+---
+[Iteration 11] Story US-011: Cloud storage settings modal shell and provider cards
+Date: 2026-03-18
+Summary: Created /app/components/settings/cloud-storage-settings.tsx — admin settings dialog for managing cloud drive connections. Uses Dialog from ~/components/ui/dialog. DialogTitle with ADMIN badge. ProviderCard sub-component with expand/collapse, Connected badge, ChevronDown toggle. SharePointContent renders sites with library Switch toggles, Remove site and Add site links. GoogleDriveContent renders service account with copy button, shared folders list with file counts. Connect a service link at bottom.
+Files modified:
+- /app/components/settings/cloud-storage-settings.tsx (new)
+Learnings:
+- Dialog component uses DialogPrimitive from @base-ui/react, DialogContent handles portal/overlay
+- Switch component uses checked/onCheckedChange props (not value/onChange)
+- Green badge uses border-green-500/30 bg pattern with rgba for background
+- Provider subtitle computed from settings data (site count, library count, folder count, file count)
+- Local state for library toggles uses Record<string, boolean> initialized from mock data
