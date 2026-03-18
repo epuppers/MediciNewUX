@@ -92,3 +92,15 @@ Learnings:
 - Depth-based indentation: pl-3.5 for sites, pl-6 for libraries
 - Active state: bg-berry-1 text-berry-5 (light), bg-[rgba(var(--violet-3-rgb),0.08)] text-violet-3 (dark)
 - Small dot indicator (●) for sources with children
+
+---
+[Iteration 6] Story US-006: Cloud file list component
+Date: 2026-03-18
+Summary: Created /app/components/chat/cloud-file-list.tsx with CloudFileList component. Shows files with colored type icons (green spreadsheet, violet docs, blue PDFs, amber folders), name/metadata rows, optional checkboxes in attach mode, loading skeleton state (4 rows), and empty state. Matches FolderView beveled border styling pattern.
+Files modified:
+- /app/components/chat/cloud-file-list.tsx
+Learnings:
+- File type icon mapping uses switch on type field: xlsx/csv→green, docx→violet-3, pdf→blue-3, folder→amber
+- Checkbox visual: 14px box with bg-violet-3 border-violet-3 when checked, SVG checkmark path
+- Selected row state: bg-berry-1 border-berry-2 (light), bg-[rgba(var(--violet-3-rgb),0.08)] border-violet-3 (dark)
+- Attach mode: clicking file row toggles selection, clicking folder row navigates
