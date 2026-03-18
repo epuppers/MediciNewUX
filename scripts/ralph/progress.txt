@@ -176,3 +176,14 @@ Learnings:
 - ProfileAvatar returns JSX fragment to render both Popover and Dialog as siblings
 - Close popover before opening dialog by calling toggleProfileMenu() when profileMenuOpen is true
 - toast import from sonner was only used for placeholder — removed when real functionality added
+
+---
+[Iteration 13] Story US-013: Data scope toggles for email and calendar
+Date: 2026-03-18
+Summary: Added DATA SCOPES sections inside both SharePoint and Google Drive expanded provider cards. Microsoft shows Outlook Mail toggle, Outlook Calendar toggle, and SharePoint Files "Managed above" text. Google shows Gmail toggle, Google Calendar toggle, and Drive Files "Managed above" text. Each toggle row has a Lucide icon (Mail, Calendar) + label + Switch. All toggle state is local useState.
+Files modified:
+- /app/components/settings/cloud-storage-settings.tsx
+Learnings:
+- MicrosoftDataScopes and GoogleDataScopes extracted as small sub-components for clean separation
+- "Managed above" items use italic text-taupe-3 instead of a Switch toggle
+- Data scopes section separated by border-t divider with pt-3 spacing

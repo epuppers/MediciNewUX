@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ChevronDown, ChevronRight, Copy, FolderOpen, Plus } from 'lucide-react';
+import { Calendar, ChevronDown, ChevronRight, Copy, FolderOpen, Mail, Plus } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -162,6 +162,16 @@ function SharePointContent({
         Add site
       </button>
 
+      {/* Data scopes */}
+      <div className="border-t border-taupe-2 pt-3 dark:border-surface-3">
+        <span className="font-mono text-[0.5625rem] font-semibold uppercase tracking-[0.12em] text-taupe-3">
+          Data Scopes
+        </span>
+        <div className="mt-1.5 space-y-0.5">
+          <MicrosoftDataScopes />
+        </div>
+      </div>
+
       {/* Disconnect link */}
       <button
         type="button"
@@ -246,6 +256,16 @@ function GoogleDriveContent({
         </div>
       </div>
 
+      {/* Data scopes */}
+      <div className="border-t border-taupe-2 pt-3 dark:border-surface-3">
+        <span className="font-mono text-[0.5625rem] font-semibold uppercase tracking-[0.12em] text-taupe-3">
+          Data Scopes
+        </span>
+        <div className="mt-1.5 space-y-0.5">
+          <GoogleDataScopes />
+        </div>
+      </div>
+
       {/* Disconnect link */}
       <button
         type="button"
@@ -257,6 +277,100 @@ function GoogleDriveContent({
         Disconnect Google Drive
       </button>
     </div>
+  );
+}
+
+/** Microsoft data scope toggles — Outlook Mail, Outlook Calendar, SharePoint Files */
+function MicrosoftDataScopes() {
+  const [outlookMail, setOutlookMail] = useState(true);
+  const [outlookCalendar, setOutlookCalendar] = useState(true);
+
+  return (
+    <>
+      <div className="flex items-center justify-between py-1.5">
+        <div className="flex items-center">
+          <Mail className="mr-2 h-3.5 w-3.5 text-taupe-3" />
+          <span className="font-mono text-[0.6875rem] text-taupe-5 dark:text-taupe-2">
+            Outlook Mail
+          </span>
+        </div>
+        <Switch
+          size="sm"
+          checked={outlookMail}
+          onCheckedChange={(checked: boolean) => setOutlookMail(checked)}
+        />
+      </div>
+      <div className="flex items-center justify-between py-1.5">
+        <div className="flex items-center">
+          <Calendar className="mr-2 h-3.5 w-3.5 text-taupe-3" />
+          <span className="font-mono text-[0.6875rem] text-taupe-5 dark:text-taupe-2">
+            Outlook Calendar
+          </span>
+        </div>
+        <Switch
+          size="sm"
+          checked={outlookCalendar}
+          onCheckedChange={(checked: boolean) => setOutlookCalendar(checked)}
+        />
+      </div>
+      <div className="flex items-center justify-between py-1.5">
+        <div className="flex items-center">
+          <span className="font-mono text-[0.6875rem] text-taupe-5 dark:text-taupe-2">
+            SharePoint Files
+          </span>
+        </div>
+        <span className="font-mono text-[0.625rem] italic text-taupe-3">
+          Managed above
+        </span>
+      </div>
+    </>
+  );
+}
+
+/** Google data scope toggles — Gmail, Google Calendar, Drive Files */
+function GoogleDataScopes() {
+  const [gmail, setGmail] = useState(true);
+  const [googleCalendar, setGoogleCalendar] = useState(true);
+
+  return (
+    <>
+      <div className="flex items-center justify-between py-1.5">
+        <div className="flex items-center">
+          <Mail className="mr-2 h-3.5 w-3.5 text-taupe-3" />
+          <span className="font-mono text-[0.6875rem] text-taupe-5 dark:text-taupe-2">
+            Gmail
+          </span>
+        </div>
+        <Switch
+          size="sm"
+          checked={gmail}
+          onCheckedChange={(checked: boolean) => setGmail(checked)}
+        />
+      </div>
+      <div className="flex items-center justify-between py-1.5">
+        <div className="flex items-center">
+          <Calendar className="mr-2 h-3.5 w-3.5 text-taupe-3" />
+          <span className="font-mono text-[0.6875rem] text-taupe-5 dark:text-taupe-2">
+            Google Calendar
+          </span>
+        </div>
+        <Switch
+          size="sm"
+          checked={googleCalendar}
+          onCheckedChange={(checked: boolean) => setGoogleCalendar(checked)}
+        />
+      </div>
+      <div className="flex items-center justify-between py-1.5">
+        <div className="flex items-center">
+          <span className="font-mono text-[0.6875rem] text-taupe-5 dark:text-taupe-2">
+            Drive Files
+          </span>
+        </div>
+        <span className="font-mono text-[0.625rem] italic text-taupe-3">
+          Managed above
+        </span>
+      </div>
+    </>
   );
 }
 
