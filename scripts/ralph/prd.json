@@ -179,8 +179,8 @@
         "npx tsc --noEmit passes with zero errors"
       ],
       "priority": 10,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Wired in _app.chat.tsx only. handleAttach calls openCloudDrive('attach') for drive, console.log for computer. No changes needed to chat-input.tsx or attach-button.tsx. Typecheck clean."
     },
     {
       "id": "US-011",
