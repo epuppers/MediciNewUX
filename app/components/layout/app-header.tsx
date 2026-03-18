@@ -560,9 +560,9 @@ function ProfileAvatar() {
               </span>
             </button>
 
-            {/* Account Settings */}
+            {/* Cloud Options */}
             <button type="button" className="p-[8px_12px] font-mono text-[0.6875rem] font-semibold text-taupe-4 cursor-pointer transition-all duration-100 flex items-center justify-between uppercase tracking-[0.05em] bg-transparent border-none w-full text-left hover:bg-berry-1 hover:text-taupe-5 dark:hover:text-berry-3 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-[-2px]" onClick={handleAccountSettings}>
-              <span>Account Settings</span>
+              <span>Cloud Options</span>
             </button>
 
             <div className="h-px bg-taupe-1 dark:bg-taupe-2 my-0.5" />

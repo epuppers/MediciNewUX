@@ -81,7 +81,8 @@ function SharePointContent({
           <button
             type="button"
             className={cn(
-              'flex w-full items-center justify-between text-left',
+              'flex w-full items-center justify-between bg-transparent border-none cursor-pointer text-left transition-all duration-100',
+              'rounded-[var(--r-sm)] hover:bg-[rgba(var(--violet-3-rgb),0.05)] dark:hover:bg-[rgba(var(--violet-3-rgb),0.08)]',
               'focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2'
             )}
             onClick={() =>
@@ -139,7 +140,7 @@ function SharePointContent({
               <button
                 type="button"
                 className={cn(
-                  'mt-1 cursor-pointer font-mono text-[0.625rem] text-taupe-3 hover:text-red',
+                  'mt-1 bg-transparent border-none cursor-pointer font-mono text-[0.625rem] text-taupe-3 transition-all duration-100 hover:text-red',
                   'focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2'
                 )}
               >
@@ -154,7 +155,7 @@ function SharePointContent({
       <button
         type="button"
         className={cn(
-          'flex items-center gap-1 cursor-pointer font-mono text-[0.6875rem] text-violet-3 hover:text-violet-4',
+          'flex items-center gap-1 bg-transparent border-none cursor-pointer font-mono text-[0.6875rem] text-violet-3 transition-all duration-100 hover:text-violet-4',
           'focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2'
         )}
       >
@@ -176,7 +177,7 @@ function SharePointContent({
       <button
         type="button"
         className={cn(
-          'mt-1 cursor-pointer font-mono text-[0.625rem] text-taupe-3 hover:text-red',
+          'mt-1 bg-transparent border-none cursor-pointer font-mono text-[0.625rem] text-taupe-3 transition-all duration-100 hover:text-red',
           'focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2'
         )}
       >
@@ -218,7 +219,7 @@ function GoogleDriveContent({
             onClick={handleCopy}
             aria-label="Copy service account email"
             className={cn(
-              'shrink-0 rounded-[var(--r-sm)] p-1 text-taupe-3 hover:bg-berry-1 hover:text-taupe-5',
+              'shrink-0 bg-transparent border-none rounded-[var(--r-sm)] p-1 text-taupe-3 transition-all duration-100 hover:bg-berry-1 hover:text-taupe-5',
               'dark:hover:bg-[rgba(var(--violet-3-rgb),0.12)] dark:hover:text-taupe-2',
               'focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2'
             )}
@@ -270,7 +271,7 @@ function GoogleDriveContent({
       <button
         type="button"
         className={cn(
-          'mt-1 cursor-pointer font-mono text-[0.625rem] text-taupe-3 hover:text-red',
+          'mt-1 bg-transparent border-none cursor-pointer font-mono text-[0.625rem] text-taupe-3 transition-all duration-100 hover:text-red',
           'focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2'
         )}
       >
@@ -395,7 +396,8 @@ function ProviderCard({
       <button
         type="button"
         className={cn(
-          'flex w-full items-center gap-3 text-left',
+          'flex w-full items-center gap-3 bg-transparent border-none cursor-pointer text-left transition-all duration-100',
+          'rounded-[var(--r-sm)] hover:bg-[rgba(var(--violet-3-rgb),0.05)] dark:hover:bg-[rgba(var(--violet-3-rgb),0.08)]',
           'focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2'
         )}
         onClick={() => setExpanded(!expanded)}
@@ -457,7 +459,7 @@ export function CloudStorageSettings({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+          <DialogTitle className="flex items-center gap-2 font-pixel tracking-[0.5px]">
             Cloud Storage
             <span className="rounded-[var(--r-sm)] bg-[rgba(var(--violet-3-rgb),0.08)] px-1.5 py-0.5 font-mono text-[0.5625rem] font-semibold uppercase tracking-[0.1em] text-violet-3">
               Admin
@@ -503,7 +505,7 @@ export function CloudStorageSettings({
         <button
           type="button"
           className={cn(
-            'flex items-center gap-1 cursor-pointer font-mono text-[0.6875rem] text-violet-3 hover:text-violet-4',
+            'flex items-center gap-1 bg-transparent border-none cursor-pointer font-mono text-[0.6875rem] text-violet-3 transition-all duration-100 hover:text-violet-4',
             'focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2'
           )}
         >
