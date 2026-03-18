@@ -168,6 +168,9 @@ export function WorkflowList({ templates, runs = {} }: WorkflowListProps) {
         </SidebarMenu>
       )}
 
+      {/* Templates label */}
+      <div className="font-[family-name:var(--mono)] text-[0.6875rem] font-semibold tracking-[0.18em] uppercase text-taupe-3 px-3 pt-4 pb-1.5 group-data-[collapsible=icon]:hidden">Templates</div>
+
       {/* Template List */}
       <SidebarMenu>
         {templates.map((template) => (

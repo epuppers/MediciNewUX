@@ -246,9 +246,6 @@ export function AppSidebar({ threads, runs, templates }: AppSidebarProps) {
       {/* Content area — switches based on active route */}
       <SidebarContent>
         <SidebarGroup className="flex-1 px-1.5">
-          {isWorkflowsView && (
-            <div className="font-[family-name:var(--mono)] text-[0.6875rem] font-semibold tracking-[0.18em] uppercase text-taupe-3 px-3 pt-4 pb-1.5 transition-opacity duration-200 ease-linear group-data-[collapsible=icon]:opacity-0 group-data-[collapsible=icon]:h-0 group-data-[collapsible=icon]:overflow-hidden group-data-[collapsible=icon]:pt-0 group-data-[collapsible=icon]:pb-0">Templates</div>
-          )}
           <SidebarGroupContent>
             {isWorkflowsView ? (
               templates && templates.length > 0 ? (
