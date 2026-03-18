@@ -5,6 +5,8 @@ import { ChatInput } from "~/components/chat/chat-input";
 import { FilePanel } from "~/components/chat/file-panel";
 import { WorkflowPanel } from "~/components/chat/workflow-panel";
 import { useChatStore } from "~/stores/chat-store";
+import { useGreeting } from "~/hooks/use-greeting";
+import { MOCK_USER } from "~/data/mock-user";
 import type { Thread, WorkflowRun } from "~/services/types";
 
 /** Suggestion chips for the empty thread state */
@@ -31,6 +33,7 @@ export default function ChatRoute() {
   const thread = threadData?.thread;
   const run = threadData?.run;
 
+  const { salutation, phrase } = useGreeting(MOCK_USER.firstName);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const openCloudDrive = useChatStore((s) => s.openCloudDrive);
 
@@ -55,7 +58,7 @@ export default function ChatRoute() {
           ) : (
             <div className="flex flex-col items-center justify-center flex-1 px-5 py-10 text-center">
               <div className="text-[1.75rem] text-[var(--violet-2)] mb-3">◆</div>
-              <div className="font-[family-name:var(--mono)] text-sm font-bold text-[var(--taupe-5)] mb-1.5">What can Cosimo help with?</div>
+              <div className="font-[family-name:var(--mono)] text-sm font-bold text-[var(--taupe-5)] mb-1.5">{salutation}. {phrase}</div>
               <div className="font-[family-name:var(--mono)] text-[0.6875rem] text-[var(--taupe-3)] max-w-xs leading-relaxed">
                 Ask about fund performance, document analysis, compliance checks, or anything across your portfolio.
               </div>
