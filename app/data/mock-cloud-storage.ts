@@ -62,6 +62,43 @@ export const MOCK_SHAREPOINT_SITES: SharePointSite[] = [
 ];
 
 // ============================================
+// SHAREPOINT SEARCH RESULTS (for site search)
+// ============================================
+
+export const MOCK_SHAREPOINT_SEARCH_RESULTS: SharePointSite[] = [
+  {
+    id: 'sp-operations',
+    name: 'Operations',
+    url: 'notapplicable039.sharepoint.com/sites/operations',
+    libraries: [
+      { id: 'sp-ops-documents', name: 'Documents', enabled: true },
+      { id: 'sp-ops-procedures', name: 'Procedures', enabled: true },
+      { id: 'sp-ops-vendor-files', name: 'Vendor Files', enabled: true },
+      { id: 'sp-ops-sops', name: 'SOPs', enabled: true },
+    ],
+  },
+  {
+    id: 'sp-engineering',
+    name: 'Engineering',
+    url: 'notapplicable039.sharepoint.com/sites/engineering',
+    libraries: [
+      { id: 'sp-eng-documents', name: 'Documents', enabled: true },
+      { id: 'sp-eng-technical-specs', name: 'Technical Specs', enabled: true },
+    ],
+  },
+  {
+    id: 'sp-legal',
+    name: 'Legal',
+    url: 'notapplicable039.sharepoint.com/sites/legal',
+    libraries: [
+      { id: 'sp-legal-contracts', name: 'Contracts', enabled: true },
+      { id: 'sp-legal-compliance', name: 'Compliance Docs', enabled: true },
+      { id: 'sp-legal-templates', name: 'Templates', enabled: true },
+    ],
+  },
+];
+
+// ============================================
 // GOOGLE DRIVE CONFIG
 // ============================================
 
