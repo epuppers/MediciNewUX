@@ -218,8 +218,8 @@
         "npx tsc --noEmit passes with zero errors"
       ],
       "priority": 12,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Wired in ProfileAvatar. settingsOpen state + handleAccountSettings opens modal and closes popover. CloudStorageSettings rendered outside Popover as sibling via fragment. Removed unused toast import. Typecheck clean."
     },
     {
       "id": "US-013",
