@@ -284,8 +284,8 @@ export function TemplateDetail({ template, run }: TemplateDetailProps) {
                 className="font-mono text-[0.6875rem] py-[5px] px-2 text-taupe-3 bg-transparent border border-taupe-2 dark:border-taupe-3 cursor-pointer rounded-r-sm inline-flex items-center transition-all duration-100"
                 aria-label="Template actions"
               >
-                <MoreHorizontal className="size-4" />
-                <span className="a11y-label">Actions</span>
+                <MoreHorizontal className="size-4 [[data-a11y-labels=show]_&]:hidden" />
+                <span className="hidden [[data-a11y-labels=show]_&]:inline font-[family-name:var(--mono)] font-semibold text-[0.625rem] tracking-[0.03em] whitespace-nowrap">Actions</span>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" sideOffset={6}>
                 <DropdownMenuItem onClick={() => openCosimoPanel({ type: 'template', text: template.title })}>
@@ -308,8 +308,8 @@ export function TemplateDetail({ template, run }: TemplateDetailProps) {
               className="font-mono text-[0.6875rem] font-semibold py-[5px] px-3.5 text-white bg-violet-3 border cursor-pointer rounded-r-sm inline-flex items-center gap-1.5 transition-colors duration-150 border-t-violet-2 border-l-violet-2 border-b-violet-4 border-r-violet-4 dark:border-violet-3"
               onClick={handleRun}
             >
-              <Play className="size-3.5" />
-              <span>Run</span>
+              <Play className="size-3.5 [[data-a11y-labels=show]_&]:hidden" />
+              <span className="hidden [[data-a11y-labels=show]_&]:inline">Run</span>
             </button>
           </div>
         </div>

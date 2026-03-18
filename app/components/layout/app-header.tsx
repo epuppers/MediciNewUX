@@ -270,13 +270,16 @@ function TaskButton() {
   return (
     <Popover open={taskPanelOpen} onOpenChange={(open) => { if (open !== taskPanelOpen) toggleTaskPanel(); }}>
       <PopoverTrigger
-        className="relative size-7 flex items-center justify-center bg-transparent border border-transparent cursor-pointer transition-all duration-150 rounded-[var(--r-md)] p-0 text-taupe-4 hover:bg-berry-1 hover:border-t-taupe-2 hover:border-l-taupe-2 hover:border-b-taupe-3 hover:border-r-taupe-3 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2 dark:hover:bg-berry-1"
+        className="relative size-7 [[data-a11y-labels=show]_&]:size-auto [[data-a11y-labels=show]_&]:h-7 [[data-a11y-labels=show]_&]:px-2 flex items-center justify-center bg-transparent border border-transparent cursor-pointer transition-all duration-150 rounded-[var(--r-md)] p-0 text-taupe-4 hover:bg-berry-1 hover:border-t-taupe-2 hover:border-l-taupe-2 hover:border-b-taupe-3 hover:border-r-taupe-3 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2 dark:hover:bg-berry-1"
         aria-label="Assigned Tasks"
       >
-        <span className="text-sm text-taupe-4">◈</span>
-        <span className="a11y-label">Tasks</span>
+        <span className="text-sm text-taupe-4 [[data-a11y-labels=show]_&]:hidden">◈</span>
+        <span className="hidden [[data-a11y-labels=show]_&]:inline font-[family-name:var(--mono)] font-semibold text-[0.625rem] tracking-[0.03em] whitespace-nowrap">Tasks</span>
         {tasks.length > 0 && (
-          <span className="th-badge absolute -right-0.5 -top-0.5 flex min-w-[14px] h-[14px] items-center justify-center rounded-[var(--r-sm)] bg-red border border-solid border-[var(--red-hi)] font-[family-name:var(--mono)] text-[9px] font-bold text-white px-0.5"
+          <span className={cn(
+            "th-badge absolute -right-0.5 -top-0.5 flex min-w-[14px] h-[14px] items-center justify-center rounded-[var(--r-sm)] bg-red border border-solid border-[var(--red-hi)] font-[family-name:var(--mono)] text-[9px] font-bold text-white px-0.5",
+            "[[data-a11y-labels=show]_&]:relative [[data-a11y-labels=show]_&]:right-auto [[data-a11y-labels=show]_&]:top-auto [[data-a11y-labels=show]_&]:ml-1.5"
+          )}
             style={{ borderColor: 'var(--red-hi) var(--red-lo) var(--red-lo) var(--red-hi)' }}>
             {tasks.length}
           </span>
@@ -302,11 +305,11 @@ function CalendarButton() {
   return (
     <Popover open={calendarPanelOpen} onOpenChange={(open) => { if (open !== calendarPanelOpen) toggleCalendarPanel(); }}>
       <PopoverTrigger
-        className="relative size-7 flex items-center justify-center bg-transparent border border-transparent cursor-pointer transition-all duration-150 rounded-[var(--r-md)] p-0 text-taupe-4 hover:bg-berry-1 hover:border-t-taupe-2 hover:border-l-taupe-2 hover:border-b-taupe-3 hover:border-r-taupe-3 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2 dark:hover:bg-berry-1"
+        className="relative size-7 [[data-a11y-labels=show]_&]:size-auto [[data-a11y-labels=show]_&]:h-7 [[data-a11y-labels=show]_&]:px-2 flex items-center justify-center bg-transparent border border-transparent cursor-pointer transition-all duration-150 rounded-[var(--r-md)] p-0 text-taupe-4 hover:bg-berry-1 hover:border-t-taupe-2 hover:border-l-taupe-2 hover:border-b-taupe-3 hover:border-r-taupe-3 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2 dark:hover:bg-berry-1"
         aria-label="Calendar"
       >
-        <span className="text-sm text-taupe-4">▦</span>
-        <span className="a11y-label">Calendar</span>
+        <span className="text-sm text-taupe-4 [[data-a11y-labels=show]_&]:hidden">▦</span>
+        <span className="hidden [[data-a11y-labels=show]_&]:inline font-[family-name:var(--mono)] font-semibold text-[0.625rem] tracking-[0.03em] whitespace-nowrap">Calendar</span>
       </PopoverTrigger>
       <PopoverContent align="end" className="bg-white border-2 border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 rounded-[var(--r-md)] overflow-hidden dark:border-surface-0 w-[280px] p-0">
         {calendar ? (
@@ -332,11 +335,11 @@ function UsageButton() {
   return (
     <Popover open={usagePanelOpen} onOpenChange={(open) => { if (open !== usagePanelOpen) toggleUsagePanel(); }}>
       <PopoverTrigger
-        className="relative size-7 flex items-center justify-center bg-transparent border border-transparent cursor-pointer transition-all duration-150 rounded-[var(--r-md)] p-0 text-taupe-4 hover:bg-berry-1 hover:border-t-taupe-2 hover:border-l-taupe-2 hover:border-b-taupe-3 hover:border-r-taupe-3 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2 dark:hover:bg-berry-1"
+        className="relative size-7 [[data-a11y-labels=show]_&]:size-auto [[data-a11y-labels=show]_&]:h-7 [[data-a11y-labels=show]_&]:px-2 flex items-center justify-center bg-transparent border border-transparent cursor-pointer transition-all duration-150 rounded-[var(--r-md)] p-0 text-taupe-4 hover:bg-berry-1 hover:border-t-taupe-2 hover:border-l-taupe-2 hover:border-b-taupe-3 hover:border-r-taupe-3 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2 dark:hover:bg-berry-1"
         aria-label="Usage"
       >
-        <GaugeIcon />
-        <span className="a11y-label">Usage</span>
+        <span className="[[data-a11y-labels=show]_&]:hidden"><GaugeIcon /></span>
+        <span className="hidden [[data-a11y-labels=show]_&]:inline font-[family-name:var(--mono)] font-semibold text-[0.625rem] tracking-[0.03em] whitespace-nowrap">Usage</span>
       </PopoverTrigger>
       <PopoverContent align="end" className="bg-white border-2 border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 rounded-[var(--r-md)] overflow-hidden dark:border-surface-0 w-[300px] p-0">
         {usage ? (

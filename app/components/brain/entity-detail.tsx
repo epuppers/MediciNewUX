@@ -61,13 +61,13 @@ export function EntityDetail({
           <Button
             variant="ghost"
             size="icon-sm"
-            className="px-1.5 py-1 flex items-center justify-center text-[0.6875rem] font-semibold text-taupe-4 bg-off-white border border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 cursor-pointer rounded-[var(--r-md)] hover:bg-berry-1 hover:text-berry-5 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2 dark:border-taupe-2 dark:hover:text-berry-3 dark:hover:bg-berry-1 [&_svg]:block"
+            className="px-1.5 py-1 flex items-center justify-center text-[0.6875rem] font-semibold text-taupe-4 bg-off-white border border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 cursor-pointer rounded-[var(--r-md)] hover:bg-berry-1 hover:text-berry-5 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2 dark:border-taupe-2 dark:hover:text-berry-3 dark:hover:bg-berry-1 [&_svg]:block [[data-a11y-labels=show]_&]:w-auto [[data-a11y-labels=show]_&]:h-7 [[data-a11y-labels=show]_&]:px-2"
             onClick={onClose}
             title="Close"
             aria-label="Close entity detail"
           >
-            <X className="size-4" />
-            <span className="a11y-label">Close</span>
+            <X className="size-4 [[data-a11y-labels=show]_&]:hidden" />
+            <span className="hidden [[data-a11y-labels=show]_&]:inline font-[family-name:var(--mono)] font-semibold text-[0.625rem] tracking-[0.03em] whitespace-nowrap">Close</span>
           </Button>
         </div>
       </div>

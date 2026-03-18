@@ -42,7 +42,6 @@ export function Artifact({ artifact, className }: ArtifactProps) {
           ) : (
             <ChevronUp className="h-3.5 w-3.5" />
           )}
-          <span className="a11y-label">{collapsed ? 'Expand' : 'Collapse'}</span>
         </button>
       </div>
 

@@ -91,8 +91,8 @@ export function FilePanel() {
             onClick={close}
             aria-label="Close file panel"
           >
-            <span className="icon-char">✕</span>
-            <span className="a11y-label">Close</span>
+            <span className="[[data-a11y-labels=show]_&]:hidden">✕</span>
+            <span className="hidden [[data-a11y-labels=show]_&]:inline font-[family-name:var(--mono)] font-semibold text-[0.625rem] tracking-[0.03em] whitespace-nowrap">Close</span>
           </button>
         </div>
 

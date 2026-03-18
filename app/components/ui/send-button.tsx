@@ -29,8 +29,8 @@ export function SendButton({
       title="Send"
       aria-label="Send message"
     >
-      <ArrowUp className={size === 'sm' ? 'h-3.5 w-3.5' : 'h-4 w-4'} />
-      <span className="a11y-label">Send</span>
+      <ArrowUp className={cn(size === 'sm' ? 'h-3.5 w-3.5' : 'h-4 w-4', '[[data-a11y-labels=show]_&]:hidden')} />
+      <span className="hidden [[data-a11y-labels=show]_&]:inline font-[family-name:var(--mono)] font-semibold text-[0.625rem] tracking-[0.03em] whitespace-nowrap">Send</span>
     </button>
   );
 }

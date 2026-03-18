@@ -6,7 +6,13 @@ import type { Thread } from "~/services/types";
 
 // Shared header button classes
 const headerBtnCls =
-  "px-1.5 py-1 flex items-center justify-center text-[0.6875rem] font-semibold text-taupe-4 bg-off-white border border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 cursor-pointer rounded-[var(--r-md)] hover:bg-berry-1 hover:text-berry-5 active:border-t-taupe-3 active:border-l-taupe-3 active:border-b-taupe-2 active:border-r-taupe-2 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2 dark:border-taupe-2 dark:hover:text-berry-3 dark:hover:bg-berry-1 disabled:text-taupe-2 disabled:border-taupe-1 disabled:bg-off-white disabled:cursor-default disabled:opacity-50 disabled:hover:bg-off-white disabled:hover:text-taupe-2 [&_svg]:block";
+  "px-1.5 py-1 flex items-center justify-center text-[0.6875rem] font-semibold text-taupe-4 bg-off-white border border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 cursor-pointer rounded-[var(--r-md)] hover:bg-berry-1 hover:text-berry-5 active:border-t-taupe-3 active:border-l-taupe-3 active:border-b-taupe-2 active:border-r-taupe-2 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2 dark:border-taupe-2 dark:hover:text-berry-3 dark:hover:bg-berry-1 disabled:text-taupe-2 disabled:border-taupe-1 disabled:bg-off-white disabled:cursor-default disabled:opacity-50 disabled:hover:bg-off-white disabled:hover:text-taupe-2 [&_svg]:block [[data-a11y-labels=show]_&]:w-auto [[data-a11y-labels=show]_&]:h-7 [[data-a11y-labels=show]_&]:px-2";
+
+// Shared icon classes — hidden when labels mode is active
+const headerIconCls = "[[data-a11y-labels=show]_&]:hidden";
+
+// Shared label classes — hidden by default, shown when labels mode is active
+const headerLabelCls = "hidden [[data-a11y-labels=show]_&]:inline font-[family-name:var(--mono)] font-semibold text-[0.625rem] tracking-[0.03em] whitespace-nowrap";
 
 /** Chat thread header — title + action buttons (Files, Export, Share) */
 export function ChatHeader({ thread }: { thread: Thread }) {
@@ -30,8 +36,8 @@ export function ChatHeader({ thread }: { thread: Thread }) {
           data-label="Files"
           onClick={() => hasFiles && openFilePanel('folder')}
         >
-          <FolderOpen size={14} />
-          <span className="a11y-label">Files</span>
+          <FolderOpen size={14} className={headerIconCls} />
+          <span className={headerLabelCls}>Files</span>
         </Button>
         <Button
           variant="ghost"
@@ -42,8 +48,8 @@ export function ChatHeader({ thread }: { thread: Thread }) {
           data-label="Export"
           onClick={() => toast("Thread exported to clipboard")}
         >
-          <Download size={14} />
-          <span className="a11y-label">Export</span>
+          <Download size={14} className={headerIconCls} />
+          <span className={headerLabelCls}>Export</span>
         </Button>
         <Button
           variant="ghost"
@@ -54,8 +60,8 @@ export function ChatHeader({ thread }: { thread: Thread }) {
           data-label="Share"
           onClick={() => toast("Share link copied")}
         >
-          <Share2 size={14} />
-          <span className="a11y-label">Share</span>
+          <Share2 size={14} className={headerIconCls} />
+          <span className={headerLabelCls}>Share</span>
         </Button>
       </div>
     </div>

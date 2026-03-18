@@ -80,7 +80,8 @@ export function WorkflowCard({ template, lessonNames, onSelect, onRun }: Workflo
           onClick={handleRunClick}
           aria-label={`Run ${template.title}`}
         >
-          ▶ Run
+          <span className="[[data-a11y-labels=show]_&]:hidden">▶</span>
+          <span className="hidden [[data-a11y-labels=show]_&]:inline">Run</span>
         </button>
       </div>
 

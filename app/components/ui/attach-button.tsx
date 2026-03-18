@@ -22,8 +22,8 @@ export function AttachButton({ onAttach, disabled = false, className }: AttachBu
         title="Attach file"
         aria-label="Attach file"
       >
-        <Paperclip className="h-4 w-4" />
-        <span className="a11y-label">Attach</span>
+        <Paperclip className="h-4 w-4 [[data-a11y-labels=show]_&]:hidden" />
+        <span className="hidden [[data-a11y-labels=show]_&]:inline font-[family-name:var(--mono)] font-semibold text-[0.625rem] tracking-[0.03em] whitespace-nowrap">Attach</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" side="top" className="bg-white border-2 border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-4 border-r-taupe-4 shadow-[2px_2px_0_rgba(var(--black-rgb),0.08)] rounded-[var(--r-md)] p-[3px] dark:bg-surface-2 dark:border-taupe-2 dark:shadow-[2px_2px_0_rgba(var(--black-rgb),0.3)]">
         <button
