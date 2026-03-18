@@ -58,3 +58,14 @@ Learnings:
 - Mock data files use ALLCAPS const exports with MOCK_ prefix
 - Record<string, CloudFile[]> pattern works well for files keyed by source/folder ID
 - Recent files are a flat array referencing the same file shapes from the keyed collections
+
+---
+[Iteration 3] Story US-003: Cloud storage service layer
+Date: 2026-03-18
+Summary: Created /app/services/cloud-storage.ts with 6 async functions wrapping mock data. Follows exact same pattern as panels.ts and threads.ts — file header comment block, typed imports, JSDoc on each function, spread copies for array returns.
+Files modified:
+- /app/services/cloud-storage.ts
+Learnings:
+- Service files spread-copy arrays ([...MOCK_*]) to prevent mutation of mock data
+- searchCloudFiles uses Object.values().flat().filter() to search across all keyed file entries
+- Pattern: file header uses // ==== blocks, then import mock data, import types separately
