@@ -6,6 +6,8 @@ import { useState, useRef, useCallback, useEffect, type KeyboardEvent, type Drag
 import {
   ChevronDown,
   X,
+  AlertCircle,
+  RotateCw,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -28,6 +30,7 @@ interface StagedFile {
   name: string;
   type: string;
   size: string;
+  error?: string;
 }
 
 /** Model option for the model selector dropdown */
@@ -101,6 +104,7 @@ export function ChatInput({
   disabled = false,
 }: ChatInputProps) {
   const [text, setText] = useState('');
+  const [retriedIndices, setRetriedIndices] = useState<Set<number>>(new Set());
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const autocompleteRef = useRef<HTMLDivElement>(null);
 
@@ -227,16 +231,46 @@ export function ChatInput({
           <div className={cn(stagedFileGridCols(stagedFiles.length), 'max-h-[126px] overflow-y-auto')}>
             {stagedFiles.map((file, i) => {
               const Icon = getFileTypeIcon(file.type);
+              const hasError = !!file.error && !retriedIndices.has(i);
+
               return (
-                <div key={`${file.name}-${i}`} className="flex items-center gap-2 px-2.5 py-1.5 bg-off-white border border-solid border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 rounded-[var(--r-sm)] hover:bg-taupe-1 dark:bg-surface-2 dark:border-t-taupe-3 dark:border-l-taupe-3 dark:border-b-taupe-4 dark:border-r-taupe-4 dark:hover:bg-surface-3 min-w-0">
-                  <div className={cn('w-6 h-6 flex items-center justify-center text-white shrink-0 rounded-[var(--r-sm)] border', fileIconBevelClasses(file.type))}>
-                    <Icon className="h-3 w-3" />
+                <div
+                  key={`${file.name}-${i}`}
+                  className={cn(
+                    'flex items-center gap-2 px-2.5 py-1.5 border border-solid rounded-[var(--r-sm)] min-w-0',
+                    hasError
+                      ? 'bg-[rgba(var(--red-rgb),0.05)] border-l-[3px] border-l-red border-t-taupe-2 border-r-taupe-3 border-b-taupe-3 dark:bg-[rgba(var(--red-rgb),0.08)] dark:border-taupe-3 dark:border-l-red'
+                      : 'bg-off-white border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 hover:bg-taupe-1 dark:bg-surface-2 dark:border-t-taupe-3 dark:border-l-taupe-3 dark:border-b-taupe-4 dark:border-r-taupe-4 dark:hover:bg-surface-3',
+                  )}
+                >
+                  <div className={cn(
+                    'w-6 h-6 flex items-center justify-center text-white shrink-0 rounded-[var(--r-sm)] border',
+                    hasError
+                      ? 'bg-red border-t-[var(--red-hi)] border-l-[var(--red-hi)] border-r-[var(--red-lo)] border-b-[var(--red-lo)]'
+                      : fileIconBevelClasses(file.type),
+                  )}>
+                    {hasError ? <AlertCircle className="h-3 w-3" /> : <Icon className="h-3 w-3" />}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="font-[family-name:var(--mono)] text-[0.6875rem] font-semibold text-taupe-5 truncate">{file.name}</div>
-                    <div className="font-[family-name:var(--mono)] text-[0.5625rem] text-taupe-3">{file.size}</div>
+                    <div className={cn(
+                      'font-[family-name:var(--mono)] text-[0.6875rem] font-semibold truncate',
+                      hasError ? 'text-red' : 'text-taupe-5',
+                    )}>{file.name}</div>
+                    <div className="font-[family-name:var(--mono)] text-[0.5625rem] text-taupe-3">
+                      {hasError ? file.error : file.size}
+                    </div>
                   </div>
-                  {onRemoveFile && (
+                  {hasError ? (
+                    <button
+                      type="button"
+                      onClick={() => setRetriedIndices((prev) => new Set(prev).add(i))}
+                      className="flex items-center gap-1 px-2 py-0.5 font-[family-name:var(--mono)] text-[0.5625rem] font-semibold uppercase tracking-[0.05em] text-taupe-5 bg-taupe-1 border border-t-white border-l-white border-r-taupe-3 border-b-taupe-3 cursor-pointer shrink-0 transition-all duration-150 rounded-[var(--r-sm)] hover:bg-berry-1 hover:text-berry-5 hover:border-t-berry-2 hover:border-l-berry-2 hover:border-r-berry-4 hover:border-b-berry-4 active:border-t-taupe-3 active:border-l-taupe-3 active:border-r-white active:border-b-white focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2 dark:text-taupe-4 dark:hover:text-berry-3"
+                      aria-label={`Retry upload for ${file.name}`}
+                    >
+                      <RotateCw className="w-2.5 h-2.5" />
+                      Retry
+                    </button>
+                  ) : onRemoveFile ? (
                     <button
                       type="button"
                       onClick={() => onRemoveFile(i)}
@@ -247,7 +281,7 @@ export function ChatInput({
                       <X className="h-2.5 w-2.5" />
                       <span className="a11y-label">Remove</span>
                     </button>
-                  )}
+                  ) : null}
                 </div>
               );
             })}

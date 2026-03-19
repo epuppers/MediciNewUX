@@ -23,6 +23,7 @@ export interface Attachment {
   pages?: number;
   sheets?: string[];
   fileCount?: number;
+  error?: string;
 }
 
 /** Artifact embedded in an AI message (table, flow graph, metadata card, text block) */

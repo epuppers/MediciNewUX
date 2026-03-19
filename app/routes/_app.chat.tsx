@@ -122,7 +122,7 @@ export default function ChatRoute() {
         <ChatInput
           onSend={handleSend}
           onAttach={handleAttach}
-          stagedFiles={pendingFiles.map((f) => ({ name: f.name, type: f.type, size: f.size ?? '' }))}
+          stagedFiles={pendingFiles.map((f) => ({ name: f.name, type: f.type, size: f.size ?? '', error: f.error }))}
           onRemoveFile={removePendingFile}
           onClearAll={clearPendingFiles}
           placeholder="Ask Cosimo anything..."

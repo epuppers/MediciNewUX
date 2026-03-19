@@ -77,7 +77,13 @@ export const useChatStore = create<ChatState>((set) => ({
   cloudBreadcrumb: [],
   cloudSearchQuery: '',
   cloudSearchActive: false,
-  pendingFilesByThread: {},
+  pendingFilesByThread: {
+    fund3: [
+      { name: 'Complete_with_DocuSign_UWC_FIRST_MEETING_(1).pdf', type: 'pdf', size: '4.3 KB', error: 'Upload failed — connection timeout' },
+      { name: 'MEDICI & COMPANY - Cap Table and Vesting Schedule.xlsx', type: 'xlsx', size: '2.8 MB' },
+      { name: 'Research Review - 2025_10_07_17_30.docx', type: 'docx', size: '1.1 MB' },
+    ],
+  },
 
   selectThread: (threadId) => set({
     activeThreadId: threadId,

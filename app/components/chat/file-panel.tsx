@@ -6,7 +6,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useMatches } from 'react-router';
-import { FileCheck, FileCode, FileImage, FileSpreadsheet, FileText, Folder, Mail, Paperclip, Presentation, X, type LucideIcon } from 'lucide-react';
+import { FileCheck, FileCode, FileImage, FileSpreadsheet, FileText, Folder, Mail, Paperclip, Presentation, X, AlertCircle, RotateCw, type LucideIcon } from 'lucide-react';
 import { useChatStore, EMPTY_ATTACHMENTS, type BreadcrumbSegment } from '~/stores/chat-store';
 import { useResizePanel } from '~/hooks/use-resize-panel';
 import { getSpreadsheet, hasSpreadsheetData } from '~/services/panels';
@@ -405,6 +405,7 @@ function FileSection({ label, files, onFileClick, onRemove, onClearAll, variant 
   onClearAll?: () => void;
   variant?: 'pending' | 'default';
 }) {
+  const [retriedIndices, setRetriedIndices] = useState<Set<number>>(new Set());
   if (files.length === 0) return null;
   const isPending = variant === 'pending';
 
@@ -428,27 +429,54 @@ function FileSection({ label, files, onFileClick, onRemove, onClearAll, variant 
       <div className="p-1.5 flex flex-col gap-1.5">
         {files.map((att, i) => {
           const Icon = getFileTypeIcon(att.type);
+          const hasError = !!att.error && !retriedIndices.has(i);
+
           return (
             <div
               key={`${att.name}-${i}`}
               className={cn(
-                'flex items-center gap-2.5 p-2.5 border transition-all duration-[120ms] rounded-[var(--r-md)] bg-off-white dark:bg-surface-2 border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 dark:border-taupe-2',
-                isPending
-                  ? 'border-dashed opacity-50'
-                  : 'border-solid cursor-pointer hover:bg-berry-1 hover:border-taupe-2 dark:hover:bg-surface-2 dark:hover:border-surface-3',
+                'flex items-center gap-2.5 p-2.5 border transition-all duration-[120ms] rounded-[var(--r-md)]',
+                hasError
+                  ? 'bg-[rgba(var(--red-rgb),0.05)] border-solid border-l-[3px] border-l-red border-t-taupe-2 border-r-taupe-3 border-b-taupe-3 dark:bg-[rgba(var(--red-rgb),0.08)] dark:border-taupe-2 dark:border-l-red'
+                  : cn(
+                      'bg-off-white dark:bg-surface-2 border-t-taupe-2 border-l-taupe-2 border-b-taupe-3 border-r-taupe-3 dark:border-taupe-2',
+                      isPending
+                        ? 'border-dashed opacity-50'
+                        : 'border-solid cursor-pointer hover:bg-berry-1 hover:border-taupe-2 dark:hover:bg-surface-2 dark:hover:border-surface-3',
+                    ),
               )}
-              onClick={isPending ? undefined : () => onFileClick(att)}
+              onClick={hasError || isPending ? undefined : () => onFileClick(att)}
             >
-              <div className={cn('w-7 h-7 flex items-center justify-center text-white dark:text-off-white shrink-0 rounded-[var(--r-md)]', fileIconBg(att.type))}>
-                <Icon className="h-3.5 w-3.5" />
+              <div className={cn(
+                'w-7 h-7 flex items-center justify-center text-white dark:text-off-white shrink-0 rounded-[var(--r-md)]',
+                hasError ? 'bg-red' : fileIconBg(att.type),
+              )}>
+                {hasError ? <AlertCircle className="h-3.5 w-3.5" /> : <Icon className="h-3.5 w-3.5" />}
               </div>
               <div className="flex-1 min-w-0">
-                <div className="font-mono text-[0.6875rem] font-semibold text-taupe-5 truncate">{att.name}</div>
-                {fileSubtitle(att) && (
-                  <div className="font-mono text-[0.625rem] text-taupe-3 mt-0.5">{fileSubtitle(att)}</div>
+                <div className={cn(
+                  'font-mono text-[0.6875rem] font-semibold truncate',
+                  hasError ? 'text-red' : 'text-taupe-5',
+                )}>{att.name}</div>
+                {hasError ? (
+                  <div className="font-mono text-[0.625rem] text-taupe-3 mt-0.5">{att.error}</div>
+                ) : (
+                  fileSubtitle(att) && (
+                    <div className="font-mono text-[0.625rem] text-taupe-3 mt-0.5">{fileSubtitle(att)}</div>
+                  )
                 )}
               </div>
-              {isPending && onRemove && (
+              {hasError ? (
+                <button
+                  type="button"
+                  onClick={() => setRetriedIndices((prev) => new Set(prev).add(i))}
+                  className="flex items-center gap-1 px-2.5 py-1 font-mono text-[0.625rem] font-semibold uppercase tracking-[0.05em] text-taupe-5 bg-taupe-1 border border-t-white border-l-white border-r-taupe-3 border-b-taupe-3 cursor-pointer shrink-0 transition-all duration-150 rounded-r-md hover:bg-berry-1 hover:text-berry-5 hover:border-t-berry-2 hover:border-l-berry-2 hover:border-r-berry-4 hover:border-b-berry-4 active:border-t-taupe-3 active:border-l-taupe-3 active:border-r-white active:border-b-white focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2 dark:text-taupe-4 dark:hover:text-berry-3"
+                  aria-label={`Retry upload for ${att.name}`}
+                >
+                  <RotateCw className="w-3 h-3" />
+                  Retry
+                </button>
+              ) : isPending && onRemove ? (
                 <button
                   type="button"
                   onClick={() => onRemove(i)}
@@ -458,7 +486,7 @@ function FileSection({ label, files, onFileClick, onRemove, onClearAll, variant 
                 >
                   <X className="h-3 w-3" />
                 </button>
-              )}
+              ) : null}
             </div>
           );
         })}
