@@ -84,3 +84,19 @@ export const INSIGHT_COLORS: Record<string, string> = {
   anomaly: 'text-red',
   milestone: 'text-chinese-3',
 };
+
+/** Entity type ID → text color class */
+export const ENTITY_TYPE_COLORS: Record<string, string> = {
+  contact: 'text-berry-3',
+  fund: 'text-violet-3',
+  lp: 'text-blue-3',
+  property: 'text-taupe-3',
+};
+
+/** Entity type ID → background tint RGB variable (for use in rgba()) */
+export const ENTITY_TYPE_COLOR_RGB: Record<string, string> = {
+  contact: 'var(--berry-3-rgb)',
+  fund: 'var(--violet-3-rgb)',
+  lp: 'var(--blue-3-rgb)',
+  property: 'var(--taupe-3-rgb)',
+};

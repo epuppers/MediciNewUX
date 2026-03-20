@@ -3,6 +3,7 @@
 // ============================================
 
 import { useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router';
 import {
   X,
   MoreHorizontal,
@@ -17,7 +18,7 @@ import {
   Table,
   Sparkles,
 } from 'lucide-react';
-import type { Entity, EntitySchema, EntityActionDefinition } from '~/services/types';
+import type { Entity, EntitySchema, EntityActionDefinition, EntityActionType } from '~/services/types';
 import { useEntityStore } from '~/stores/entity-store';
 import { EntityInsightBar } from '~/components/rolodex/entity-insight-bar';
 import { EntityPropertySection } from '~/components/rolodex/entity-property-section';
@@ -64,15 +65,66 @@ const TAB_LABELS: Record<string, string> = {
   linked: 'Linked',
 };
 
+/** Execute an entity action — navigating, opening URLs, or logging */
+function executeAction(
+  action: EntityActionDefinition,
+  entity: Entity,
+  navigate: ReturnType<typeof useNavigate>,
+  selectEntity: (id: string | null) => void,
+) {
+  const handlers: Record<EntityActionType, () => void> = {
+    'start-chat': () => {
+      selectEntity(null);
+      navigate('/chat');
+    },
+    'trigger-workflow': () => {
+      selectEntity(null);
+      navigate(`/workflows/${action.target ?? ''}`);
+    },
+    'compose-email': () => {
+      const email = entity.properties.email;
+      if (typeof email === 'string' && email) {
+        window.open(`mailto:${email}`, '_self');
+      }
+    },
+    'add-note': () => {
+      console.log(`Action: add-note for ${entity.id}`);
+    },
+    'schedule-meeting': () => {
+      console.log(`Action: schedule-meeting for ${entity.id}`);
+    },
+    'external-link': () => {
+      if (action.target) {
+        const url = action.target.replace('{entityId}', entity.id);
+        window.open(url, '_blank');
+      }
+    },
+    'create-task': () => {
+      console.log(`Action: create-task for ${entity.id}`);
+    },
+  };
+  handlers[action.type]();
+}
+
 /** Renders an action button for a primary entity action */
-function ActionButton({ action }: { action: EntityActionDefinition }) {
+function ActionButton({
+  action,
+  entity,
+  navigate,
+  selectEntity,
+}: {
+  action: EntityActionDefinition;
+  entity: Entity;
+  navigate: ReturnType<typeof useNavigate>;
+  selectEntity: (id: string | null) => void;
+}) {
   const IconComponent = ACTION_ICON_COMPONENTS[action.icon];
   return (
     <Button
       variant="outline"
       size="sm"
       className="gap-1 font-mono text-[0.625rem] uppercase tracking-[0.05em]"
-      onClick={() => console.log(`Action: ${action.id}`)}
+      onClick={() => executeAction(action, entity, navigate, selectEntity)}
     >
       {IconComponent && <IconComponent className="size-3.5" />}
       {action.label}
@@ -82,6 +134,7 @@ function ActionButton({ action }: { action: EntityActionDefinition }) {
 
 /** EntityDetailPanel — rich detail view with header, insight bar, tabs, and tab content */
 export function EntityDetailPanel({ entity, schema, className }: EntityDetailPanelProps) {
+  const navigate = useNavigate();
   const selectEntity = useEntityStore((s) => s.selectEntity);
   const detailTab = useEntityStore((s) => s.detailTab);
   const setDetailTab = useEntityStore((s) => s.setDetailTab);
@@ -173,7 +226,7 @@ export function EntityDetailPanel({ entity, schema, className }: EntityDetailPan
         {(primaryActions.length > 0 || overflowActions.length > 0) && (
           <div className="flex items-center gap-1.5 flex-wrap">
             {primaryActions.map((action) => (
-              <ActionButton key={action.id} action={action} />
+              <ActionButton key={action.id} action={action} entity={entity} navigate={navigate} selectEntity={selectEntity} />
             ))}
             {overflowActions.length > 0 && (
               <DropdownMenu>
@@ -188,7 +241,7 @@ export function EntityDetailPanel({ entity, schema, className }: EntityDetailPan
                     return (
                       <DropdownMenuItem
                         key={action.id}
-                        onClick={() => console.log(`Action: ${action.id}`)}
+                        onClick={() => executeAction(action, entity, navigate, selectEntity)}
                       >
                         {OverflowIcon && <OverflowIcon className="size-3.5" />}
                         {action.label}
