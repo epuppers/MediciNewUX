@@ -160,7 +160,23 @@ export default function RolodexRoute({ loaderData }: Route.ComponentProps) {
             description={searchQuery ? "Try adjusting your search or filters." : "No entities match the current filter."}
           />
         ) : viewMode === 'list' ? (
-          <div className="flex flex-col gap-1.5">
+          <div
+            className="flex flex-col gap-1.5"
+            role="list"
+            aria-label="Entity list"
+            onKeyDown={(e) => {
+              if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+              e.preventDefault();
+              const items = (e.currentTarget as HTMLElement).querySelectorAll<HTMLElement>('[data-slot="entity-list-item"]');
+              const current = document.activeElement as HTMLElement;
+              const index = Array.from(items).indexOf(current);
+              if (e.key === 'ArrowDown' && index < items.length - 1) {
+                items[index + 1].focus();
+              } else if (e.key === 'ArrowUp' && index > 0) {
+                items[index - 1].focus();
+              }
+            }}
+          >
             {filtered.map((entity) => (
               <EntityListItem
                 key={entity.id}

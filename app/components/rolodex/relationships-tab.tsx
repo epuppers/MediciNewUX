@@ -155,7 +155,7 @@ export function RelationshipsTab({ entity, schema, onEntityClick, className }: R
                     key={item.relationship.targetEntityId}
                     role="listitem"
                     tabIndex={0}
-                    className="flex items-center gap-2.5 py-2 px-2 rounded-[var(--r-md)] cursor-pointer hover:bg-[rgba(var(--violet-3-rgb),0.04)] dark:hover:bg-[rgba(var(--violet-3-rgb),0.08)] transition-colors focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2"
+                    className="flex items-center gap-2.5 py-2 px-2 rounded-[var(--r-md)] cursor-pointer hover:bg-[rgba(var(--violet-3-rgb),0.04)] dark:hover:bg-[rgba(var(--violet-3-rgb),0.08)] transition-colors motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2"
                     onClick={() => onEntityClick(item.relationship.targetEntityId)}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') {

@@ -106,7 +106,7 @@ export function LinkedTab({ entity, className }: LinkedTabProps) {
                 key={id}
                 role="button"
                 tabIndex={0}
-                className="flex items-center gap-2 py-2 px-2 rounded-[var(--r-md)] hover:bg-[rgba(var(--violet-3-rgb),0.04)] dark:hover:bg-[rgba(var(--violet-3-rgb),0.08)] cursor-pointer transition-colors focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2"
+                className="flex items-center gap-2 py-2 px-2 rounded-[var(--r-md)] hover:bg-[rgba(var(--violet-3-rgb),0.04)] dark:hover:bg-[rgba(var(--violet-3-rgb),0.08)] cursor-pointer transition-colors motion-reduce:transition-none focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-2"
                 onClick={() => handleItemClick(section, id)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {

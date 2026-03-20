@@ -4,28 +4,15 @@
 
 import { useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router';
-import {
-  X,
-  MoreHorizontal,
-  Mail,
-  MessageSquare,
-  StickyNote,
-  CheckSquare,
-  Calendar,
-  FileText,
-  ArrowDownUp,
-  FileSpreadsheet,
-  Table,
-  Sparkles,
-} from 'lucide-react';
-import type { Entity, EntitySchema, EntityActionDefinition, EntityActionType } from '~/services/types';
+import { X, MoreHorizontal, Sparkles } from 'lucide-react';
+import type { Entity, EntitySchema } from '~/services/types';
 import { useEntityStore } from '~/stores/entity-store';
 import { EntityInsightBar } from '~/components/rolodex/entity-insight-bar';
 import { EntityPropertySection } from '~/components/rolodex/entity-property-section';
 import { ActivityTimeline } from '~/components/rolodex/activity-timeline';
 import { RelationshipsTab } from '~/components/rolodex/relationships-tab';
 import { LinkedTab } from '~/components/rolodex/linked-tab';
-import { Button } from '~/components/ui/button';
+import { EntityActionButton, executeAction, ACTION_ICON_COMPONENTS } from '~/components/rolodex/entity-action-button';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -44,19 +31,6 @@ interface EntityDetailPanelProps {
   className?: string;
 }
 
-/** Map action icon names to Lucide components */
-const ACTION_ICON_COMPONENTS: Record<string, React.ComponentType<{ className?: string }>> = {
-  Mail,
-  MessageSquare,
-  StickyNote,
-  CheckSquare,
-  Calendar,
-  FileText,
-  ArrowDownUp,
-  FileSpreadsheet,
-  Table,
-};
-
 const DETAIL_TABS = ['overview', 'timeline', 'relationships', 'linked'] as const;
 const TAB_LABELS: Record<string, string> = {
   overview: 'Overview',
@@ -64,73 +38,6 @@ const TAB_LABELS: Record<string, string> = {
   relationships: 'Relationships',
   linked: 'Linked',
 };
-
-/** Execute an entity action — navigating, opening URLs, or logging */
-function executeAction(
-  action: EntityActionDefinition,
-  entity: Entity,
-  navigate: ReturnType<typeof useNavigate>,
-  selectEntity: (id: string | null) => void,
-) {
-  const handlers: Record<EntityActionType, () => void> = {
-    'start-chat': () => {
-      selectEntity(null);
-      navigate('/chat');
-    },
-    'trigger-workflow': () => {
-      selectEntity(null);
-      navigate(`/workflows/${action.target ?? ''}`);
-    },
-    'compose-email': () => {
-      const email = entity.properties.email;
-      if (typeof email === 'string' && email) {
-        window.open(`mailto:${email}`, '_self');
-      }
-    },
-    'add-note': () => {
-      console.log(`Action: add-note for ${entity.id}`);
-    },
-    'schedule-meeting': () => {
-      console.log(`Action: schedule-meeting for ${entity.id}`);
-    },
-    'external-link': () => {
-      if (action.target) {
-        const url = action.target.replace('{entityId}', entity.id);
-        window.open(url, '_blank');
-      }
-    },
-    'create-task': () => {
-      console.log(`Action: create-task for ${entity.id}`);
-    },
-  };
-  handlers[action.type]();
-}
-
-/** Renders an action button for a primary entity action */
-function ActionButton({
-  action,
-  entity,
-  navigate,
-  selectEntity,
-}: {
-  action: EntityActionDefinition;
-  entity: Entity;
-  navigate: ReturnType<typeof useNavigate>;
-  selectEntity: (id: string | null) => void;
-}) {
-  const IconComponent = ACTION_ICON_COMPONENTS[action.icon];
-  return (
-    <Button
-      variant="outline"
-      size="sm"
-      className="gap-1 font-mono text-[0.625rem] uppercase tracking-[0.05em]"
-      onClick={() => executeAction(action, entity, navigate, selectEntity)}
-    >
-      {IconComponent && <IconComponent className="size-3.5" />}
-      {action.label}
-    </Button>
-  );
-}
 
 /** EntityDetailPanel — rich detail view with header, insight bar, tabs, and tab content */
 export function EntityDetailPanel({ entity, schema, className }: EntityDetailPanelProps) {
@@ -226,7 +133,7 @@ export function EntityDetailPanel({ entity, schema, className }: EntityDetailPan
         {(primaryActions.length > 0 || overflowActions.length > 0) && (
           <div className="flex items-center gap-1.5 flex-wrap">
             {primaryActions.map((action) => (
-              <ActionButton key={action.id} action={action} entity={entity} navigate={navigate} selectEntity={selectEntity} />
+              <EntityActionButton key={action.id} action={action} entity={entity} navigate={navigate} selectEntity={selectEntity} />
             ))}
             {overflowActions.length > 0 && (
               <DropdownMenu>
@@ -284,7 +191,7 @@ export function EntityDetailPanel({ entity, schema, className }: EntityDetailPan
       </div>
 
       {/* TAB CONTENT */}
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1 overflow-y-auto p-4" role="tabpanel" aria-label={TAB_LABELS[detailTab]}>
         {detailTab === 'overview' && (
           <div className="flex flex-col gap-3">
             {/* AI Summary */}
