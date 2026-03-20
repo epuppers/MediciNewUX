@@ -10,7 +10,6 @@ import { useUIStore } from '~/stores/ui-store';
 const BRAIN_SECTIONS = [
   { label: 'Memory', path: '/brain/memory', action: '+ Add Memory' },
   { label: 'Lessons', path: '/brain/lessons', action: '+ New Lesson' },
-  { label: 'Data Graphs', path: '/brain/graph', action: null },
 ] as const;
 
 /** Brain layout route — renders section header and child content. */

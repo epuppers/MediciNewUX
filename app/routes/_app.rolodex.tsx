@@ -3,7 +3,7 @@
 // ============================================
 
 import { useRouteError } from "react-router";
-import { List, Grid3x3, GitGraph, Search } from "lucide-react";
+import { List, Grid3x3, GitGraph, Network, Search } from "lucide-react";
 import { cn } from "~/lib/utils";
 import { getEntitySchema, getEntities } from "~/services/entities";
 import { useEntityStore } from "~/stores/entity-store";
@@ -157,9 +157,9 @@ export default function RolodexRoute({ loaderData }: Route.ComponentProps) {
       <div className="flex-1 overflow-y-auto p-4">
         {viewMode === 'graph' ? (
           <EmptyState
-            icon={<GitGraph className="size-10" />}
+            icon={<Network className="size-10" />}
             title="Entity Graph"
-            description="Graph view coming soon. Use list or grid view to browse entities."
+            description="Full graph visualization coming soon. Use list or grid view to browse entities."
           />
         ) : filtered.length === 0 ? (
           <EmptyState
