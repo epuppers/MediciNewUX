@@ -204,33 +204,6 @@ export default function RolodexRoute({ loaderData }: Route.ComponentProps) {
   );
 }
 
-/** Loading skeleton for the rolodex route */
-export function HydrateFallback() {
-  return (
-    <div className="flex h-full flex-col bg-off-white dark:bg-surface-0">
-      {/* Skeleton header bar */}
-      <div className="flex items-center px-4 py-2.5 border-b-2 border-solid bg-white dark:bg-surface-1 min-h-[44px]">
-        <div className="h-4 w-20 rounded bg-taupe-1 animate-pulse motion-reduce:animate-none" />
-      </div>
-      {/* Skeleton filter bar */}
-      <div className="flex items-center gap-2 px-4 py-2 border-b border-taupe-1 dark:border-surface-3 bg-white dark:bg-surface-1">
-        <div className="h-6 w-12 rounded-[var(--r-md)] bg-taupe-1 animate-pulse motion-reduce:animate-none" />
-        <div className="h-6 w-16 rounded-[var(--r-md)] bg-taupe-1 animate-pulse motion-reduce:animate-none" />
-        <div className="h-6 w-14 rounded-[var(--r-md)] bg-taupe-1 animate-pulse motion-reduce:animate-none" />
-      </div>
-      {/* Skeleton list items */}
-      <div className="flex-1 p-4 flex flex-col gap-1.5">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <div
-            key={i}
-            className="h-16 rounded-[var(--r-md)] bg-taupe-1 animate-pulse motion-reduce:animate-none"
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-
 /** Error boundary for rolodex route errors */
 export function ErrorBoundary() {
   const error = useRouteError();
