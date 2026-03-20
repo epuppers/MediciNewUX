@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { X, Sparkles, FileText, GitBranch, BookOpen } from 'lucide-react';
+import { X, Sparkles, FileText, GitBranch, BookOpen, User } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
@@ -24,6 +24,7 @@ const CONTEXT_ICONS: Record<NonNullable<CosimoContextType>, typeof FileText> = {
   template: GitBranch,
   node: FileText,
   lesson: BookOpen,
+  entity: User,
 };
 
 // ======== Welcome messages per context type ========
@@ -37,6 +38,9 @@ function getWelcomeMessage(contextType: CosimoContextType, contextText: string |
   }
   if (contextType === 'lesson' && contextText) {
     return `I can help you refine the "${contextText}" lesson. What would you like to adjust?`;
+  }
+  if (contextType === 'entity' && contextText) {
+    return `What would you like to know about ${contextText}?`;
   }
   return "Hi! I'm Cosimo, your AI finance assistant. How can I help you today?";
 }

@@ -11,6 +11,7 @@ import { cn } from "~/lib/utils";
 import { LogoMark } from "~/components/layout/logo";
 import { useUIStore } from "~/stores/ui-store";
 import { useEntityStore } from "~/stores/entity-store";
+import { ENTITY_HEALTH_COLORS } from "~/lib/entity-constants";
 import { ThreadList } from "~/components/chat/thread-list";
 import { WorkflowList } from "~/components/workflows/workflow-list";
 import { getEntitySchema, getEntities } from "~/services/entities";
@@ -174,6 +175,10 @@ function RolodexQuickList({
   selectedEntityId: string | null;
   onSelect: (entityId: string | null) => void;
 }) {
+  const setSortBy = useEntityStore((s) => s.setSortBy);
+  const setTypeFilter = useEntityStore((s) => s.setTypeFilter);
+  const activeTypeFilter = useEntityStore((s) => s.activeTypeFilter);
+
   // Group entities by type, in navOrder
   const navTypes = schema.entityTypes
     .filter((t) => t.showInNav)
@@ -184,19 +189,121 @@ function RolodexQuickList({
     items: entities.filter((e) => e.typeId === typeDef.id),
   }));
 
-  const healthDotColor: Record<string, string> = {
-    healthy: 'bg-green',
-    warning: 'bg-amber-400',
-    critical: 'bg-red',
+  // Health counts
+  const healthCounts = { healthy: 0, warning: 0, critical: 0 };
+  entities.forEach((e) => {
+    if (e.health) healthCounts[e.health]++;
+  });
+
+  // Attention entities (warning + critical, critical first)
+  const attentionEntities = entities
+    .filter((e) => e.health === 'warning' || e.health === 'critical')
+    .sort((a, b) => {
+      if (a.health === 'critical' && b.health !== 'critical') return -1;
+      if (b.health === 'critical' && a.health !== 'critical') return 1;
+      return 0;
+    });
+
+  /** Get the health label for an entity from its type's healthIndicator config */
+  const getHealthLabel = (entity: Entity): string | null => {
+    if (!entity.health) return null;
+    const typeDef = schema.entityTypes.find((t) => t.id === entity.typeId);
+    return typeDef?.healthIndicator?.labels?.[entity.health] ?? null;
   };
 
   return (
-    <div className="flex flex-col gap-1 transition-opacity duration-200 ease-linear group-data-[collapsible=icon]:opacity-0">
+    <div className="flex flex-col gap-1 transition-opacity duration-200 ease-linear group-data-[collapsible=icon]:opacity-0 group-data-[collapsible=icon]:pointer-events-none">
+      {/* Health Summary Bar */}
+      <div className="flex items-center gap-3 px-2.5 py-1.5 border-b border-taupe-4">
+        {(['healthy', 'warning', 'critical'] as const).map(
+          (status) =>
+            healthCounts[status] > 0 && (
+              <button
+                key={status}
+                type="button"
+                onClick={() => setSortBy('health')}
+                className={cn(
+                  "flex items-center gap-1 bg-transparent border-none cursor-pointer p-0",
+                  "hover:opacity-80 focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-1 rounded-sm"
+                )}
+                aria-label={`${healthCounts[status]} ${status} entities — sort by health`}
+              >
+                <span
+                  className={cn(
+                    "size-1.5 rounded-full shrink-0",
+                    ENTITY_HEALTH_COLORS[status]
+                  )}
+                />
+                <span className="font-[family-name:var(--mono)] text-[0.625rem] text-taupe-2">
+                  {healthCounts[status]}
+                </span>
+              </button>
+            )
+        )}
+      </div>
+
+      {/* Attention Section */}
+      {attentionEntities.length > 0 && (
+        <div>
+          <div className="px-2.5 py-1 font-[family-name:var(--mono)] text-[0.625rem] font-bold uppercase tracking-[0.12em] text-amber">
+            ⚠ Attention
+          </div>
+          {attentionEntities.map((entity) => {
+            const isSelected = entity.id === selectedEntityId;
+            const healthLabel = getHealthLabel(entity);
+            return (
+              <button
+                key={entity.id}
+                type="button"
+                onClick={() => onSelect(entity.id)}
+                className={cn(
+                  "brain-nav-btn flex w-full items-center gap-2 rounded-[var(--r-md)] px-2.5 py-[7px] font-[family-name:var(--mono)] text-[11px] text-taupe-2 dark:text-taupe-4 border-none bg-transparent cursor-pointer",
+                  "transition-[padding,gap,width,height] duration-200 ease-linear",
+                  "hover:bg-[rgba(var(--white-pure-rgb),0.06)] hover:text-taupe-1 dark:hover:text-taupe-5",
+                  "focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-1",
+                  isSelected && "bg-berry-5 text-berry-1 dark:text-berry-3",
+                  "group-data-[collapsible=icon]:hidden"
+                )}
+              >
+                <span
+                  className={cn(
+                    "size-1.5 rounded-full shrink-0",
+                    entity.health ? ENTITY_HEALTH_COLORS[entity.health] : "bg-taupe-3"
+                  )}
+                />
+                <span className="truncate">{entity.name}</span>
+                {healthLabel && (
+                  <span className="text-[9px] text-taupe-3 ml-auto shrink-0">
+                    {healthLabel}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Type Groups */}
       {grouped.map(({ typeDef, items }) => (
         <div key={typeDef.id}>
-          <div className="px-2.5 py-1 font-[family-name:var(--mono)] text-[9px] font-bold uppercase tracking-[0.12em] text-taupe-3">
-            {typeDef.labelPlural}
-          </div>
+          <button
+            type="button"
+            onClick={() =>
+              setTypeFilter(activeTypeFilter === typeDef.id ? null : typeDef.id)
+            }
+            className={cn(
+              "flex w-full items-center gap-1 px-2.5 py-1 font-[family-name:var(--mono)] text-[9px] font-bold uppercase tracking-[0.12em] text-taupe-3 bg-transparent border-none cursor-pointer",
+              "hover:text-taupe-2 dark:hover:text-taupe-4",
+              "focus-visible:outline-2 focus-visible:outline-violet-3 focus-visible:outline-offset-1 rounded-sm",
+              activeTypeFilter === typeDef.id &&
+                "border-l-2 border-l-violet-3 bg-[rgba(var(--violet-3-rgb),0.08)]"
+            )}
+            aria-label={`Filter by ${typeDef.labelPlural}`}
+            aria-pressed={activeTypeFilter === typeDef.id}
+          >
+            <span>{typeDef.labelPlural}</span>
+            <span className="text-taupe-3 font-normal">({items.length})</span>
+          </button>
           {items.map((entity) => {
             const isSelected = entity.id === selectedEntityId;
             return (
@@ -213,11 +320,16 @@ function RolodexQuickList({
                   "group-data-[collapsible=icon]:hidden"
                 )}
               >
-                <span className={cn(
-                  "size-1.5 rounded-full shrink-0",
-                  (entity.health && healthDotColor[entity.health]) ?? 'bg-taupe-3'
-                )} />
+                <span
+                  className={cn(
+                    "size-1.5 rounded-full shrink-0",
+                    entity.health ? ENTITY_HEALTH_COLORS[entity.health] : "bg-taupe-3"
+                  )}
+                />
                 <span className="truncate">{entity.name}</span>
+                {entity.insights.length > 0 && (
+                  <span className="size-1 rounded-full bg-amber shrink-0" />
+                )}
               </button>
             );
           })}

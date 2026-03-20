@@ -3,7 +3,7 @@ import { create } from 'zustand';
 type ViewMode = 'chat' | 'workflows' | 'rolodex' | 'brain';
 
 /** Context type for the Cosimo panel — describes what it was opened for */
-export type CosimoContextType = 'template' | 'node' | 'lesson' | null;
+export type CosimoContextType = 'template' | 'node' | 'lesson' | 'entity' | null;
 
 interface CosimoContext {
   /** What kind of item the panel was opened for */

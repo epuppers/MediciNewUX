@@ -3,8 +3,18 @@
 // ============================================
 
 import type { Entity, EntitySchema } from '~/services/types';
-import { ENTITY_HEALTH_COLORS } from '~/lib/entity-constants';
+import { ENTITY_HEALTH_BG, ENTITY_HEALTH_TEXT, INSIGHT_COLORS } from '~/lib/entity-constants';
 import { cn } from '~/lib/utils';
+import { Bell, AlertTriangle, Sparkles, AlertCircle, Trophy, Link } from 'lucide-react';
+
+/** Insight type → icon component (same pattern as entity-insight-bar.tsx) */
+const INSIGHT_ICON_COMPONENTS: Record<string, React.ComponentType<{ className?: string }>> = {
+  reminder: Bell,
+  alert: AlertTriangle,
+  opportunity: Sparkles,
+  anomaly: AlertCircle,
+  milestone: Trophy,
+};
 
 interface EntityListItemProps {
   /** The entity to display */
@@ -51,8 +61,17 @@ export function EntityListItem({ entity, schema, onClick, className }: EntityLis
     }
   }
 
-  // Count non-dismissed insights
-  const insightCount = entity.insights.filter((i) => !i.dismissed).length;
+  // Non-dismissed insights
+  const activeInsights = entity.insights.filter((i) => !i.dismissed);
+  const insightCount = activeInsights.length;
+  const firstInsight = activeInsights[0] ?? null;
+  const remainingCount = insightCount - 1;
+
+  // Health label from schema
+  const healthLabel =
+    entity.health && typeDef?.healthIndicator?.labels
+      ? typeDef.healthIndicator.labels[entity.health]
+      : null;
 
   return (
     <div
@@ -76,13 +95,31 @@ export function EntityListItem({ entity, schema, onClick, className }: EntityLis
         {typeDef?.icon ?? '?'}
       </span>
 
-      {/* Name + subtitle */}
+      {/* Name + subtitle + inline insight */}
       <div className="flex-1 min-w-0">
         <div className="font-mono text-[0.8125rem] font-semibold text-taupe-5 truncate">{entity.name}</div>
         <div className="font-mono text-[0.6875rem] text-taupe-3 truncate">{entity.subtitle}</div>
+        {firstInsight && (() => {
+          const InsightIcon = INSIGHT_ICON_COMPONENTS[firstInsight.type];
+          return (
+            <div className="flex items-center gap-1 mt-0.5 min-w-0">
+              {InsightIcon && (
+                <InsightIcon className={cn('size-3 shrink-0', INSIGHT_COLORS[firstInsight.type])} />
+              )}
+              <span className="font-sans text-[0.6875rem] text-taupe-4 dark:text-taupe-3 truncate">
+                {firstInsight.text}
+              </span>
+              {remainingCount > 0 && (
+                <span className="font-mono text-[0.5625rem] text-taupe-2 shrink-0">
+                  +{remainingCount} more
+                </span>
+              )}
+            </div>
+          );
+        })()}
       </div>
 
-      {/* Right: summary values · health dot · insight badge */}
+      {/* Right: summary values · relationship count · health pill · insight badge */}
       <div className="flex items-center gap-2 shrink-0">
         {summaryValues.length > 0 && (
           <span className="hidden font-mono text-[0.6875rem] text-taupe-3 sm:inline">
@@ -90,14 +127,24 @@ export function EntityListItem({ entity, schema, onClick, className }: EntityLis
           </span>
         )}
 
-        {entity.health && (
+        {entity.relationships.length > 0 && (
+          <span className="hidden items-center gap-0.5 font-mono text-[0.625rem] text-taupe-2 sm:flex">
+            <Link className="size-2.5" />
+            {entity.relationships.length}
+          </span>
+        )}
+
+        {entity.health && healthLabel && (
           <span
             className={cn(
-              'size-2 rounded-full shrink-0',
-              ENTITY_HEALTH_COLORS[entity.health],
+              'font-mono text-[0.5625rem] uppercase tracking-[0.05em] font-semibold px-1.5 py-[1px] rounded-[var(--r-sm)] whitespace-nowrap',
+              ENTITY_HEALTH_TEXT[entity.health],
+              ENTITY_HEALTH_BG[entity.health],
               entity.health === 'critical' && 'animate-[wf-pulse_2s_ease-in-out_infinite] motion-reduce:animate-none',
             )}
-          />
+          >
+            {healthLabel}
+          </span>
         )}
 
         {insightCount > 0 && (

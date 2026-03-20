@@ -3,7 +3,7 @@
 // ============================================
 
 import { useRouteError } from "react-router";
-import { List, Grid3x3, GitGraph, Network, Search } from "lucide-react";
+import { List, Grid3x3, GitGraph, Search } from "lucide-react";
 import { cn } from "~/lib/utils";
 import { getEntitySchema, getEntities } from "~/services/entities";
 import { useEntityStore } from "~/stores/entity-store";
@@ -13,6 +13,8 @@ import { FilterPill } from "~/components/ui/filter-pill";
 import { EmptyState } from "~/components/ui/empty-state";
 import { Button } from "~/components/ui/button";
 import { ErrorBoundaryContent } from "~/components/ui/error-boundary-content";
+import { AttentionBanner } from "~/components/rolodex/attention-banner";
+import { EntityGraph } from "~/components/rolodex/entity-graph";
 import type { Route } from "./+types/_app.rolodex";
 
 /** Loader — fetches entity schema and all entities in parallel */
@@ -111,6 +113,13 @@ export default function RolodexRoute({ loaderData }: Route.ComponentProps) {
         </div>
       </div>
 
+      {/* Attention banner — always shows full entity set, not filtered */}
+      <AttentionBanner
+        entities={entities}
+        schema={schema}
+        onEntityClick={(id) => selectEntity(id)}
+      />
+
       {/* Filter bar */}
       <div className="flex items-center gap-2 px-4 py-2 border-b border-taupe-1 dark:border-surface-3 bg-white dark:bg-surface-1">
         <FilterPill
@@ -147,12 +156,15 @@ export default function RolodexRoute({ loaderData }: Route.ComponentProps) {
       </div>
 
       {/* Content area */}
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className={cn(
+        "flex-1",
+        viewMode === 'graph' ? 'overflow-hidden relative' : 'overflow-y-auto p-4'
+      )}>
         {viewMode === 'graph' ? (
-          <EmptyState
-            icon={<Network className="size-10" />}
-            title="Entity Graph"
-            description="Full graph visualization coming soon. Use list or grid view to browse entities."
+          <EntityGraph
+            entities={entities}
+            schema={schema}
+            onEntityClick={(id) => selectEntity(id)}
           />
         ) : filtered.length === 0 ? (
           <EmptyState
@@ -193,6 +205,7 @@ export default function RolodexRoute({ loaderData }: Route.ComponentProps) {
                 key={entity.id}
                 entity={entity}
                 schema={schema}
+                allEntities={entities}
                 onClick={() => selectEntity(entity.id)}
               />
             ))}
