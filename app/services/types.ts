@@ -536,3 +536,486 @@ export interface DataScopeToggle {
   /** Provider platform this scope belongs to */
   provider: 'microsoft' | 'google';
 }
+
+// ============================================
+// ENTITY SCHEMA — Per-Tenant Configuration
+// ============================================
+
+/**
+ * The top-level schema configuration for a tenant.
+ * Defines all entity types, relationship types, and global settings.
+ * This is what makes the system work for PE, tax, medical, or any vertical.
+ */
+export interface EntitySchema {
+  /** Schema version for migration support */
+  version: number;
+
+  /** Tenant identifier */
+  tenantId: string;
+
+  /** Display label for the Rolodex tab (default: "Rolodex") */
+  tabLabel: string;
+
+  /** Entity type definitions — the core of the schema */
+  entityTypes: EntityTypeDefinition[];
+
+  /** Relationship type definitions — how entities connect */
+  relationshipTypes: RelationshipTypeDefinition[];
+
+  /** Global settings */
+  settings: EntitySchemaSettings;
+}
+
+/**
+ * Defines a single entity type (e.g., "Fund," "Patient," "Client").
+ * Controls how entities of this type are displayed, what properties they carry,
+ * and what actions are available.
+ */
+export interface EntityTypeDefinition {
+  /** Unique identifier (kebab-case, e.g., "limited-partner", "patient") */
+  id: string;
+
+  /** Singular display label (e.g., "Fund", "Patient") */
+  label: string;
+
+  /** Plural display label (e.g., "Funds", "Patients") */
+  labelPlural: string;
+
+  /** Unicode icon character for graph/list display */
+  icon: string;
+
+  /** Color token from design system (e.g., "violet-3", "berry-3") */
+  color: string;
+
+  /** RGB triplet token for alpha variants */
+  colorRgb: string;
+
+  /**
+   * Property definitions — the "fields" this entity type carries.
+   * Think of these as the columns in a traditional CRM, but flexible.
+   */
+  properties: EntityPropertyDefinition[];
+
+  /**
+   * Which properties to display in the list/card view.
+   * References property IDs. Max 4 recommended for UI clarity.
+   */
+  summaryProperties: string[];
+
+  /**
+   * Grouped sections for the entity detail view.
+   * Allows organizing properties into logical sections (e.g., "Financials," "Contact Info").
+   */
+  detailSections: EntityDetailSection[];
+
+  /**
+   * Available actions for entities of this type.
+   * Actions appear in the entity detail view and context menus.
+   */
+  actions: EntityActionDefinition[];
+
+  /**
+   * Health indicator configuration. Defines what "health" means for this entity type.
+   * For contacts: engagement recency. For projects: deadline proximity. For patients: care gap alerts.
+   * Null means no health indicator for this type.
+   */
+  healthIndicator: HealthIndicatorConfig | null;
+
+  /**
+   * Whether this entity type appears as a top-level filter in the Rolodex list view.
+   * Set to false for "support" entity types that exist mainly as relationships
+   * (e.g., "Jurisdiction" might be a filter; "Filing Period" might not).
+   */
+  showInNav: boolean;
+
+  /**
+   * Sort order in the nav/filter bar. Lower numbers appear first.
+   */
+  navOrder: number;
+}
+
+/**
+ * A property definition on an entity type.
+ * Drives both display and data validation.
+ */
+export interface EntityPropertyDefinition {
+  /** Unique identifier within this entity type (kebab-case) */
+  id: string;
+
+  /** Display label */
+  label: string;
+
+  /** Data type — determines rendering and input component */
+  type: EntityPropertyType;
+
+  /** Whether this property is required */
+  required: boolean;
+
+  /** For enum type: allowed values */
+  options?: string[];
+
+  /** For currency/number: format string (e.g., "$#,###", "#.##%") */
+  format?: string;
+
+  /** Whether this property is editable by the user in the detail view */
+  editable: boolean;
+
+  /** Whether this property is populated by the AI (vs. manual entry) */
+  aiPopulated: boolean;
+
+  /** Short description shown as tooltip/help text */
+  description?: string;
+}
+
+/** Data type for entity properties — determines rendering and input component */
+export type EntityPropertyType =
+  | 'text'
+  | 'number'
+  | 'currency'
+  | 'date'
+  | 'email'
+  | 'phone'
+  | 'url'
+  | 'enum'
+  | 'boolean'
+  | 'percentage'
+  | 'tags'
+  | 'rich-text';
+
+/**
+ * Groups properties into sections for the entity detail view.
+ * Similar to how a Salesforce page layout has sections, but simpler.
+ */
+export interface EntityDetailSection {
+  /** Section heading */
+  label: string;
+
+  /** Property IDs to display in this section */
+  propertyIds: string[];
+
+  /** Whether this section is collapsed by default */
+  collapsedByDefault?: boolean;
+}
+
+/**
+ * Defines an action available for an entity type.
+ * Actions are buttons/menu items in the entity detail view and context menus.
+ */
+export interface EntityActionDefinition {
+  /** Unique identifier */
+  id: string;
+
+  /** Display label (e.g., "Send Email", "Run Report") */
+  label: string;
+
+  /** Lucide icon name */
+  icon: string;
+
+  /** What happens when the action is triggered */
+  type: EntityActionType;
+
+  /**
+   * For workflow actions: the template ID to trigger.
+   * For chat actions: a pre-filled prompt template.
+   * For link actions: a URL template with {{property}} interpolation.
+   */
+  target?: string;
+
+  /** Whether this is a primary action (shown prominently) vs. overflow menu */
+  primary: boolean;
+}
+
+/** Action type for entity actions — determines what happens when triggered */
+export type EntityActionType =
+  | 'start-chat'
+  | 'trigger-workflow'
+  | 'compose-email'
+  | 'add-note'
+  | 'schedule-meeting'
+  | 'external-link'
+  | 'create-task';
+
+/**
+ * Defines a type of relationship between entities.
+ * Relationships are bidirectional by default — the schema defines labels for both directions.
+ */
+export interface RelationshipTypeDefinition {
+  /** Unique identifier (kebab-case) */
+  id: string;
+
+  /** The entity type on the "from" side */
+  fromType: string;
+
+  /** The entity type on the "to" side */
+  toType: string;
+
+  /** Label when viewed from the "from" side (e.g., "manages") */
+  forwardLabel: string;
+
+  /** Label when viewed from the "to" side (e.g., "managed by") */
+  reverseLabel: string;
+
+  /** Whether the AI should automatically infer this relationship from data */
+  autoInfer: boolean;
+}
+
+/**
+ * Configures the health/engagement indicator for an entity type.
+ * This is the visual cue that tells users "you should pay attention to this."
+ */
+export interface HealthIndicatorConfig {
+  /** What drives the health score */
+  metric: 'last-interaction' | 'deadline-proximity' | 'custom-rule';
+
+  /** For last-interaction: thresholds in days */
+  thresholds?: {
+    /** Days threshold for healthy status (e.g., 14 = contacted within 14 days) */
+    healthy: number;
+    /** Days threshold for warning status (e.g., 30 = contacted within 30 days) */
+    warning: number;
+    /** Days threshold for critical status (e.g., 60 = not contacted in 60+ days) */
+    critical: number;
+  };
+
+  /** Display labels for each health state */
+  labels?: {
+    /** Label for healthy status (e.g., "Active", "On Track", "Current") */
+    healthy: string;
+    /** Label for warning status (e.g., "Cooling", "At Risk", "Due Soon") */
+    warning: string;
+    /** Label for critical status (e.g., "Cold", "Overdue", "Past Due") */
+    critical: string;
+  };
+}
+
+/**
+ * Global entity system settings for this tenant.
+ */
+export interface EntitySchemaSettings {
+  /** Whether to show the graph view toggle (some users prefer list-only) */
+  enableGraphView: boolean;
+
+  /** Whether the AI should auto-create entities from ingested data */
+  autoCreateEntities: boolean;
+
+  /** Whether the AI should auto-resolve relationships from context */
+  autoResolveRelationships: boolean;
+
+  /** Default sort for the entity list */
+  defaultSort: 'alphabetical' | 'last-activity' | 'health' | 'created';
+
+  /** Default view mode */
+  defaultView: 'list' | 'grid' | 'graph';
+}
+
+// ============================================
+// ENTITY INSTANCES — Runtime Data
+// ============================================
+
+/**
+ * A resolved entity instance. This is what the UI renders.
+ * Created by the graph-RAG pipeline, enriched by the AI, editable by the user.
+ */
+export interface Entity {
+  /** Unique identifier (generated by the entity resolution pipeline) */
+  id: string;
+
+  /** References the EntityTypeDefinition.id from the schema */
+  typeId: string;
+
+  /** Primary display name (e.g., "Sarah Chen", "Fund III", "Acme Corp") */
+  name: string;
+
+  /** Secondary display line (e.g., "CFO", "2019 Vintage", "Tax Client") */
+  subtitle: string;
+
+  /** Avatar/image URL if available (from email, LinkedIn, etc.) */
+  avatarUrl?: string;
+
+  /**
+   * Property values keyed by EntityPropertyDefinition.id.
+   * Values are stored as strings and rendered based on the property type in the schema.
+   */
+  properties: Record<string, string | string[] | null>;
+
+  /**
+   * AI-generated summary of this entity. Updated periodically by the AI
+   * based on all known context. 2-3 sentences.
+   */
+  aiSummary: string;
+
+  /**
+   * AI-generated insights/alerts. These are ephemeral — recalculated
+   * on each data refresh. They surface things the user should know.
+   */
+  insights: EntityInsight[];
+
+  /**
+   * Current health status, derived from the HealthIndicatorConfig
+   * in the schema. Null if the entity type has no health indicator.
+   */
+  health: 'healthy' | 'warning' | 'critical' | null;
+
+  /**
+   * Relationships to other entities.
+   * Each entry references a RelationshipTypeDefinition and a target entity.
+   */
+  relationships: EntityRelationship[];
+
+  /** Chat threads mentioning this entity */
+  linkedThreadIds: string[];
+
+  /** Workflow templates associated with this entity */
+  linkedWorkflowIds: string[];
+
+  /** Lessons relevant to this entity */
+  linkedLessonIds: string[];
+
+  /** Indices into the memory facts array */
+  linkedMemoryFactIndices: number[];
+
+  /** Kanban cards (projects/tasks) for this entity */
+  linkedKanbanCardIds: string[];
+
+  /** When this entity was first created in the system */
+  createdAt: string;
+
+  /** When any property was last updated (by AI or user) */
+  updatedAt: string;
+
+  /** When the last activity event occurred */
+  lastActivityAt: string;
+
+  /**
+   * Data provenance — where did this entity come from?
+   * Helps users understand why an entity exists and trust the data.
+   */
+  sources: EntitySource[];
+
+  /**
+   * User-applied tags for custom organization.
+   * These are freeform and not part of the schema.
+   */
+  tags: string[];
+}
+
+/**
+ * A relationship from one entity to another.
+ */
+export interface EntityRelationship {
+  /** References a RelationshipTypeDefinition.id */
+  relationshipTypeId: string;
+
+  /** The target entity ID */
+  targetEntityId: string;
+
+  /** The direction of this relationship (for label rendering) */
+  direction: 'forward' | 'reverse';
+
+  /** Optional metadata on the relationship (e.g., "since 2019", "lead partner") */
+  metadata?: string;
+
+  /** Whether this relationship was auto-inferred by the AI */
+  autoInferred: boolean;
+}
+
+/**
+ * An AI-generated insight or alert for an entity.
+ */
+export interface EntityInsight {
+  /** Unique identifier */
+  id: string;
+
+  /** Insight type — determines icon and color in the UI */
+  type: 'reminder' | 'alert' | 'opportunity' | 'anomaly' | 'milestone';
+
+  /** Short display text */
+  text: string;
+
+  /** When this insight was generated */
+  generatedAt: string;
+
+  /** Whether the user has dismissed this insight */
+  dismissed: boolean;
+
+  /** Optional action to take (maps to EntityActionDefinition.id) */
+  suggestedActionId?: string;
+}
+
+/**
+ * Data provenance — where the entity or a property value came from.
+ */
+export interface EntitySource {
+  /** What kind of source provided this data */
+  type: 'email' | 'document' | 'calendar' | 'conversation' | 'manual' | 'integration';
+
+  /** Human-readable label (e.g., "Email from Sarah Chen, Feb 14") */
+  label: string;
+
+  /** Optional link to the source (thread ID, document path, etc.) */
+  ref?: string;
+
+  /** When the data was captured */
+  capturedAt: string;
+}
+
+// ============================================
+// ACTIVITY TIMELINE
+// ============================================
+
+/**
+ * A single event in an entity's activity timeline.
+ * The timeline is auto-assembled from multiple data sources.
+ * It's the "what happened" view that replaces manual CRM logging.
+ */
+export interface ActivityEvent {
+  /** Unique identifier */
+  id: string;
+
+  /** The entity this event belongs to */
+  entityId: string;
+
+  /** Event type — determines icon and rendering in the timeline */
+  type: ActivityEventType;
+
+  /** Short display title (e.g., "Email sent", "Workflow completed") */
+  title: string;
+
+  /** Longer description or preview text */
+  description: string;
+
+  /** When the event occurred */
+  timestamp: string;
+
+  /** Where this event data came from */
+  source: 'email' | 'calendar' | 'chat' | 'workflow' | 'manual' | 'integration';
+
+  /** Optional reference ID (thread ID, run ID, document ID) for drill-through */
+  refId?: string;
+
+  /** Optional reference type for navigation */
+  refType?: 'thread' | 'workflow-run' | 'document' | 'lesson' | 'kanban-card';
+
+  /** Other entities involved in this event */
+  involvedEntityIds: string[];
+}
+
+/** Activity event type — determines icon and rendering in the timeline */
+export type ActivityEventType =
+  | 'email-sent'
+  | 'email-received'
+  | 'meeting-scheduled'
+  | 'meeting-completed'
+  | 'document-shared'
+  | 'document-updated'
+  | 'workflow-triggered'
+  | 'workflow-completed'
+  | 'workflow-failed'
+  | 'note-added'
+  | 'property-updated'
+  | 'entity-created'
+  | 'relationship-added'
+  | 'task-created'
+  | 'task-completed'
+  | 'milestone-reached'
+  | 'chat-mention';
